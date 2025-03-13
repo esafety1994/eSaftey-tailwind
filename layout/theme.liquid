@@ -1,0 +1,11 @@
+<html>
+    <head>
+        {{ content_for_header }}
+        {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
+    </head>
+    <body>
+        <main id="main" role="main">
+            {{ content_for_layout }}
+        </main>
+    </body>
+</html>
