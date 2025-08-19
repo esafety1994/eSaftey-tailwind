@@ -1,0 +1,141 @@
+{{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
+<script defer src="{{ 'glide.min.js' | asset_url }}"></script>
+<style> 
+    .glide__bullet--active{
+       background-color:transparent;
+       border:1px solid;
+       height: calc(var(--spacing) * 3);
+       width: calc(var(--spacing) * 3);
+    }
+</style>
+<div class="glide relative">
+    <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+            {% for block in section.blocks %}
+                {% case block.type %}
+                    {% when 'slider_item' %}
+                    <li class="glide__slide relative w-full">
+
+                        <div class="h-[620px]">
+                            <a href="{{ block.settings.button_link | default: '#' }}" class="absolute w-full h-full bg-cover" style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');">
+                                {% if block.settings.title != blank or block.settings.description != blank or block.settings.button_text != blank %}
+                                    <span class="absolute left-20 top-1/2 transform -translate-y-1/2 max-w-xl space-y-3 text-black p-20">
+                                        <span class="flex flex-col gap-8">
+                                            <h2>{{ block.settings.title }}</h2>
+                                           
+                                            {{ block.settings.description }}
+                                            {% if block.settings.button_text %}
+                                            <span class="mt-4 inline-block self-start w-auto primary-button">
+                                                {{ block.settings.button_text }}
+                                            </span>
+                                            {% endif %}
+                                        </span>
+                                    </span>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </li>
+                {% endcase %}
+            {% endfor %}
+          </ul>
+          
+    </div>
+
+    {% assign block_count = section.blocks | size %}
+    {% if block_count > 1 %}
+        <div class="glide__arrows absolute top-1/2 w-full" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left absolute left-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all" data-glide-dir="<">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+            </button>
+            <button class="glide__arrow glide__arrow--right absolute right-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all" data-glide-dir=">">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="glide__bullets absolute bottom-0 flex justify-center items-center gap-2 w-full h-10" data-glide-el="controls[nav]">          
+            {% assign loop_limit = block_count | minus: 1 %}
+            {% for i in (0..loop_limit) %}
+                <button class="glide__bullet bg-black w-2.5 h-2.5 rounded-full cursor-pointer transition-all hover:bg-transparent hover:border" data-glide-dir="={{ i }}"></button>
+            {% endfor %}
+        </div>
+        
+    {% endif %}
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var glide = new Glide('.glide', {
+            autoplay: 5000,
+            hoverpause: true,
+          })
+          glide.mount()
+    });
+</script>
+{% schema %}
+{
+    "name":"Carousel",
+    "settings": [],
+    "blocks":[
+        {
+            "type": "slider_item",
+            "name": "Image slide",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "background",
+                    "label": "Image on desktop",
+                    "info": "1920 x 900px recommended"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "mb_background",
+                    "label": "Image on mobile",
+                    "info": "600 x 480px recommended"
+                },
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "textarea",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "New Collection",
+                    "info": "Allow custom HTML"
+                },
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "label": "Description",
+                    "default": "<p>Tell your campaign through images</p>"
+                },
+                {
+                    "type": "header",
+                    "content": "Button"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button label",
+                    "default": "Shop now"
+                },
+                {
+                    "type": "url",
+                    "id": "button_link",
+                    "label": "Button link"
+                },
+            ],
+        }
+    ],
+    "presets": [
+        {
+            "name": "Carousel",
+        }
+    ]
+
+}
+{% endschema %}

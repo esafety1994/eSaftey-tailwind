@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "name": "Typography",
+        "settings": [
+            {
+                "type": "font_picker",
+                "id": "type_base_font",
+                "label": "Font",
+                "default": "helvetica_n4"
+              },
+        ]
+        
+    }
+]

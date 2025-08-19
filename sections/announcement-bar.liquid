@@ -1,0 +1,22 @@
+{% if section.settings['show-announcement'] %}
+    <section class="bg-primary-light">announcement</section>
+{% endif %}
+
+{% schema %}
+    {
+        "name":"Announcement Bar",
+        "settings": [
+            {  
+                "type": "checkbox",
+                "id": "show-announcement",
+                "label": "Show Announcement",
+                "default":true
+            }
+        ],
+        "presets": [
+            {
+                "name": "announcement-bar"
+            }
+        ]
+    }
+{% endschema %}

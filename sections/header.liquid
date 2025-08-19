@@ -1,0 +1,26 @@
+<header class="bg-black p-4">
+    <div class="wrapper">
+        {% render 'header' %}
+    </div>
+</header>
+
+{% schema %}
+{
+    "name": "header",
+    "settings": [],
+    "blocks": [
+        {
+            "type": "logo",
+            "name": "Logo",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "logo",
+                    "label": "Logo",
+                }
+            ]
+        }
+    ],
+    "presets": []
+}
+{% endschema %}

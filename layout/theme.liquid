@@ -1,9 +1,19 @@
 <html>
     <head>
         {{ content_for_header }}
+        <style>
+            {{ settings.type_base_font | font_face}}
+            :root{
+                --default-font-family:{{ settings.type_base_font.family }}
+            }
+        </style>
         {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
+
     </head>
     <body>
+        {%  section 'announcement-bar'  %}
+        {%  section 'top-navbar'  %}
+        {%  section 'header'  %}
         <main id="main" role="main">
             {{ content_for_layout }}
         </main>

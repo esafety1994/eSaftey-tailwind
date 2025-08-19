@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: oklch(0.89 0.16 85.6);
+  --color-primary-light:#FFE61F;
+  --color-grey:#dedede;
+  --color-bg-light:#fee9a7;
+  --color-bg-light-blue:#b1d4dd;
+  --color-bg-light-red:#cf4949;
+  --color-bg-light-pink:#f2dccb;  
+}
+h2{
+  @apply text-5xl font-medium;
+}
+
+.wrapper{
+  @apply max-w-screen-2xl m-auto w-full;
+}
+
+.primary-button{
+  @apply bg-black text-white font-medium rounded-md shadow-md transition px-6 py-2 uppercase hover:bg-black/80 hover:scale-105;
+}
