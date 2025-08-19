@@ -20,15 +20,6 @@
       "top-navbar": {
         "type": "top-navbar",
         "blocks": {
-          "contact_item_with_icon_PxaEY8": {
-            "type": "contact_item_with_icon",
-            "settings": {
-              "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewbox=\"0 0 24 24\" fill=\"currentColor\" class=\"size-6\">\n  <path d=\"M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z\"></path>\n  <path d=\"M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z\"></path>\n</svg>",
-              "text": "sales@esafetysupplies.com.au",
-              "link": "sales@esafetysupplies.com.au",
-              "type": "email"
-            }
-          },
           "contact_item_with_icon_4ixwM3": {
             "type": "contact_item_with_icon",
             "settings": {
@@ -37,11 +28,20 @@
               "link": "1300 291 700",
               "type": "phone"
             }
+          },
+          "contact_item_with_icon_PxaEY8": {
+            "type": "contact_item_with_icon",
+            "settings": {
+              "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewbox=\"0 0 24 24\" fill=\"currentColor\" class=\"size-6\">\n  <path d=\"M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z\"></path>\n  <path d=\"M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z\"></path>\n</svg>",
+              "text": "sales@esafetysupplies.com.au",
+              "link": "sales@esafetysupplies.com.au",
+              "type": "email"
+            }
           }
         },
         "block_order": [
-          "contact_item_with_icon_PxaEY8",
-          "contact_item_with_icon_4ixwM3"
+          "contact_item_with_icon_4ixwM3",
+          "contact_item_with_icon_PxaEY8"
         ],
         "settings": {
           "menu": "top-bar"
@@ -53,7 +53,7 @@
           "logo_Gb3MXE": {
             "type": "logo",
             "settings": {
-              "logo": "shopify://shop_images/esaftey-logo.webp"
+              "logo": "shopify://shop_images/logo.webp"
             }
           }
         },
