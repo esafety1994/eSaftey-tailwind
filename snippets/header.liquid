@@ -1,7 +1,7 @@
 {% render 'searchbox' %}
 {% for block in section.blocks %}
     {% if block.settings.logo %}
-        <a href="/"><img src="{{ block.settings.logo }}" width="120px " height="120px"></a>
+        <a href="/"><img src="{{ block.settings.logo | file_url }}" width="120" height="120" alt="Logo"></a>
     {% endif %}
 {% endfor %}   
 
