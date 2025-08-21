@@ -65,12 +65,21 @@
             "title": "WHEEL STOP",
             "link": ""
           }
+        },
+        "item_xzg6DK": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/solar_lights.webp",
+            "title": "SOLAR LIGHTING",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "item_ePJQXy",
         "item_YY7cXz",
-        "item_cyEmUy"
+        "item_cyEmUy",
+        "item_xzg6DK"
       ],
       "name": "Item Slider",
       "settings": {
