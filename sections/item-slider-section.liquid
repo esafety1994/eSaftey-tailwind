@@ -20,11 +20,13 @@
   "settings": [
     { "type": "text", "id": "title", "label": "Title", "default": "Featured Items" },
     { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Sub Heading" },
-    { "type": "range", "id": "slides_desktop", "label": "Slides per view (Desktop)", "min": 1, "max": 4, "step": 1, "default": 3 },
-    { "type": "range", "id": "slides_tablet", "label": "Slides per view (Tablet)", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "slides_desktop", "label": "Slides per view (Desktop)", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "range", "id": "slides_tablet", "label": "Slides per view (Tablet)", "min": 1, "max": 4, "step": 1, "default": 2 },
     { "type": "select", "id": "slides_mobile", "label": "Slides per view (Mobile)", "options": [{"value":"1","label":"1"},{"value":"2","label":"2"}], "default":"1" },
     { "type": "range", "id": "card_spacing", "label": "Card spacing", "min": 0, "max": 40, "step": 4, "default": 16 },
     { "type": "checkbox", "id": "autoplay", "label": "Enable autoplay", "default": false },
+    { "type": "range", "id": "autoplay_speed", "label": "Autoplay speed (ms)", "default": 2000, "min": 100, "max": 5000, "step": 100,},
+    {"type": "paragraph", "content": "Autoplay speed is only used when autoplay is enabled."},
     { "type": "checkbox", "id": "show_navigation", "label": "Show navigation arrows", "default": true },
     { "type": "checkbox", "id": "show_dots", "label": "Show dots", "default": true }
   ],

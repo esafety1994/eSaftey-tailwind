@@ -1,13 +1,32 @@
 <html>
     <head>
         {{ content_for_header }}
-        <style>
-            {{ settings.type_base_font | font_face}}
-            :root{
-                --default-font-family:{{ settings.type_base_font.family }}
-            }
-        </style>
+        {% comment %}
+            Load your base font from Shopify or fallback to Google Fonts
+        {% endcomment %}
+        {% assign font_handle = settings.type_base_font | default: 'poppins_n4' %}
+        
+        {% case font_handle %}
+            {% when 'poppins_n4' %}
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+            <style>
+                :root {
+                --default-font-family: 'Poppins', sans-serif;
+                }
+            </style>
+            {% else %}
+            {{ font_handle | font_face: font_display: 'swap', weights: '400,600,700' }}
+            <style>
+                :root {
+                --default-font-family: '{{ font_handle.family | default: "sans-serif" }}';
+                }
+                /* Map Tailwind bold/semi classes to Shopify weights */
+                .font-semibold { font-family: '{{ font_handle.family }} N6', sans-serif !important; }
+                .font-bold { font-family: '{{ font_handle.family }} N7', sans-serif !important; }
+            </style>
+        {% endcase %}
         {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
+        {{ 'global.css' | asset_url | stylesheet_tag }}
 
     </head>
     <body>

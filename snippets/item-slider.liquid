@@ -2,8 +2,8 @@
 
 <div class="item-slider item-slider-{{ slider_id }} py-12 bg-white">
   {% if title or subtitle %}
-    <div class="text-center mb-8">
-      {% if title %}<h2 class="text-3xl font-bold mb-2">{{ title }}</h2>{% endif %}
+    <div class="text-center">
+      {% if title %}<h2 class="text-3xl font-bold">{{ title }}</h2>{% endif %}
       {% if subtitle %}<p class="text-gray-500">{{ subtitle }}</p>{% endif %}
     </div>
   {% endif %}
@@ -15,10 +15,10 @@
           <li class="glide__slide">
             <a href="{{ item.settings.link }}" class="block ...">
               {% if item.settings.image %}
-                <img src="{{ item.settings.image | image_url: width: 600 }}" alt="{{ item.settings.title | escape }}" class="w-full h-48 object-cover rounded">
+                <img src="{{ item.settings.image | image_url: width:600 }}" alt="{{ item.settings.title | escape }}" class="w-full min-h-76 rounded-3xl">
               {% endif %}
               <div class="mt-4 text-center">
-                <h3 class="font-semibold text-lg">{{ item.settings.title }}</h3>
+                <h3 class="font-bold text-2xl">{{ item.settings.title }}</h3>
               </div>
             </a>
           </li>
@@ -51,8 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
       type: 'carousel',
       perView: {{ slides_desktop }},
       gap: {{ card_spacing }},
-      autoplay: {{ autoplay | default: false }},
+      autoplay: {% if autoplay %}{{ autoplay_speed | default: 3000 }}{% else %}false{% endif %},
       hoverpause: true,
+      bound: true,       // prevents cut-off at edges
       breakpoints: {
         1024: { perView: {{ slides_tablet }} },
         768:  { perView: {{ slides_mobile }} }
