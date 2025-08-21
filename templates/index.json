@@ -15,17 +15,16 @@
         "slider_item_cQpfyB": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/woman-in-the-city_925x_d62dfec1-8ced-46b4-84a6-9b6208f0ea95.jpg",
-            "title": "New Collection",
-            "description": "<p>Tell your campaign through images</p>",
-            "button_text": "Shop now",
-            "button_link": "shopify://products/black-leather-bag"
+            "background": "shopify://shop_images/website-banner-custom-signs.jpg",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": ""
           }
         },
         "slider_item_Qz3zb8": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/man-adjusts-blue-tuxedo-bowtie_925x_d96a6e31-867e-4256-85db-c64fb3bf9c47.jpg",
             "title": "New Collection",
             "description": "<p>Tell your campaign through images</p>",
             "button_text": "Shop now",
