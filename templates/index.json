@@ -57,11 +57,20 @@
             "title": "RAMP",
             "link": ""
           }
+        },
+        "item_cyEmUy": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/wheel-stop.webp",
+            "title": "WHEEL STOP",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "item_ePJQXy",
-        "item_YY7cXz"
+        "item_YY7cXz",
+        "item_cyEmUy"
       ],
       "name": "Item Slider",
       "settings": {
