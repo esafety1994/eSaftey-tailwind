@@ -121,11 +121,12 @@
       "settings": {
         "title": "",
         "subtitle": "",
-        "slides_desktop": 3,
-        "slides_tablet": 2,
-        "slides_mobile": "1",
+        "slides_desktop": 5,
+        "slides_tablet": 3,
+        "slides_mobile": "2",
         "card_spacing": 16,
         "autoplay": false,
+        "autoplay_speed": 2000,
         "show_navigation": true,
         "show_dots": true
       }
