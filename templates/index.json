@@ -81,6 +81,14 @@
             "title": "SIGNAGE",
             "link": ""
           }
+        },
+        "item_GfMEPh": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/height_bar.webp",
+            "title": "HEIGHT BARS",
+            "link": ""
+          }
         }
       },
       "block_order": [
@@ -88,7 +96,8 @@
         "item_YY7cXz",
         "item_cyEmUy",
         "item_xzg6DK",
-        "item_wQgpxF"
+        "item_wQgpxF",
+        "item_GfMEPh"
       ],
       "name": "Item Slider",
       "settings": {
