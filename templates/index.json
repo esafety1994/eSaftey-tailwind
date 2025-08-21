@@ -49,10 +49,19 @@
             "title": "BOLLARD",
             "link": ""
           }
+        },
+        "item_YY7cXz": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/ramp.webp",
+            "title": "RAMP",
+            "link": ""
+          }
         }
       },
       "block_order": [
-        "item_ePJQXy"
+        "item_ePJQXy",
+        "item_YY7cXz"
       ],
       "name": "Item Slider",
       "settings": {
