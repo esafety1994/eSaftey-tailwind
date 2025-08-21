@@ -25,10 +25,11 @@
         "slider_item_Qz3zb8": {
           "type": "slider_item",
           "settings": {
-            "title": "New Collection",
-            "description": "<p>Tell your campaign through images</p>",
-            "button_text": "Shop now",
-            "button_link": "shopify://products/blue-silk-tuxedo"
+            "background": "shopify://shop_images/website-banner-site-assessment.jpg",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://collections/asset-protection"
           }
         }
       },
