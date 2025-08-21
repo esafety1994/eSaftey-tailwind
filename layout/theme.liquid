@@ -1,40 +1,33 @@
 <html>
-    <head>
-        {{ content_for_header }}
-        {% comment %}
-            Load your base font from Shopify or fallback to Google Fonts
-        {% endcomment %}
-        {% assign font_handle = settings.type_base_font | default: 'poppins_n4' %}
-        
-        {% case font_handle %}
-            {% when 'poppins_n4' %}
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-            <style>
-                :root {
-                --default-font-family: 'Poppins', sans-serif;
-                }
-            </style>
-            {% else %}
-            {{ font_handle | font_face: font_display: 'swap', weights: '400,600,700' }}
-            <style>
-                :root {
-                --default-font-family: '{{ font_handle.family | default: "sans-serif" }}';
-                }
-                /* Map Tailwind bold/semi classes to Shopify weights */
-                .font-semibold { font-family: '{{ font_handle.family }} N6', sans-serif !important; }
-                .font-bold { font-family: '{{ font_handle.family }} N7', sans-serif !important; }
-            </style>
-        {% endcase %}
-        {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
-        {{ 'global.css' | asset_url | stylesheet_tag }}
+  <head>
+    {{ content_for_header }}
 
-    </head>
-    <body>
-        {%  section 'announcement-bar'  %}
-        {%  section 'top-navbar'  %}
-        {%  section 'header'  %}
-        <main id="main" role="main">
-            {{ content_for_layout }}
-        </main>
-    </body>
+    {% comment %}
+      Load base font from Shopify and set as CSS variable for Tailwind
+    {% endcomment %}
+    {% assign font_handle = settings.type_base_font | default: 'poppins_n4' %}
+
+    <style>
+      :root {
+        /* Default font for body and Tailwind classes */
+        --default-font-family: '{{ font_handle.family | default: "Poppins" }}', sans-serif;
+      }
+
+      /* Map Tailwind font weight classes to Shopify font files */
+      .font-normal { font-family: '{{ font_handle.family }} N4', sans-serif !important; font-weight: 400; }
+      .font-semibold { font-family: '{{ font_handle.family }} N6', sans-serif !important; font-weight: 600; }
+      .font-bold { font-family: '{{ font_handle.family }} N7', sans-serif !important; font-weight: 700; }
+    </style>
+
+    {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
+    {{ 'global.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body class="font-normal">
+    {% section 'announcement-bar' %}
+    {% section 'top-navbar' %}
+    {% section 'header' %}
+    <main id="main" role="main">
+      {{ content_for_layout }}
+    </main>
+  </body>
 </html>
