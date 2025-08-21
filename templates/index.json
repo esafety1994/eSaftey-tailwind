@@ -89,6 +89,14 @@
             "title": "HEIGHT BARS",
             "link": ""
           }
+        },
+        "item_zchrj6": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/handrail_kit.webp",
+            "title": "HANDRAIL KITS",
+            "link": ""
+          }
         }
       },
       "block_order": [
@@ -97,7 +105,8 @@
         "item_cyEmUy",
         "item_xzg6DK",
         "item_wQgpxF",
-        "item_GfMEPh"
+        "item_GfMEPh",
+        "item_zchrj6"
       ],
       "name": "Item Slider",
       "settings": {
