@@ -97,6 +97,14 @@
             "title": "HANDRAIL KITS",
             "link": ""
           }
+        },
+        "item_P9JLqH": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/tactiles.webp",
+            "title": "TACTILES",
+            "link": ""
+          }
         }
       },
       "block_order": [
@@ -106,7 +114,8 @@
         "item_xzg6DK",
         "item_wQgpxF",
         "item_GfMEPh",
-        "item_zchrj6"
+        "item_zchrj6",
+        "item_P9JLqH"
       ],
       "name": "Item Slider",
       "settings": {
