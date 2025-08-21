@@ -73,13 +73,22 @@
             "title": "SOLAR LIGHTING",
             "link": ""
           }
+        },
+        "item_wQgpxF": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/signage.webp",
+            "title": "SIGNAGE",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "item_ePJQXy",
         "item_YY7cXz",
         "item_cyEmUy",
-        "item_xzg6DK"
+        "item_xzg6DK",
+        "item_wQgpxF"
       ],
       "name": "Item Slider",
       "settings": {
