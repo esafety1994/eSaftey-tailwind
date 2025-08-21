@@ -16,8 +16,8 @@
                     {% when 'slider_item' %}
                     <li class="glide__slide relative w-full">
 
-                        <div class="h-[620px]">
-                            <a href="{{ block.settings.button_link | default: '#' }}" class="absolute w-full h-full bg-cover" style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');">
+                        <div class="h-[40vh]">
+                            <a href="{{ block.settings.button_link | default: '#' }}" class="absolute w-full h-full bg-cover bg-center" style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');">
                                 {% if block.settings.title != blank or block.settings.description != blank or block.settings.button_text != blank %}
                                     <span class="absolute left-20 top-1/2 transform -translate-y-1/2 max-w-xl space-y-3 text-black p-20">
                                         <span class="flex flex-col gap-8">
@@ -89,12 +89,6 @@
                     "id": "background",
                     "label": "Image on desktop",
                     "info": "1920 x 900px recommended"
-                },
-                {
-                    "type": "image_picker",
-                    "id": "mb_background",
-                    "label": "Image on mobile",
-                    "info": "600 x 480px recommended"
                 },
                 {
                     "type": "header",
