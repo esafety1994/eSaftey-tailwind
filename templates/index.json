@@ -38,9 +38,38 @@
         "slider_item_Qz3zb8"
       ],
       "settings": {}
+    },
+    "item_slider_section_gDqw4M": {
+      "type": "item-slider-section",
+      "blocks": {
+        "item_ePJQXy": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/bollard.webp",
+            "title": "BOLLARD",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_ePJQXy"
+      ],
+      "name": "Item Slider",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "slides_desktop": 3,
+        "slides_tablet": 2,
+        "slides_mobile": "1",
+        "card_spacing": 16,
+        "autoplay": false,
+        "show_navigation": true,
+        "show_dots": true
+      }
     }
   },
   "order": [
-    "carousel_kxG3tk"
+    "carousel_kxG3tk",
+    "item_slider_section_gDqw4M"
   ]
 }
