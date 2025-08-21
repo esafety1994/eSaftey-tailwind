@@ -1,8 +1,11 @@
-{% render 'searchbox' %}
+{% if section.settings.show_search %}
+    {% render 'searchbox' %}
+{% endif %}
+
 {% for block in section.blocks %}
     {% if block.settings.logo %}
-        <a href="/"><img src="{{ block.settings.logo | image_url: width: 180 | image_tag }}"></a>
+        <a href="/"><img src="{{ block.settings.logo | image_url: width: 210 | image_tag }}"></a>
     {% endif %}
 {% endfor %}   
 
-<h1>This is a  header</h1>
+{% render 'header-left-menu' %}

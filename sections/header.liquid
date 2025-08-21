@@ -1,5 +1,5 @@
-<header class="bg-black p-4">
-    <div class="wrapper">
+<header class="bg-black p-2">
+    <div class="wrapper container flex items-center justify-between">
         {% render 'header' %}
     </div>
 </header>
@@ -7,7 +7,20 @@
 {% schema %}
 {
     "name": "header",
-    "settings": [],
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "show_search",
+            "label": "Show Search Box",
+            "default": true
+        },
+        {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Menu",
+            "default": "main-menu"
+        }
+    ],
     "blocks": [
         {
             "type": "logo",
@@ -16,11 +29,51 @@
                 {
                     "type": "image_picker",
                     "id": "logo",
-                    "label": "Logo",
+                    "label": "Logo"
+                }
+            ]
+        },
+        {
+            "type": "left_menu",
+            "name": "Left Menu Item",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "icon",
+                    "label": "Icon SVG Snippet"
+                },
+                {
+                    "type": "text",
+                    "id": "hover_text",
+                    "label": "Hover Text"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link",
+                    "default": "/"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "new_tab",
+                    "label": "Open in new tab",
+                    "default": false
                 }
             ]
         }
     ],
-    "presets": []
+    "presets": [
+        {
+            "name": "Header",
+            "blocks": [
+                {
+                    "type": "logo"
+                },
+                {
+                    "type": "left_menu"
+                }
+            ]
+        }
+    ]
 }
 {% endschema %}

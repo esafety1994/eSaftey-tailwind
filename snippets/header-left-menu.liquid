@@ -1,0 +1,17 @@
+{%- comment -%} Wrap all left_menu items in one nav {% endcomment -%}
+<nav class="flex items-center space-x-4 text-white">
+  {%- for block in section.blocks -%}
+    {% if block.type == 'left_menu' %}
+      <a 
+        href="{{ block.settings.link }}" 
+        {% if block.settings.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %} 
+        class="flex items-center space-x-2 group relative"
+      >
+        {{ block.settings.icon }}
+        <span class="absolute -bottom-10 -left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap bg-white text-black px-2 py-1 rounded shadow">
+          {{ block.settings.hover_text }}
+        </span>
+      </a>
+    {% endif %}
+  {%- endfor -%}
+</nav>
