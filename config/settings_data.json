@@ -13,6 +13,24 @@
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
+        "blocks": {
+          "announcement_content_EXRXzY": {
+            "type": "announcement_content",
+            "settings": {
+              "content": "Welcome to our Store"
+            }
+          },
+          "announcement_content_c6xnPn": {
+            "type": "announcement_content",
+            "settings": {
+              "content": "Free shipping over 499"
+            }
+          }
+        },
+        "block_order": [
+          "announcement_content_EXRXzY",
+          "announcement_content_c6xnPn"
+        ],
         "settings": {
           "show-announcement": true
         }
