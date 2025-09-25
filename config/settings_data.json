@@ -70,7 +70,9 @@
         "blocks": {
           "logo_Gb3MXE": {
             "type": "logo",
-            "settings": {}
+            "settings": {
+              "logo": "shopify://shop_images/logo.webp"
+            }
           }
         },
         "block_order": [
