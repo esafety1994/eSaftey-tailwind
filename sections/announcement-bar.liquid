@@ -11,12 +11,20 @@
       "id": "show-announcement",
       "label": "Show Announcement",
       "default": true
-    },
+    }
+  ],
+  "blocks": [
     {
-      "type": "text",
-      "id": "copy",
-      "label": "Copy",
-      "default": "Welcome to our Store"
+      "type": "announcement_content",
+      "name": "Annoucment Conent",
+      "settings": [
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content",
+          "default": "Welcome to our Store"
+        }
+      ]
     }
   ],
   "presets": [
