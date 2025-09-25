@@ -14,7 +14,7 @@
       "announcement-bar": {
         "type": "announcement-bar",
         "settings": {
-          "show-announcement": false
+          "show-announcement": true
         }
       },
       "top-navbar": {
@@ -52,15 +52,16 @@
         "blocks": {
           "logo_Gb3MXE": {
             "type": "logo",
-            "settings": {
-              "logo": "shopify://shop_images/logo.webp"
-            }
+            "settings": {}
           }
         },
         "block_order": [
           "logo_Gb3MXE"
         ],
-        "settings": {}
+        "settings": {
+          "show_search": true,
+          "menu": "main-menu"
+        }
       }
     },
     "content_for_index": [],

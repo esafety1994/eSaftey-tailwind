@@ -12,30 +12,41 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
-        "slider_item_cQpfyB": {
+        "slider_item_TAKEQ8": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/website-banner-custom-signs.jpg",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://collections/asset-protection"
+            "background": "shopify://shop_images/banner1.webp",
+            "title": "New Arrival Collection",
+            "description": "<p>SUMMER 2025</p>",
+            "button_text": "Explore Now",
+            "button_link": "shopify://collections/bike-storage-racks"
           }
         },
-        "slider_item_Qz3zb8": {
+        "slider_item_UjBni3": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/website-banner-site-assessment.jpg",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://collections/asset-protection"
+            "background": "shopify://shop_images/banner3.webp",
+            "title": "New Arrival Collection",
+            "description": "<p>SUMMER 2025</p>",
+            "button_text": "Explore Now",
+            "button_link": "shopify://collections/bike-storage-racks"
+          }
+        },
+        "slider_item_jwUMtr": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/banner2.webp",
+            "title": "New Arrival Collection",
+            "description": "<p>SUMMER 2025</p>",
+            "button_text": "Explore Now",
+            "button_link": "shopify://collections/bike-storage-racks"
           }
         }
       },
       "block_order": [
-        "slider_item_cQpfyB",
-        "slider_item_Qz3zb8"
+        "slider_item_TAKEQ8",
+        "slider_item_UjBni3",
+        "slider_item_jwUMtr"
       ],
       "settings": {}
     },
@@ -45,7 +56,6 @@
         "item_ePJQXy": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/bollard.webp",
             "title": "BOLLARD",
             "link": ""
           }
@@ -53,7 +63,6 @@
         "item_YY7cXz": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/ramp.webp",
             "title": "RAMP",
             "link": ""
           }
@@ -61,7 +70,6 @@
         "item_cyEmUy": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/wheel-stop.webp",
             "title": "WHEEL STOP",
             "link": ""
           }
@@ -77,7 +85,6 @@
         "item_wQgpxF": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/signage.webp",
             "title": "SIGNAGE",
             "link": ""
           }
@@ -85,7 +92,6 @@
         "item_GfMEPh": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/height_bar.webp",
             "title": "HEIGHT BARS",
             "link": ""
           }
@@ -93,7 +99,6 @@
         "item_zchrj6": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/handrail_kit.webp",
             "title": "HANDRAIL KITS",
             "link": ""
           }
@@ -101,7 +106,6 @@
         "item_P9JLqH": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/tactiles.webp",
             "title": "TACTILES",
             "link": ""
           }
