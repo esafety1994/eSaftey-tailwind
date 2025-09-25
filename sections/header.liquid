@@ -1,5 +1,5 @@
 <header class="bg-black p-2">
-    <div class="wrapper container flex items-center justify-between">
+    <div class="wrapper container flex items-center justify-between m-auto">
         {% render 'header' %}
     </div>
 </header>
@@ -33,34 +33,6 @@
                 }
             ]
         },
-        {
-            "type": "left_menu",
-            "name": "Left Menu Item",
-            "settings": [
-                {
-                    "type": "textarea",
-                    "id": "icon",
-                    "label": "Icon SVG Snippet"
-                },
-                {
-                    "type": "text",
-                    "id": "hover_text",
-                    "label": "Hover Text"
-                },
-                {
-                    "type": "url",
-                    "id": "link",
-                    "label": "Link",
-                    "default": "/"
-                },
-                {
-                    "type": "checkbox",
-                    "id": "new_tab",
-                    "label": "Open in new tab",
-                    "default": false
-                }
-            ]
-        }
     ],
     "presets": [
         {
@@ -68,9 +40,6 @@
             "blocks": [
                 {
                     "type": "logo"
-                },
-                {
-                    "type": "left_menu"
                 }
             ]
         }

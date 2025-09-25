@@ -1,9 +1,9 @@
-<section class="top-bar hidden lg:flex py-4">
+<section class="top-bar hidden lg:flex py-4 transition-all duration-500">
     <div class="flex justify-between items-center wrapper">
-        <ul class="contact-info flex gap-8">
+        <ul class="contact-info flex gap-8 text-sm">
             {% for block in section.blocks %}
-              <li class="flex gap-1">
-                <span class="icon bg-black w-6 flex text-white px-1 rounded-md">{{ block.settings.icon }}</span>
+              <li class="group flex gap-1 hover:text-bg-light-red">
+                <span class="icon bg-black w-6 flex text-white px-1 rounded-md group-hover:bg-bg-light-red">{{ block.settings.icon }}</span>
                 {% if block.settings.type == "phone" %}
                   <a href="tel:{{ block.settings.link }}">{{ block.settings.text }}</a>
                 {% elsif block.settings.type == "email" %}
@@ -22,8 +22,8 @@
               {% assign menu = linklists[section.settings.menu] %}
               {% if menu %}
                 {% for link in menu.links %}
-                  <li>
-                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  <li class="hover:border-bg-light-red">
+                    <a  class="text-sm hover:text-bg-light-red" href="{{ link.url }}">{{ link.title }}</a>
                   </li>
                   
                 {% endfor %}

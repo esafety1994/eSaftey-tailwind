@@ -1,11 +1,24 @@
-{% if section.settings.show_search %}
+{% comment %}
+  Header section with logo, search box, and left menu
+  {% if section.settings.show_search %}
     {% render 'searchbox' %}
 {% endif %}
+{% endcomment %}
 
+<section class="w-full flex space-y-4 flex-col">
 {% for block in section.blocks %}
+    <div class="flex items-center justify-between">
     {% if block.settings.logo %}
-        <a href="/"><img src="{{ block.settings.logo | image_url: width: 210 | image_tag }}"></a>
+        <div class="logo">
+            <a href="{{ shop.url }}">
+                <img src="{{ block.settings.logo | img_url: '200x' }}" alt="{{ shop.name }}" class="h-20 object-contain">
+            </a>
+        </div>
     {% endif %}
+        <div>{% render 'naviation-icons' %}</div>
+    </div>
+    <div class="flex items-center space-x-4">
+        {% render 'navigation' %}
+    </div>
 {% endfor %}   
-
-{% render 'header-left-menu' %}
+</section>
