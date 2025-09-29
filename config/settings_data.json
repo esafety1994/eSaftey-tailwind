@@ -73,10 +73,19 @@
             "settings": {
               "logo": "shopify://shop_images/logo.webp"
             }
+          },
+          "mega_menu_item_MXFMei": {
+            "type": "mega_menu_item",
+            "settings": {
+              "menu_item": "https://esafetysuppliesdev.myshopify.com/collections/traffic-road-safety-sign",
+              "menu_item_image": "shopify://shop_images/CUSTOM_SIGN_COLOR_MATCHED.jpg",
+              "menu_item_link": ""
+            }
           }
         },
         "block_order": [
-          "logo_Gb3MXE"
+          "logo_Gb3MXE",
+          "mega_menu_item_MXFMei"
         ],
         "settings": {
           "show_search": true,
