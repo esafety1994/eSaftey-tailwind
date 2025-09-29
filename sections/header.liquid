@@ -6,7 +6,7 @@
 
 {% schema %}
 {
-  "name": "header",
+  "name": "Header",
   "settings": [
     {
       "type": "checkbox",
@@ -19,16 +19,6 @@
       "id": "menu",
       "label": "Select Menu",
       "default": "main-menu"
-    },
-    {
-      "type": "image_picker",
-      "id": "mega_menu_image",
-      "label": "Mega Menu Image"
-    },
-    {
-      "type": "url",
-      "id": "mega_menu_link",
-      "label": "Mega Menu Image Link"
     }
   ],
   "blocks": [
@@ -40,6 +30,27 @@
           "type": "image_picker",
           "id": "logo",
           "label": "Logo"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_item",
+      "name": "Mega Menu Item Image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "Menu Item Title (must match parent menu link)"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_item_image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "menu_item_link",
+          "label": "Image Link"
         }
       ]
     }
