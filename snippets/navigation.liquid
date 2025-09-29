@@ -1,6 +1,6 @@
-<nav class="flex items-center space-x-6 justify-center m-auto relative">
+<nav class="flex items-center justify-center w-full space-x-6 relative">
   {% for link in linklists[section.settings.menu].links %}
-    <div class="group relative">
+    <div class="group">
       <!-- Top-level link -->
       <a href="{{ link.url }}" class="text-xs font-semibold text-white hover:text-primary transition">
         {{ link.title }}
@@ -8,19 +8,19 @@
 
       {% if link.links != blank %}
         <!-- Mega menu panel -->
-        <div class="absolute left-0 top-full hidden group-hover:block bg-white shadow-lg w-[600px] p-6 rounded-lg z-50">
-          <div class="grid grid-cols-3 gap-6">
+        <div class="absolute hidden group-hover:block left-0 top-4 bg-white shadow-lg container p-6 z-50 transition-all">
+          <div class="flex justify-between">
             {% for child in link.links %}
-              <div>
-                <a href="{{ child.url }}" class="block text-sm font-semibold text-gray-800 hover:text-primary">
+              <div class="w-full">
+                <a href="{{ child.url }}" class="block text-sm font-semibold text-gray-600 hover:text-bg-light-red border-b pb-1 mx-4">
                   {{ child.title }}
                 </a>
 
                 {% if child.links != blank %}
-                  <ul class="mt-2 space-y-1">
+                  <ul class="mt-2 space-y-3 mx-4">
                     {% for grandchild in child.links %}
                       <li>
-                        <a href="{{ grandchild.url }}" class="block text-xs text-gray-600 hover:text-primary">
+                        <a href="{{ grandchild.url }}" class="block text-xs text-gray-600 hover:text-bg-light-red">
                           {{ grandchild.title }}
                         </a>
                       </li>
