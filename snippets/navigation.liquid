@@ -1,4 +1,6 @@
 <nav class="flex items-center justify-center w-full space-x-6 relative">
+  {% assign mega_blocks = section.blocks | where: "type", "mega_menu_item" %}
+
   {% for link in linklists[section.settings.menu].links %}
     <div class="group relative">
       <!-- Top-level link -->
@@ -12,10 +14,12 @@
           <div class="container mx-auto flex justify-between space-x-6">
             {% for child in link.links %}
               <div class="flex-1">
+                <!-- Child link -->
                 <a href="{{ child.url }}" class="block text-sm font-semibold text-gray-600 hover:text-bg-light-red border-b pb-1 mb-2">
                   {{ child.title }}
                 </a>
 
+                <!-- Grandchild links -->
                 {% if child.links != blank %}
                   <ul class="mt-2 space-y-2">
                     {% for grandchild in child.links %}
@@ -29,12 +33,14 @@
                 {% endif %}
 
                 <!-- Mega menu image -->
-                {% assign mega_block = section.blocks | where: "type", "mega_menu_item" | where: "settings.menu_item", child.title | first %}
-                {% if mega_block and mega_block.settings.menu_item_image %}
-                  <a href="{{ mega_block.settings.menu_item_link }}" class="mt-2 block">
-                    <img src="{{ mega_block.settings.menu_item_image | img_url: '300x' }}" alt="{{ child.title }}" class="w-full object-contain">
-                  </a>
-                {% endif %}
+                {% for block in mega_blocks %}
+                  {% if block.settings.menu_item == child.title and block.settings.menu_item_image %}
+                    <a href="{{ block.settings.menu_item_link }}" class="mt-2 block">
+                      <img src="{{ block.settings.menu_item_image | img_url: '300x' }}" alt="{{ child.title }}" class="w-full object-contain">
+                    </a>
+                  {% endif %}
+                {% endfor %}
+
               </div>
             {% endfor %}
           </div>
