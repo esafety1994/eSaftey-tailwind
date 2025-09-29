@@ -1,7 +1,37 @@
-<nav class="flex items-center space-x-6 justify-center m-auto">
-    {% for link in linklists[section.settings.menu].links %}
+<nav class="flex items-center space-x-6 justify-center m-auto relative">
+  {% for link in linklists[section.settings.menu].links %}
+    <div class="group relative">
+      <!-- Top-level link -->
       <a href="{{ link.url }}" class="text-xs font-semibold text-white hover:text-primary transition">
         {{ link.title }}
       </a>
-    {% endfor %}
-  </nav>
+
+      {% if link.links != blank %}
+        <!-- Mega menu panel -->
+        <div class="absolute left-0 top-full hidden group-hover:block bg-white shadow-lg w-[600px] p-6 rounded-lg z-50">
+          <div class="grid grid-cols-3 gap-6">
+            {% for child in link.links %}
+              <div>
+                <a href="{{ child.url }}" class="block text-sm font-semibold text-gray-800 hover:text-primary">
+                  {{ child.title }}
+                </a>
+
+                {% if child.links != blank %}
+                  <ul class="mt-2 space-y-1">
+                    {% for grandchild in child.links %}
+                      <li>
+                        <a href="{{ grandchild.url }}" class="block text-xs text-gray-600 hover:text-primary">
+                          {{ grandchild.title }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</nav>
