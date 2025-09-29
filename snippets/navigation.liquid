@@ -1,6 +1,6 @@
 <nav class="flex items-center justify-center w-full space-x-6 relative">
   {% for link in linklists[section.settings.menu].links %}
-    <div class="group">
+    <div class="group relative">
       <!-- Top-level link -->
       <a href="{{ link.url }}" class="text-xs font-semibold text-white hover:text-primary transition">
         {{ link.title }}
@@ -26,6 +26,16 @@
                       </li>
                     {% endfor %}
                   </ul>
+                {% endif %}
+
+                <!-- Mega menu image if exists -->
+                {% assign mega_image = section.blocks | where: "type", "mega_menu_item" | where: "settings.menu_item", child.title | first %}
+                {% if mega_image and mega_image.settings.menu_item_image %}
+                  <div class="mt-2">
+                    <a href="{{ mega_image.settings.menu_item_link }}">
+                      <img src="{{ mega_image.settings.menu_item_image | img_url: '300x' }}" alt="{{ child.title }}" class="object-contain w-full">
+                    </a>
+                  </div>
                 {% endif %}
               </div>
             {% endfor %}
