@@ -1,48 +1,58 @@
 <header class="bg-black p-2">
-    <div class="wrapper container flex items-center justify-between m-auto">
-        {% render 'header' %}
-    </div>
+  <div class="wrapper container flex items-center justify-between m-auto">
+    {% render 'header' %}
+  </div>
 </header>
 
 {% schema %}
 {
-    "name": "header",
-    "settings": [
+  "name": "header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Box",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Select Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "mega_menu_image",
+      "label": "Mega Menu Image"
+    },
+    {
+      "type": "url",
+      "id": "mega_menu_link",
+      "label": "Mega Menu Image Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
         {
-            "type": "checkbox",
-            "id": "show_search",
-            "label": "Show Search Box",
-            "default": true
-        },
-        {
-            "type": "link_list",
-            "id": "menu",
-            "label": "Select Menu",
-            "default": "main-menu"
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "blocks": [
         {
-            "type": "logo",
-            "name": "Logo",
-            "settings": [
-                {
-                    "type": "image_picker",
-                    "id": "logo",
-                    "label": "Logo"
-                }
-            ]
-        },
-    ],
-    "presets": [
-        {
-            "name": "Header",
-            "blocks": [
-                {
-                    "type": "logo"
-                }
-            ]
+          "type": "logo"
         }
-    ]
+      ]
+    }
+  ]
 }
 {% endschema %}
