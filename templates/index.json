@@ -12,26 +12,6 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
-        "slider_item_6KxDhL": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/Web-Banner_7ee32ce3-b58b-4c67-b77d-3d10e7c31b9e.jpg",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": ""
-          }
-        },
-        "slider_item_f88ryr": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/Giveaway-Web-Banner-Icy-Poles_1606f34c-4a65-43e5-9891-ebe066623b0b.jpg",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": ""
-          }
-        },
         "slider_item_TAKEQ8": {
           "type": "slider_item",
           "settings": {
@@ -64,8 +44,6 @@
         }
       },
       "block_order": [
-        "slider_item_6KxDhL",
-        "slider_item_f88ryr",
         "slider_item_TAKEQ8",
         "slider_item_UjBni3",
         "slider_item_jwUMtr"
