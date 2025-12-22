@@ -101,10 +101,42 @@
         "button_text_4": "Bollards",
         "collection_4": "bollards"
       }
+    },
+    "product_list_D7UkQp": {
+      "type": "product-list",
+      "name": "Product grid",
+      "settings": {
+        "heading": "Featured products",
+        "heading_alignment": "center",
+        "product_1": "driveway-guru-kerb-edge-ramp-angle-piece",
+        "product_2": "1-drum-round-spill-tray-610-x-610-x-230-mm-50-l",
+        "product_3": "2-shelf-warehouse-order-picker-trolley",
+        "product_4": "aluminium-folding-loading-ramp-pair-with-legs",
+        "product_5": "eco-premium-wall-mounted-cigarette-bin",
+        "product_6": "2-shelf-warehouse-order-picker-trolley",
+        "product_7": "3l-hydration-backpack-yellow",
+        "product_8": "1-tonne-load-skate",
+        "max_width": 1200,
+        "section_padding": 40,
+        "grid_gap": 20,
+        "columns_mobile": "2",
+        "card_background": "#ffffff",
+        "card_border_radius": 8,
+        "card_padding": 15,
+        "heading_size": 32,
+        "heading_spacing": 30,
+        "heading_color": "#000000",
+        "product_title_size": 16,
+        "product_title_color": "#000000",
+        "product_title_hover_color": "#666666",
+        "price_size": 14,
+        "price_color": "#000000"
+      }
     }
   },
   "order": [
     "carousel_kxG3tk",
-    "grid_collection_list_gNtHbb"
+    "grid_collection_list_gNtHbb",
+    "product_list_D7UkQp"
   ]
 }
