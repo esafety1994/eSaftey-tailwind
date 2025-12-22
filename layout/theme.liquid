@@ -28,6 +28,7 @@
     {% section 'header' %}
     <main id="main" role="main">
       {{ content_for_layout }}
+      {% section 'grid-collection-list' %}
     </main>
     <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
   </body>
