@@ -47,12 +47,25 @@
             "button_text": "Explore Now",
             "button_link": "shopify://collections/bike-storage-racks"
           }
+        },
+        "slider_item_wmYUEQ": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/Giveaway-Web-Banner-Icy-Poles_1606f34c-4a65-43e5-9891-ebe066623b0b.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "New Collection",
+            "description": "<p>Tell your campaign through images</p>",
+            "button_text": "Shop now",
+            "button_link": ""
+          }
         }
       },
       "block_order": [
         "slider_item_TAKEQ8",
         "slider_item_UjBni3",
-        "slider_item_jwUMtr"
+        "slider_item_jwUMtr",
+        "slider_item_wmYUEQ"
       ],
       "settings": {}
     },
