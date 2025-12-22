@@ -18,7 +18,7 @@
       .font-semibold { font-family: '{{ font_handle.family }} N6', sans-serif !important; font-weight: 600; }
       .font-bold { font-family: '{{ font_handle.family }} N7', sans-serif !important; font-weight: 700; }
     </style>
-
+    {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
     {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
     {{ 'global.css' | asset_url | stylesheet_tag }}
   </head>
@@ -29,5 +29,6 @@
     <main id="main" role="main">
       {{ content_for_layout }}
     </main>
+    <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
   </body>
 </html>
