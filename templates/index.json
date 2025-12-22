@@ -24,14 +24,25 @@
             "button_link": "shopify://collections/bike-storage-racks"
           }
         },
+        "slider_item_TVtUX9": {
+          "type": "slider_item",
+          "settings": {
+            "single_image": false,
+            "content_position": "left",
+            "title": "New Collection",
+            "description": "<p>New Arrival Collection</p>",
+            "button_text": "Shop now",
+            "button_link": ""
+          }
+        },
         "slider_item_TAKEQ8": {
           "type": "slider_item",
           "settings": {
             "background": "shopify://shop_images/banner1.webp",
             "single_image": false,
             "content_position": "left",
-            "title": "New Arrival Collection",
-            "description": "<p>SUMMER 2025</p>",
+            "title": "SUMMER 2025",
+            "description": "",
             "button_text": "Explore Now",
             "button_link": "shopify://collections/bike-storage-racks"
           }
@@ -42,8 +53,8 @@
             "background": "shopify://shop_images/banner2.webp",
             "single_image": false,
             "content_position": "left",
-            "title": "New Arrival Collection",
-            "description": "<p>SUMMER 2025</p>",
+            "title": "SUMMER 2025",
+            "description": "<p>New Arrival Collection</p>",
             "button_text": "Explore Now",
             "button_link": "shopify://collections/bike-storage-racks"
           }
@@ -63,6 +74,7 @@
       },
       "block_order": [
         "slider_item_UjBni3",
+        "slider_item_TVtUX9",
         "slider_item_TAKEQ8",
         "slider_item_jwUMtr",
         "slider_item_wmYUEQ"
