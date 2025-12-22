@@ -80,95 +80,9 @@
         "slider_item_wmYUEQ"
       ],
       "settings": {}
-    },
-    "item_slider_section_gDqw4M": {
-      "type": "item-slider-section",
-      "blocks": {
-        "item_ePJQXy": {
-          "type": "item",
-          "settings": {
-            "title": "BOLLARD",
-            "link": ""
-          }
-        },
-        "item_YY7cXz": {
-          "type": "item",
-          "settings": {
-            "title": "RAMP",
-            "link": ""
-          }
-        },
-        "item_cyEmUy": {
-          "type": "item",
-          "settings": {
-            "title": "WHEEL STOP",
-            "link": ""
-          }
-        },
-        "item_xzg6DK": {
-          "type": "item",
-          "settings": {
-            "image": "shopify://shop_images/solar_lights.webp",
-            "title": "SOLAR LIGHTING",
-            "link": ""
-          }
-        },
-        "item_wQgpxF": {
-          "type": "item",
-          "settings": {
-            "title": "SIGNAGE",
-            "link": ""
-          }
-        },
-        "item_GfMEPh": {
-          "type": "item",
-          "settings": {
-            "title": "HEIGHT BARS",
-            "link": ""
-          }
-        },
-        "item_zchrj6": {
-          "type": "item",
-          "settings": {
-            "title": "HANDRAIL KITS",
-            "link": ""
-          }
-        },
-        "item_P9JLqH": {
-          "type": "item",
-          "settings": {
-            "title": "TACTILES",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "item_ePJQXy",
-        "item_YY7cXz",
-        "item_cyEmUy",
-        "item_xzg6DK",
-        "item_wQgpxF",
-        "item_GfMEPh",
-        "item_zchrj6",
-        "item_P9JLqH"
-      ],
-      "name": "Item Slider",
-      "settings": {
-        "title": "",
-        "subtitle": "",
-        "slides_desktop": 5,
-        "slides_tablet": 3,
-        "slides_mobile": "2",
-        "card_spacing": 16,
-        "autoplay": false,
-        "autoplay_speed": 2000,
-        "show_navigation": true,
-        "show_dots": true
-      }
     }
   },
   "order": [
-    "carousel_kxG3tk",
-    "item_slider_section_gDqw4M"
+    "carousel_kxG3tk"
   ]
 }
