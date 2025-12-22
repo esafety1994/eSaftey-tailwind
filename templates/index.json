@@ -107,7 +107,7 @@
       "name": "Product grid",
       "settings": {
         "heading": "Featured products",
-        "heading_alignment": "center",
+        "heading_alignment": "left",
         "product_1": "driveway-guru-kerb-edge-ramp-angle-piece",
         "product_2": "1-drum-round-spill-tray-610-x-610-x-230-mm-50-l",
         "product_3": "2-shelf-warehouse-order-picker-trolley",
