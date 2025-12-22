@@ -16,6 +16,8 @@
           "type": "slider_item",
           "settings": {
             "background": "shopify://shop_images/banner1.webp",
+            "single_image": false,
+            "content_position": "left",
             "title": "New Arrival Collection",
             "description": "<p>SUMMER 2025</p>",
             "button_text": "Explore Now",
@@ -26,6 +28,8 @@
           "type": "slider_item",
           "settings": {
             "background": "shopify://shop_images/banner3.webp",
+            "single_image": false,
+            "content_position": "right",
             "title": "New Arrival Collection",
             "description": "<p>SUMMER 2025</p>",
             "button_text": "Explore Now",
@@ -36,6 +40,8 @@
           "type": "slider_item",
           "settings": {
             "background": "shopify://shop_images/banner2.webp",
+            "single_image": false,
+            "content_position": "left",
             "title": "New Arrival Collection",
             "description": "<p>SUMMER 2025</p>",
             "button_text": "Explore Now",
