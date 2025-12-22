@@ -14,7 +14,7 @@
           {% when 'slider_item' %}
             <li class="glide__slide relative w-full">
               <div
-                class="h-[55vh] w-full bg-cover bg-center"
+                class="h-[10vh] lg:h-[55vh] w-full bg-cover bg-center"
                 style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');"
               >
                 {% if block.settings.single_image %}
@@ -23,15 +23,15 @@
                     <div class="container m-auto">
                       <div class="max-w-lg {% if block.settings.content_position == 'right' %} ml-auto {% endif %}">
                         {% if block.settings.title != blank %}
-                          <h2>{{ block.settings.title }}</h2>
+                          <h3 class="text-2xl mb-4">{{ block.settings.title }}</h3>
                         {% endif %}
 
                         {% if block.settings.description != blank %}
-                          {{ block.settings.description }}
+                          <h2 class="text-xl mb-6 font-semibold">{{ block.settings.description }}</h2>
                         {% endif %}
 
                         {% if block.settings.button_text != blank and block.settings.button_link != blank %}
-                          <a href="{{ block.settings.button_link }}" class="btn">
+                          <a href="{{ block.settings.button_link }}" class="btn primary-button">
                             {{ block.settings.button_text }}
                           </a>
                         {% endif %}
