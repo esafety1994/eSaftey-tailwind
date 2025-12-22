@@ -1,3 +1,126 @@
+<div class="container mx-auto px-4 py-8">
+  {% assign first = section.settings.first_column_width | default: 50 %}
+  {% assign gap = section.settings.gap | default: 16 %}
+  {% assign border = section.settings.border_radius | default: 8 %}
+  {% assign rem = 100 | minus: first %}
+  {% assign other = rem | divided_by: 2 %}
+
+  <div class="flex flex-col md:flex-row items-stretch" style="gap: {{ gap }}px;">
+    <!-- First column -->
+    <div class="w-full md:flex-shrink-0" style="flex: 0 0 {{ first }}%;">
+      {% if section.settings.image_1 %}
+        {% if section.settings.collection_1 %}
+          <a href="{{ section.settings.collection_1.url }}" class="block w-full h-full overflow-hidden relative">
+        {% else %}
+          <div class="block w-full h-full overflow-hidden relative">
+        {% endif %}
+            <img
+              src="{{ section.settings.image_1 | image_url: width: 1200 }}"
+              alt="{{ section.settings.image_1.alt | escape }}"
+              loading="lazy"
+              class="w-full h-full object-cover rounded-[{{ border }}px]"
+            >
+            {% if section.settings.button_text_1 != blank %}
+              <span class="absolute left-4 bottom-4">
+                <span class="inline-block bg-white/90 text-gray-900 text-sm font-medium px-3 py-2 rounded shadow hover:opacity-95 transition">
+                  {{ section.settings.button_text_1 }}
+                </span>
+              </span>
+            {% endif %}
+        {% if section.settings.collection_1 %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <!-- Second column (stacked top & bottom) -->
+    <div class="w-full md:flex-shrink-0 flex flex-col justify-between" style="flex: 0 0 {{ other }}%; gap: {{ gap }}px;">
+      {% if section.settings.image_2 %}
+        {% if section.settings.collection_2 %}
+          <a href="{{ section.settings.collection_2.url }}" class="block overflow-hidden relative">
+        {% else %}
+          <div class="block overflow-hidden relative">
+        {% endif %}
+            <img
+              src="{{ section.settings.image_2 | image_url: width: 1200 }}"
+              alt="{{ section.settings.image_2.alt | escape }}"
+              loading="lazy"
+              class="w-full object-cover rounded-[{{ border }}px] h-64 md:h-auto"
+            >
+            {% if section.settings.button_text_2 != blank %}
+              <span class="absolute left-4 bottom-4">
+                <span class="inline-block bg-white/90 text-gray-900 text-sm font-medium px-3 py-2 rounded shadow hover:opacity-95 transition">
+                  {{ section.settings.button_text_2 }}
+                </span>
+              </span>
+            {% endif %}
+        {% if section.settings.collection_2 %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endif %}
+
+      {% if section.settings.image_3 %}
+        {% if section.settings.collection_3 %}
+          <a href="{{ section.settings.collection_3.url }}" class="block overflow-hidden relative">
+        {% else %}
+          <div class="block overflow-hidden relative">
+        {% endif %}
+            <img
+              src="{{ section.settings.image_3 | image_url: width: 1200 }}"
+              alt="{{ section.settings.image_3.alt | escape }}"
+              loading="lazy"
+              class="w-full object-cover rounded-[{{ border }}px] h-64 md:h-auto"
+            >
+            {% if section.settings.button_text_3 != blank %}
+              <span class="absolute left-4 bottom-4">
+                <span class="inline-block bg-white/90 text-gray-900 text-sm font-medium px-3 py-2 rounded shadow hover:opacity-95 transition">
+                  {{ section.settings.button_text_3 }}
+                </span>
+              </span>
+            {% endif %}
+        {% if section.settings.collection_3 %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <!-- Third column -->
+    <div class="w-full md:flex-shrink-0" style="flex: 0 0 {{ other }}%;">
+      {% if section.settings.image_4 %}
+        {% if section.settings.collection_4 %}
+          <a href="{{ section.settings.collection_4.url }}" class="block w-full h-full overflow-hidden relative">
+        {% else %}
+          <div class="block w-full h-full overflow-hidden relative">
+        {% endif %}
+            <img
+              src="{{ section.settings.image_4 | image_url: width: 1200 }}"
+              alt="{{ section.settings.image_4.alt | escape }}"
+              loading="lazy"
+              class="w-full h-full object-cover rounded-[{{ border }}px]"
+            >
+            {% if section.settings.button_text_4 != blank %}
+              <span class="absolute left-4 bottom-4">
+                <span class="inline-block bg-white/90 text-gray-900 text-sm font-medium px-3 py-2 rounded shadow hover:opacity-95 transition">
+                  {{ section.settings.button_text_4 }}
+                </span>
+              </span>
+            {% endif %}
+        {% if section.settings.collection_4 %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 {% schema %}
 {
   "name": "Grid Collection List",
@@ -46,6 +169,12 @@
       "label": "Image"
     },
     {
+      "type": "text",
+      "id": "button_text_1",
+      "label": "Button text (first column)",
+      "default": ""
+    },
+    {
       "type": "collection",
       "id": "collection_1",
       "label": "Collection"
@@ -58,6 +187,12 @@
       "type": "image_picker",
       "id": "image_2",
       "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "button_text_2",
+      "label": "Button text (second column top)",
+      "default": ""
     },
     {
       "type": "collection",
@@ -74,6 +209,12 @@
       "label": "Image"
     },
     {
+      "type": "text",
+      "id": "button_text_3",
+      "label": "Button text (second column bottom)",
+      "default": ""
+    },
+    {
       "type": "collection",
       "id": "collection_3",
       "label": "Collection"
@@ -86,6 +227,12 @@
       "type": "image_picker",
       "id": "image_4",
       "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "button_text_4",
+      "label": "Button text (third column)",
+      "default": ""
     },
     {
       "type": "collection",
