@@ -1,22 +1,25 @@
+
 {% capture mobile_cols_class %}sm:grid-cols-{{ block.settings.columns_mobile }}{% endcapture %}
 
-<div class="w-full" {{ block.shopify_attributes }}>
+{% capture mobile_cols_class %}sm:grid-cols-{{ section.settings.columns_mobile }}{% endcapture %}
+
+<div class="w-full" {{ section.shopify_attributes }}>
   <div
     class="mx-auto px-5 w-full"
-    style="max-width: {{ block.settings.max_width }}px; padding-top: {{ block.settings.section_padding }}px; padding-bottom: {{ block.settings.section_padding }}px;"
+    style="max-width: {{ section.settings.max_width }}px; padding-top: {{ section.settings.section_padding }}px; padding-bottom: {{ section.settings.section_padding }}px;"
   >
-    <div class="grid gap-{{ block.settings.grid_gap }} {{ mobile_cols_class }} md:grid-cols-2 lg:grid-cols-4">
+    <div class="grid {{ mobile_cols_class }} md:grid-cols-2 lg:grid-cols-4" style="gap: {{ section.settings.grid_gap }}px;">
       {% assign has_products = false %}
       {% for i in (1..8) %}
         {% assign product_key = 'product_' | append: i %}
-        {% assign product = block.settings[product_key] %}
+        {% assign product = section.settings[product_key] %}
 
         {% if product != blank %}
           {% assign has_products = true %}
           <section class="bg-transparent">
             <article
-              class="flex flex-col bg-{{ block.settings.card_background }} rounded-lg overflow-hidden transition-transform transform hover:-translate-y-1 hover:shadow-lg"
-              style="background-color: {{ block.settings.card_background }};"
+              class="flex flex-col overflow-hidden transition-transform transform hover:-translate-y-1 hover:shadow-lg"
+              style="background-color: {{ section.settings.card_background }}; border-radius: {{ section.settings.card_border_radius }}px;"
             >
               <a href="{{ product.url }}" class="block relative w-full" style="padding-bottom:100%;">
                 {% if product.featured_image %}
@@ -35,18 +38,18 @@
                 {% endif %}
               </a>
 
-              <div class="flex flex-col gap-2 flex-grow" style="padding: {{ block.settings.card_padding }}px;">
+              <div class="flex flex-col gap-2 flex-grow" style="padding: {{ section.settings.card_padding }}px;">
                 <a
                   href="{{ product.url }}"
                   class="no-underline"
-                  style="font-size: {{ block.settings.product_title_size }}px; color: {{ block.settings.product_title_color }}; font-weight:500;"
+                  style="font-size: {{ section.settings.product_title_size }}px; color: {{ section.settings.product_title_color }}; font-weight:500;"
                 >
                   {{ product.title }}
                 </a>
 
                 <div
                   class="flex items-center"
-                  style="font-size: {{ block.settings.price_size }}px; color: {{ block.settings.price_color }};"
+                  style="font-size: {{ section.settings.price_size }}px; color: {{ section.settings.price_color }};"
                 >
                   {% if product.compare_at_price > product.price %}
                     <span class="text-gray-500 line-through mr-2">
@@ -67,6 +70,7 @@
     </div>
   </div>
 </div>
+// ...existing code...
 
 {% schema %}
 {
