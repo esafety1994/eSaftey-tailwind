@@ -1,6 +1,285 @@
+{% doc %}
+  @prompt
+    generate resuable bento grid layout with first column 1 big image 2nd column with 2 small image in row and last column with 1 image the first column needs to be 50% and the rest two needs to be 50%
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-bento-grid-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  .ai-bento-grid-container-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.gap }}px;
+    width: 100%;
+  }
+
+  .ai-bento-grid-column-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.gap }}px;
+  }
+
+  .ai-bento-grid-column-{{ ai_gen_id }}--first {
+    flex: 0 0 {{ block.settings.first_column_width }}%;
+  }
+
+  .ai-bento-grid-column-{{ ai_gen_id }}--second {
+    flex: 0 0 calc((100% - {{ block.settings.first_column_width }}%) / 2);
+  }
+
+  .ai-bento-grid-column-{{ ai_gen_id }}--third {
+    flex: 0 0 calc((100% - {{ block.settings.first_column_width }}%) / 2);
+  }
+
+  .ai-bento-grid-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-bento-grid-image-wrapper-{{ ai_gen_id }}--large {
+    height: 100%;
+  }
+
+  .ai-bento-grid-image-wrapper-{{ ai_gen_id }}--small {
+    flex: 1;
+  }
+
+  .ai-bento-grid-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-bento-grid-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-bento-grid-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .ai-bento-grid-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-bento-grid-container-{{ ai_gen_id }} {
+      flex-direction: column;
+    }
+
+    .ai-bento-grid-column-{{ ai_gen_id }}--first,
+    .ai-bento-grid-column-{{ ai_gen_id }}--second,
+    .ai-bento-grid-column-{{ ai_gen_id }}--third {
+      flex: 0 0 100%;
+    }
+
+    .ai-bento-grid-image-wrapper-{{ ai_gen_id }}--large {
+      height: 400px;
+    }
+
+    .ai-bento-grid-image-wrapper-{{ ai_gen_id }}--small {
+      height: 200px;
+    }
+  }
+{% endstyle %}
+
+<bento-grid-{{ ai_gen_id }} class="ai-bento-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-bento-grid-container-{{ ai_gen_id }}">
+    <div class="ai-bento-grid-column-{{ ai_gen_id }} ai-bento-grid-column-{{ ai_gen_id }}--first">
+      <div class="ai-bento-grid-image-wrapper-{{ ai_gen_id }} ai-bento-grid-image-wrapper-{{ ai_gen_id }}--large">
+        {% if block.settings.image_1 %}
+          <img
+            src="{{ block.settings.image_1 | image_url: width: 1200 }}"
+            alt="{{ block.settings.image_1.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_1.width }}"
+            height="{{ block.settings.image_1.height }}"
+            class="ai-bento-grid-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-bento-grid-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+            <div class="ai-bento-grid-empty-state-{{ ai_gen_id }}">
+              Add large image
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-bento-grid-column-{{ ai_gen_id }} ai-bento-grid-column-{{ ai_gen_id }}--second">
+      <div class="ai-bento-grid-image-wrapper-{{ ai_gen_id }} ai-bento-grid-image-wrapper-{{ ai_gen_id }}--small">
+        {% if block.settings.image_2 %}
+          <img
+            src="{{ block.settings.image_2 | image_url: width: 800 }}"
+            alt="{{ block.settings.image_2.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_2.width }}"
+            height="{{ block.settings.image_2.height }}"
+            class="ai-bento-grid-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-bento-grid-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+            <div class="ai-bento-grid-empty-state-{{ ai_gen_id }}">
+              Add small image
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ai-bento-grid-image-wrapper-{{ ai_gen_id }} ai-bento-grid-image-wrapper-{{ ai_gen_id }}--small">
+        {% if block.settings.image_3 %}
+          <img
+            src="{{ block.settings.image_3 | image_url: width: 800 }}"
+            alt="{{ block.settings.image_3.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_3.width }}"
+            height="{{ block.settings.image_3.height }}"
+            class="ai-bento-grid-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-bento-grid-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+            <div class="ai-bento-grid-empty-state-{{ ai_gen_id }}">
+              Add small image
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-bento-grid-column-{{ ai_gen_id }} ai-bento-grid-column-{{ ai_gen_id }}--third">
+      <div class="ai-bento-grid-image-wrapper-{{ ai_gen_id }} ai-bento-grid-image-wrapper-{{ ai_gen_id }}--large">
+        {% if block.settings.image_4 %}
+          <img
+            src="{{ block.settings.image_4 | image_url: width: 1200 }}"
+            alt="{{ block.settings.image_4.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_4.width }}"
+            height="{{ block.settings.image_4.height }}"
+            class="ai-bento-grid-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-bento-grid-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+            <div class="ai-bento-grid-empty-state-{{ ai_gen_id }}">
+              Add medium image
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</bento-grid-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class BentoGrid{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.style.display = 'block';
+      }
+    }
+
+    customElements.define('bento-grid-{{ ai_gen_id }}', BentoGrid{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Bento grid layout",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "first_column_width",
+      "label": "First column width",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between images",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Large image (left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Small image (top middle)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Small image (bottom middle)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Medium image (right)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bento grid layout"
+    }
+  ]
+}
 {% endschema %}
