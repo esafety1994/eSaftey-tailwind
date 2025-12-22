@@ -1,0 +1,314 @@
+{% capture heading_align_class %}text-{{ block.settings.heading_alignment }}{% endcapture %}
+{% capture mobile_cols_class %}sm:grid-cols-{{ block.settings.columns_mobile }}{% endcapture %}
+
+<div class="w-full" {{ block.shopify_attributes }}>
+  <div
+    class="mx-auto px-5 w-full"
+    style="max-width: {{ block.settings.max_width }}px; padding-top: {{ block.settings.section_padding }}px; padding-bottom: {{ block.settings.section_padding }}px;"
+  >
+    {% if block.settings.heading != blank %}
+      <h2
+        class="{{ heading_align_class }} font-semibold"
+        style="font-size: {{ block.settings.heading_size }}px; margin-bottom: {{ block.settings.heading_spacing }}px; color: {{ block.settings.heading_color }};"
+      >
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <div class="grid gap-{{ block.settings.grid_gap }} {{ mobile_cols_class }} md:grid-cols-2 lg:grid-cols-4">
+      {% assign has_products = false %}
+      {% for i in (1..8) %}
+        {% assign product_key = 'product_' | append: i %}
+        {% assign product = block.settings[product_key] %}
+
+        {% if product != blank %}
+          {% assign has_products = true %}
+          <section class="bg-transparent">
+            <article
+              class="flex flex-col bg-{{ block.settings.card_background }} rounded-lg overflow-hidden transition-transform transform hover:-translate-y-1 hover:shadow-lg"
+              style="background-color: {{ block.settings.card_background }};"
+            >
+              <a href="{{ product.url }}" class="block relative w-full" style="padding-bottom:100%;">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                    width="600"
+                    height="600"
+                  >
+                {% else %}
+                  <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  </div>
+                {% endif %}
+              </a>
+
+              <div class="flex flex-col gap-2 flex-grow" style="padding: {{ block.settings.card_padding }}px;">
+                <a
+                  href="{{ product.url }}"
+                  class="no-underline"
+                  style="font-size: {{ block.settings.product_title_size }}px; color: {{ block.settings.product_title_color }}; font-weight:500;"
+                >
+                  {{ product.title }}
+                </a>
+
+                <div
+                  class="flex items-center"
+                  style="font-size: {{ block.settings.price_size }}px; color: {{ block.settings.price_color }};"
+                >
+                  {% if product.compare_at_price > product.price %}
+                    <span class="text-gray-500 line-through mr-2">
+                      {{ product.compare_at_price | money }}
+                    </span>
+                  {% endif %}
+                  <span class="font-semibold">{{ product.price | money }}</span>
+                </div>
+              </div>
+            </article>
+          </section>
+        {% endif %}
+      {% endfor %}
+
+      {% unless has_products %}
+        <div class="col-span-full text-center py-16 text-gray-600">Select up to 8 products to display in this grid</div>
+      {% endunless %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured products"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product 4"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Product 5"
+    },
+    {
+      "type": "product",
+      "id": "product_6",
+      "label": "Product 6"
+    },
+    {
+      "type": "product",
+      "id": "product_7",
+      "label": "Product 7"
+    },
+    {
+      "type": "product",
+      "id": "product_8",
+      "label": "Product 8"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Padding",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading spacing",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "label": "Product title size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "product_title_hover_color",
+      "label": "Product title hover color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "label": "Price size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product grid"
+    }
+  ]
+}
+{% endschema %}
