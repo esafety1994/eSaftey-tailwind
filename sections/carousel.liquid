@@ -14,10 +14,12 @@
           {% when 'slider_item' %}
             <li class="glide__slide relative w-full">
               <div
-                class="h-[10vh] lg:h-[55vh] w-full bg-cover bg-center"
+                class="h-[20vh] lg:h-[55vh] w-full bg-cover bg-center"
                 style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');"
               >
                 {% if block.settings.single_image %}
+                  <a href="{{ block.settings.button_link }}" class="w-full h-full block">
+                  </a>
                 {% else %}
                   <div class="w-full h-full flex carousel-content--{{ block.settings.content_position }}">
                     <div class="container m-auto">
