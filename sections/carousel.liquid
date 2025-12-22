@@ -14,23 +14,31 @@
                     {% when 'slider_item' %}
                     <li class="glide__slide relative w-full">
 
-                        <div class="h-[55vh]">
-                            <div class="absolute w-full h-full bg-cover bg-center" style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');">
-                                {% if block.settings.title != blank or block.settings.description != blank or block.settings.button_text != blank %}
-                                    <span class="absolute left-20 top-1/2 transform -translate-y-1/2 max-w-xl space-y-3 text-black p-20">
-                                        <span class="flex flex-col gap-8">
-                                            <h2>{{ block.settings.title }}</h2>
-                                           
-                                            {{ block.settings.description }}
-                                            {% if block.settings.button_text %}
-                                            <span class="mt-4 inline-block self-start w-auto primary-button">
-                                                {{ block.settings.button_text }}
-                                            </span>
-                                            {% endif %}
-                                        </span>
-                                    </span>
+                        
+                            <div class="h-[55vh] w-full bg-cover bg-center" style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');">
+                              {%  if block.settings.single_image %}
+
+                              {% else %}
+                               <div class="carousel-content carousel-content--{{ block.settings.content_position }}">
+    
+    {% if block.settings.title != blank %}
+      <h2>{{ block.settings.title }}</h2>
+    {% endif %}
+
+    {% if block.settings.description != blank %}
+      {{ block.settings.description }}
+    {% endif %}
+
+    {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+      <a href="{{ block.settings.button_link }}" class="btn">
+        {{ block.settings.button_text }}
+      </a>
+    {% endif %}
+
+  </div>
                                 {% endif %}
-                            </div>
+                                
+                            
                         </div>
                     </li>
                 {% endcase %}
