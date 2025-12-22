@@ -21,6 +21,7 @@
                 {% else %}
                   <div class="w-full h-full flex carousel-content--{{ block.settings.content_position }}">
                     <div class="container m-auto">
+                      <div>
                         {% if block.settings.title != blank %}
                           <h2>{{ block.settings.title }}</h2>
                         {% endif %}
@@ -34,6 +35,7 @@
                             {{ block.settings.button_text }}
                           </a>
                         {% endif %}
+                      </div>
                     </div>
                   </div>
                 {% endif %}
