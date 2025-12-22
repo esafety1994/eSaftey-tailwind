@@ -21,7 +21,7 @@
                 {% else %}
                   <div class="w-full h-full flex carousel-content--{{ block.settings.content_position }}">
                     <div class="container m-auto">
-                      <div>
+                      <div class="max-w-lg {% if block.settings.content_position == 'right' %} ml-auto {% endif %}">
                         {% if block.settings.title != blank %}
                           <h2>{{ block.settings.title }}</h2>
                         {% endif %}
