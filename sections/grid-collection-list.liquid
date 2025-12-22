@@ -1,332 +1,101 @@
 {% schema %}
 {
-  "name": "Collection slider",
+  "name": "Grid layout Collections",
   "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Shop Collections"
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Subtitle",
-      "default": "Discover our curated collections"
-    },
-    {
-      "type": "collection_list",
-      "id": "collections",
-      "label": "Collections",
-      "limit": 12
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button text",
-      "default": "Shop Collection"
-    },
     {
       "type": "header",
       "content": "Layout"
     },
     {
       "type": "range",
-      "id": "slides_desktop",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "label": "Slides per view (desktop)",
-      "default": 3
-    },
-    {
-      "type": "select",
-      "id": "slides_mobile",
-      "label": "Slides per view (mobile)",
-      "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
-      ],
-      "default": "1"
+      "id": "first_column_width",
+      "label": "First column width",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 50
     },
     {
       "type": "range",
-      "id": "card_spacing",
-      "min": 8,
+      "id": "gap",
+      "label": "Gap between images",
+      "min": 0,
       "max": 40,
       "step": 4,
       "unit": "px",
-      "label": "Card spacing",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "image_height",
-      "min": 200,
-      "max": 400,
-      "step": 20,
-      "unit": "px",
-      "label": "Image height",
-      "default": 280
-    },
-    {
-      "type": "select",
-      "id": "text_alignment",
-      "label": "Header text alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "card_text_alignment",
-      "label": "Card text alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "header",
-      "content": "Navigation"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_navigation",
-      "label": "Show navigation arrows",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_dots",
-      "label": "Show dots",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "autoplay",
-      "label": "Enable autoplay",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "autoplay_speed",
-      "min": 2,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "label": "Autoplay speed",
-      "default": 5
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Title color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "subtitle_color",
-      "label": "Subtitle color",
-      "default": "#666666"
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Card background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "collection_title_color",
-      "label": "Collection title color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "collection_description_color",
-      "label": "Collection description color",
-      "default": "#666666"
-    },
-    {
-      "type": "color",
-      "id": "button_color",
-      "label": "Button color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button text color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "button_hover_color",
-      "label": "Button hover color",
-      "default": "#333333"
-    },
-    {
-      "type": "color",
-      "id": "nav_button_color",
-      "label": "Navigation button color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "nav_button_text_color",
-      "label": "Navigation button text color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "nav_button_hover_color",
-      "label": "Navigation button hover color",
-      "default": "#f5f5f5"
-    },
-    {
-      "type": "color",
-      "id": "dot_color",
-      "label": "Dot color",
-      "default": "#cccccc"
-    },
-    {
-      "type": "color",
-      "id": "dot_active_color",
-      "label": "Active dot color",
-      "default": "#000000"
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "font_picker",
-      "id": "title_font",
-      "label": "Title font",
-      "default": "helvetica_n4"
-    },
-    {
-      "type": "range",
-      "id": "title_size",
-      "min": 20,
-      "max": 60,
-      "step": 2,
-      "unit": "px",
-      "label": "Title size",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "subtitle_size",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Subtitle size",
       "default": 16
     },
     {
       "type": "range",
-      "id": "collection_title_size",
-      "min": 16,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "label": "Collection title size",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "collection_description_size",
-      "min": 12,
-      "max": 18,
-      "step": 1,
-      "unit": "px",
-      "label": "Collection description size",
-      "default": 14
-    },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "section_padding",
-      "min": 20,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Section padding",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "card_border_radius",
+      "id": "border_radius",
+      "label": "Border radius",
       "min": 0,
-      "max": 20,
-      "step": 2,
+      "max": 40,
+      "step": 4,
       "unit": "px",
-      "label": "Card border radius",
       "default": 8
     },
     {
-      "type": "range",
-      "id": "button_border_radius",
-      "min": 0,
-      "max": 20,
-      "step": 2,
-      "unit": "px",
-      "label": "Button border radius",
-      "default": 4
+      "type": "header",
+      "content": "First column"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "collection",
+      "id": "collection_1",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Second column top"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image"
+    },
+    {
+      "type": "collection",
+      "id": "collection_2",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Second column bottom"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image"
+    },
+    {
+      "type": "collection",
+      "id": "collection_3",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Third column"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image"
+    },
+    {
+      "type": "collection",
+      "id": "collection_4",
+      "label": "Collection"
     }
   ],
   "presets": [
     {
-      "name": "Collection slider"
+      "name": "Bento grid layout"
     }
   ]
 }
