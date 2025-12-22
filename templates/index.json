@@ -80,9 +80,27 @@
         "slider_item_wmYUEQ"
       ],
       "settings": {}
+    },
+    "grid_collection_list_gNtHbb": {
+      "type": "grid-collection-list",
+      "name": "Grid Collection List",
+      "settings": {
+        "first_column_width": 50,
+        "gap": 16,
+        "border_radius": 0,
+        "image_1": "shopify://shop_images/Rectangle_12.png",
+        "collection_1": "rubber-wheel-stops",
+        "image_2": "shopify://shop_images/Rectangle_13.png",
+        "collection_2": "height-bar",
+        "image_3": "shopify://shop_images/Rectangle_14.png",
+        "collection_3": "abe-extinguishers",
+        "image_4": "shopify://shop_images/Rectangle_16.png",
+        "collection_4": "bollards"
+      }
     }
   },
   "order": [
-    "carousel_kxG3tk"
+    "carousel_kxG3tk",
+    "grid_collection_list_gNtHbb"
   ]
 }
