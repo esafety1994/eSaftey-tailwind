@@ -17,11 +17,19 @@
   - quick-add-btn.liquid for Quick Add functionality
 {% endcomment %}
 
+{% comment %}
+
+    TO Dos:
+    - ratings
+    - stock level indicator
+    - price formatting options
+    
+    {% endcomment %}
 {% liquid
   assign show_vendor = show_vendor | default: false
   assign show_compare_price = show_compare_price | default: true
   assign card_background = card_background | default: '#ffffff'
-  assign card_border_radius = card_border_radius | default: '8px'
+  assign card_border_radius = card_border_radius | default: '0'
   assign card_padding = card_padding | default: '15px'
   assign title_size = title_size | default: '16px'
   assign title_color = title_color | default: '#000000'
@@ -52,8 +60,8 @@
     </a>
 
     <!-- Hover Buttons Overlay -->
-    <div class="absolute inset-0 bg-black/40 opacity-100 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
-      <div class="flex gap-2">
+    <div class="absolute inset-0 bg-black/10 opacity-0 hover-buttons transition-opacity duration-1000 ease-in-out flex items-center justify-center z-20">
+      <div class="flex gap-2 flex-col gap-y-6">
         {% render 'quick-view-btn', product: product %}
         {% render 'quick-add-btn', product: product %}
       </div>
