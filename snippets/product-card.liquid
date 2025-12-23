@@ -17,6 +17,7 @@
   - quick-view-btn.liquid for Quick View functionality
   - quick-add-btn.liquid for Quick Add functionality
   - product-price.liquid for Price display with GST information
+  - product-tags.liquid for Filtered product tags with custom styling
 {% endcomment %}
 
 {% comment %}
@@ -77,7 +78,7 @@
       {% endif %}
     </div>
   </div>
-
+  {% render 'product-tags', product: product %}
   <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">
     <a
       href="{{ product.url }}"
@@ -94,7 +95,7 @@
       price_color: price_color
     %}
   </div>
-   <div class="flex justify-center my-2">        
+  <div class="flex justify-center my-2">        
         {% render 'quick-add-btn', product: product %}
     </div>
 </article>

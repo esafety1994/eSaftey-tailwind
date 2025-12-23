@@ -1,0 +1,198 @@
+{% comment %}
+  Blog List Section
+  Displays a list of blog articles with customizable settings
+{% endcomment %}
+
+{% assign blog = blogs[section.settings.blog] %}
+{% assign posts_limit = section.settings.posts_limit | default: 3 %}
+
+<div class="w-full" {{ section.shopify_attributes }}>
+  <div
+    class="mx-auto px-5 w-full"
+    style="max-width: {{ section.settings.max_width }}px; padding-top: {{ section.settings.section_padding }}px; padding-bottom: {{ section.settings.section_padding }}px;"
+  >
+    {% if section.settings.heading != blank %}
+      <h2 class="text-2xl font-bold text-center mb-2" style="color: {{ section.settings.heading_color }};">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+      <p class="text-lg text-center mb-6" style="color: {{ section.settings.subheading_color }};">
+        {{ section.settings.subheading }}
+      </p>
+    {% endif %}
+
+    {% if blog and blog.articles.size > 0 %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style="grid-auto-rows: 1fr;">
+        {% for article in blog.articles limit: posts_limit %}
+          <article class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
+            {% if article.image %}
+              <div class="aspect-w-16 aspect-h-9">
+                <img
+                  src="{{ article.image | image_url: width: 400 }}"
+                  alt="{{ article.image.alt | escape }}"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+
+            <div class="p-4 flex-grow">
+              <h3 class="text-lg font-semibold mb-2">
+                <a href="{{ article.url }}" class="hover:text-blue-600 transition-colors">
+                  {{ article.title }}
+                </a>
+              </h3>
+
+              {% if article.excerpt != blank %}
+                <p class="text-gray-600 text-sm mb-3 line-clamp-3">
+                  {{ article.excerpt | strip_html | truncate: 150 }}
+                </p>
+              {% endif %}
+
+              <div class="text-xs text-gray-500">
+                {{ article.published_at | date: "%B %d, %Y" }}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-gray-500 py-8">No blog posts found.</p>
+    {% endif %}
+
+    {% if section.settings.button_text != blank and section.settings.button_url != blank %}
+      <div class="text-center mt-8">
+        <a
+          href="{{ section.settings.button_url }}"
+          class="inline-block {{ section.settings.button_style }} hover:opacity-90 transition-opacity"
+        >
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog list",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Blog Settings"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Select the blog to display articles from"
+    },
+    {
+      "type": "range",
+      "id": "posts_limit",
+      "label": "Number of posts",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Latest Blog Posts"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View All Posts"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "bg-blue-500 text-white px-6 py-3 rounded-md font-medium",
+          "label": "Primary Blue"
+        },
+        {
+          "value": "bg-gray-800 text-white px-6 py-3 rounded-md font-medium",
+          "label": "Dark Gray"
+        },
+        {
+          "value": "bg-white text-gray-800 border border-gray-300 px-6 py-3 rounded-md font-medium hover:bg-gray-50",
+          "label": "Outline"
+        },
+        {
+          "value": "text-blue-500 font-medium hover:text-blue-600",
+          "label": "Link Style"
+        }
+      ],
+      "default": "bg-blue-500 text-white px-6 py-3 rounded-md font-medium"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog list"
+    }
+  ]
+}
+{% endschema %}
