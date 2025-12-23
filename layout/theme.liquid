@@ -1,22 +1,43 @@
 <html>
   <head>
+    <title>
+      {{- page_title -}}
+      {%- if current_tags -%}
+        {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+      {%- endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- if template == 'password' -%}
+        {{- shop.name -}}
+      {%- else -%}
+        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- endif -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
     {{ content_for_header }}
 
     {% comment %}
-      Load base font from Shopify and set as CSS variable for Tailwind
+      Load Poppins from Google Fonts and set as CSS variable for Tailwind
     {% endcomment %}
+
     {% assign font_handle = settings.type_base_font | default: 'poppins_n4' %}
+
+    <!-- Load Poppins from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
       :root {
-        /* Default font for body and Tailwind classes */
-        --default-font-family: '{{ font_handle.family | default: "Poppins" }}', sans-serif;
+        /* Force Poppins as the default font for the theme */
+        --default-font-family: 'Poppins', sans-serif;
       }
 
-      /* Map Tailwind font weight classes to Shopify font files */
-      .font-normal { font-family: '{{ font_handle.family }} N4', sans-serif !important; font-weight: 400; }
-      .font-semibold { font-family: '{{ font_handle.family }} N6', sans-serif !important; font-weight: 600; }
-      .font-bold { font-family: '{{ font_handle.family }} N7', sans-serif !important; font-weight: 700; }
+      /* Ensure common weight classes use Poppins */
+      .font-normal { font-family: 'Poppins', sans-serif !important; font-weight: 400; }
+      .font-semibold { font-family: 'Poppins', sans-serif !important; font-weight: 600; }
+      .font-bold { font-family: 'Poppins', sans-serif !important; font-weight: 700; }
     </style>
     {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
     {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}

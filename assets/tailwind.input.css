@@ -25,7 +25,7 @@ h2{
 }
 
 .btn{
-  @apply font-medium rounded-lg shadow-lg px-6 py-2 uppercase transition-all duration-300 ease-in-out cursor-pointer;
+  @apply font-medium rounded-lg shadow-lg px-8 py-3 uppercase transition-all duration-300 ease-in-out cursor-pointer;
 }
 .primary-button{
   @apply bg-black text-white hover:bg-black/80 hover:scale-105;
