@@ -1,20 +1,50 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-    "type": "header",
-    "name": "Header",
-    "sections":{
-        "announcement": {
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement": {
       "type": "announcement-bar",
-        },
-        "header": {
-            "type": "header",
-        },
-        "top-bar": {
-            "type": "top-navbar"
+      "blocks": {
+        "announcement_content_AdfwYt": {
+          "type": "announcement_content",
+          "settings": {
+            "content": "Free shipping over $499"
+          }
         }
+      },
+      "block_order": [
+        "announcement_content_AdfwYt"
+      ],
+      "settings": {
+        "show-announcement": true
+      }
     },
-    "order": [
-        "announcement",
-        "top-bar",
+    "top-bar": {
+      "type": "top-navbar",
+      "settings": {
+        "menu": "main-menu"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "show_search": true,
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "top-bar",
     "header"
-    ]
+  ]
 }
