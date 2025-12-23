@@ -63,6 +63,7 @@
       --font-mono--font-variation-settings
     );
     --color-primary: oklch(0.89 0.16 85.6);
+    --color-primary-light: #FFE61F;
     --color-bg-light: #fee9a7;
     --color-bg-light-red: #cf4949;
   }
@@ -304,6 +305,9 @@
   }
   .mx-auto {
     margin-inline: auto;
+  }
+  .my-2 {
+    margin-block: calc(var(--spacing) * 2);
   }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
@@ -578,18 +582,6 @@
   .bg-black {
     background-color: var(--color-black);
   }
-  .bg-black\/10 {
-    background-color: color-mix(in oklab, var(--color-black) 10%, transparent);
-  }
-  .bg-black\/20 {
-    background-color: color-mix(in oklab, var(--color-black) 20%, transparent);
-  }
-  .bg-black\/30 {
-    background-color: color-mix(in oklab, var(--color-black) 30%, transparent);
-  }
-  .bg-black\/40 {
-    background-color: color-mix(in oklab, var(--color-black) 40%, transparent);
-  }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
   }
@@ -631,6 +623,9 @@
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
+  }
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
   }
   .p-4 {
     padding: calc(var(--spacing) * 4);
@@ -786,10 +781,6 @@
     --tw-duration: 500ms;
     transition-duration: 500ms;
   }
-  .duration-1000 {
-    --tw-duration: 1000ms;
-    transition-duration: 1000ms;
-  }
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
@@ -801,12 +792,12 @@
       }
     }
   }
-  .group-hover\:scale-110 {
+  .group-hover\:scale-105 {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
-        --tw-scale-x: 110%;
-        --tw-scale-y: 110%;
-        --tw-scale-z: 110%;
+        --tw-scale-x: 105%;
+        --tw-scale-y: 105%;
+        --tw-scale-z: 105%;
         scale: var(--tw-scale-x) var(--tw-scale-y);
       }
     }
@@ -815,6 +806,20 @@
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         background-color: var(--color-bg-light-red);
+      }
+    }
+  }
+  .group-hover\:\!opacity-100 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        opacity: 100% !important;
+      }
+    }
+  }
+  .group-hover\:opacity-0 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        opacity: 0%;
       }
     }
   }
@@ -999,11 +1004,8 @@
   }
 }
 @layer utilities {
-  .group:hover .group-hover\:opacity-100 {
+  .group-hover\:opacity-100 {
     opacity: 1;
-  }
-  article:hover .hover-buttons {
-    opacity: 1 !important;
   }
 }
 h2 {
@@ -1077,6 +1079,30 @@ h2 {
   &:hover {
     @media (hover: hover) {
       color: var(--color-white);
+    }
+  }
+}
+.primary-cart-button {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+  border-radius: 0;
+  background-color: var(--color-black);
+  padding-inline: calc(var(--spacing) * 8);
+  padding-block: calc(var(--spacing) * 4);
+  color: var(--color-primary-light);
+  text-transform: none;
+  &:hover {
+    @media (hover: hover) {
+      --tw-scale-x: 105%;
+      --tw-scale-y: 105%;
+      --tw-scale-z: 105%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+  &:hover {
+    @media (hover: hover) {
+      background-color: color-mix(in oklab, var(--color-black) 80%, transparent);
     }
   }
 }

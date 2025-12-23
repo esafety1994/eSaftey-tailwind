@@ -11,13 +11,10 @@
 }
 
 @layer utilities {
-  .group:hover .group-hover\:opacity-100 {
-    opacity: 1 ;
+  .group-hover\:opacity-100 {
+    opacity: 1;
   }
   
-  article:hover .hover-buttons {
-    opacity: 1 !important;
-  }
 }
 h2{
   @apply text-5xl font-medium;
@@ -40,4 +37,8 @@ h2{
 
 .white-button{
   @apply bg-white text-black hover:bg-black hover:text-white;
+}
+
+.primary-cart-button{
+  @apply bg-black text-primary-light hover:bg-black/80 hover:scale-105 flex gap-2 normal-case items-center rounded-none py-4 px-8 ;
 }

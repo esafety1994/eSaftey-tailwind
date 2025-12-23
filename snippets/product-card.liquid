@@ -5,6 +5,7 @@
   - show_vendor: {Boolean} Show product vendor (optional)
   - show_compare_price: {Boolean} Show compare at price (optional)
   - card_background: {String} Background color (optional)
+  - card_border: {String} Border color (optional)
   - card_border_radius: {String} Border radius (optional)
   - card_padding: {String} Padding (optional)
   - title_size: {String} Title font size (optional)
@@ -23,31 +24,42 @@
     - ratings
     - stock level indicator
     - price formatting options
-    
+
     {% endcomment %}
 {% liquid
   assign show_vendor = show_vendor | default: false
   assign show_compare_price = show_compare_price | default: true
   assign card_background = card_background | default: '#ffffff'
+  assign card_border = card_border | default: '#D6D4D4'
   assign card_border_radius = card_border_radius | default: '0'
   assign card_padding = card_padding | default: '15px'
-  assign title_size = title_size | default: '16px'
+  assign title_size = title_size | default: '18px'
   assign title_color = title_color | default: '#000000'
   assign price_size = price_size | default: '14px'
   assign price_color = price_color | default: '#000000'
 %}
 
 <article
-  class="flex flex-col overflow-hidden transition-transform transform group"
-  style="background-color: {{ card_background }}; border-radius: {{ card_border_radius }}px;"
+  class="flex flex-col overflow-hidden transition-transform transform p-3"
+  style="background-color: {{ card_background }}; border: 1px solid {{ card_border }}; border-radius: {{ card_border_radius }}px;"
 >
   <div class="relative overflow-hidden">
-    <a href="{{ product.url }}" class="block relative w-full z-10" style="padding-bottom: 100%;">
+    <a href="{{ product.url }}" class="block relative w-full z-10 group" style="padding-bottom: 100%;">
       {% if product.featured_image %}
+        {% if product.images.size > 1 %}
+          <img
+            src="{{ product.images[1] | image_url: width: 600 }}"
+            alt="{{ product.images[1].alt | escape }}"
+            class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20"
+            loading="lazy"
+            width="600"
+            height="600"
+          >
+        {% endif %}
         <img
           src="{{ product.featured_image | image_url: width: 600 }}"
           alt="{{ product.featured_image.alt | escape }}"
-          class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
           loading="lazy"
           width="600"
           height="600"
@@ -57,22 +69,10 @@
           {{ 'product-1' | placeholder_svg_tag }}
         </div>
       {% endif %}
-    </a>
-
-    <!-- Hover Buttons Overlay -->
-    <div class="absolute inset-0 bg-black/10 opacity-0 hover-buttons transition-opacity duration-1000 ease-in-out flex items-center justify-center z-20">
-      <div class="flex gap-2 flex-col gap-y-6">
-        {% render 'quick-view-btn', product: product %}
-        {% render 'quick-add-btn', product: product %}
-      </div>
-    </div>
+    </a>    
   </div>
 
   <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">
-    {% if show_vendor %}
-      <span class="text-sm text-gray-600">{{ product.vendor }}</span>
-    {% endif %}
-
     <a
       href="{{ product.url }}"
       class="no-underline hover:text-gray-600"
@@ -93,4 +93,7 @@
       <span class="font-semibold">{{ product.price | money }}</span>
     </div>
   </div>
+   <div class="flex justify-center my-2">        
+        {% render 'quick-add-btn', product: product %}
+    </div>
 </article>
