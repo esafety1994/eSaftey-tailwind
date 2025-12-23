@@ -14,6 +14,12 @@
     "announcement": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_content_Lri4EA": {
+          "type": "announcement_content",
+          "settings": {
+            "content": "Welcome to our Store"
+          }
+        },
         "announcement_content_AdfwYt": {
           "type": "announcement_content",
           "settings": {
@@ -22,6 +28,7 @@
         }
       },
       "block_order": [
+        "announcement_content_Lri4EA",
         "announcement_content_AdfwYt"
       ],
       "settings": {
