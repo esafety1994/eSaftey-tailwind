@@ -1,0 +1,36 @@
+{% comment %}
+  Product Price Snippet
+  Displays product price with optional compare price and GST information
+  Accepts:
+  - product: {Object} Product (required)
+  - show_compare_price: {Boolean} Show compare at price (optional, default: true)
+  - price_size: {String} Price font size (optional, default: '14px')
+  - price_color: {String} Price color (optional, default: '#000000')
+{% endcomment %}
+
+{% liquid
+  assign show_compare_price = show_compare_price | default: true
+  assign price_size = price_size | default: '16px'
+  assign price_color = price_color | default: '#000000'
+%}
+
+<div
+  class="grid gap-2 my-4 items-center"
+    style="font-size: {{ price_size }}; color: {{ price_color }};"
+  
+>
+  {% if product.compare_at_price > product.price and show_compare_price %}
+    <span>
+        <span class="text-gray-500 line-through mr-2">
+      {{ product.compare_at_price | money }}
+    </span>
+    <span class="text-red-600">Save: {{ product.compare_at_price | minus: product.price | money }}</span>
+    </span>
+  {% endif %}
+ <span class="font-medium"> <span >{{ product.price | money }}</span>
+  {% if product.tags contains 'isgstexempt' %}
+    <span class="ml-2 text-sm">(GST Exempt)</span>
+  {% else %}
+    <span class="ml-2 text-sm">(inc GST)</span>
+  {% endif %}</span>
+</div>

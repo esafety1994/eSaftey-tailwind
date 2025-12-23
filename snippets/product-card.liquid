@@ -16,6 +16,7 @@
   Uses separate snippets:
   - quick-view-btn.liquid for Quick View functionality
   - quick-add-btn.liquid for Quick Add functionality
+  - product-price.liquid for Price display with GST information
 {% endcomment %}
 
 {% comment %}
@@ -46,7 +47,7 @@
   <div class="relative overflow-hidden">
     <a href="{{ product.url }}" class="block relative w-full z-10 group" style="padding-bottom: 100%;">
       {% if product.featured_image %}
-        {% if product.images.size > 1 %}
+        {% if product.images[1] %}
           <img
             src="{{ product.images[1] | image_url: width: 600 }}"
             alt="{{ product.images[1].alt | escape }}"
@@ -59,7 +60,7 @@
         <img
           src="{{ product.featured_image | image_url: width: 600 }}"
           alt="{{ product.featured_image.alt | escape }}"
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+          class="absolute inset-0 w-full h-full object-cover transition-all duration-300{% if product.images[1] %} group-hover:opacity-0{% else %} group-hover:scale-105{% endif %}"
           loading="lazy"
           width="600"
           height="600"
@@ -75,23 +76,18 @@
   <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">
     <a
       href="{{ product.url }}"
-      class="no-underline hover:text-gray-600"
+      class="font-bold underline"
       style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
     >
       {{ product.title }}
     </a>
 
-    <div
-      class="flex items-center"
-      style="font-size: {{ price_size }}; color: {{ price_color }};"
-    >
-      {% if product.compare_at_price > product.price and show_compare_price %}
-        <span class="text-gray-500 line-through mr-2">
-          {{ product.compare_at_price | money }}
-        </span>
-      {% endif %}
-      <span class="font-semibold">{{ product.price | money }}</span>
-    </div>
+    {% render 'product-price',
+      product: product,
+      show_compare_price: show_compare_price,
+      price_size: price_size,
+      price_color: price_color
+    %}
   </div>
    <div class="flex justify-center my-2">        
         {% render 'quick-add-btn', product: product %}
