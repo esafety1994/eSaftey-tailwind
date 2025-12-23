@@ -6,8 +6,6 @@
 {% assign blog = blogs[section.settings.blog] %}
 {% assign posts_limit = section.settings.posts_limit | default: 3 %}
 
-{% if blog %}
-
 <div class="w-full" {{ section.shopify_attributes }}>
   <div
     class="mx-auto px-5 w-full"
@@ -172,23 +170,19 @@
       "label": "Button style",
       "options": [
         {
-          "value": "bg-blue-500 text-white px-6 py-3 rounded-md font-medium",
-          "label": "Primary Blue"
+          "value": "primary-button",
+          "label": "Primary Black"
         },
         {
-          "value": "bg-gray-800 text-white px-6 py-3 rounded-md font-medium",
-          "label": "Dark Gray"
+          "value": "secondary-button",
+          "label": "Yellow"
         },
         {
-          "value": "bg-white text-gray-800 border border-gray-300 px-6 py-3 rounded-md font-medium hover:bg-gray-50",
+          "value": "outline-button",
           "label": "Outline"
         },
-        {
-          "value": "text-blue-500 font-medium hover:text-blue-600",
-          "label": "Link Style"
-        }
       ],
-      "default": "bg-blue-500 text-white px-6 py-3 rounded-md font-medium"
+      "default": "primary-button"
     }
   ],
   "presets": [
