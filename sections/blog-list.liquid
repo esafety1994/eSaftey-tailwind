@@ -6,6 +6,8 @@
 {% assign blog = blogs[section.settings.blog] %}
 {% assign posts_limit = section.settings.posts_limit | default: 3 %}
 
+{% if blog %}
+
 <div class="w-full" {{ section.shopify_attributes }}>
   <div
     class="mx-auto px-5 w-full"
