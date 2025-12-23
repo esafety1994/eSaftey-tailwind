@@ -1,6 +1,4 @@
 {% if section.settings['show-announcement'] %}
-    {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
-<script defer src="{{ 'glide.min.js' | asset_url }}"></script>
   <section
     id="announcement-bar"
     class="bg-bg-light text-center relative transition-all duration-500 ease-in-out transform translate-y-0 opacity-100"
@@ -63,7 +61,7 @@
   "blocks": [
     {
       "type": "announcement_content",
-      "name": "Annoucment Conent",
+      "name": "Announcement Content",
       "settings": [
         {
           "type": "text",

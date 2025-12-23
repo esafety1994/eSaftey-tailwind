@@ -44,9 +44,7 @@
     {{ 'global.css' | asset_url | stylesheet_tag }}
   </head>
   <body class="font-normal">
-    {% section 'announcement-bar' %}
-    {% section 'top-navbar' %}
-    {% section 'header' %}
+    {% sections 'header-group' %}
     <main id="main" role="main">
       {{ content_for_layout }}
     </main>
