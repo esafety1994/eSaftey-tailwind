@@ -125,7 +125,7 @@
         "card_padding": 10,
         "product_title_size": 18,
         "product_title_color": "#000000",
-        "price_size": 14,
+        "price_size": 16,
         "price_color": "#000000"
       }
     }
