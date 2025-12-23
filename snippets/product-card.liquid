@@ -41,11 +41,16 @@
 %}
 
 <article
-  class="flex flex-col overflow-hidden transition-transform transform p-3"
+  class="flex flex-col overflow-hidden transition-transform transform p-3 h-full"
   style="background-color: {{ card_background }}; border: 1px solid {{ card_border }}; border-radius: {{ card_border_radius }}px;"
 >
   <div class="relative overflow-hidden">
-    <a href="{{ product.url }}" class="block relative w-full z-10 group" style="padding-bottom: 100%;">
+    
+    <div href="{{ product.url }}" class="block relative w-full z-10 group" style="padding-bottom: 100%;">
+        <!-- Hover Buttons Overlay -->
+    <div class="absolute top-2 right-2 z-30 translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-2">
+      {% render 'quick-view-btn', product: product %}
+    </div>
       {% if product.featured_image %}
         {% if product.images[1] %}
           <img
@@ -70,7 +75,7 @@
           {{ 'product-1' | placeholder_svg_tag }}
         </div>
       {% endif %}
-    </a>    
+    </div>
   </div>
 
   <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">

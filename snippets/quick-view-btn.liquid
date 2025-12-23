@@ -8,14 +8,14 @@
 
 {% liquid
   assign button_text = button_text | default: 'Quick View'
-  assign button_classes = button_classes | default: 'btn white-button'
+  assign button_classes = button_classes | default: 'btn icon-button'
 %}
 
 <button
-  class="{{ button_classes }} quick-view-btn"
+  class="{{ button_classes }} quick-view-btn hover:bg-primary hover:text-white transition-all ease-in-out"
   data-product-id="{{ product.id }}"
   data-product-handle="{{ product.handle }}"
   aria-label="Quick view {{ product.title }}"
 >
-  {{ button_text }}
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
 </button>

@@ -27,7 +27,7 @@
     <span class="text-red-600">Save: {{ product.compare_at_price | minus: product.price | money }}</span>
     </span>
   {% endif %}
- <span class="font-medium"> <span >{{ product.price | money }}</span>
+ <span class="font-semibold"> <span >{{ product.price | money }}</span>
   {% if product.tags contains 'isgstexempt' %}
     <span class="ml-2 text-sm">(GST Exempt)</span>
   {% else %}
