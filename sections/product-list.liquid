@@ -17,49 +17,18 @@
         {% if product != blank %}
           {% assign has_products = true %}
           <section class="bg-transparent">
-            <article
-              class="flex flex-col overflow-hidden transition-transform transform hover:-translate-y-1 hover:shadow-lg"
-              style="background-color: {{ section.settings.card_background }}; border-radius: {{ section.settings.card_border_radius }}px;"
-            >
-              <a href="{{ product.url }}" class="block relative w-full" style="padding-bottom:100%;">
-                {% if product.featured_image %}
-                  <img
-                    src="{{ product.featured_image | image_url: width: 600 }}"
-                    alt="{{ product.featured_image.alt | escape }}"
-                    class="absolute inset-0 w-full h-full object-cover"
-                    loading="lazy"
-                    width="600"
-                    height="600"
-                  >
-                {% else %}
-                  <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
-                    {{ 'product-1' | placeholder_svg_tag }}
-                  </div>
-                {% endif %}
-              </a>
-
-              <div class="flex flex-col gap-2 flex-grow" style="padding: {{ section.settings.card_padding }}px;">
-                <a
-                  href="{{ product.url }}"
-                  class="no-underline"
-                  style="font-size: {{ section.settings.product_title_size }}px; color: {{ section.settings.product_title_color }}; font-weight:500;"
-                >
-                  {{ product.title }}
-                </a>
-
-                <div
-                  class="flex items-center"
-                  style="font-size: {{ section.settings.price_size }}px; color: {{ section.settings.price_color }};"
-                >
-                  {% if product.compare_at_price > product.price %}
-                    <span class="text-gray-500 line-through mr-2">
-                      {{ product.compare_at_price | money }}
-                    </span>
-                  {% endif %}
-                  <span class="font-semibold">{{ product.price | money }}</span>
-                </div>
-              </div>
-            </article>
+            {% render 'product-card',
+              product: product,
+              show_vendor: section.settings.show_vendor,
+              show_compare_price: section.settings.show_compare_price,
+              card_background: section.settings.card_background,
+              card_border_radius: section.settings.card_border_radius,
+              card_padding: section.settings.card_padding,
+              title_size: section.settings.product_title_size,
+              title_color: section.settings.product_title_color,
+              price_size: section.settings.price_size,
+              price_color: section.settings.price_color
+            %}
           </section>
         {% endif %}
       {% endfor %}
@@ -70,7 +39,7 @@
     </div>
   </div>
 </div>
-// ...existing code...
+
 
 {% schema %}
 {
@@ -173,6 +142,18 @@
     {
       "type": "header",
       "content": "Card style"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_price",
+      "label": "Show compare at price",
+      "default": true
     },
     {
       "type": "color",

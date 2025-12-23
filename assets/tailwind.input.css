@@ -17,6 +17,17 @@ h2{
   @apply max-w-screen-2xl m-auto w-full;
 }
 
+.btn{
+  @apply font-medium rounded-lg shadow-lg transition px-6 py-2 uppercase;
+}
 .primary-button{
-  @apply bg-black text-white font-medium rounded-md shadow-md transition px-6 py-2 uppercase hover:bg-black/80 hover:scale-105;
+  @apply bg-black text-white hover:bg-black/80 hover:scale-105;
+}
+
+.secondary-button{
+  @apply bg-primary text-black hover:bg-black hover:text-white;
+}
+
+.white-button{
+  @apply bg-white text-black hover:bg-gray-100 hover:text-black;
 }

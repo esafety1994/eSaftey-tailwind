@@ -1,0 +1,88 @@
+{% comment %}
+  Simplified Product Card for Tailwind Theme
+  Accepts:
+  - product: {Object} Product (required)
+  - show_vendor: {Boolean} Show product vendor (optional)
+  - show_compare_price: {Boolean} Show compare at price (optional)
+  - card_background: {String} Background color (optional)
+  - card_border_radius: {String} Border radius (optional)
+  - card_padding: {String} Padding (optional)
+  - title_size: {String} Title font size (optional)
+  - title_color: {String} Title color (optional)
+  - price_size: {String} Price font size (optional)
+  - price_color: {String} Price color (optional)
+
+  Uses separate snippets:
+  - quick-view-btn.liquid for Quick View functionality
+  - quick-add-btn.liquid for Quick Add functionality
+{% endcomment %}
+
+{% liquid
+  assign show_vendor = show_vendor | default: false
+  assign show_compare_price = show_compare_price | default: true
+  assign card_background = card_background | default: '#ffffff'
+  assign card_border_radius = card_border_radius | default: '8px'
+  assign card_padding = card_padding | default: '15px'
+  assign title_size = title_size | default: '16px'
+  assign title_color = title_color | default: '#000000'
+  assign price_size = price_size | default: '14px'
+  assign price_color = price_color | default: '#000000'
+%}
+
+<article
+  class="flex flex-col overflow-hidden transition-transform transform group"
+  style="background-color: {{ card_background }}; border-radius: {{ card_border_radius }}px;"
+>
+  <div class="relative overflow-hidden">
+    <a href="{{ product.url }}" class="block relative w-full z-10" style="padding-bottom: 100%;">
+      {% if product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          loading="lazy"
+          width="600"
+          height="600"
+        >
+      {% else %}
+        <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+          {{ 'product-1' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </a>
+
+    <!-- Hover Buttons Overlay -->
+    <div class="absolute inset-0 bg-black/40 opacity-100 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+      <div class="flex gap-2">
+        {% render 'quick-view-btn', product: product %}
+        {% render 'quick-add-btn', product: product %}
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">
+    {% if show_vendor %}
+      <span class="text-sm text-gray-600">{{ product.vendor }}</span>
+    {% endif %}
+
+    <a
+      href="{{ product.url }}"
+      class="no-underline hover:text-gray-600"
+      style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
+    >
+      {{ product.title }}
+    </a>
+
+    <div
+      class="flex items-center"
+      style="font-size: {{ price_size }}; color: {{ price_color }};"
+    >
+      {% if product.compare_at_price > product.price and show_compare_price %}
+        <span class="text-gray-500 line-through mr-2">
+          {{ product.compare_at_price | money }}
+        </span>
+      {% endif %}
+      <span class="font-semibold">{{ product.price | money }}</span>
+    </div>
+  </div>
+</article>

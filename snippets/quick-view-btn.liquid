@@ -1,0 +1,21 @@
+{% comment %}
+  Quick View Button Snippet
+  Accepts:
+  - product: {Object} Product (required)
+  - button_text: {String} Button text (optional, defaults to "Quick View")
+  - button_classes: {String} Additional CSS classes (optional)
+{% endcomment %}
+
+{% liquid
+  assign button_text = button_text | default: 'Quick View'
+  assign button_classes = button_classes | default: 'bg-white text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors duration-200 text-sm'
+%}
+
+<button
+  class="{{ button_classes }} quick-view-btn"
+  data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle }}"
+  aria-label="Quick view {{ product.title }}"
+>
+  {{ button_text }}
+</button>
