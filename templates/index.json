@@ -133,7 +133,7 @@
       "type": "blog-list",
       "name": "Blog list",
       "settings": {
-        "blog": "",
+        "blog": "esafety-blogs",
         "posts_limit": 4,
         "max_width": 1200,
         "section_padding": 40,
