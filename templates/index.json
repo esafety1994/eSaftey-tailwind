@@ -24,17 +24,6 @@
             "button_link": "shopify://collections/bike-storage-racks"
           }
         },
-        "slider_item_TVtUX9": {
-          "type": "slider_item",
-          "settings": {
-            "single_image": false,
-            "content_position": "left",
-            "title": "New Collection",
-            "description": "<p>New Arrival Collection</p>",
-            "button_text": "Shop now",
-            "button_link": ""
-          }
-        },
         "slider_item_TAKEQ8": {
           "type": "slider_item",
           "settings": {
@@ -74,7 +63,6 @@
       },
       "block_order": [
         "slider_item_UjBni3",
-        "slider_item_TVtUX9",
         "slider_item_TAKEQ8",
         "slider_item_jwUMtr",
         "slider_item_wmYUEQ"
