@@ -1,15 +1,12 @@
 <section class="w-full flex flex-col space-y-4">
   <div class="flex items-center justify-between">
-    {% for block in section.blocks %}
-      {% if block.type == 'logo' and block.settings.logo %}
-        <div class="logo">
-          <a href="{{ shop.url }}">
-            <img src="{{ block.settings.logo | img_url: '200x' }}" alt="{{ shop.name }}" class="h-20 object-contain">
-          </a>
-        </div>
+    <div>
+      {%  if shop.brand.logo %}
+        <img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="h-20 object-contain">
+      {% else %}
+        <h1 class="text-white text-2xl font-bold">{{ shop.name }}</h1>
       {% endif %}
-    {% endfor %}
-
+    </div>
     <div>{% render 'naviation-icons' %}</div>
   </div>
 
