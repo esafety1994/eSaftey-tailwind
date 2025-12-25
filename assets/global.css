@@ -1,0 +1,64 @@
+/* Variant change loading overlay and transition */
+.product-container {
+	position: relative;
+	transition: opacity 250ms ease;
+}
+.product-container.is-loading {
+	opacity: 0.45;
+	pointer-events: none;
+}
+.product-loading-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+}
+.product-loading-overlay .spinner {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 4px solid rgba(0,0,0,0.1);
+	border-top-color: rgba(0,0,0,0.7);
+	animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Gallery arrows and thumbnail active state */
+.product-gallery-arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(255,255,255,0.9);
+	border-radius: 9999px;
+	width: 36px;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+	border: none;
+	cursor: pointer;
+	z-index: 20;
+}
+.product-gallery-arrow--left { left: 8px; }
+.product-gallery-arrow--right { right: 8px; }
+.product-gallery-arrow svg { color: #111827; }
+.product-gallery-arrow:hover {
+    background: #FFE61F;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+}
+
+.product-thumbs .thumb-btn img { display: block; }
+.product-thumbs .thumb-btn { padding: 2px; border-radius: 4px; }
+.product-thumbs .thumb-active img { border: 1px solid #000; border-radius: 6px; }
+
+/* namespace thumb container to avoid conflicting with other glide instances */
+.product-thumbs .glide__slides { display:flex; }
+
+/* Enforce active swatch border when JS toggles `swatch-active` */
+.swatch-active {
+	border-color: #000 !important;
+}
+

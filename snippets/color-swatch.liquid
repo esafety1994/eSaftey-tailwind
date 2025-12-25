@@ -1,0 +1,11 @@
+{%- comment -%}
+Renders a color swatch circle. Expects variables passed via `render`:
+- `for_id`: id of the related input
+- `color_name`: the display name of the color (e.g. "Red")
+- `value_name`: visible label (optional)
+{%- endcomment -%}
+
+<label for="{{ for_id }}" class="group color-swatch-label inline-flex items-center gap-2 cursor-pointer p-1 border-1 border-transparent rounded-full transition-all hover:border-black">
+  <span class="color-swatch-circle w-6 h-6 rounded-full border border-gray-200 transition-all ease-in-out group-hover:scale-120" data-color-name="{{ color_name }}" aria-hidden="true"></span>
+  <span class="sr-only">{{ value_name | default: color_name }}</span>
+</label>
