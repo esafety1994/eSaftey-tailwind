@@ -1,126 +1,46 @@
-<!-- /snippets/breadcrumb.liquid -->
-{% comment %}
-  Documentation - http://docs.shopify.com/support/your-website/navigation/creating-a-breadcrumb-navigation
-{% endcomment %}
-{% comment %}
-  Accepts:
-  - container: {String} Container class (optional)
-  - justify: {String} Defines how the browser distributes space between and around content items along the main-axis of a flex container (optional)
-  - class: {String} Extra classes (optional)
-  - hide_current: {Boolean} Hide current item (optional)
-
-  Usage:
-  {% render 'breadcrumb' %}
-{% endcomment %}
-{%- liquid
-  if container != nil and container == 'w-full'
-    assign container = 'container-full'
-  endif
-  if container == nil
-    assign container = 'container-fluid'
-  endif
-
-  if animated == nil
-    assign animated = false
-  endif
-  if animation_effect == nil
-    assign animation_effect = settings.animations
-  endif
-
-  if animation_effect != 'none'
-    assign animated = true
-  endif
--%}
-
-{%- capture separator -%}
-    <span aria-hidden="true" class="m-breadcrumb--separator">
-      <svg class="m-svg-icon--small m-rlt-reverse-x" fill="currentColor" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M17.525 36.465l-7.071 7.07c-4.686 4.686-4.686 12.284 0 16.971L205.947 256 10.454 451.494c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l211.051-211.05c4.686-4.686 4.686-12.284 0-16.971L34.495 36.465c-4.686-4.687-12.284-4.687-16.97 0z"/></svg>
-    </span>
-{%- endcapture -%}
-
-{%- capture home -%}
-    <a href="{{ routes.root_url }}" class="m-breadcrumb--item" title="{{ 'general.breadcrumbs.home_link_title' | t }}">
-        {{ 'general.breadcrumbs.home' | t }}
-    </a>
-{%- endcapture -%}
+{% comment %} Simplified breadcrumb using Tailwind utilities. {% endcomment %}
 
 {% unless template == 'index' %}
-  <nav
-    class="m-breadcrumb m:w-full {{ class }}{% if animated %} m-scroll-trigger animate--{{ animation_effect }}{% endif %}"
-    role="navigation"
-    aria-label="breadcrumbs"
-  >
-    <div class="{{ container }}">
-      <div class="m-breadcrumb--wrapper m:flex m:items-center m:justify-{{ justify | default: 'start' }}">
-        {% unless template.name == 'product' %}
-          {{ home }}
-        {% endunless %}
+  <nav role="navigation" aria-label="breadcrumbs" class="text-sm text-gray-600">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center gap-2">
+        <a href="{{ routes.root_url }}" class="text-gray-500 hover:text-gray-700" title="Home">Home</a>
+
+        {% comment %} Separator {% endcomment %}
+        <svg class="w-3 h-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
 
         {% if template.name == 'product' %}
-          {{ home }}
-          {% liquid
-            assign current_collection = null
-            if collection
-              assign current_collection = collection
-            elsif product and product.collections.size > 0
-              assign current_collection = product.collections.first
-            endif
-          %}
+          {% assign current_collection = nil %}
+          {% if collection %}
+            {% assign current_collection = collection %}
+          {% elsif product and product.collections.size > 0 %}
+            {% assign current_collection = product.collections.first %}
+          {% endif %}
+
           {% if current_collection %}
-            {{ separator }}
-            {% if current_collection.handle %}
-              {% capture url %}/collections/{{ current_collection.handle }}{% endcapture %}
-              <a href="{{ url }}" class="m-breadcrumb--item">{{ current_collection.title }}</a>
-            {% endif %}
+            <a href="/collections/{{ current_collection.handle }}" class="text-gray-500 hover:text-gray-700">{{ current_collection.title }}</a>
+            <svg class="w-3 h-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
           {% endif %}
-          {% unless hide_current == true %}
-            {{ separator }}
-            <span class="m-breadcrumb--item-current m-breadcrumb--item">{{ product.title }}</span>
-          {% endunless %}
+
+          <span class="text-gray-700 font-medium">{{ product.title }}</span>
+
         {% elsif template.name == 'collection' and collection.handle %}
-          {{ separator }}
-          {% if current_tags %}
-            {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
-            <a href="{{ url }}" class="m-breadcrumb--item">{{ collection.title }}</a>
-            {{ separator }}
-            <span class="m-breadcrumb--item m-breadcrumb--item-current">{{ current_tags | join: ' + ' }}</span>
-          {% else %}
-            <span class="m-breadcrumb--item m-breadcrumb--item-current">{{ collection.title }}</span>
-          {% endif %}
+          <span class="text-gray-700 font-medium">{{ collection.title }}</span>
 
         {% elsif template.name == 'blog' %}
-          {{ separator }}
-          {% if current_tags %}
-            <a href="{{ blog.url }}" class="m-breadcrumb--item">{{ blog.title }}</a>
-            {{ separator }}
-            <span class="m-breadcrumb--item m-breadcrumb--item-current">{{ current_tags | join: ' + ' }}</span>
-          {% else %}
-            <span class="m-breadcrumb--item-current m-breadcrumb--item">{{ blog.title }}</span>
-          {% endif %}
+          <span class="text-gray-700 font-medium">{{ blog.title }}</span>
 
         {% elsif template == 'article' %}
-          {{ separator }}
-          <a href="{{ blog.url }}" class="m-breadcrumb--item">{{ blog.title }}</a>
-
-        {% elsif template == 'customers/addresses' %}
-          {{ separator }}
-          <a href="{{ routes.account_url }}" class="m-breadcrumb--item">{{ 'customer.account.page_title' | t }}</a>
-          {{ separator }}
-          <span class="m-breadcrumb--item-current m-breadcrumb--item">{{ page_title }}</span>
+          <a href="{{ blog.url }}" class="text-gray-500 hover:text-gray-700">{{ blog.title }}</a>
 
         {% elsif template contains 'page' %}
-          {{ separator }}
-          <span class="m-breadcrumb--item-current m-breadcrumb--item">{{ page.title }}</span>
+          <span class="text-gray-700 font-medium">{{ page.title }}</span>
 
         {% elsif template contains 'search' %}
-          {{ separator }}
-          <span class="m-breadcrumb--item-current m-breadcrumb--item">
-            {{- 'general.search.heading' | t: count: search.results_count, terms: search.terms -}}
-          </span>
+          <span class="text-gray-700 font-medium">Search</span>
 
         {% else %}
-          {{ separator }}
-          <span class="m-breadcrumb--item-current m-breadcrumb--item">{{ page_title }}</span>
+          <span class="text-gray-700 font-medium">{{ page_title }}</span>
         {% endif %}
       </div>
     </div>
