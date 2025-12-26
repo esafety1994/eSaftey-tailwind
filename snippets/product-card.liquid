@@ -39,6 +39,7 @@
   assign title_color = title_color | default: '#000000'
   assign price_size = price_size | default: '14px'
   assign price_color = price_color | default: '#000000'
+  assign max_tags = max_tags | default :0
 %}
 
 <article
@@ -78,7 +79,7 @@
       {% endif %}
     </div>
   </div>
-  {% render 'product-tags', product: product %}
+  {% render 'product-tags', product: product, max_tags: max_tags %}
   <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">
     <a
       href="{{ product.url }}"

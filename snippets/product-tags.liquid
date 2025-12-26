@@ -9,30 +9,56 @@
   - Best Sellers: Green background
   - Sale: Red background
 {% endcomment %}
-{% if product.tags.size > 0 %}
-  <div class="flex flex-wrap gap-4 pb-2 [&>span]:inline-block [&>span]:text-sm [&>span]:px-3 [&>span]:py-2 [&>span]:rounded-full [&>span]:font-medium">
-    {% for tag in product.tags %}
-      {% case tag %}
-        {% when 'Bulky' %}
-          <span class="bg-red-200 text-red-800">
-            {{ tag }}
-          </span>
-        {% when 'Best Sellers' %}
-          <span class="bg-yellow-200 text-yellow-800">
-            {{ tag }}
-          </span>
+{% comment %} Display up to two priority tags: Sale, Bulky, Best Sellers, New Arrival {% endcomment %}
+{% assign tag_count = 0 %}
+{% comment %} optional `max_tags` render param: if not provided (or 0) show all tags {% endcomment %}
+{% if max_tags == nil %}
+  {% assign display_limit = 0 %}
+{% else %}
+  {% assign display_limit = max_tags | plus: 0 %}
+{% endif %}
 
-        {% when 'New Arrival' %}
-        <span class="bg-black text-white">
-          {{ tag }}
-        </span>
-        {% when 'Sale' %}
-          <span class="bg-green-200 text-green-800">
-            {{ tag }}
-          </span>
-        {% else %}
-          <!-- Future tags can be added here with their own styling -->
-      {% endcase %}
-    {% endfor %}
+{%- comment -%} Determine sale by comparing variant compare_at_price > price {%- endcomment -%}
+{% assign is_on_sale = false %}
+{% for v in product.variants %}
+  {% if v.compare_at_price and v.compare_at_price > v.price %}
+    {% assign is_on_sale = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if is_on_sale or product.tags.size > 0 %}
+  <div class="flex flex-wrap gap-3 pb-2 [&>span]:inline-block [&>span]:text-sm [&>span]:px-3 [&>span]:py-2 [&>span]:rounded-full [&>span]:font-medium">
+    {% comment %} Sale first {% endcomment %}
+    {% if is_on_sale %}
+      {% if display_limit == 0 or tag_count < display_limit %}
+        <span class="bg-green-200 text-green-800">Sale</span>
+        {% assign tag_count = tag_count | plus: 1 %}
+      {% endif %}
+    {% endif %}
+
+    {% comment %} Bulky {% endcomment %}
+    {% if product.tags contains 'Bulky' %}
+      {% if display_limit == 0 or tag_count < display_limit %}
+        <span class="bg-red-200 text-red-800">Bulky</span>
+        {% assign tag_count = tag_count | plus: 1 %}
+      {% endif %}
+    {% endif %}
+
+    {% comment %} Best Sellers {% endcomment %}
+    {% if product.tags contains 'Best Sellers' %}
+      {% if display_limit == 0 or tag_count < display_limit %}
+        <span class="bg-yellow-200 text-yellow-800">Best Sellers</span>
+        {% assign tag_count = tag_count | plus: 1 %}
+      {% endif %}
+    {% endif %}
+
+    {% comment %} New Arrival {% endcomment %}
+    {% if product.tags contains 'New Arrival' %}
+      {% if display_limit == 0 or tag_count < display_limit %}
+        <span class="bg-black text-white">New Arrival</span>
+        {% assign tag_count = tag_count | plus: 1 %}
+      {% endif %}
+    {% endif %}
   </div>
 {% endif %}
