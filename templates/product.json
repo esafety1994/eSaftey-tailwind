@@ -9,6 +9,13 @@
  */
 {
   "sections": {
+    "custom_liquid": {
+      "type": "custom-liquid",
+      "name": "Custom liquid (before main)",
+      "settings": {
+        "html": ""
+      }
+    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -68,6 +75,7 @@
     }
   },
   "order": [
+    "custom_liquid",
     "main",
     "product_info_tabs",
     "product_recommendation_a4TCDB"
