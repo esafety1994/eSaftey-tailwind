@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between">
     <div>
       {%  if shop.brand.logo %}
-        <img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="h-20 object-contain">
+        <a href="/"><img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="h-20 object-contain"></a>
       {% else %}
         <h1 class="text-white text-2xl font-bold">{{ shop.name }}</h1>
       {% endif %}

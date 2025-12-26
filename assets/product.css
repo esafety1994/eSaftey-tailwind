@@ -67,3 +67,91 @@
     /* Default row color */
    }
  
+   /* Variant change loading overlay and transition */
+.product-container {
+	position: relative;
+	transition: opacity 250ms ease;
+}
+.product-container.is-loading {
+	opacity: 0.45;
+	pointer-events: none;
+}
+.product-loading-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+}
+.product-loading-overlay .spinner {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 4px solid rgba(0,0,0,0.1);
+	border-top-color: rgba(0,0,0,0.7);
+	animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Gallery arrows and thumbnail active state */
+.product-gallery-arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(255,255,255,0.9);
+	border-radius: 9999px;
+	width: 36px;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+	border: none;
+	cursor: pointer;
+	z-index: 20;
+}
+.product-gallery-arrow--left { left: 8px; }
+.product-gallery-arrow--right { right: 8px; }
+.product-gallery-arrow svg { color: #111827; }
+.product-gallery-arrow:hover {
+    background: #FFE61F;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+}
+
+.product-thumbs .thumb-btn img { display: block; }
+.product-thumbs .thumb-btn { padding: 2px; border-radius: 4px; }
+.product-thumbs .thumb-active img { border: 1px solid #000; border-radius: 6px; }
+
+/* namespace thumb container to avoid conflicting with other glide instances */
+.product-thumbs .glide__slides { display:flex; }
+
+/* Enforce active swatch border when JS toggles `swatch-active` */
+.swatch-active {
+	border-color: #000 !important;
+}
+
+/* Product details description: ensure lists use disc style and pl-4 */
+.product-details-expandable .prose ul {
+	list-style-type: disc;
+	padding-left: 2rem; /* equivalent to Tailwind pl-4 */
+}
+
+/* Ensure recommendation carousel slides are equal height */
+.recommendation-glide .glide__track { display: block; overflow: hidden; }
+.recommendation-glide .glide__slides { display: flex; align-items: stretch; padding-left: 0; margin: 0; box-sizing: border-box; }
+.recommendation-glide .glide__slide { display: flex; flex-direction: column; height: 100%; }
+.recommendation-glide .glide__slide > .p-2 { display: flex; flex: 1 1 auto; }
+
+/* Fixed slide width/height for consistent visual layout */
+
+.recommendation-card { width: 100%; display: flex; flex-direction: column; }
+.recommendation-card .card-media { flex: 0 0 auto; position: relative; }
+.recommendation-card .card-body { flex: 1 1 auto; padding: 12px; }
+.recommendation-glide .glide__slides { gap: 4px; }
+
+/* view icon appears only on hover or keyboard focus */
+.recommendation-card .quick-view-icon { opacity: 0; transform: translateY(-6px); transition: opacity .18s ease, transform .18s ease; pointer-events: none; }
+.recommendation-card:hover .quick-view-icon,
+.recommendation-card:focus-within .quick-view-icon { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
