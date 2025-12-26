@@ -26,6 +26,7 @@
     --color-indigo-500: oklch(0.585 0.233 277.117);
     --color-indigo-600: oklch(0.511 0.262 276.966);
     --color-indigo-700: oklch(0.457 0.24 277.023);
+    --color-slate-400: oklch(0.704 0.04 256.788);
     --color-slate-800: oklch(0.279 0.041 260.031);
     --color-slate-900: oklch(0.208 0.042 265.755);
     --color-gray-50: oklch(0.985 0.002 247.839);
@@ -89,8 +90,11 @@
     );
     --color-primary: oklch(0.89 0.16 85.6);
     --color-primary-light: #FFE61F;
+    --color-grey: #dedede;
     --color-bg-light: #fee9a7;
+    --color-bg-light-blue: #b1d4dd;
     --color-bg-light-red: #cf4949;
+    --color-bg-light-pink: #f2dccb;
   }
 }
 @layer base {
@@ -806,6 +810,12 @@
   .bg-bg-light {
     background-color: var(--color-bg-light);
   }
+  .bg-bg-light-blue {
+    background-color: var(--color-bg-light-blue);
+  }
+  .bg-bg-light-pink {
+    background-color: var(--color-bg-light-pink);
+  }
   .bg-bg-light-red {
     background-color: var(--color-bg-light-red);
   }
@@ -827,6 +837,9 @@
   .bg-gray-200 {
     background-color: var(--color-gray-200);
   }
+  .bg-gray-300 {
+    background-color: var(--color-gray-300);
+  }
   .bg-gray-400 {
     background-color: var(--color-gray-400);
   }
@@ -842,8 +855,14 @@
   .bg-green-600 {
     background-color: var(--color-green-600);
   }
+  .bg-grey {
+    background-color: var(--color-grey);
+  }
   .bg-indigo-600 {
     background-color: var(--color-indigo-600);
+  }
+  .bg-primary-light {
+    background-color: var(--color-primary-light);
   }
   .bg-red-100 {
     background-color: var(--color-red-100);
@@ -853,6 +872,9 @@
   }
   .bg-red-600 {
     background-color: var(--color-red-600);
+  }
+  .bg-slate-400 {
+    background-color: var(--color-slate-400);
   }
   .bg-transparent {
     background-color: transparent;
@@ -1149,6 +1171,10 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
@@ -1262,6 +1288,20 @@
       }
     }
   }
+  .hover\:bg-bg-light-pink {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-bg-light-pink);
+      }
+    }
+  }
+  .hover\:bg-bg-light-red {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-bg-light-red);
+      }
+    }
+  }
   .hover\:bg-blue-700 {
     &:hover {
       @media (hover: hover) {
@@ -1346,6 +1386,20 @@
       }
     }
   }
+  .hover\:text-gray-400 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-gray-400);
+      }
+    }
+  }
+  .hover\:text-gray-600 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-gray-600);
+      }
+    }
+  }
   .hover\:text-gray-700 {
     &:hover {
       @media (hover: hover) {
@@ -1408,6 +1462,11 @@
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
+  .focus\:ring-bg-light-red {
+    &:focus {
+      --tw-ring-color: var(--color-bg-light-red);
+    }
+  }
   .focus\:ring-blue-500 {
     &:focus {
       --tw-ring-color: var(--color-blue-500);
@@ -1416,6 +1475,11 @@
   .focus\:ring-indigo-500 {
     &:focus {
       --tw-ring-color: var(--color-indigo-500);
+    }
+  }
+  .focus\:ring-primary-light {
+    &:focus {
+      --tw-ring-color: var(--color-primary-light);
     }
   }
   .focus\:outline-none {
