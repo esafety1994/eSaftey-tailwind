@@ -42,6 +42,9 @@
     {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
     {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
     {{ 'global.css' | asset_url | stylesheet_tag }}
+    {%- if template == 'product' -%}
+      {{ 'product.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
   </head>
   <body class="font-normal">
     {% sections 'header-group' %}
@@ -49,7 +52,9 @@
       {{ content_for_layout }}
     </main>
     <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
-    <script defer src="{{ 'product-details.js' | asset_url }}"></script>
+    {%- if template == 'product' -%}
+      <script defer src="{{ 'product-details.js' | asset_url }}"></script>
+    {%- endif -%}
     <!--<script defer src="{{ 'theme.js' | asset_url }}"></script>-->
   </body>
 </html>
