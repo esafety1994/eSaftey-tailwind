@@ -6,8 +6,10 @@
 <div class="container mx-auto px-4 py-8 max-w-7xl">
     <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
 
-        {% render 'product-media-gallery' %}
-
+        <div>
+            {% render 'product-media-gallery' %}
+            {% render 'product-faq-preview', product: product %}
+        </div>
         <!-- Product Info (Right) -->
         <div>
             {% render 'product-tags', product: product %}

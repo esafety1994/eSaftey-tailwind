@@ -1,5 +1,5 @@
 <div class="tab-panel hidden" data-panel="specs">
-  {% assign myRichText = product.metafields.custom.product_tabs_product_specification %}
+  {% assign myRichText = product.metafields.custom.product_specification %}
   {% assign rows = myRichText | split: '\n' %}
 
   {% if myRichText == blank %}
@@ -9,7 +9,7 @@
       <table class="w-full text-sm text-left text-gray-700 table-auto">
         <thead>
           <tr>
-            <th class="px-4 py-2 bg-gray-100 font-medium" colspan="3">Specifications</th>
+            <th class="bg-gray-100" colspan="3">Specifications</th>
           </tr>
         </thead>
         <tbody>
