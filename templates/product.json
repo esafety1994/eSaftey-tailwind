@@ -17,6 +17,11 @@
         "custom_class": "container"
       }
     },
+    "breadcrumb_GHt96W": {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": {}
+    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -74,16 +79,11 @@
         "product_count": 10,
         "show_ex_gst": false
       }
-    },
-    "breadcrumb_GHt96W": {
-      "type": "breadcrumb",
-      "name": "Breadcrumb",
-      "settings": {}
     }
   },
   "order": [
-    "breadcrumb_GHt96W",
     "custom_liquid_gqDFW7",
+    "breadcrumb_GHt96W",
     "main",
     "product_info_tabs",
     "product_recommendation_a4TCDB"
