@@ -1,0 +1,68 @@
+{% comment %} Product Recommendation Section - carousel of recommended products {% endcomment %}
+<div id="product-recommendation-{{ section.id }}" class="product-recommendation-section my-8">
+  {% if section.settings.title != blank %}
+    <h2 class="text-xl font-semibold mb-4">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  {% if product and product.recommendations and product.recommendations.size > 0 %}
+    <div class="glide" id="glide-{{ section.id }}">
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+          {% for p in product.recommendations limit: section.settings.product_count %}
+            <li class="glide__slide">
+              <div class="px-2">
+                {% render 'product-card', product: p %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="flex items-center justify-between mt-4">
+        <div class="glide__arrows" data-glide-el="controls">
+          <button class="glide__arrow glide__arrow--prev inline-flex items-center justify-center w-9 h-9 bg-white border rounded shadow-sm" data-glide-dir="<" aria-label="Previous">
+            <svg class="h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="glide__arrow glide__arrow--next inline-flex items-center justify-center w-9 h-9 bg-white border rounded shadow-sm" data-glide-dir=">" aria-label="Next">
+            <svg class="h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        var glideEl = document.getElementById('glide-{{ section.id }}');
+        if (!glideEl) return;
+        function init(){
+          try{
+            if (typeof Glide === 'undefined'){
+              var s = document.createElement('script');
+              s.src = '{{ "glide.min.js" | asset_url }}';
+              s.onload = function(){ new Glide(glideEl, { type: 'carousel', perView: 5, gap: 16, autoplay: false }).mount(); };
+              document.head.appendChild(s);
+            } else {
+              new Glide(glideEl, { type: 'carousel', perView: 5, gap: 16, autoplay: false }).mount();
+            }
+          }catch(e){ console.warn(e); }
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+      })();
+    </script>
+
+  {% else %}
+    <p class="text-sm text-gray-500">No recommendations available.</p>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Product recommendation",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "You may also like" },
+    { "type": "range", "id": "product_count", "label": "Number of products to fetch", "default": 10, "min": 1, "max": 12, "step": 1 }
+  ],
+  "blocks": [],
+  "presets": [ { "name": "Product recommendation", "category": "Product" } ]
+}
+{% endschema %}
