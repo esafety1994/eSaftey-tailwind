@@ -133,12 +133,27 @@
         "button_url": "shopify://blogs/esafety-blogs",
         "button_style": "primary-button"
       }
+    },
+    "connect_stay_mk7WnL": {
+      "type": "connect-stay",
+      "name": "Connect / Stay in touch",
+      "settings": {
+        "follow_title": "Follow us",
+        "use_theme_social": true,
+        "subscribe_title": "LET'S STAY IN TOUCH",
+        "subscribe_text": "Subscribe for exclusive offers,  latest news & new product launches",
+        "email_placeholder": "Your email address",
+        "subscribe_button_label": "Subscribe",
+        "success_message": "Thanks — we'll be in touch.",
+        "error_message": "Sorry, something went wrong. Please try again."
+      }
     }
   },
   "order": [
     "carousel_kxG3tk",
     "grid_collection_list_gNtHbb",
     "product_list_D7UkQp",
-    "blog_list_VRk9pE"
+    "blog_list_VRk9pE",
+    "connect_stay_mk7WnL"
   ]
 }
