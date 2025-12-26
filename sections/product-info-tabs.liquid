@@ -5,14 +5,21 @@ Renders the `product-details-expandable` snippet below the main product section.
 
 <section class="container mx-auto px-4 py-8 max-w-7xl product-info-tabs">
   <div class="container mx-auto px-4">
-    {% render 'product-details-expandable', product: product %}
+      {% render 'product-details-expandable', product: product, shipping_content: section.settings.shipping_content %}
   </div>
 </section>
 
 {% schema %}
 {
   "name": "Product information tabs",
-  "settings": [],
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "shipping_content",
+      "label": "Shipping & Return content (Liquid)",
+      "default": "<h3>Shipping</h3>\n<p><strong>Estimated shipping times on our range of stocked items are as follows:</strong></p>"
+    }
+  ],
   "presets": [{ "name": "Product information tabs" }]
 }
 {% endschema %}
