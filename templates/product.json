@@ -75,10 +75,14 @@
         "show_ex_gst": false
       }
     },
-
+    "breadcrumb_GHt96W": {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": {}
+    }
   },
   "order": [
-   
+    "breadcrumb_GHt96W",
     "custom_liquid_gqDFW7",
     "main",
     "product_info_tabs",
