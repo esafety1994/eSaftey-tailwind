@@ -54,8 +54,14 @@
       "settings": {
       }
     }
+    ,
+    "product_info_tabs": {
+      "type": "product-info-tabs",
+      "settings": {}
+    }
   },
   "order": [
-    "main"
+    "main",
+    "product_info_tabs"
   ]
 }
