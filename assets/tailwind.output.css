@@ -1334,6 +1334,13 @@
       }
     }
   }
+  .hover\:text-primary-light {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-primary-light);
+      }
+    }
+  }
   .hover\:text-slate-900 {
     &:hover {
       @media (hover: hover) {
