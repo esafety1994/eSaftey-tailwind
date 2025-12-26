@@ -62,3 +62,9 @@
 	border-color: #000 !important;
 }
 
+/* Product details description: ensure lists use disc style and pl-4 */
+.product-details-expandable .prose ul {
+	list-style-type: disc;
+	padding-left: 2rem; /* equivalent to Tailwind pl-4 */
+}
+

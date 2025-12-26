@@ -38,6 +38,9 @@ h2{
 .white-button{
   @apply bg-white text-black hover:bg-black hover:text-white;
 }
+.outline-button{
+  @apply bg-transparent border
+}
 
 .primary-cart-button{
   @apply bg-black text-primary-light hover:bg-black/80 hover:scale-105 flex gap-2 normal-case items-center rounded-none py-4 px-8 ;

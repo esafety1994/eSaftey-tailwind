@@ -28,7 +28,6 @@
             type: 'slider',
             perView: thumbsPerView,
             gap: 8,
-           startAt: startAt,
           }).mount();
           thumbsEl._glideInstance = thumbs;
 
@@ -50,7 +49,31 @@
           // initialize active thumb and sync both ways
           setActiveThumb(startAt || 0);
           thumbs.on('run.after', function () { try { main.go('=' + thumbs.index); setActiveThumb(thumbs.index); } catch (e) {} });
-          main.on('run.after', function () { try { thumbs.go('=' + main.index); setActiveThumb(main.index); } catch (e) {} });
+          // Only move the thumbs carousel when the active thumbnail would be outside
+          // the currently visible thumbnails. This prevents the thumbnail strip from
+          // scrolling on every main slide change — it will only shift when the
+          // new active thumb is not visible, or when it becomes the last visible
+          // thumbnail after clicking next.
+          main.on('run.after', function () {
+            try {
+              var idx = main.index;
+              var totalThumbs = (thumbsEl.querySelectorAll('.glide__slides > li').length) || 0;
+              var currentThumbStart = typeof thumbs.index === 'number' ? thumbs.index : 0;
+              var perViewCount = thumbsPerView || 1;
+              var visibleEnd = currentThumbStart + perViewCount - 1;
+
+              if (idx < currentThumbStart) {
+                // active thumb moved to the left outside visible range -> show it as first
+                thumbs.go('=' + idx);
+              } else if (idx > visibleEnd) {
+                // active thumb moved to the right outside visible range -> shift so
+                // the active thumb becomes the last visible item
+                var newStart = Math.min(Math.max(idx - perViewCount + 1, 0), Math.max(totalThumbs - perViewCount, 0));
+                thumbs.go('=' + newStart);
+              }
+              setActiveThumb(idx);
+            } catch (e) {}
+          });
         }
 
         // lightbox: open when clicking main image

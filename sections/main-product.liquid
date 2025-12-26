@@ -10,16 +10,24 @@
 
         <!-- Product Info (Right) -->
         <div>
+            {% render 'product-tags', product: product %}
+            
+           
             <h1 class="text-3xl font-semibold mb-4">{{ product.title }}</h1>
-            <div class="mb-4 text-xl text-green-700 font-semibold">
-                {{ product.price | money }}
-            </div>
-            {% assign current_variant = product.selected_or_first_available_variant %}
+             {% assign current_variant = product.selected_or_first_available_variant %}
             {% if current_variant and current_variant.sku %}
-                <div class="text-sm text-gray-600 mb-2">SKU: {{ current_variant.sku }}</div>
+                <div><div class="text-sm text-gray-600 my-4">SKU: {{ current_variant.sku }}</div></div>
             {% endif %}
-            <div class="mb-6 prose">
-                {{ product.description }}
+            <div class="mb-4 text-xl font-semibold">
+                {% render 'product-price',
+                    product: product,
+                    show_compare_price: true,
+                    price_size: 20,
+                    show_ex_gst: true
+                %}
+            </div>
+            <div class="my-6 border-t-gray-300 border-t pt-6">
+                {% render 'product-features', product: product %}
             </div>
         
             {% render 'variant_picker' %}
@@ -35,6 +43,10 @@
 
         </div>
     </div>
+    <!-- Expandable full description + tabs -->
+            <div class="mb-6">
+                {% render 'product-details-expandable', product: product %}
+            </div>
 </div>
  
 {% schema %}

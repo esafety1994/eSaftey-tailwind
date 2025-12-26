@@ -1,0 +1,56 @@
+{% comment %}
+product-features.liquid
+Renders up to the first three bullet points found under a "Features" section
+in `product.description` (handles HTML <li> lists and simple dash/• bullets).
+Usage: {% render 'product-features', product: product %}
+{% endcomment %}
+
+{% assign desc = product.description | default: '' %}
+{% assign desc_down = desc | downcase %}
+{% assign after = '' %}
+
+{% if desc_down contains 'features' %}
+  {% if desc contains 'Features' %}
+    {% assign after = desc | split: 'Features' | last %}
+  {% elsif desc contains 'features' %}
+    {% assign after = desc | split: 'features' | last %}
+  {% endif %}
+{% endif %}
+
+{% if after != '' %}
+  {%- comment -%} Normalize common block breaks and strip all HTML/tags so any attributes
+     like data-start/data-end are removed before we split into bullets. {%- endcomment -%}
+  {% assign normalized = after | replace: '</p>', '\n' | replace: '<br>', '\n' | replace: '<br/>', '\n' | replace: '</li>', '\n' %}
+  {% assign normalized = normalized | strip_html %}
+
+  {%- comment -%} Prefer newline-separated items, then bullet char, then dashes. {%- endcomment -%}
+  {% if normalized contains '\n' %}
+    {% assign parts = normalized | split: '\n' %}
+  {% elsif normalized contains '•' %}
+    {% assign parts = normalized | split: '•' %}
+  {% else %}
+    {% assign parts = normalized | split: '-' %}
+  {% endif %}
+
+  <div>
+    <h4 class="text-base font-semibold mb-2">Features:</h4>
+    <ul class="product-features-list list-disc ml-6">
+    
+    {% assign taken = 0 %}
+    {% for part in parts %}
+      {% assign item = part | strip | replace_first: '&bull;', '' | replace_first: '•', '' %}
+      {% assign item = item | replace_first: '>', '' | replace_first: ':', '' | replace_first: '\t', '' | strip %}
+      {% if item != '' and item != ' ' and item.size > 1 and taken < 3 %}
+        <li>{{ item }}</li>
+        {% assign taken = taken | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+  <button type="button" class="mt-4 show-full-desc inline-flex items-center font-semibold text-sm text-gray-600 underline focus:outline-none" aria-expanded="false" aria-controls="product-details-target">
+    <span>Show full description</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-icon lucide-arrow-down"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+  </button>
+  </div>
+  
+
+{% endif %}
