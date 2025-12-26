@@ -74,9 +74,21 @@
         "product_count": 10,
         "show_ex_gst": false
       }
+    },
+    "breadcrumb_RyFCzR": {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": {
+        "container": "container",
+        "text_alignment": "center",
+        "hide_current": false,
+        "hide_on_mb": false,
+        "animations": "inherit"
+      }
     }
   },
   "order": [
+    "breadcrumb_RyFCzR",
     "custom_liquid_gqDFW7",
     "main",
     "product_info_tabs",
