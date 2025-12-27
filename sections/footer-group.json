@@ -26,25 +26,33 @@
         "7ebc2f78-975b-4a81-b874-103c3355a866": {
           "type": "menu",
           "settings": {
-            "menu": "main-menu",
+            "menu": "quick-links",
             "title": "Quick link",
-            "width": "25%"
+            "width": "16%"
           }
         },
         "49e72833-c68f-4a7b-ab64-3ef0cae99bcb": {
           "type": "menu",
           "settings": {
-            "menu": "main-menu",
-            "title": "Company",
-            "width": "25%"
+            "menu": "about-us",
+            "title": "About Us",
+            "width": "16%"
           }
         },
-        "93571032-b171-4c66-8b3e-96cd91946363": {
-          "type": "our_store",
+        "menu_FRaF7R": {
+          "type": "menu",
           "settings": {
-            "title": "Our store",
-            "description": "",
-            "width": "33%"
+            "menu": "policies",
+            "title": "Policies",
+            "width": "16%"
+          }
+        },
+        "menu_8WHn7V": {
+          "type": "menu",
+          "settings": {
+            "menu": "customer-service",
+            "title": "Customer Service",
+            "width": "16%"
           }
         }
       },
@@ -52,7 +60,8 @@
         "custom_text_gnBQQN",
         "7ebc2f78-975b-4a81-b874-103c3355a866",
         "49e72833-c68f-4a7b-ab64-3ef0cae99bcb",
-        "93571032-b171-4c66-8b3e-96cd91946363"
+        "menu_FRaF7R",
+        "menu_8WHn7V"
       ],
       "settings": {
         "footer_bottom_menu": ""
