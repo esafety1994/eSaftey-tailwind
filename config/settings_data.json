@@ -68,12 +68,6 @@
       "header": {
         "type": "header",
         "blocks": {
-          "logo_Gb3MXE": {
-            "type": "logo",
-            "settings": {
-              "logo": "shopify://shop_images/logo.webp"
-            }
-          },
           "mega_menu_item_MXFMei": {
             "type": "mega_menu_item",
             "settings": {
@@ -84,12 +78,31 @@
           }
         },
         "block_order": [
-          "logo_Gb3MXE",
           "mega_menu_item_MXFMei"
         ],
         "settings": {
           "show_search": true,
           "menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "custom_text_J67xPG": {
+            "type": "custom_text",
+            "settings": {
+              "title": "Custom text",
+              "image_max": "200px",
+              "description": "<p>Enter your email below to be the first to know about new collections and product launches.</p>",
+              "width": "25%"
+            }
+          }
+        },
+        "block_order": [
+          "custom_text_J67xPG"
+        ],
+        "settings": {
+          "footer_bottom_menu": ""
         }
       }
     },
