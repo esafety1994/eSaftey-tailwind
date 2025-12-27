@@ -1,0 +1,74 @@
+{% comment %} Reusable pagination snippet
+   Usage: {% render 'pagination', paginate: paginate, base_url: collection.url %}
+   Optional params: `page_param` (default: 'page')
+{% endcomment %}
+
+{% assign page_param = page_param | default: 'page' %}
+{% assign total = paginate.pages %}
+{% assign current = paginate.current_page %}
+
+<div class="mt-8 flex items-center justify-between">
+  <div>
+    {% if paginate.previous %}
+      <a href="{{ paginate.previous.url }}" class="flex px-3 py-1 bg-grey rounded hover:bg-primary" aria-label="Previous page"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="m15 18-6-6 6-6"/></svg></a>
+    {% endif %}
+  </div>
+
+  <div class="flex items-center gap-2">
+    {% if total <= 5 %}
+      {% for i in (1..total) %}
+        {% if i == current %}
+          <span class="px-3 py-1 bg-primary text-white rounded">{{ i }}</span>
+        {% else %}
+          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% if current == 1 %}
+        <span class="px-3 py-1 bg-primary text-black rounded">1</span>
+      {% else %}
+        <a href="{{ base_url }}?{{ page_param }}=1" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">1</a>
+      {% endif %}
+
+      {% assign start = current | minus: 1 %}
+      {% assign end = current | plus: 1 %}
+      {% if start < 2 %}
+        {% assign start = 2 %}
+        {% assign end = start | plus: 2 %}
+      {% endif %}
+      {% if end > total | minus: 1 %}
+        {% assign end = total | minus: 1 %}
+        {% assign start = end | minus: 2 %}
+      {% endif %}
+
+      {% if start > 2 %}
+        <span class="px-2">---</span>
+      {% endif %}
+
+      {% for i in (start..end) %}
+        {% if i == current %}
+          <span class="px-3 py-1 bg-primary text-black rounded">{{ i }}</span>
+        {% else %}
+          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if end < total | minus: 1 %}
+        <span class="px-2">---</span>
+      {% endif %}
+
+      {% if current == total %}
+        <span class="px-3 py-1 bg-primary text-black rounded">{{ total }}</span>
+      {% else %}
+        <a href="{{ base_url }}?{{ page_param }}={{ total }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">{{ total }}</a>
+      {% endif %}
+
+    {% endif %}
+  </div>
+
+  <div>
+    {% if paginate.next %}
+      <a href="{{ paginate.next.url }}" class="flex px-3 py-1 bg-grey rounded hover:bg-primary" aria-label="Next page"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="m9 18 6-6-6-6"/></svg></a>
+    {% endif %}
+  </div>
+</div>

@@ -28,7 +28,7 @@
 {% endfor %}
 
 {% if is_on_sale or product.tags.size > 0 %}
-  <div class="flex flex-wrap gap-3 pb-2 [&>span]:inline-block [&>span]:text-sm [&>span]:px-3 [&>span]:py-2 [&>span]:rounded-full [&>span]:font-medium">
+  <div class="flex flex-wrap gap-3 py-2 [&>span]:inline-block [&>span]:text-sm [&>span]:px-3 [&>span]:py-2 [&>span]:rounded-full [&>span]:font-medium">
     {% comment %} Sale first {% endcomment %}
     {% if is_on_sale %}
       {% if display_limit == 0 or tag_count < display_limit %}
