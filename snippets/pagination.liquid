@@ -36,8 +36,9 @@
         {% assign start = 2 %}
         {% assign end = start | plus: 2 %}
       {% endif %}
-      {% if end > total | minus: 1 %}
-        {% assign end = total | minus: 1 %}
+      {% assign last_minus_one = total | minus: 1 %}
+      {% if end > last_minus_one %}
+        {% assign end = last_minus_one %}
         {% assign start = end | minus: 2 %}
       {% endif %}
 
@@ -53,7 +54,7 @@
         {% endif %}
       {% endfor %}
 
-      {% if end < total | minus: 1 %}
+      {% if end < last_minus_one %}
         <span class="px-2">---</span>
       {% endif %}
 
