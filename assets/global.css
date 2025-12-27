@@ -1,0 +1,22 @@
+/* Footer link underline animation: left-to-right using primary color */
+a.underline-animation {
+	position: relative;
+	text-decoration: none;
+}
+a.underline-animation::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: -2px;
+	height: 1px;
+	width: 100%;
+	background: var(--color-primary, #1d4ed8);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 250ms ease;
+}
+a.underline-animation:hover::after,
+a.underline-animation:focus::after {
+	transform: scaleX(1);
+}
+

@@ -1,0 +1,47 @@
+{% comment %} Renders a single footer block. Expects `block` to be passed in. {% endcomment %}
+{% if block %}
+  {% case block.type %}
+    {% when 'menu' %}
+      {% assign menu = linklists[block.settings.menu] %}
+      {% if block.settings.title != blank %}
+        <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
+      {% elsif menu %}
+        <h4 class="text-base mb-4 text-primary">{{ menu.title }}</h4>
+      {% endif %}
+      {% if menu and menu.links.size > 0 %}
+        <ul class="space-y-2 text-sm">
+          {% for link in menu.links %}
+            <li class="footer-underline"><a href="{{ link.url }}" class="text-white underline-animation">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="text-sm text-gray-500">No menu assigned.</div>
+      {% endif %}
+
+    {% when 'our_store' %}
+      {% if block.settings.title != blank %}
+        <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
+      {% endif %}
+      <div class="text-sm text-white mb-4">{{ block.settings.description }}</div>
+      <div class="text-sm text-white">
+        <p>{{ shop.address.street }}, {{ shop.address.city }}, {{ shop.address.province }} {{ shop.address.zip }}</p>
+        <p>{{ shop.phone }}</p>
+        <p>{{ shop.email }}</p>
+      </div>
+
+    {% when 'custom_text' %}
+      {% if block.settings.title != blank %}
+        <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
+      {% endif %}
+      {% if block.settings.image %}
+        <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.title }}" style="max-width: {{ block.settings.image_max }};" class="mb-4">
+      {% endif %}
+      <div class="text-sm text-white">{{ block.settings.description }}</div>
+
+    {% when 'custom_html' %}
+      {% if block.settings.title != blank %}
+        <h4 class="text-base mb-4 text-white">{{ block.settings.title }}</h4>
+      {% endif %}
+      <div class="text-sm text-white">{{ block.settings.html }}</div>
+  {% endcase %}
+{% endif %}

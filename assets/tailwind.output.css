@@ -701,6 +701,9 @@
       margin-inline-end: calc(calc(var(--spacing) * 6) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
+  .gap-y-8 {
+    row-gap: calc(var(--spacing) * 8);
+  }
   .divide-y {
     :where(& > :not(:last-child)) {
       --tw-divide-y-reverse: 0;
@@ -1001,6 +1004,9 @@
   .text-\[\#333333\] {
     color: #333333;
   }
+  .text-gray-300 {
+    color: var(--color-gray-300);
+  }
   .text-gray-400 {
     color: var(--color-gray-400);
   }
@@ -1213,6 +1219,13 @@
       }
     }
   }
+  .hover\:border-primary {
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--color-primary);
+      }
+    }
+  }
   .hover\:bg-blue-700 {
     &:hover {
       @media (hover: hover) {
@@ -1386,6 +1399,11 @@
   .lg\:h-\[55vh\] {
     @media (width >= 64rem) {
       height: 55vh;
+    }
+  }
+  .lg\:grid-cols-3 {
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
   .lg\:grid-cols-4 {
