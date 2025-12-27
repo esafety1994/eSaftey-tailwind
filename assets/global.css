@@ -77,3 +77,22 @@ a.underline-animation:focus::after {
 
 
 
+/* Content style from Shopify */
+.shopify-content-box h2{
+    margin:20px 0;
+}
+
+.shopify-content-box p{
+    margin:20px 0;
+    font-size: 15px;;
+}
+
+.shopify-content-box h3{
+    margin:20px 0;
+    font-size: 30px;
+}
+
+.shopify-content-box ul{
+    list-style: disc;
+    padding-left: 26px;
+}

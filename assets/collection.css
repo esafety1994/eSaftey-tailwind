@@ -1,0 +1,18 @@
+.collection-description h2{
+    margin:20px 0;
+}
+
+.collection-description p{
+    margin:20px 0;
+    font-size: 15px;;
+}
+
+.collection-description h3{
+    margin:20px 0;
+    font-size: 30px;
+}
+
+.collection-description ul{
+    list-style: disc;
+    padding-left: 26px;
+}
