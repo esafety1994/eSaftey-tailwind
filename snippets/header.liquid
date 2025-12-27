@@ -7,11 +7,14 @@
         <h1 class="text-white text-2xl font-bold">{{ shop.name }}</h1>
       {% endif %}
     </div>
-    <div>{% render 'naviation-icons' %}</div>
+    <div class="flex items-center space-x-4">
+      <button id="shop-trigger" aria-expanded="false" class="text-white px-3 py-2 bg-transparent hover:bg-white/5 rounded">Shop</button>
+      <div>{% render 'naviation-icons' %}</div>
+    </div>
   </div>
 
-  <!-- Render navigation only once -->
-  <div class="flex items-center space-x-4">
-  
-  </div>
+  <!-- Drawer for mobile/trigger -->
+  {% if section.settings.menu %}
+    {% render 'drawer', menu_handle: section.settings.menu %}
+  {% endif %}
 </section>

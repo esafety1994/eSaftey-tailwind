@@ -20,3 +20,60 @@ a.underline-animation:focus::after {
 	transform: scaleX(1);
 }
 
+/* Sheet (shadcn-like) styles */
+.sheet-overlay {
+	transition: opacity 200ms ease;
+}
+.sheet-overlay.hidden { opacity: 0; pointer-events: none; }
+.sheet-overlay.visible { opacity: 1; pointer-events: auto; }
+
+.sheet {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	z-index: 50;
+	pointer-events: none;
+	justify-content: flex-start; /* align left sheet */
+}
+.sheet-content {
+	pointer-events: auto;
+	background: var(--sheet-bg, #0b0b0b);
+	color: var(--sheet-fg, #fff);
+	width: 20rem;
+	max-width: 100%;
+	transform: translateX(-100%);
+	transition: transform 300ms cubic-bezier(.2,.8,.2,1);
+	box-shadow: 0 10px 30px rgba(2,6,23,.6);
+	max-height: 100vh;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.sheet.open .sheet-content { transform: translateX(0%); }
+
+@media (min-width: 768px) {
+	.sheet-content { width: 28rem; }
+}
+
+/* Hide native scrollbar thumb until content is hovered (reduces visual chrome when not needed) */
+.sheet-content::-webkit-scrollbar { width: 8px; }
+.sheet-content::-webkit-scrollbar-track { background: transparent; }
+.sheet-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 6px; opacity: 0; transition: opacity 160ms ease; }
+.sheet-content:hover::-webkit-scrollbar-thumb { opacity: 1; }
+.sheet-content { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.14) transparent; }
+.sheet-content:hover { scrollbar-color: rgba(255,255,255,0.36) transparent; }
+
+/* Mega-menu panels: use height transition with translateY opacity for smooth open/close */
+.mega-panel {
+	height: 0;
+	overflow: hidden;
+	transform: translateY(-6px);
+	opacity: 0;
+	transition: height 260ms cubic-bezier(.2,.8,.2,1), transform 220ms ease, opacity 200ms ease;
+}
+.mega-panel.open {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+
+
