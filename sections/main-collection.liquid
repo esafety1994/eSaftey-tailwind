@@ -1,7 +1,84 @@
+<section id="collection-section-{{ section.id }}" class="container mx-auto px-4 py-8 max-w-7xl">
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+    <aside class="hidden md:block md:col-span-3">
+      {% if section.settings.show_filters %}
+        <div class="sticky top-20">
+          <h2 class="text-lg font-semibold mb-4">Filter</h2>
+          {% if collection.all_tags.size > 0 %}
+            <div class="mb-6">
+              <h3 class="text-sm font-medium mb-2">Tags</h3>
+              <ul class="space-y-2 text-sm">
+                {% for tag in collection.all_tags %}
+                  <li>
+                    <a href="{{ collection.url }}?constraint={{ tag | url_encode }}" class="text-gray-700 hover:text-black">{{ tag }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </aside>
+
+    <div class="md:col-span-9">
+      {% comment %} Render blocks from editor (breadcrumbs, custom liquid) {% endcomment %}
+      {% for block in section.blocks %}
+        {% if block.type == 'breadcrumb' %}
+          <nav class="text-sm text-gray-600 mb-4">{{ block.settings.breadcrumb_html }}</nav>
+        {% elsif block.type == 'custom_liquid' %}
+          <div class="mb-4">{{ block.settings.custom_liquid }}</div>
+        {% endif %}
+      {% endfor %}
+
+      <header class="mb-6">
+        <h1 class="text-2xl font-semibold">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <div class="text-gray-600 mt-2 text-sm">{{ collection.description }}</div>
+        {% endif %}
+      </header>
+
+      {% paginate collection.products by section.settings.products_per_page %}
+        {% assign cols = section.settings.columns %}
+        {% assign col_class = 'md:grid-cols-3' %}
+        {% if cols == '2' %}
+          {% assign col_class = 'md:grid-cols-2' %}
+        {% elsif cols == '3' %}
+          {% assign col_class = 'md:grid-cols-3' %}
+        {% elsif cols == '4' %}
+          {% assign col_class = 'md:grid-cols-4' %}
+        {% endif %}
+
+        <div class="grid grid-cols-2 {{ col_class }} gap-6">
+          {% for p in collection.products %}
+            {% assign prod = p %}
+            {% if p.handle and all_products[p.handle] %}
+              {% assign prod = all_products[p.handle] %}
+            {% endif %}
+            <div class="w-full">
+              {% render 'product-card', product: prod %}
+            </div>
+          {% endfor %}
+        </div>
+
+        {% render 'pagination', paginate: paginate, base_url: collection.url %}
+      {% endpaginate %}
+    </div>
+  </div>
+</section>
+
 {% schema %}
 {
-    "name": "Main Collection",
-    "settings": [
-    ],
+  "name": "Collection template",
+  "settings": [
+    { "type": "number", "id": "products_per_page", "label": "Products per page", "default": 9 },
+    { "type": "select", "id": "columns", "label": "Columns", "options": [ {"value":"2","label":"2"},{"value":"3","label":"3"},{"value":"4","label":"4"}], "default": "3" },
+    { "type": "checkbox", "id": "show_filters", "label": "Show filters column", "default": true }
+  ],
+  "blocks": [
+    { "type": "breadcrumb", "name": "Breadcrumb", "settings": [ { "id": "breadcrumb_html", "type": "richtext", "label": "Breadcrumb HTML" } ] },
+    { "type": "custom_liquid", "name": "Custom Liquid/HTML", "settings": [ { "id": "custom_liquid", "type": "liquid", "label": "Liquid/HTML" } ] }
+  ],
+  "max_blocks": 5,
+  "presets": [ { "name": "Collection template", "category": "Collection" } ]
 }
 {% endschema %}
