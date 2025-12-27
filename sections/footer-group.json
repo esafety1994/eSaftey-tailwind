@@ -14,9 +14,19 @@
     "footer": {
       "type": "footer",
       "blocks": {
+        "custom_text_gnBQQN": {
+          "type": "custom_text",
+          "settings": {
+            "title": "eSafety Supplies",
+            "image_max": "300px",
+            "description": "<p>ABN – 78 630 262 789</p><p><a href=\"tel:1300 291 700\">1300 291 700</a></p><p>Monday to Friday: 7AM - 5PM</p><p>Saturday: 8AM - 12PM</p><p><a href=\"mailto:sales@esafetysupplies.com.au\">sales@esafetysupplies.com.au</a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">37 Bentley St, </a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">Wetherill Park NSW 2164</a></p>",
+            "width": "25%"
+          }
+        },
         "7ebc2f78-975b-4a81-b874-103c3355a866": {
           "type": "menu",
           "settings": {
+            "menu": "main-menu",
             "title": "Quick link",
             "width": "25%"
           }
@@ -24,6 +34,7 @@
         "49e72833-c68f-4a7b-ab64-3ef0cae99bcb": {
           "type": "menu",
           "settings": {
+            "menu": "main-menu",
             "title": "Company",
             "width": "25%"
           }
@@ -38,11 +49,14 @@
         }
       },
       "block_order": [
+        "custom_text_gnBQQN",
         "7ebc2f78-975b-4a81-b874-103c3355a866",
         "49e72833-c68f-4a7b-ab64-3ef0cae99bcb",
         "93571032-b171-4c66-8b3e-96cd91946363"
       ],
-      "settings": {}
+      "settings": {
+        "footer_bottom_menu": ""
+      }
     }
   },
   "order": [
