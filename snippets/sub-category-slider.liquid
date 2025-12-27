@@ -1,0 +1,62 @@
+{%- comment -%}
+Sub Category Slider
+- Expects: `collection_list` as an array of collection objects (CollectionListDrop or array)
+- Usage: {% render 'sub-category-slider', collection_list: collection_list %}
+{%- endcomment -%}
+
+{%- assign slider_uid = section.id | default: 'global' -%}
+{%- assign slider_id = 'subcat-' | append: slider_uid -%}
+
+<div class="glide sub-category-glide relative" id="{{ slider_id }}">
+  <div class="glide__track" data-glide-el="track">
+    <ul class="glide__slides">
+      {% for col in collection_list %}
+        <li class="glide__slide px-2 !h-auto">
+          <a href="{{ col.url }}" class="h-full flex justify-center items-start bg-[#fee9a7] rounded-md p-4 hover:shadow-md focus:shadow-md transition-shadow">
+            <div class="flex flex-col items-start gap-3">
+              <div class="w-full h-full overflow-hidden rounded-md">
+                {% if col.image != blank %}
+                  <img src="{{ col.image | image_url: width: 180 }}" alt="{{ col.title | escape }}" class="w-full h-28 object-cover">
+                {% else %}
+                  <div class="w-full h-28 bg-gray-100 flex items-center justify-center">{{ 'image' | placeholder_svg_tag }}</div>
+                {% endif %}
+              </div>
+              <div class="w-full mt-auto">
+                <h3 class="text-lg text-center">{{ col.title }}</h3>
+              </div>
+            </div>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="glide__arrows" data-glide-el="controls">
+      <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        var slider = document.getElementById('{{ slider_id }}');
+        if (slider){
+        var glide = new Glide(slider, {
+            type: 'slider',
+            startAt: 0,
+            perView: 6,
+            rewind:false,
+            gap: 10,
+            breakpoints: {
+            1024: { perView: 3 },
+            768: { perView: 2 },
+            480: { perView: 1 }
+            }
+        });
+        glide.mount();
+        }
+    });
+</script>

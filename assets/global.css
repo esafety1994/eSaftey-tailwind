@@ -96,3 +96,29 @@ a.underline-animation:focus::after {
     list-style: disc;
     padding-left: 26px;
 }
+
+/******* slider arrows ***********/
+/* Gallery arrows and thumbnail active state */
+.product-gallery-arrow {
+	position: absolute;
+	top: 45%;
+	transform: translateY(-50%);
+	background: rgba(255,255,255,0.9);
+	border-radius: 9999px;
+	width: 36px;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+	border: none;
+	cursor: pointer;
+	z-index: 20;
+}
+.product-gallery-arrow--left { left: -40px; }
+.product-gallery-arrow--right { right: -40px; }
+.product-gallery-arrow svg { color: #111827; }
+.product-gallery-arrow:hover {
+    background: #FFE61F;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+}
