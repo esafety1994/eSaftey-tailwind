@@ -88,12 +88,20 @@
       "footer": {
         "type": "footer",
         "blocks": {
+          "menu_NwDpXW": {
+            "type": "menu",
+            "settings": {
+              "menu": "policies",
+              "title": "Policies",
+              "width": "16%"
+            }
+          },
           "menu_m3DzTF": {
             "type": "menu",
             "settings": {
               "menu": "about-us",
               "title": "About Us",
-              "width": "25%"
+              "width": "16%"
             }
           },
           "menu_WX87bJ": {
@@ -115,6 +123,7 @@
           }
         },
         "block_order": [
+          "menu_NwDpXW",
           "menu_m3DzTF",
           "menu_WX87bJ",
           "custom_text_J67xPG"
