@@ -88,6 +88,14 @@
       "footer": {
         "type": "footer",
         "blocks": {
+          "menu_cXPgBJ": {
+            "type": "menu",
+            "settings": {
+              "menu": "customer-service",
+              "title": "Customer Service",
+              "width": "16%"
+            }
+          },
           "menu_NwDpXW": {
             "type": "menu",
             "settings": {
@@ -123,6 +131,7 @@
           }
         },
         "block_order": [
+          "menu_cXPgBJ",
           "menu_NwDpXW",
           "menu_m3DzTF",
           "menu_WX87bJ",
