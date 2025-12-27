@@ -13,9 +13,36 @@
   "sections": {
     "footer": {
       "type": "footer",
-        "blocks": {
-
+      "blocks": {
+        "7ebc2f78-975b-4a81-b874-103c3355a866": {
+          "type": "menu",
+          "settings": {
+            "title": "Quick link",
+            "width": "25%"
+          }
+        },
+        "49e72833-c68f-4a7b-ab64-3ef0cae99bcb": {
+          "type": "menu",
+          "settings": {
+            "title": "Company",
+            "width": "25%"
+          }
+        },
+        "93571032-b171-4c66-8b3e-96cd91946363": {
+          "type": "our_store",
+          "settings": {
+            "title": "Our store",
+            "description": "",
+            "width": "33%"
+          }
         }
+      },
+      "block_order": [
+        "7ebc2f78-975b-4a81-b874-103c3355a866",
+        "49e72833-c68f-4a7b-ab64-3ef0cae99bcb",
+        "93571032-b171-4c66-8b3e-96cd91946363"
+      ],
+      "settings": {}
     }
   },
   "order": [
