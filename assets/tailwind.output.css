@@ -811,6 +811,9 @@
   .border-gray-800 {
     border-color: var(--color-gray-800);
   }
+  .border-grey {
+    border-color: var(--color-grey);
+  }
   .border-transparent {
     border-color: transparent;
   }

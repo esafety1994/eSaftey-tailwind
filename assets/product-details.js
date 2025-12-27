@@ -234,7 +234,7 @@
       btn.className = 'sidebar-faq-q w-full text-left px-4 py-3 flex items-center justify-between text-sm font-medium text-gray-900 focus:outline-none';
       btn.setAttribute('aria-expanded','false');
       btn.innerHTML = '<span class="flex-1">' + (p.question || '') + '</span>' + '<span class="sidebar-faq-icon ml-3 text-gray-500 text-lg font-medium border rounded-full w-6 h-6 flex items-center justify-center">+</span>';
-      btn.addEventListener('click', function(){ toggleSidebarFaqOpen(this); });
+      // handler will be attached by the standalone accordion script; do not add duplicate handler here
 
       var ansEl = document.createElement('div');
       ansEl.className = 'sidebar-faq-a px-4 py-3 text-sm text-gray-700';
@@ -247,6 +247,8 @@
       wrapper.appendChild(item);
     });
 
+    // accordion init removed — accordion.js will auto-detect new nodes
+
     // wire See full FAQ anchor: anchor might be outside the original section
     var anchor = preview.querySelector('[data-action="open-full-faq"]') || document.querySelector('[data-action="open-full-faq"]');
     if (anchor){
@@ -255,16 +257,7 @@
     }
   }
 
-  function toggleSidebarFaqOpen(btn){
-    var container = btn.parentElement;
-    var content = container.querySelector('.sidebar-faq-a');
-    var expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    container.classList.toggle('open');
-    if (content) content.hidden = expanded;
-    var icon = btn.querySelector('.sidebar-faq-icon');
-    if (icon) icon.textContent = expanded ? '+' : '-';
-  }
+  
 
   function openFullFaq(e, root){
     if (e && e.preventDefault) e.preventDefault();

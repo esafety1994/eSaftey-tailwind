@@ -1,0 +1,24 @@
+/* Accordion styles for FAQ sidebar (isolated) */
+.sidebar-faq { margin-top: 0.5rem; }
+.sidebar-faq-title { font-weight: 600; margin-bottom: 0.5rem; }
+.sidebar-faq-qa-wrapper { margin: 0; padding: 0; }
+.sidebar-faq-qa { padding:10px;}
+.sidebar-faq-q {
+  cursor: pointer;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+}
+.sidebar-faq-q > .faq-q-text, .sidebar-faq-q > .flex-1 { flex: 1 1 auto; }
+.sidebar-faq-q svg, .sidebar-faq-q .sidebar-faq-icon { flex: 0 0 auto; margin-left: 0.75rem; }
+.sidebar-faq-a { padding: 6px; display: block; line-height: 1.6  }
+.sidebar-faq-a[hidden] { display: none !important; }
+.sidebar-faq-qa.open .sidebar-faq-a { display: block; }
+.sidebar-faq-q .open-qa-icon { display: inline-block; }
+.sidebar-faq-q .close-qa-icon { display: none; }
+.sidebar-faq-qa.open .open-qa-icon { display: none; }
+.sidebar-faq-qa.open .close-qa-icon { display: inline-block; }
