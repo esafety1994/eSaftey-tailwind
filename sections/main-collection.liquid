@@ -31,12 +31,13 @@
       {% endfor %}
 
       <header class="mb-6">
-        <h1 class="text-2xl font-semibold">{{ collection.title }}</h1>
-        {% if collection.description != blank %}
-          <div class="text-gray-600 mt-2 text-sm">{{ collection.description }}</div>
+        <h1 class="text-4xl font-semibold text-center">{{ collection.title }}</h1>
+        {% if collection.metafields.custom.description_below_the_title!= blank %}
+          <p class="text-center my-4 text-base leading-loose">{{ collection.metafields.custom.description_below_the_title | newline_to_br }}</p>
         {% endif %}
       </header>
-
+      <!-- todo sub cat listing from metafiled child category --->
+      <!-- todo sort feature drop down --->
       {% paginate collection.products by section.settings.products_per_page %}
         {% assign cols = section.settings.columns %}
         {% assign col_class = 'md:grid-cols-3' %}
@@ -62,13 +63,19 @@
 
         {% render 'pagination', paginate: paginate, base_url: collection.url %}
       {% endpaginate %}
+
+      <div>
+        {%  render 'collection-video' %}
+
+        {%  render 'collection-faq', faq_data: collection.metafields.custom.faq_content_1.value %}
+      </div>
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Collection template",
+  "name": "Main Collection",
   "settings": [
     { "type": "number", "id": "products_per_page", "label": "Products per page", "default": 9 },
     { "type": "select", "id": "columns", "label": "Columns", "options": [ {"value":"2","label":"2"},{"value":"3","label":"3"},{"value":"4","label":"4"}], "default": "3" },
@@ -79,6 +86,6 @@
     { "type": "custom_liquid", "name": "Custom Liquid/HTML", "settings": [ { "id": "custom_liquid", "type": "liquid", "label": "Liquid/HTML" } ] }
   ],
   "max_blocks": 5,
-  "presets": [ { "name": "Collection template", "category": "Collection" } ]
+  "presets": [ { "name": "Main Collection", "category": "Collection" } ]
 }
 {% endschema %}

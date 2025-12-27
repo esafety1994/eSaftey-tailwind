@@ -11,8 +11,7 @@
     // toggle aria-expanded and arrow rotation for this button
     var expanded = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', String(!expanded));
-    var svg = btn.querySelector('svg');
-    if (svg) svg.classList.toggle('rotate-180');
+    // keep icon static: do not toggle rotation for show-full-desc / See full FAQ
 
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setTimeout(function(){ try { target.focus({preventScroll:true}); } catch (e) {} }, 300);
@@ -228,11 +227,11 @@
     preview.style.display = '';
     pairs.forEach(function(p){
       var item = document.createElement('div');
-      item.className = 'sidebar-faq-qa border-b border-gray-200 last:border-0';
+      item.className = 'sidebar-faq-qa border border-gray-200 my-2 rounded-md';
 
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'sidebar-faq-q w-full text-left px-4 py-3 flex items-center justify-between text-sm font-medium text-gray-900 hover:bg-gray-50 focus:outline-none';
+      btn.className = 'sidebar-faq-q w-full text-left px-4 py-3 flex items-center justify-between text-sm font-medium text-gray-900 focus:outline-none';
       btn.setAttribute('aria-expanded','false');
       btn.innerHTML = '<span class="flex-1">' + (p.question || '') + '</span>' + '<span class="sidebar-faq-icon ml-3 text-gray-500 text-lg font-medium border rounded-full w-6 h-6 flex items-center justify-center">+</span>';
       btn.addEventListener('click', function(){ toggleSidebarFaqOpen(this); });

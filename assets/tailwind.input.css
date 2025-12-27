@@ -2,6 +2,7 @@
 
 @theme {
   --color-primary: oklch(0.89 0.16 85.6);
+  --color-yellow:#ffe8a0;
   --color-primary-light:#FFE61F;
   --color-grey:#dedede;
   --color-bg-light:#fee9a7;
