@@ -1,0 +1,52 @@
+<footer class="bg-gray-50 p-2">
+  <div class="wrapper container m-auto">
+    {% render 'footer' %}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "select",
+      "id": "footer_content_type",
+      "label": "Content type",
+      "options": [
+        {"value":"custom","label":"Custom content"},
+        {"value":"menu","label":"Menu links"}
+      ],
+      "default":"custom"
+    },
+    {
+      "type": "text",
+      "id": "footer_custom_title",
+      "label": "Custom title",
+      "default": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "footer_custom_text",
+      "label": "Custom content (HTML allowed)",
+      "default": "content goes here"
+    },
+    {
+      "type": "text",
+      "id": "footer_menu_title",
+      "label": "Menu title",
+      "default": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}

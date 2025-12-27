@@ -1,0 +1,37 @@
+<section class="w-full flex flex-col space-y-4">
+  <div class="flex items-center justify-between">
+    <div>
+      {%  if shop.brand.logo %}
+        <a href="/"><img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="h-20 object-contain"></a>
+      {% else %}
+        <h1 class="text-gray-800 text-2xl font-bold">{{ shop.name }}</h1>
+      {% endif %}
+    </div>
+    <div>{% render 'naviation-icons' %}</div>
+  </div>
+
+  <div class="mt-4">
+    {% if section.settings.footer_content_type == 'custom' %}
+      {% if section.settings.footer_custom_title != blank %}
+        <h3 class="text-lg font-semibold mb-2">{{ section.settings.footer_custom_title }}</h3>
+      {% endif %}
+      {% if section.settings.footer_custom_text != blank %}
+        <div class="text-sm">{{ section.settings.footer_custom_text }}</div>
+      {% endif %}
+    {% else %}
+      {% if section.settings.footer_menu_title != blank %}
+        <h3 class="text-lg font-semibold mb-4">{{ section.settings.footer_menu_title }}</h3>
+      {% endif %}
+      {% assign menu = linklists[section.settings.footer_menu] %}
+      {% if menu and menu.links.size > 0 %}
+        <ul class="space-y-2 text-sm">
+          {% for link in menu.links %}
+            <li><a href="{{ link.url }}" class="hover:underline">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="text-sm text-gray-500">No menu assigned.</div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
