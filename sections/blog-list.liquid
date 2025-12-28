@@ -24,10 +24,7 @@
     {% endif %}
 
     {% if blog and blog.articles.size > 0 %}
-        {% render 'blog-card',
-            blog: blog,
-            posts_limit: posts_limit
-        %}
+      {% render 'blog-card', blog: blog, posts_limit: posts_limit %}
     {% else %}
       <p class="text-center text-gray-500 py-8">No blog posts found.</p>
     {% endif %}
@@ -150,7 +147,7 @@
         {
           "value": "outline-button",
           "label": "Outline"
-        },
+        }
       ],
       "default": "primary-button"
     }

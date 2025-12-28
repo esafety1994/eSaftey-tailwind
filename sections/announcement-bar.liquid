@@ -4,8 +4,23 @@
     class="bg-bg-light text-center relative transition-all duration-500 ease-in-out transform translate-y-0 opacity-100"
   >
     <!-- Close Button -->
-    <button id="announcement-close" class="absolute right-3 top-2  text-neutral-600 focus:outline-none w-5 h-5 cursor-pointer z-10 hover:text-bg-light-red transition-all" aria-label="Close">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x-icon lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+    <button
+      id="announcement-close"
+      class="absolute right-3 top-2  text-neutral-600 focus:outline-none w-5 h-5 cursor-pointer z-10 hover:text-bg-light-red transition-all"
+      aria-label="Close"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-circle-x-icon lucide-circle-x"
+      >
+        <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
+      </svg>
     </button>
     <!-- Glide.js slider structure -->
     <div class="glide">
@@ -31,7 +46,7 @@
         autoplay: 8000,
         animationDuration: 1000,
         perView: 1,
-        hoverpause: true
+        hoverpause: true,
       }).mount();
 
       var closeBtn = document.getElementById('announcement-close');
