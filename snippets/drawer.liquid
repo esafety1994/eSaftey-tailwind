@@ -6,7 +6,9 @@
     <div class="p-4 border-b border-gray-800 flex items-center justify-between">
       <div>
         {% if shop.brand.logo %}
-          <a href="/"><img src="{{ shop.brand.logo | image_url: width: 180 }}" alt="{{ shop.name }}" class="h-16 object-contain"></a>
+          <a href="/"
+            ><img src="{{ shop.brand.logo | image_url: width: 180 }}" alt="{{ shop.name }}" class="h-16 object-contain"
+          ></a>
         {% else %}
           <h2 id="sheet-title" class="text-lg font-bold">{{ shop.name }}</h2>
         {% endif %}
@@ -18,4 +20,3 @@
     </div>
   </div>
 </div>
-

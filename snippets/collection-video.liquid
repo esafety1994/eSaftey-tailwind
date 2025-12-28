@@ -1,49 +1,51 @@
 <style>
-    .video-thumbnail:after {
-    content: "";
-    width: 40px;
-    height: 30px;
-    background-color: #fff;
-    clip-path: polygon(25% 0%, 100% 50%, 25% 100%);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity .3s;
-    opacity: .8;
-}
-.video-thumbnail {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
+      .video-thumbnail:after {
+      content: "";
+      width: 40px;
+      height: 30px;
+      background-color: #fff;
+      clip-path: polygon(25% 0%, 100% 50%, 25% 100%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity .3s;
+      opacity: .8;
+  }
+  .video-thumbnail {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+  }
 </style>
 
 <!-- Youtube Videos -->
 <div class="my-6">
-    <h3 class="font-semibold text-xl my-4">Our Videos</h3>
-    <p>Discover our product usage and instructional videos</p>
-    <div class="my-4 flex gap-4 [&>div]:bg-primary-yellow [&>div]:p-3 [&>div]:cursor-pointer [&>div]:rounded-md [&>div]:hover:scale-105 [&>div]:transition-all">
-        <div class="video-thumbnail" data-video-id="WwXsExjTRtk">
-            <img src="https://img.youtube.com/vi/WwXsExjTRtk/hqdefault.jpg" alt="Video 1">
-        </div>
-        <div class="video-thumbnail" data-video-id="6R8jp1Q37yE">
-            <img src="https://img.youtube.com/vi/6R8jp1Q37yE/hqdefault.jpg" alt="Video 2">
-        </div>
-        <div class="video-thumbnail" data-video-id="56jeopNt4JA">
-            <img src="https://img.youtube.com/vi/56jeopNt4JA/hqdefault.jpg" alt="Video 3">
-        </div>
-        <div class="video-thumbnail" data-video-id="bx0Q_Ylg6vs">
-            <img src="https://img.youtube.com/vi/bx0Q_Ylg6vs/hqdefault.jpg" alt="Video 4">
-        </div>
+  <h3 class="font-semibold text-xl my-4">Our Videos</h3>
+  <p>Discover our product usage and instructional videos</p>
+  <div class="my-4 flex gap-4 [&>div]:bg-primary-yellow [&>div]:p-3 [&>div]:cursor-pointer [&>div]:rounded-md [&>div]:hover:scale-105 [&>div]:transition-all">
+    <div class="video-thumbnail" data-video-id="WwXsExjTRtk">
+      <img src="https://img.youtube.com/vi/WwXsExjTRtk/hqdefault.jpg" alt="Video 1">
     </div>
+    <div class="video-thumbnail" data-video-id="6R8jp1Q37yE">
+      <img src="https://img.youtube.com/vi/6R8jp1Q37yE/hqdefault.jpg" alt="Video 2">
+    </div>
+    <div class="video-thumbnail" data-video-id="56jeopNt4JA">
+      <img src="https://img.youtube.com/vi/56jeopNt4JA/hqdefault.jpg" alt="Video 3">
+    </div>
+    <div class="video-thumbnail" data-video-id="bx0Q_Ylg6vs">
+      <img src="https://img.youtube.com/vi/bx0Q_Ylg6vs/hqdefault.jpg" alt="Video 4">
+    </div>
+  </div>
 </div>
 
 <!-- Popup Modal -->
-<!-- to do modal for video
-                <div id="video-popup-yt" class="popup-yt">
-                    <div class="popup-yt-content">
-                        <span class="close">&times;</span>
-                        <iframe id="video-frame" width="92%" height="315" allowfullscreen></iframe>
-                    </div>
-                </div> -->
+<!--
+  to do modal for video
+  <div id="video-popup-yt" class="popup-yt">
+      <div class="popup-yt-content">
+          <span class="close">&times;</span>
+          <iframe id="video-frame" width="92%" height="315" allowfullscreen></iframe>
+      </div>
+  </div>
+-->
