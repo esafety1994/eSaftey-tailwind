@@ -1,9 +1,9 @@
 {% comment %} Main cart section - simple server-rendered cart with update/remove forms {% endcomment %}
 <section class="container mx-auto px-4 max-w-7xl">
-    {%- capture page_title -%}
+  {%- capture page_title -%}
     {{ 'cart.general.title' | t }}
 {%- endcapture -%}
-  {% render 'page-title', title: page_title,show_breadcrumb:true %}
+  {% render 'page-title', title: page_title, show_breadcrumb: true %}
 
   {% if cart.item_count == 0 %}
     <div class="text-center py-12">
@@ -37,8 +37,19 @@
             </div>
 
             <div class="flex items-center">
-              <input id="AuthorityToLeave" type="checkbox" name="attributes[Authority to leave]" value="Yes" {% if cart.attributes['Authority to leave'] == 'Yes' %}checked{% endif %} class="mr-2">
-              <label for="AuthorityToLeave" class="text-sm">I give authority to leave the parcel if I'm not available</label>
+              <input
+                id="AuthorityToLeave"
+                type="checkbox"
+                name="attributes[Authority to leave]"
+                value="Yes"
+                {% if cart.attributes['Authority to leave'] == 'Yes' %}
+                  checked
+                {% endif %}
+                class="mr-2"
+              >
+              <label for="AuthorityToLeave" class="text-sm"
+                >I give authority to leave the parcel if I'm not available</label
+              >
             </div>
 
             {%- comment -%} Update handled in-place via AJAX or by changing quantities; remove explicit Update button per design {%- endcomment -%}
@@ -48,20 +59,23 @@
 
       <div class="p-4">
         <div class="max-w-sm mr-0 ml-auto">
-            
-            <div class="mb-4">
-              <div class="flex justify-between"><span id="cart-subtotal-label">Subtotal ({{ cart.item_count }} item{% unless cart.item_count == 1 %}s{% endunless %})</span><span id="cart-subtotal-server" class="font-semibold">{{ cart.items_subtotal_price | money }}</span></div>
-              <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
+          <div class="mb-4">
+            <div class="flex justify-between">
+              <span id="cart-subtotal-label"
+                >Subtotal ({{ cart.item_count }} item{% unless cart.item_count == 1 %}s{% endunless %})</span
+              ><span id="cart-subtotal-server" class="font-semibold">{{ cart.items_subtotal_price | money }}</span>
+            </div>
+            <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
+          </div>
+          <a id="cart-checkout-btn" href="/checkout" class="block w-full text-center bg-black text-white py-3 rounded"
+            >Checkout</a
+          >
+          {% if settings.cart_trust_badge %}
+            <div class="my-4 flex justify-center w-4/5 m-auto">
+              <img src="{{ settings.cart_trust_badge | img_url: '1080x' }}" alt="Trust badge" class=" object-contain">
+            </div>
+          {% endif %}
         </div>
-        <a id="cart-checkout-btn" href="/checkout" class="block w-full text-center bg-black text-white py-3 rounded">Checkout</a>
-        {% if settings.cart_trust_badge %}
-                <div class="my-4 flex justify-center w-4/5 m-auto">
-                  <img src="{{ settings.cart_trust_badge | img_url: '1080x' }}" alt="Trust badge" class=" object-contain" />
-                </div>
-              {% endif %}
-        </div>
-
-        
       </div>
     </div>
   {% endif %}
