@@ -1,14 +1,22 @@
 <section class="w-full flex flex-col space-y-4">
   <div class="flex items-center justify-between">
     <div>
-      {%  if shop.brand.logo %}
-        <a href="/"><img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="h-20 object-contain"></a>
+      {% if shop.brand.logo %}
+        <a href="/"
+          ><img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="h-20 object-contain"
+        ></a>
       {% else %}
         <h1 class="text-white text-2xl font-bold">{{ shop.name }}</h1>
       {% endif %}
     </div>
     <div class="flex items-center space-x-4">
-      <button id="shop-trigger" aria-expanded="false" class="text-white px-3 py-2 bg-transparent hover:bg-white/5 rounded">Shop</button>
+      <button
+        id="shop-trigger"
+        aria-expanded="false"
+        class="text-white px-3 py-2 bg-transparent hover:bg-white/5 rounded"
+      >
+        Shop
+      </button>
       <div>{% render 'naviation-icons' %}</div>
     </div>
   </div>
