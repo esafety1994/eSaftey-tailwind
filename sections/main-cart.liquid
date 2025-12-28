@@ -1,6 +1,9 @@
 {% comment %} Main cart section - simple server-rendered cart with update/remove forms {% endcomment %}
 <section class="container mx-auto px-4 max-w-7xl">
-  <h1 class="text-2xl font-bold mb-6">Your Cart</h1>
+    {%- capture page_title -%}
+    {{ 'cart.general.title' | t }}
+{%- endcapture -%}
+  {% render 'page-title', title: page_title,show_breadcrumb:true %}
 
   {% if cart.item_count == 0 %}
     <div class="text-center py-12">
