@@ -12,7 +12,7 @@
 {% comment %} Display up to two priority tags: Sale, Bulky, Best Sellers, New Arrival {% endcomment %}
 {% assign tag_count = 0 %}
 {% comment %} optional `max_tags` render param: if not provided (or 0) show all tags {% endcomment %}
-{% if max_tags == nil %}
+{% if max_tags == null %}
   {% assign display_limit = 0 %}
 {% else %}
   {% assign display_limit = max_tags | plus: 0 %}
