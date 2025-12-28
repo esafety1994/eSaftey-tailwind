@@ -18,8 +18,7 @@
                 style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');"
               >
                 {% if block.settings.single_image %}
-                  <a href="{{ block.settings.button_link }}" class="w-full h-full block">
-                  </a>
+                  <a href="{{ block.settings.button_link }}" class="w-full h-full block"> </a>
                 {% else %}
                   <div class="w-full h-full flex carousel-content--{{ block.settings.content_position }}">
                     <div class="container m-auto">
