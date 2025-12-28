@@ -46,7 +46,7 @@
         <div class="glide__track" data-glide-el="track">
           <ul class="glide__slides">
             {% for image in product.images %}
-              <li class="glide__slide px-1">
+              <li class="glide__slide px-1 max-w-32">
                 <button class="thumb-btn focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
                   <img src="{{ image | img_url: '120x120' }}" alt="{{ image.alt | escape }}" class="rounded " />
                 </button>

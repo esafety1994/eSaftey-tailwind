@@ -96,7 +96,7 @@
 
 .product-thumbs .thumb-btn img { display: block; }
 .product-thumbs .thumb-btn { padding: 2px; border-radius: 4px; }
-.product-thumbs .thumb-active img { border: 1px solid #000; border-radius: 6px; }
+.product-thumbs .thumb-active img { border: 1px solid #000; border-radius: 6px; padding:2px; }
 
 /* namespace thumb container to avoid conflicting with other glide instances */
 .product-thumbs .glide__slides { display:flex; }
