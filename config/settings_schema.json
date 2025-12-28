@@ -7,8 +7,19 @@
                 "id": "type_base_font",
                 "label": "Font",
                 "default": "helvetica_n4"
-              },
+              }
         ]
         
+    },
+    {
+        "name": "Cart",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "cart_trust_badge",
+                "label": "Cart trust badge",
+                "info": "Image shown in the cart (trust badge)"
+            }
+        ]
     }
 ]
