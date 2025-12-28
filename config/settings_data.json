@@ -10,6 +10,7 @@
 {
   "current": {
     "type_base_font": "poppins_n4",
+    "cart_trust_badge": "shopify://shop_images/trust-badge.webp",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
