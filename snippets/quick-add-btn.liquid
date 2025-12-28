@@ -23,19 +23,7 @@
       Select an option
     </a>
   {% else %}
-    <form method="post" action="/cart/add" class="inline">
-      <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
-      <input type="hidden" name="quantity" value="1">
-      <button
-        type="submit"
-        class="{{ button_classes }} quick-add-btn"
-        data-product-id="{{ product.id }}"
-        aria-label="Add {{ product.title }} to cart"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
-        {{ button_text }}
-      </button>
-    </form>
+    {% render 'act-button', product: product %}
   {% endif %}
 {% else %}
   <button

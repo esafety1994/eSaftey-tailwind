@@ -177,6 +177,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Cart page quantity controls (increment/decrement/update/remove)
   document.addEventListener('click', function(e){
+    // quick-add quantity controls on product cards
+    const incQuick = e.target.closest && e.target.closest('.quick-add-inc');
+    const decQuick = e.target.closest && e.target.closest('.quick-add-dec');
+    if (incQuick || decQuick) {
+      const btn = incQuick || decQuick;
+      const form = btn.closest('form');
+      if (!form) return;
+      const input = form.querySelector('input[name="quantity"]');
+      if (!input) return;
+      let val = parseInt(input.value, 10) || 1;
+      if (incQuick) val = val + 1;
+      if (decQuick) val = Math.max(1, val - 1);
+      input.value = String(val);
+      return;
+    }
     const dec = e.target.closest('.cart-qty-decrement');
     const inc = e.target.closest('.cart-qty-increment');
     const updateBtn = e.target.closest('.cart-qty-update');

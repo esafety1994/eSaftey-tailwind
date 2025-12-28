@@ -52,12 +52,14 @@
   style="background-color: {{ card_background }}; border: 1px solid {{ card_border }}; border-radius: {{ card_border_radius }}px;"
 >
   <div class="relative overflow-hidden">
-    
-    <div href="{{ prod.url }}" class="block relative w-full z-10 group" style="padding-bottom: 100%;">
-        <!-- Hover Buttons Overlay -->
-    <div class="absolute top-2 right-2 z-30 translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-2">
-      {% render 'quick-view-btn', product: prod %}
-    </div>
+
+    <div class="block relative w-full z-10 group" style="padding-bottom: 100%;">
+      <!-- Hover Buttons Overlay -->
+      <div class="absolute top-2 right-2 z-30 translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-2">
+        {% render 'quick-view-btn', product: prod %}
+      </div>
+
+      <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
       {% if prod.featured_image %}
         {% if prod.images[1] %}
           {% if prod.images[1].src %}
@@ -104,6 +106,7 @@
           {{ 'product-1' | placeholder_svg_tag }}
         </div>
       {% endif %}
+      </a>
     </div>
   </div>
   {% render 'product-tags', product: prod, max_tags: max_tags %}

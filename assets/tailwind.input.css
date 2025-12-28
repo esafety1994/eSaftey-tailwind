@@ -44,7 +44,7 @@ h2{
 }
 
 .primary-cart-button{
-  @apply bg-black text-primary-light hover:bg-black/80 hover:scale-105 flex gap-2 normal-case items-center rounded-none py-4 px-8 ;
+  @apply cursor-pointer bg-black text-primary-light hover:bg-black/80 hover:scale-105 flex gap-2 normal-case items-center rounded-none py-4 px-8 ;
 }
 
 .icon-button{

@@ -18,6 +18,12 @@ class VariantPicker extends HTMLElement {
        this.variantSelector.forEach((selector) => {
            selector.addEventListener('change', function () { updateActiveOptionStyles(); });
        });
+       // also update visible selected option names
+       try { updateSelectedOptionNames(this); } catch(e) {}
+       // update selected option names whenever a radio changes
+       this.variantSelector.forEach((selector) => {
+           selector.addEventListener('change', () => { try { updateSelectedOptionNames(this); } catch(e) {} });
+       });
     }
 
     disconnectedCallback() {
@@ -42,30 +48,61 @@ class VariantPicker extends HTMLElement {
 
         fetch(url)
             .then((response) => response.text())
-            .then((html) => { 
+            .then((html) => {
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = html;
                 const newContent = tempDiv.querySelector('.product-container');
-                if (newContent && target) {
-                    // perform a smooth replacement: fade out already done via CSS; replace content then fade in
-                    target.innerHTML = newContent.innerHTML;
-                    try { document.dispatchEvent(new Event('product:content:replaced')); } catch (e) {}
-                    // remove loading state after a short delay to allow re-init
-                    setTimeout(function () {
-                        if (target) {
-                            target.classList.remove('is-loading');
-                            const ov = target.querySelector('.product-loading-overlay');
-                            if (ov) ov.parentNode.removeChild(ov);
-                        }
-                    }, 120);
-                } else {
-                    console.warn('VariantPicker: product-container not found in response or on page');
+
+                // Selective updates: gallery, price, sku, and the product form's variant id
+                try {
+                    // Update gallery if present
+                    const newGallery = tempDiv.querySelector('#product-glide');
+                    const galleryTarget = document.getElementById('product-glide');
+                    if (newGallery && galleryTarget) {
+                        // preserve and update start index attribute if provided
+                        var newStart = newGallery.getAttribute('data-start-index');
+                        if (newStart !== null) galleryTarget.setAttribute('data-start-index', newStart);
+                        galleryTarget.innerHTML = newGallery.innerHTML;
+                        // update thumbnails if present in response
+                        var newThumbs = tempDiv.querySelector('#product-thumbs');
+                        var thumbsTarget = document.getElementById('product-thumbs');
+                        if (newThumbs && thumbsTarget) thumbsTarget.innerHTML = newThumbs.innerHTML;
+                        try { document.dispatchEvent(new CustomEvent('product:content:replaced', { detail: { root: galleryTarget } })); } catch(e){}
+                    }
+
+                    // Update price
+                    const newPrice = tempDiv.querySelector('#product-price');
+                    const priceTarget = document.getElementById('product-price');
+                    if (newPrice && priceTarget) {
+                        priceTarget.innerHTML = newPrice.innerHTML;
+                    }
+
+                    // Update SKU
+                    const newSku = tempDiv.querySelector('#product-sku');
+                    const skuTarget = document.getElementById('product-sku');
+                    if (newSku && skuTarget) {
+                        skuTarget.innerHTML = newSku.innerHTML;
+                    }
+
+                    // Update form hidden variant id (first matching form input)
+                    const newVariantInput = tempDiv.querySelector('form input[name="id"]');
+                    const existingVariantInput = document.querySelector('form input[name="id"]');
+                    if (newVariantInput && existingVariantInput) {
+                        existingVariantInput.value = newVariantInput.value;
+                    }
+                } catch (err) {
+                    console.warn('VariantPicker: selective update failed', err);
+                }
+
+                // Remove loading overlay after a short delay to allow re-init
+                setTimeout(function () {
                     if (target) {
                         target.classList.remove('is-loading');
                         const ov = target.querySelector('.product-loading-overlay');
                         if (ov) ov.parentNode.removeChild(ov);
                     }
-                }
+                }, 120);
+
                 const newUrl = new URL(url, window.location.origin);
                 newUrl.searchParams.delete('section_id');
                 window.history.pushState({}, '', newUrl.toString());
@@ -105,5 +142,38 @@ function updateActiveOptionStyles() {
     } catch (e) { /* ignore */ }
 }
 
+function updateSelectedOptionNames(context) {
+    // context: either the variant-picker element or document
+    const root = context || document;
+    try {
+        const optionFieldsets = root.querySelectorAll('.variant-picker__option');
+        optionFieldsets.forEach(function(fs){
+            const legend = fs.querySelector('legend');
+            const display = fs.querySelector('.variant-selected-name');
+            if (!display || !legend) return;
+            const optionLabel = (legend.textContent || '').trim();
+            const optionNameLower = optionLabel.toLowerCase();
+            // only show for size or color options
+            if (!(optionNameLower.indexOf('size') !== -1 || optionNameLower.indexOf('colour') !== -1 || optionNameLower.indexOf('color') !== -1)) {
+                display.textContent = '';
+                return;
+            }
+            // find the checked input within this fieldset (or globally by name)
+            const input = fs.querySelector('input[type="radio"]');
+            if (!input) { display.textContent = ''; return; }
+            const optionName = input.getAttribute('name');
+            const checked = fs.querySelector('input[name="' + optionName + '"]:checked') || document.querySelector('input[name="' + optionName + '"]:checked');
+            if (checked) {
+                const lbl = document.querySelector('label[for="' + checked.id + '"]');
+                display.textContent = lbl ? lbl.textContent.trim() : (checked.value || '');
+            } else {
+                display.textContent = '';
+            }
+        });
+    } catch (e) { /* ignore */ }
+}
+
 document.addEventListener('DOMContentLoaded', updateActiveOptionStyles);
 document.addEventListener('product:content:replaced', updateActiveOptionStyles);
+document.addEventListener('DOMContentLoaded', function(){ updateSelectedOptionNames(document); });
+document.addEventListener('product:content:replaced', function(){ updateSelectedOptionNames(document); });
