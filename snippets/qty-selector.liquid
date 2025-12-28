@@ -1,0 +1,6 @@
+{%- comment -%} Quantity selector snippet. Renders - input + and exposes `name="quantity"` input. {%- endcomment -%}
+<div class="qty-selector inline-flex items-center space-x-1 border py-3 px-2 rounded-lg shadow-lg">
+  <button type="button" class="cursor-pointer qty-decrement flex items-center justify-center hover:text-bg-light-red"><svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+  <input type="text" name="quantity" value="1" readonly inputmode="numeric" pattern="[0-9]*" class="quantity-input w-12 text-center" aria-label="Quantity">
+  <button type="button" class="cursor-pointer qty-increment w-8 h-8 flex items-center justify-center hover:text-bg-light-red"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+</div>

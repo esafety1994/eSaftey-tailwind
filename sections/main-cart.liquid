@@ -1,0 +1,59 @@
+{% comment %} Main cart section - simple server-rendered cart with update/remove forms {% endcomment %}
+<section class="container mx-auto px-4 max-w-7xl">
+  <h1 class="text-2xl font-bold mb-6">Your Cart</h1>
+
+  {% if cart.item_count == 0 %}
+    <div class="text-center py-12">
+      <p class="text-gray-600 mb-4">Your cart is currently empty.</p>
+      <a href="/" class="inline-block bg-black text-white px-4 py-2 rounded">Return to shop</a>
+    </div>
+  {% else %}
+    <div class="grid gap-6">
+      <div>
+        <form id="cart-update-form" action="{{ routes.cart_url }}" method="post">
+          <table class="w-full table-auto">
+            <thead>
+              <tr class="text-left border-b border-grey">
+                <th class="py-2 font-medium text-base uppercase">Product</th>
+                <th class="py-2 font-medium text-base uppercase">Price</th>
+                <th class="py-2 font-medium text-base uppercase">Quantity</th>
+                <th class="py-2 font-medium text-base uppercase">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in cart.items %}
+                {% render 'cart-line-item', item: item, index: forloop.index %}
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="mt-6 space-y-4">
+            <div>
+              <label for="Cart-Note" class="block text-sm font-medium mb-1">Order note</label>
+              <textarea id="Cart-Note" name="note" class="w-full border rounded p-2" rows="3">{{ cart.note }}</textarea>
+            </div>
+
+            <div class="flex items-center">
+              <input id="AuthorityToLeave" type="checkbox" name="attributes[Authority to leave]" value="Yes" {% if cart.attributes['Authority to leave'] == 'Yes' %}checked{% endif %} class="mr-2">
+              <label for="AuthorityToLeave" class="text-sm">I give authority to leave the parcel if I'm not available</label>
+            </div>
+
+            {%- comment -%} Update handled in-place via AJAX or by changing quantities; remove explicit Update button per design {%- endcomment -%}
+          </div>
+        </form>
+      </div>
+
+      <div class="p-4 rounded">
+        <div class="max-w-sm mr-0 ml-auto">
+            
+            <div class="mb-4">
+          <div class="flex justify-between"><span>Subtotal</span><span class="font-semibold">{{ cart.items_subtotal_price | money }}</span></div>
+          <div class="flex text-sm text-gray-600">Tax included. Shipping calculated at checkout.</div>
+        </div>
+        <a id="cart-checkout-btn" href="/checkout" class="block w-full text-center bg-black text-white py-3 rounded {% unless cart.attributes['Authority to leave'] == 'Yes' %}opacity-50 pointer-events-none{% endunless %}">Checkout</a>
+        <a href="/" class="block w-full text-center mt-3 border py-2 rounded">Continue shopping</a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>

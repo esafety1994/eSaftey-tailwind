@@ -14,9 +14,9 @@
         </svg>
     </button>
     <!-- Cart Icon -->
-    <button id="cart-btn" class="relative p-1 rounded hover:text-bg-light transition">
+    <button id="cart-btn" aria-expanded="false" aria-controls="cart-drawer" class="relative p-1 rounded hover:text-bg-light transition">
         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round" class="w-6 h-6 cursor-pointer" ><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" /><path d="M9 11v-5a3 3 0 0 1 6 0v5" /></svg>
-        {% assign cart_count = 10 %}
+        {% assign cart_count = cart.item_count %}
         {% if cart_count > 0 %}
         <span class="absolute -top-1 -right-2 bg-bg-light-red text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
            {% if cart_count > 99 %}

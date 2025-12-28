@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape') closeSheet();
   });
 
+  // Cart functionality moved to assets/cart.js
+
   // Accordion behavior for mega-menu
   document.querySelectorAll('.mega-toggle').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -187,53 +189,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Handle cart form submissions with AJAX
-  const cartForms = document.querySelectorAll('form[action="/cart/add"]');
+  // Cart add-to-cart AJAX handler moved to assets/cart.js
 
-  cartForms.forEach(form => {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+// Quantity increment/decrement handlers for `.qty-selector`
+document.addEventListener('click', function(e){
+  const dec = e.target.closest('.qty-decrement');
+  const inc = e.target.closest('.qty-increment');
 
-      const formData = new FormData(this);
-      const button = this.querySelector('button[type="submit"]');
-      const originalText = button.textContent;
-
-      button.textContent = 'Adding...';
-      button.disabled = true;
-
-      fetch('/cart/add.js', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        button.textContent = 'Added!';
-        button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-        button.classList.add('bg-green-600', 'hover:bg-green-700');
-
-        // Update cart count if you have one
-        // updateCartCount();
-
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.disabled = false;
-          button.classList.remove('bg-green-600', 'hover:bg-green-700');
-          button.classList.add('bg-blue-600', 'hover:bg-blue-700');
-        }, 2000);
-      })
-      .catch(error => {
-        console.error('Error adding to cart:', error);
-        button.textContent = 'Error';
-        button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-        button.classList.add('bg-red-600', 'hover:bg-red-700');
-
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.disabled = false;
-          button.classList.remove('bg-red-600', 'hover:bg-red-700');
-          button.classList.add('bg-blue-600', 'hover:bg-blue-700');
-        }, 2000);
-      });
-    });
-  });
+  if (dec || inc) {
+    const btn = dec || inc;
+    const container = btn.closest('.qty-selector');
+    if (!container) return;
+    const input = container.querySelector('input[name="quantity"]');
+    if (!input) return;
+    let val = parseInt(input.value, 10);
+    if (isNaN(val)) val = 1;
+    if (dec) {
+      val = Math.max(1, val - 1);
+    } else {
+      val = val + 1;
+    }
+    input.value = String(val);
+  }
+});
 });

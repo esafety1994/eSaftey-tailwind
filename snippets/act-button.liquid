@@ -1,0 +1,13 @@
+{%- comment -%}
+Act-button wrapper: renders a `form 'product', product` containing the qty selector and add-to-cart button.
+Pass `product` when rendering: {% render 'act-button', product: product %}
+{%- endcomment -%}
+
+{% form 'product', product %}
+    {% assign current_variant = product.selected_or_first_available_variant %}
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+    <div class="flex items-center space-x-4">
+      {% render 'qty-selector' %}
+      {% render 'add-to-cart-button', product: product %}
+    </div>
+{% endform %}

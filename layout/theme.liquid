@@ -55,7 +55,9 @@
     {%- if template == 'product' -%}
       <script defer src="{{ 'product-details.js' | asset_url }}"></script>
     {%- endif -%}
+    <script defer src="{{ 'cart.js' | asset_url }}"></script>
     <script defer src="{{ 'theme.js' | asset_url }}"></script>
+    <script defer src="{{ 'cart-item-control.js' | asset_url }}"></script>
     {% sections 'footer-group' %}
   </body>
 </html>

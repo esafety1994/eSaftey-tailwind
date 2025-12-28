@@ -35,13 +35,7 @@
             {% render 'variant_picker' %}
             
 
-            {% form 'product', product %}
-                <input type="hidden" name="quantity" value="1">
-              <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                    Add to Cart
-                </button>
-
-            {% endform %}
+            {% render 'act-button', product: product %}
 
         </div>
     </div>

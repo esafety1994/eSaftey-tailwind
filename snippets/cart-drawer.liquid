@@ -1,0 +1,37 @@
+<div id="cart-overlay" class="fixed inset-0 bg-black/50 hidden z-50"></div>
+
+<aside id="cart-drawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white z-60 transform translate-x-full transition-transform shadow-lg" aria-hidden="true" role="dialog" aria-labelledby="cart-drawer-title">
+  <div class="flex items-center justify-between p-4 border-b">
+    <h2 id="cart-drawer-title" class="text-lg font-semibold">Your cart</h2>
+    <button id="cart-drawer-close" aria-label="Close cart" class="text-gray-700">&times;</button>
+  </div>
+
+  <div id="cart-drawer-content" class="p-4 overflow-y-auto h-[calc(100%-120px)]">
+    <div id="cart-items" class="space-y-4">
+      <!-- Cart items will be rendered here via JS -->
+    </div>
+    <div id="cart-empty" class="text-center text-gray-600">Your cart is empty.</div>
+  </div>
+
+  <div class="p-4 border-t">
+    <form action="{{ routes.cart_url }}" method="post" class="mb-3">
+      <label for="drawer-note" class="block text-sm font-medium mb-1">Order note</label>
+      <textarea id="drawer-note" name="note" class="w-full border rounded p-2 mb-3" rows="2"></textarea>
+      <div class="flex items-center mb-3">
+        <input id="drawer-authority" type="checkbox" name="attributes[Authority to leave]" value="Yes" class="mr-2">
+        <label for="drawer-authority" class="text-sm">Authority to leave</label>
+      </div>
+      <div>
+        <button type="submit" class="w-full text-center bg-gray-100 py-2 rounded">Save note</button>
+      </div>
+    </form>
+    <div class="flex items-center justify-between mb-3">
+      <span class="font-medium">Subtotal</span>
+      <span id="cart-subtotal" class="font-semibold">$0.00</span>
+    </div>
+    <div class="space-y-2">
+      <a id="cart-drawer-checkout-btn" href="/checkout" class="block w-full text-center bg-black text-white py-3 rounded">Checkout</a>
+      <button id="cart-view" class="w-full text-center border py-2 rounded">View cart</button>
+    </div>
+  </div>
+</aside>
