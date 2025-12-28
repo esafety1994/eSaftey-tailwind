@@ -1,11 +1,11 @@
 <div class="tab-panel hidden" data-panel="faq">
   {% comment %} Prefer the explicit `custom.rich_text` metafield and render with `rich_text` filter. Fallback to other keys if absent. {% endcomment %}
-    {% assign faq = product.metafields.custom.rich_text %}
-    {% if faq and faq != blank %}
-      <div class="faq-section text-sm p-4 rounded">
-        {{ faq | metafield_tag }}
-      </div>
-    {% else %}
-      <div class="text-sm text-gray-600">FAQ coming soon!</div>
-    {% endif %}
+  {% assign faq = product.metafields.custom.rich_text %}
+  {% if faq and faq != blank %}
+    <div class="faq-section text-sm p-4 rounded">
+      {{ faq | metafield_tag }}
+    </div>
+  {% else %}
+    <div class="text-sm text-gray-600">FAQ coming soon!</div>
+  {% endif %}
 </div>
