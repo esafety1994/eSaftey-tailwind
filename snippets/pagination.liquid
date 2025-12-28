@@ -1,6 +1,7 @@
-{% comment %} Reusable pagination snippet
-   Usage: {% render 'pagination', paginate: paginate, base_url: collection.url %}
-   Optional params: `page_param` (default: 'page')
+{% comment %}
+  Reusable pagination snippet
+  Usage: {% render 'pagination', paginate: paginate, base_url: collection.url %}
+  Optional params: `page_param` (default: 'page')
 {% endcomment %}
 
 {% assign page_param = page_param | default: 'page' %}
@@ -10,7 +11,24 @@
 <div class="mt-8 flex items-center justify-between">
   <div>
     {% if paginate.previous %}
-      <a href="{{ paginate.previous.url }}" class="flex px-3 py-1 bg-grey rounded hover:bg-primary" aria-label="Previous page"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="m15 18-6-6 6-6"/></svg></a>
+      <a
+        href="{{ paginate.previous.url }}"
+        class="flex px-3 py-1 bg-grey rounded hover:bg-primary"
+        aria-label="Previous page"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-6"
+        >
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </a>
     {% endif %}
   </div>
 
@@ -20,7 +38,9 @@
         {% if i == current %}
           <span class="px-3 py-1 bg-primary text-white rounded">{{ i }}</span>
         {% else %}
-          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">{{ i }}</a>
+          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">
+            {{- i -}}
+          </a>
         {% endif %}
       {% endfor %}
     {% else %}
@@ -50,7 +70,9 @@
         {% if i == current %}
           <span class="px-3 py-1 bg-primary text-black rounded">{{ i }}</span>
         {% else %}
-          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">{{ i }}</a>
+          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">
+            {{- i -}}
+          </a>
         {% endif %}
       {% endfor %}
 
@@ -61,15 +83,29 @@
       {% if current == total %}
         <span class="px-3 py-1 bg-primary text-black rounded">{{ total }}</span>
       {% else %}
-        <a href="{{ base_url }}?{{ page_param }}={{ total }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">{{ total }}</a>
+        <a href="{{ base_url }}?{{ page_param }}={{ total }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">
+          {{- total -}}
+        </a>
       {% endif %}
-
     {% endif %}
   </div>
 
   <div>
     {% if paginate.next %}
-      <a href="{{ paginate.next.url }}" class="flex px-3 py-1 bg-grey rounded hover:bg-primary" aria-label="Next page"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a href="{{ paginate.next.url }}" class="flex px-3 py-1 bg-grey rounded hover:bg-primary" aria-label="Next page">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-6"
+        >
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </a>
     {% endif %}
   </div>
 </div>

@@ -21,13 +21,11 @@
 {% endcomment %}
 
 {% comment %}
-
-    TO Dos:
-    - ratings
-    - stock level indicator
-    - price formatting options
-
-    {% endcomment %}
+  TO Dos:
+  - ratings
+  - stock level indicator
+  - price formatting options
+{% endcomment %}
 {% liquid
   assign show_vendor = show_vendor | default: false
   assign show_compare_price = show_compare_price | default: true
@@ -39,7 +37,7 @@
   assign title_color = title_color | default: '#000000'
   assign price_size = price_size | default: '14px'
   assign price_color = price_color | default: '#000000'
-  assign max_tags = max_tags | default :0
+  assign max_tags = max_tags | default: 0
 %}
 
 {% comment %} Try to resolve a full product object from `all_products` if `product` appears to be a shallow drop (handles may be present) {% endcomment %}
@@ -52,7 +50,6 @@
   style="background-color: {{ card_background }}; border: 1px solid {{ card_border }}; border-radius: {{ card_border_radius }}px;"
 >
   <div class="relative overflow-hidden">
-
     <div class="block relative w-full z-10 group" style="padding-bottom: 100%;">
       <!-- Hover Buttons Overlay -->
       <div class="absolute top-2 right-2 z-30 translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-2">
@@ -60,52 +57,52 @@
       </div>
 
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
-      {% if prod.featured_image %}
-        {% if prod.images[1] %}
-          {% if prod.images[1].src %}
+        {% if prod.featured_image %}
+          {% if prod.images[1] %}
+            {% if prod.images[1].src %}
+              <img
+                src="{{ prod.images[1] | image_url: width: 600 }}"
+                alt="{{ prod.images[1].alt | default: prod.title | escape }}"
+                class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {% else %}
+              <img
+                src="{{ prod.images[1] }}"
+                alt="{{ prod.title | escape }}"
+                class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {% endif %}
+          {% endif %}
+          {% if prod.featured_image.src %}
             <img
-              src="{{ prod.images[1] | image_url: width: 600 }}"
-              alt="{{ prod.images[1].alt | default: prod.title | escape }}"
-              class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20"
+              src="{{ prod.featured_image | image_url: width: 600 }}"
+              alt="{{ prod.featured_image.alt | default: prod.title | escape }}"
+              class="absolute inset-0 w-full h-full object-cover transition-all duration-300{% if product.images[1] %} group-hover:opacity-0{% else %} group-hover:scale-105{% endif %}"
               loading="lazy"
               width="600"
               height="600"
             >
           {% else %}
             <img
-              src="{{ prod.images[1] }}"
+              src="{{ prod.featured_image }}"
               alt="{{ prod.title | escape }}"
-              class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20"
+              class="absolute inset-0 w-full h-full object-cover transition-all duration-300{% if prod.images[1] %} group-hover:opacity-0{% else %} group-hover:scale-105{% endif %}"
               loading="lazy"
               width="600"
               height="600"
             >
           {% endif %}
-        {% endif %}
-        {% if prod.featured_image.src %}
-          <img
-            src="{{ prod.featured_image | image_url: width: 600 }}"
-            alt="{{ prod.featured_image.alt | default: prod.title | escape }}"
-            class="absolute inset-0 w-full h-full object-cover transition-all duration-300{% if product.images[1] %} group-hover:opacity-0{% else %} group-hover:scale-105{% endif %}"
-            loading="lazy"
-            width="600"
-            height="600"
-          >
         {% else %}
-          <img
-            src="{{ prod.featured_image }}"
-            alt="{{ prod.title | escape }}"
-            class="absolute inset-0 w-full h-full object-cover transition-all duration-300{% if prod.images[1] %} group-hover:opacity-0{% else %} group-hover:scale-105{% endif %}"
-            loading="lazy"
-            width="600"
-            height="600"
-          >
+          <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+            {{ 'product-1' | placeholder_svg_tag }}
+          </div>
         {% endif %}
-      {% else %}
-        <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
-          {{ 'product-1' | placeholder_svg_tag }}
-        </div>
-      {% endif %}
       </a>
     </div>
   </div>
@@ -126,7 +123,7 @@
       price_color: price_color
     %}
   </div>
-  <div class="flex justify-center my-2">        
-        {% render 'quick-add-btn', product: prod %}
-    </div>
+  <div class="flex justify-center my-2">
+    {% render 'quick-add-btn', product: prod %}
+  </div>
 </article>
