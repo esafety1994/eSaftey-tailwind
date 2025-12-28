@@ -98,7 +98,7 @@
         "product_2": "dark-green-wheelie-bin-80l-capacity",
         "product_3": "retractable-belt-barrier-magnetic",
         "product_4": "the-air-duster-2000",
-        "product_5": "eco-premium-wall-mounted-cigarette-bin",
+        "product_5": "dnc-3955-190gsm-hoop-reflective-cotton-drill-coveralls-orange-navy",
         "product_6": "2-shelf-warehouse-order-picker-trolley",
         "product_7": "3l-hydration-backpack-yellow",
         "product_8": "1-tonne-load-skate",
@@ -139,6 +139,7 @@
       "name": "Connect / Stay in touch",
       "settings": {
         "follow_title": "Follow us",
+        "follow_text": "Stay up to date on promotions, giveaways, BTS and free resources",
         "use_theme_social": true,
         "subscribe_title": "LET'S STAY IN TOUCH",
         "subscribe_text": "Subscribe for exclusive offers,  latest news & new product launches",
