@@ -1,4 +1,3 @@
-
 {% capture mobile_cols_class %}sm:grid-cols-{{ block.settings.columns_mobile }}{% endcapture %}
 
 {% capture mobile_cols_class %}sm:grid-cols-{{ section.settings.columns_mobile }}{% endcapture %}
@@ -8,7 +7,10 @@
     class="mx-auto px-5 w-full"
     style="max-width: {{ section.settings.max_width }}px; padding-top: {{ section.settings.section_padding }}px; padding-bottom: {{ section.settings.section_padding }}px;"
   >
-    <div class="grid {{ mobile_cols_class }} md:grid-cols-2 lg:grid-cols-4" style="gap: {{ section.settings.grid_gap }}px;">
+    <div
+      class="grid {{ mobile_cols_class }} md:grid-cols-2 lg:grid-cols-4"
+      style="gap: {{ section.settings.grid_gap }}px;"
+    >
       {% assign has_products = false %}
       {% for i in (1..8) %}
         {% assign product_key = 'product_' | append: i %}
@@ -27,7 +29,7 @@
               title_size: section.settings.product_title_size,
               title_color: section.settings.product_title_color,
               price_size: section.settings.price_size,
-              price_color: section.settings.price_color
+              price_color: section.settings.price_color,
               max_tags: 2
             %}
           </section>
@@ -40,7 +42,6 @@
     </div>
   </div>
 </div>
-
 
 {% schema %}
 {
@@ -144,7 +145,7 @@
       "type": "header",
       "content": "Card style"
     },
-    
+
     {
       "type": "checkbox",
       "id": "show_compare_price",

@@ -1,11 +1,11 @@
 {% comment %}
-Section: Product Information Tabs
-Renders the `product-details-expandable` snippet below the main product section.
+  Section: Product Information Tabs
+  Renders the `product-details-expandable` snippet below the main product section.
 {% endcomment %}
 
 <section class="container mx-auto px-4 py-8 max-w-7xl product-info-tabs">
   <div class="container mx-auto px-4">
-      {% render 'product-details-expandable', product: product, shipping_content: section.settings.shipping_content %}
+    {% render 'product-details-expandable', product: product, shipping_content: section.settings.shipping_content %}
   </div>
 </section>
 
