@@ -122,3 +122,42 @@ a.underline-animation:focus::after {
     background: #FFE61F;
     box-shadow: 0 4px 12px rgba(0,0,0,0.16);
 }
+
+
+.gradient-bg {
+    position: relative;
+    width: 100%;
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(92, 92, 92, 0.8) 100%), url(https://cdn.shopify.com/s/files/1/0638/5175/7736/files/cart-cta-bg.png?v=1748820020);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    max-width: 96%;
+    margin: 14px auto;
+    border-radius: 5px;
+}
+
+.gradient-bg .content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    padding: 18px 10px;
+    display: grid;
+    grid-gap: 10px;
+}
+
+.gradient-bg .content > div {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.gradient-bg svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+}
+
+.gradient-bg .content span {
+    font-size: 12px;
+}

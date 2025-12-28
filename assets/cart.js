@@ -35,51 +35,62 @@ document.addEventListener('DOMContentLoaded', function () {
 
     itemsContainer.innerHTML = '';
 
+    // ensure containers are visible/hidden correctly
     if (!cart || !cart.items || cart.items.length === 0) {
+      itemsContainer.style.display = 'none';
       emptyNode.style.display = 'block';
+      const emptyCount = cart ? (cart.item_count || 0) : 0;
       subtotalNode.textContent = formatMoney(cart ? cart.items_subtotal_price : 0);
+      const label = document.getElementById('cart-subtotal-label');
+      if (label) label.textContent = `Subtotal (${emptyCount} item${emptyCount === 1 ? '' : 's'})`;
       return;
     }
 
+    itemsContainer.style.display = 'block';
     emptyNode.style.display = 'none';
 
     cart.items.forEach(function(item, index){
       const line = index + 1;
       const row = document.createElement('div');
       row.className = 'flex items-center gap-3';
-      row.innerHTML = `
-        <img src="${item.image}" class="w-16 h-16 object-cover rounded" alt="${item.title}">
-        <div class="flex-1">
-          <div class="font-medium">${item.product_title}</div>
-          <div class="text-sm text-gray-600">${item.variant_title || ''}</div>
-          <div class="text-sm mt-2">${formatMoney(item.price)}</div>
-          <div class="mt-2 flex items-center space-x-2">
-            <input data-line="${line}" type="number" min="0" value="${item.quantity}" class="w-20 border p-1 rounded cart-qty-input">
-            <button data-line="${line}" class="text-red-600 remove-item">Remove</button>
+        // build options/variant display similar to server-rendered cart
+        let optionsHtml = '';
+        try {
+          if (item.options_with_values && item.options_with_values.length) {
+            const parts = [];
+            item.options_with_values.forEach(function(opt){
+              if (opt.value && opt.value !== 'Default Title') parts.push(`<span class="block">${opt.name}: ${opt.value}</span>`);
+            });
+            if (parts.length) optionsHtml = `<div class="text-sm text-gray-600">${parts.join('')}</div>`;
+          }
+        } catch (e) { /* ignore */ }
+        if (!optionsHtml && item.variant_title && item.variant_title !== 'Default Title') {
+          optionsHtml = `<div class="text-sm text-gray-600">${item.variant_title}</div>`;
+        }
+
+        row.innerHTML = `
+          <a href="${item.url}" class="inline-block">
+            <img src="${item.image}" class="w-28 h-28 object-contain border border-grey p-2 rounded" alt="${item.title}">
+          </a>
+          <div class="flex-1">
+            <div class="text-sm"><a href="${item.url}" class="hover:underline">${item.product_title}</a></div>
+            ${optionsHtml}
+            <div class="text-sm mt-2">${formatMoney(item.price)}</div>
+            <div class="mt-2 flex items-center space-x-2">
+              <cart-qty-control data-line="${line}" data-quantity="${item.quantity}"></cart-qty-control>
+              <button type="button" class="cart-item-remove text-sm text-gray-600 ml-2 cursor-pointer" data-line="${line}">Remove</button>
+            </div>
           </div>
-        </div>
-      `;
+        `;
       itemsContainer.appendChild(row);
     });
 
+    const count = cart.item_count || 0;
     subtotalNode.textContent = formatMoney(cart.items_subtotal_price);
+    const label = document.getElementById('cart-subtotal-label');
+    if (label) label.textContent = `Subtotal (${count} item${count === 1 ? '' : 's'})`;
 
-    // attach listeners for quantity inputs and remove buttons
-    itemsContainer.querySelectorAll('.cart-qty-input').forEach(function(input){
-      input.addEventListener('change', function(){
-        const line = this.getAttribute('data-line');
-        let qty = parseInt(this.value, 10);
-        if (isNaN(qty) || qty < 0) qty = 0;
-        updateCart(line, qty);
-      });
-    });
-
-    itemsContainer.querySelectorAll('.remove-item').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        const line = this.getAttribute('data-line');
-        updateCart(line, 0);
-      });
-    });
+    // remove buttons are handled by component or delegated handlers; nothing extra required here
   }
 
   function fetchCart() {
@@ -93,14 +104,10 @@ document.addEventListener('DOMContentLoaded', function () {
         countSpans.forEach(s => s.textContent = (count > 99 ? '99+' : count));
         // reflect Authority attribute into drawer and checkout buttons
         try {
+          // sync Authority checkbox state from cart attributes, but do not enforce it
           const hasAuth = cart.attributes && cart.attributes['Authority to leave'] === 'Yes';
           const drawerAuth = document.getElementById('drawer-authority');
-          const drawerCheckout = document.getElementById('cart-drawer-checkout-btn');
           if (drawerAuth) drawerAuth.checked = !!hasAuth;
-          if (drawerCheckout) {
-            drawerCheckout.classList.toggle('opacity-50', !hasAuth);
-            drawerCheckout.classList.toggle('pointer-events-none', !hasAuth);
-          }
         } catch (e) { /* ignore */ }
         return cart;
       })
@@ -149,27 +156,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }).then(r => r.json());
   }
 
-  // toggle checkout enable/disable based on checkbox
-  function toggleCheckoutState(checkbox, btn) {
-    if (!checkbox || !btn) return;
-    const enabled = checkbox.checked === true;
-    btn.classList.toggle('opacity-50', !enabled);
-    btn.classList.toggle('pointer-events-none', !enabled);
-  }
-
-  // bind page authority checkbox to checkout button
+  // sync handlers: we no longer disable checkout when Authority is unchecked
   const pageAuth = document.getElementById('AuthorityToLeave');
-  const pageCheckout = document.getElementById('cart-checkout-btn');
-  if (pageAuth && pageCheckout) {
-    pageAuth.addEventListener('change', function(){ toggleCheckoutState(pageAuth, pageCheckout); });
-  }
-
-  // bind drawer authority checkbox to drawer checkout
   const drawerAuth = document.getElementById('drawer-authority');
-  const drawerCheckoutBtn = document.getElementById('cart-drawer-checkout-btn');
-  if (drawerAuth && drawerCheckoutBtn) {
-    drawerAuth.addEventListener('change', function(){ toggleCheckoutState(drawerAuth, drawerCheckoutBtn); });
-  }
 
   // Intercept checkout clicks to save attributes first
   document.addEventListener('click', function(e){
@@ -180,10 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const targetBtn = pageAnchor ? document.getElementById('cart-checkout-btn') : document.getElementById('cart-drawer-checkout-btn');
     const authCheckbox = pageAnchor ? document.getElementById('AuthorityToLeave') : document.getElementById('drawer-authority');
     const noteEl = pageAnchor ? document.getElementById('Cart-Note') : document.getElementById('drawer-note');
-    if (!authCheckbox || !authCheckbox.checked) {
-      if (authCheckbox) authCheckbox.focus();
-      return;
-    }
+    // save note/attributes (if present) then redirect to checkout; do not block checkout when unchecked
     saveCartAttributes(noteEl ? '#'+noteEl.id : null, authCheckbox ? '#'+authCheckbox.id : null).then(function(){
       window.location.href = targetBtn.getAttribute('href');
     }).catch(function(){ window.location.href = targetBtn.getAttribute('href'); });

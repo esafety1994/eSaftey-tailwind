@@ -4,10 +4,12 @@
     <pre> {{ item | json }}</pre> 
    </div>
     {% if item.image %}
-      <img src="{{ item.image | img_url: '200x200' }}" alt="{{ item.title }}" class="w-26 h-26 object-cover rounded">
+      <a href="{{ item.url }}" class="inline-block">
+        <img src="{{ item.image | img_url: '200x200' }}" alt="{{ item.title }}" class="w-26 h-26 object-cover rounded">
+      </a>
     {% endif %}
     <div>
-      <div class="text-sm font-semibold">{{ item.title }}</div>
+      <div class="text-sm font-semibold"><a href="{{ item.url }}" class="hover:underline">{{ item.title }}</a></div>
             {% comment %} Only show option list when at least one option value is meaningful (not 'Default Title') {% endcomment %}
             {% assign show_options = false %}
             {% if item.options_with_values %}
