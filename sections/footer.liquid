@@ -9,7 +9,11 @@
     </div>
     {% if section.settings.footer_image %}
       <div class="mt-6">
-        <img src="{{ section.settings.footer_image | image_url: width: 800 }}" alt="Footer image" class="max-w-full h-auto">
+        <img
+          src="{{ section.settings.footer_image | image_url: width: 800 }}"
+          alt="Footer image"
+          class="max-w-full h-auto"
+        >
       </div>
     {% endif %}
   </div>
@@ -89,7 +93,7 @@
               "label": "100%"
             }
           ]
-        },
+        }
       ]
     },
     {
@@ -153,7 +157,7 @@
               "label": "100%"
             }
           ]
-        },
+        }
       ]
     },
     {
@@ -282,7 +286,7 @@
               "label": "100%"
             }
           ]
-        },
+        }
       ]
     }
   ]
