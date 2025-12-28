@@ -43,16 +43,23 @@
         </form>
       </div>
 
-      <div class="p-4 rounded">
+      <div class="p-4">
         <div class="max-w-sm mr-0 ml-auto">
             
             <div class="mb-4">
-          <div class="flex justify-between"><span>Subtotal</span><span class="font-semibold">{{ cart.items_subtotal_price | money }}</span></div>
-          <div class="flex text-sm text-gray-600">Tax included. Shipping calculated at checkout.</div>
+              <div class="flex justify-between"><span>Subtotal</span><span class="font-semibold">{{ cart.items_subtotal_price | money }}</span></div>
+              <div class="flex text-sm text-gray-600">Tax included. Shipping calculated at checkout.</div>
+              
         </div>
         <a id="cart-checkout-btn" href="/checkout" class="block w-full text-center bg-black text-white py-3 rounded {% unless cart.attributes['Authority to leave'] == 'Yes' %}opacity-50 pointer-events-none{% endunless %}">Checkout</a>
-        <a href="/" class="block w-full text-center mt-3 border py-2 rounded">Continue shopping</a>
+        {% if settings.cart_trust_badge %}
+                <div class="my-4 flex justify-center w-4/5 m-auto">
+                  <img src="{{ settings.cart_trust_badge | img_url: '1080x' }}" alt="Trust badge" class=" object-contain" />
+                </div>
+              {% endif %}
         </div>
+
+        
       </div>
     </div>
   {% endif %}

@@ -25,6 +25,11 @@
         <button type="submit" class="w-full text-center bg-gray-100 py-2 rounded">Save note</button>
       </div>
     </form>
+    {% if settings.cart_trust_badge %}
+      <div class="mb-4 flex justify-center">
+        <img src="{{ settings.cart_trust_badge | img_url: '300x' }}" alt="Trust badge" class="max-h-12 object-contain" />
+      </div>
+    {% endif %}
     <div class="flex items-center justify-between mb-3">
       <span class="font-medium">Subtotal</span>
       <span id="cart-subtotal" class="font-semibold">$0.00</span>
