@@ -18,50 +18,54 @@
 {%- endif -%}
 
 <div class="max-w-xl">
-    <div>
-        <div class="glide" id="product-glide" data-start-index="{{ start_index }}">
-            <div class="glide__track" data-glide-el="track">
-                <ul class="glide__slides">
-                    {% for image in product.images %}
-                    <li class="glide__slide">
-                        <img src="{{ image | img_url: '600x600' }}" alt="{{ image.alt | escape }}" class="w-full rounded shadow" />
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+  <div>
+    <div class="glide" id="product-glide" data-start-index="{{ start_index }}">
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+          {% for image in product.images %}
+            <li class="glide__slide">
+              <img src="{{ image | img_url: '600x600' }}" alt="{{ image.alt | escape }}" class="w-full rounded shadow">
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
 
-            <!-- prev/next arrows (absolute, vertically centered) -->
-            <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-        </div>    
+      <!-- prev/next arrows (absolute, vertically centered) -->
+      <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <!-- Thumbnails carousel -->
-    <div class="mt-3">
-      <div class="glide product-thumbs" id="product-thumbs">
-        <div class="glide__track" data-glide-el="track">
-          <ul class="glide__slides">
-            {% for image in product.images %}
-              <li class="glide__slide px-1 max-w-32">
-                <button class="thumb-btn focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
-                  <img src="{{ image | img_url: '120x120' }}" alt="{{ image.alt | escape }}" class="rounded " />
-                </button>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
+  <!-- Thumbnails carousel -->
+  <div class="mt-3">
+    <div class="glide product-thumbs" id="product-thumbs">
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+          {% for image in product.images %}
+            <li class="glide__slide px-1 max-w-32">
+              <button class="thumb-btn focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
+                <img src="{{ image | img_url: '120x120' }}" alt="{{ image.alt | escape }}" class="rounded ">
+              </button>
+            </li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
+  </div>
 </div>
 
 <!-- Lightbox modal -->
 <div id="product-lightbox" class="hidden fixed inset-0 z-50 bg-black bg-opacity-75 items-center justify-center p-4">
   <button id="product-lightbox-close" class="absolute top-4 right-4 text-white text-2xl">&times;</button>
-  <img id="product-lightbox-img" src="" alt="" class="max-w-full max-h-full rounded" />
+  <img id="product-lightbox-img" src="" alt="" class="max-w-full max-h-full rounded">
 </div>
 
 <script src="{{ 'product-media.js' | asset_url }}" defer></script>

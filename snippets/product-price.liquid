@@ -16,28 +16,29 @@
 %}
 <div
   class="grid gap-2 my-4 items-center"
-    style="font-size: {{ price_size }}; color: {{ price_color }};"
-  
+  style="font-size: {{ price_size }}; color: {{ price_color }};"
 >
   {% if product.compare_at_price > product.price and show_compare_price %}
     <span>
-        <span class="text-gray-500 line-through mr-2">
-      {{ product.compare_at_price | money }}
-    </span>
-    <span class="text-green-600">Save: {{ product.compare_at_price | minus: product.price | money }}</span>
+      <span class="text-gray-500 line-through mr-2">
+        {{ product.compare_at_price | money }}
+      </span>
+      <span class="text-green-600">Save: {{ product.compare_at_price | minus: product.price | money }}</span>
     </span>
   {% endif %}
- <span class="font-semibold"> <span >{{ product.price | money }}</span>
-  {% if product.tags contains 'isgstexempt' %}
-    <span>
-      <span class="ml-2 text-sm">(GST Exempt)</span>
-    </span>
-  {% else %}
-    <span class="ml-2 text-sm">(inc GST)</span>
-  {% endif %}</span>
+  <span class="font-semibold">
+    <span>{{ product.price | money }}</span>
+    {% if product.tags contains 'isgstexempt' %}
+      <span>
+        <span class="ml-2 text-sm">(GST Exempt)</span>
+      </span>
+    {% else %}
+      <span class="ml-2 text-sm">(inc GST)</span>
+    {% endif -%}
+  </span>
   {% if show_ex_gst %}
-        {% comment %} Calculate price excluding 10% GST. product.price is in cents, so divide by 1.1 then round to nearest cent. {% endcomment %}
-        {% assign ex_price = product.price | divided_by: 1.1 | round %}
-        <span class="text-base text-gray-600">{{ ex_price | money }} (ex. GST)</span>
-      {% endif %}
+    {% comment %} Calculate price excluding 10% GST. product.price is in cents, so divide by 1.1 then round to nearest cent. {% endcomment %}
+    {% assign ex_price = product.price | divided_by: 1.1 | round %}
+    <span class="text-base text-gray-600">{{ ex_price | money }} (ex. GST)</span>
+  {% endif %}
 </div>
