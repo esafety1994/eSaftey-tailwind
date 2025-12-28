@@ -5,7 +5,13 @@
       <!-- JS will populate preview items here -->
     </div>
     <div class="px-4 py-3 bg-white">
-      <a href="#" class="mt-4 show-full-desc inline-flex items-center font-semibold text-sm text-gray-600 underline focus:outline-none" data-action="open-full-faq" aria-expanded="false" aria-controls="product-details-target">
+      <a
+        href="#"
+        class="mt-4 show-full-desc inline-flex items-center font-semibold text-sm text-gray-600 underline focus:outline-none"
+        data-action="open-full-faq"
+        aria-expanded="false"
+        aria-controls="product-details-target"
+      >
         <span>See full FAQ</span>
         <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M14.456 11.944L9.6 16.8 4.744 11.944" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -15,18 +21,23 @@
     </div>
   </div>
 </div>
-    <script>
-      (function(){
-        if (window.__eSafetyAccordionLoaded) { if (window.esafetyAccordionInit) window.esafetyAccordionInit(document); return; }
-        window.__eSafetyAccordionLoaded = true;
-        var l = document.createElement('link');
-        l.rel = 'stylesheet';
-        l.href = '{{ "accordion.css" | asset_url }}';
-        document.head.appendChild(l);
-        var s = document.createElement('script');
-        s.src = '{{ "accordion.js" | asset_url }}';
-        s.defer = true;
-        s.onload = function(){ if (window.esafetyAccordionInit) window.esafetyAccordionInit(document); };
-        document.body.appendChild(s);
-      })();
-    </script>
+<script>
+  (function () {
+    if (window.__eSafetyAccordionLoaded) {
+      if (window.esafetyAccordionInit) window.esafetyAccordionInit(document);
+      return;
+    }
+    window.__eSafetyAccordionLoaded = true;
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = '{{ "accordion.css" | asset_url }}';
+    document.head.appendChild(l);
+    var s = document.createElement('script');
+    s.src = '{{ "accordion.js" | asset_url }}';
+    s.defer = true;
+    s.onload = function () {
+      if (window.esafetyAccordionInit) window.esafetyAccordionInit(document);
+    };
+    document.body.appendChild(s);
+  })();
+</script>
