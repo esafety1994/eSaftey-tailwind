@@ -24,7 +24,7 @@
       {% if menu %}
         {% for link in menu.links %}
           <li class="hover:border-bg-light-red">
-            <a class="text-sm hover:text-bg-light-red" href="{{ link.url }}">{{ link.title }}</a>
+            <a class="text-sm hover:text-bg-light-red {% if link.url == '/' %}hidden md:block{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
           </li>
         {% endfor %}
       {% else %}

@@ -5,30 +5,81 @@
     height: calc(var(--spacing) * 3);
     width: calc(var(--spacing) * 3);
   }
+  .carousel-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 94%;
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: 20px;
+  }
+  .carousel-content-wrapper p {
+    font-size: 34px;
+  }
+  .carousel-content-right .carousel-content-wrapper {
+    align-items: flex-end;
+    margin-left: auto;
+    margin-right: 120px;
+  }
+  .carousel-content-right .carousel-content-wrapper p {
+    text-align: right;
+  }
+  @media (width >= 40rem) {
+    .carousel-content-left .carousel-content-wrapper {
+      margin-left: 120px;
+    }
+    .carousel-content-wrapper p {
+      font-size: 42px;
+    }
+  }
 </style>
-<div class="glide relative">
+<div class="hero-banner glide relative">
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'slider_item' %}
             <li class="glide__slide relative w-full">
-              <div
-                class="h-[20vh] lg:h-[55vh] w-full bg-cover bg-center"
-                style="background-image: url('{{ block.settings.background | image_url: width: 1920 }}');"
-              >
+              <div class="relative w-full h-[35vh] lg:h-[55vh] overflow-hidden">
+                {% assign img = block.settings.background %}
+                {% if img %}
+                  <picture>
+                    <source
+                      media="(max-width: 640px)"
+                      srcset="{{ img | image_url: width:1200 }} 720w"
+                      sizes="100vw"
+                    />
+                    <source
+                      media="(max-width: 1024px)"
+                      srcset="{{ img | image_url: width:768 }} 768w, {{ img | image_url: width:1536 }} 1536w"
+                      sizes="100vw"
+                    />
+                    <img
+                      src="{{ img | image_url: width:1024 }}"
+                      srcset="{{ img | image_url: width:1024 }} 1024w, {{ img | image_url: width:1920 }} 1920w"
+                      sizes="100vw"
+                      alt="{{ block.settings.title | strip_html | escape }}"
+                      loading="lazy"
+                      class="w-full h-full object-cover object-center block"
+                      width="1920"
+                      height="900"
+                    />
+                  </picture>
+                {% endif %}
+
                 {% if block.settings.single_image %}
-                  <a href="{{ block.settings.button_link }}" class="w-full h-full block"> </a>
+                  <a href="{{ block.settings.button_link }}" class="w-full h-full block absolute inset-0"> </a>
                 {% else %}
-                  <div class="w-full h-full flex carousel-content--{{ block.settings.content_position }}">
-                    <div class="container m-auto">
-                      <div class="max-w-lg {% if block.settings.content_position == 'right' %} ml-auto {% endif %}">
+                  <div class="w-full h-full flex carousel-content-{{ block.settings.content_position }} absolute inset-0">
+                    <div class="container m-auto ">
+                      <div class="carousel-content-wrapper {% if block.settings.content_position == 'right' %} ml-auto {% endif %}">
                         {% if block.settings.title != blank %}
-                          <h3 class="text-2xl mb-4">{{ block.settings.title }}</h3>
+                          <h3 class="text-xl md:text-2xl mb-4">{{ block.settings.title }}</h3>
                         {% endif %}
 
                         {% if block.settings.description != blank %}
-                          <h2 class="text-xl mb-6 font-semibold">{{ block.settings.description }}</h2>
+                          <div class="text-4xl mb-6 font-semibold">{{ block.settings.description }}</div>
                         {% endif %}
 
                         {% if block.settings.button_text != blank and block.settings.button_link != blank %}
@@ -51,7 +102,7 @@
   {% if block_count > 1 %}
     <div class="glide__arrows absolute top-1/2 w-full" data-glide-el="controls">
       <button
-        class="glide__arrow glide__arrow--left absolute left-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
+        class="hidden md:block glide__arrow glide__arrow--left absolute left-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
         data-glide-dir="<"
       >
         <svg
@@ -66,7 +117,7 @@
         </svg>
       </button>
       <button
-        class="glide__arrow glide__arrow--right absolute right-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
+        class="hidden md:block glide__arrow glide__arrow--right absolute right-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
         data-glide-dir=">"
       >
         <svg
@@ -99,37 +150,12 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    function initGlide(el) {
-      new Glide(el, {
-        autoplay: false,
-        hoverpause: true,
-      }).mount();
-    }
-
-    var glideEls = document.querySelectorAll('.glide');
-    if (!glideEls.length) return;
-
-    // If Glide already loaded, just init each instance
-    if (window.Glide) {
-      glideEls.forEach(initGlide);
-      return;
-    }
-
-    // Otherwise load CSS (if not present) and script once, then init
-    if (!document.querySelector('link[href*="glide.core.min.css"]')) {
-      var l = document.createElement('link');
-      l.rel = 'stylesheet';
-      l.href = "{{ 'glide.core.min.css' | asset_url }}";
-      document.head.appendChild(l);
-    }
-
-    var s = document.createElement('script');
-    s.src = "{{ 'glide.min.js' | asset_url }}";
-    s.defer = true;
-    s.onload = function () {
-      glideEls.forEach(initGlide);
-    };
-    document.head.appendChild(s);
+    new Glide('.hero-banner', {
+      type: 'slider',
+      autoplay: false,
+      hoverpause: true,
+      perView: 1,
+    }).mount();
   });
 </script>
 {% schema %}
