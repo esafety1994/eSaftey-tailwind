@@ -12,9 +12,13 @@
           <a
             href="{{ section.settings.collection_1.url }}"
             class="block w-full overflow-hidden relative h-[280px] md:h-full"
+            style="background-color: {{ section.settings.bg_color_img_1 }}"
           >
         {% else %}
-          <div class="block w-full overflow-hidden relative h-[280px] md:h-full">
+          <div
+            class="block w-full overflow-hidden relative h-[280px] md:h-full"
+            style="background-color: {{ section.settings.bg_color_img_1 }}"
+          >
         {% endif %}
         {% render 'responsive-image', image: section.settings.image_1, image_class: 'w-full h-full object-cover' %}
         {% if section.settings.button_text_1 != blank %}
@@ -39,9 +43,16 @@
     >
       {% if section.settings.image_2 %}
         {% if section.settings.collection_2 %}
-          <a href="{{ section.settings.collection_2.url }}" class="block overflow-hidden relative h-[280px] md:h-auto">
+          <a
+            href="{{ section.settings.collection_2.url }}"
+            class="block overflow-hidden relative h-[280px] md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_2 }}"
+          >
         {% else %}
-          <div class="block overflow-hidden relative h-[280px] md:h-auto">
+          <div
+            class="block overflow-hidden relative h-[280px] md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_2 }}"
+          >
         {% endif %}
         {% render 'responsive-image', image: section.settings.image_2, image_class: 'w-full h-full object-cover' %}
         {% if section.settings.button_text_2 != blank %}
@@ -60,9 +71,16 @@
 
       {% if section.settings.image_3 %}
         {% if section.settings.collection_3 %}
-          <a href="{{ section.settings.collection_3.url }}" class="block overflow-hidden relative h-[280px] md:h-auto">
+          <a
+            href="{{ section.settings.collection_3.url }}"
+            class="block overflow-hidden relative h-[280px] md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_3 }}"
+          >
         {% else %}
-          <div class="block overflow-hidden relative h-[280px] md:h-auto">
+          <div
+            class="block overflow-hidden relative h-[280px] md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_3 }}"
+          >
         {% endif %}
         {% render 'responsive-image', image: section.settings.image_3, image_class: 'w-full h-full object-cover' %}
         {% if section.settings.button_text_3 != blank %}
@@ -87,9 +105,13 @@
           <a
             href="{{ section.settings.collection_4.url }}"
             class="block w-full overflow-hidden relative h-[280px] sm:h-[420px] md:h-full"
+            style="background-color: {{ section.settings.bg_color_img_4 }}"
           >
         {% else %}
-          <div class="block w-full overflow-hidden relative h-[280px] sm:h-[420px] md:h-full">
+          <div
+            class="block w-full overflow-hidden relative h-[280px] sm:h-[420px] md:h-full"
+            style="background-color: {{ section.settings.bg_color_img_4 }}"
+          >
         {% endif %}
         {% render 'responsive-image', image: section.settings.image_4, image_class: 'w-full h-full object-cover' %}
         {% if section.settings.button_text_4 != blank %}
