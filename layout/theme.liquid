@@ -21,31 +21,9 @@
 
     {{ content_for_header }}
 
-    {% comment %}
-      Load Poppins from Google Fonts and set as CSS variable for Tailwind
-    {% endcomment %}
+    {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
-    {% assign font_handle = settings.type_base_font | default: 'poppins_n4' %}
-
-    <!-- Load Poppins from Google Fonts (preconnect + preload for performance) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" onload="this.rel='stylesheet'">
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    </noscript>
-
-    <style>
-      :root {
-        /* Force Poppins as the default font for the theme */
-        --default-font-family: 'Poppins', sans-serif;
-      }
-
-      /* Ensure common weight classes use Poppins */
-      .font-normal { font-family: 'Poppins', sans-serif !important; font-weight: 400; }
-      .font-semibold { font-family: 'Poppins', sans-serif !important; font-weight: 600; }
-      .font-bold { font-family: 'Poppins', sans-serif !important; font-weight: 700; }
-    </style>
+      {% render 'font-face' %}
     {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
     {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
     {{ 'global.css' | asset_url | stylesheet_tag }}

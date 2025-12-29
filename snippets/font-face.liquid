@@ -1,0 +1,29 @@
+{% liquid
+  assign font_normal = settings.type_base_font
+  assign font_medium = settings.type_base_font | font_modify: 'weight', '500'
+  assign font_semibold = settings.type_base_font | font_modify: 'weight', '600'
+  assign font_bold = settings.type_base_font | font_modify: 'weight', '700'
+%}
+
+<link rel="preload" as="font" href="{{ font_normal | font_url }}" type="font/woff2" crossorigin>
+
+{% comment %} Emit @font-face rules for the weights we need {% endcomment %}
+<style>
+  {{ font_normal | font_face: font_display: 'swap' }}
+  {{ font_medium | font_face: font_display: 'swap' }}
+  {{ font_semibold | font_face: font_display: 'swap' }}
+  {{ font_bold | font_face: font_display: 'swap' }}
+
+  {% comment %}
+    Extract the font-family name from the generated @font-face text
+    and expose it as a CSS variable `--default-font-family`.
+  {% endcomment %}
+  {% assign _face = font_normal | font_face: font_display: 'swap' %}
+  {% assign _fam_part = _face | split: 'font-family:' | last %}
+  {% assign _fam_raw = _fam_part | split: ';' | first | strip %}
+  {% assign _fam_clean = _fam_raw | remove: '"' | remove: "'" %}
+
+  :root {
+    --default-font-family: '{{ _fam_clean }}', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+</style>
