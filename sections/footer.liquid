@@ -1,19 +1,15 @@
 <footer class="py-8 bg-black">
-  <div class="container mx-auto px-4 max-w-7xl">
-    <div class="w-full flex flex-wrap justify-between gap-y-8">
+  <div class="container mx-auto px-4">
+    <div class="w-full flex flex-col justify-between gap-y-8 md:flex-row md:flex-wrap">
       {% for block in section.blocks %}
-        <div class="mb-4" style="width: {{ block.settings.width }};">
+        <div class="mb-4">
           {% render 'footer-block', block: block %}
         </div>
       {% endfor %}
     </div>
     {% if section.settings.footer_image %}
       <div class="mt-6">
-        <img
-          src="{{ section.settings.footer_image | image_url: width: 800 }}"
-          alt="Footer image"
-          class="max-w-full h-auto"
-        >
+        {% render 'responsive-image', image: section.settings.footer_image, wrapper_class: 'w-full h-32 md:h-48 lg:h-64 overflow-hidden', image_class: 'w-full h-full object-contain object-center' %}
       </div>
     {% endif %}
   </div>
@@ -54,46 +50,6 @@
           "default": "Service",
           "info": "Leave blank to use menu title"
         },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        }
       ]
     },
     {
@@ -118,46 +74,6 @@
           "content": "Contact information",
           "info": "Go to \"Theme settings > Store contact\" to update these information."
         },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        }
       ]
     },
     {
@@ -188,46 +104,6 @@
           "label": "Content",
           "default": "<p>Enter your email below to be the first to know about new collections and product launches.</p>"
         },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        }
       ]
     },
     {
@@ -247,46 +123,7 @@
           "label": "HTML",
           "info": "Liquid code supported"
         },
-        {
-          "type": "select",
-          "id": "width",
-          "label": "Container width",
-          "default": "25%",
-          "options": [
-            {
-              "value": "16%",
-              "label": "16%"
-            },
-            {
-              "value": "25%",
-              "label": "25%"
-            },
-            {
-              "value": "33%",
-              "label": "33%"
-            },
-            {
-              "value": "50%",
-              "label": "50%"
-            },
-            {
-              "value": "66%",
-              "label": "66%"
-            },
-            {
-              "value": "75%",
-              "label": "75%"
-            },
-            {
-              "value": "83%",
-              "label": "83%"
-            },
-            {
-              "value": "100%",
-              "label": "100%"
-            }
-          ]
-        }
+  
       ]
     }
   ]

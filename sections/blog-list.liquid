@@ -6,15 +6,11 @@
 {% assign blog = blogs[section.settings.blog] %}
 {% assign posts_limit = section.settings.posts_limit | default: 3 %}
 
-<div class="w-full" {{ section.shopify_attributes }}>
-  <div
-    class="mx-auto px-5 w-full"
-    style="max-width: {{ section.settings.max_width }}px; padding-top: {{ section.settings.section_padding }}px; padding-bottom: {{ section.settings.section_padding }}px; max-width: 1600px;"
-  >
+<div class="container m-auto" {{ section.shopify_attributes }}>
     {% if section.settings.heading != blank %}
-      <h2 class="!text-3xl text-center mb-6" style="color: {{ section.settings.heading_color }};">
+      <h3 class="text-3xl font-semibold text-center mb-8 md:mb-12" style="color: {{ section.settings.heading_color }};">
         {{ section.settings.heading }}
-      </h2>
+      </h3>
     {% endif %}
 
     {% if section.settings.subheading != blank %}
@@ -24,13 +20,15 @@
     {% endif %}
 
     {% if blog and blog.articles.size > 0 %}
-      {% render 'blog-card', blog: blog, posts_limit: posts_limit %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14 md:gap-6">
+        {% render 'blog-card', blog: blog, posts_limit: posts_limit %}
+      </div>
     {% else %}
       <p class="text-center text-gray-500 py-8">No blog posts found.</p>
     {% endif %}
 
     {% if section.settings.button_text != blank and section.settings.button_url != blank %}
-      <div class="text-center my-12">
+      <div class="text-center my-12 md:my-16">
         <a
           href="{{ section.settings.button_url }}"
           class="btn {{ section.settings.button_style }}"
@@ -40,7 +38,6 @@
       </div>
     {% endif %}
   </div>
-</div>
 
 {% schema %}
 {
@@ -64,30 +61,6 @@
       "max": 12,
       "step": 1,
       "default": 3
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "Maximum width",
-      "min": 600,
-      "max": 1600,
-      "step": 100,
-      "unit": "px",
-      "default": 1200
-    },
-    {
-      "type": "range",
-      "id": "section_padding",
-      "label": "Section padding",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "default": 40
     },
     {
       "type": "header",

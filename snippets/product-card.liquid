@@ -46,7 +46,7 @@
   {% assign prod = all_products[product.handle] %}
 {% endif %}
 <article
-  class="flex flex-col overflow-hidden transition-transform transform p-3 h-full"
+  class="flex flex-col overflow-hidden transition-transform transform p-3 h-[580px] md:h-full max-w-sm m-auto 2xl:max-w-none"
   style="background-color: {{ card_background }}; border: 1px solid {{ card_border }}; border-radius: {{ card_border_radius }}px;"
 >
   <div class="relative overflow-hidden">
@@ -59,44 +59,23 @@
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
-            {% if prod.images[1].src %}
-              <img
-                src="{{ prod.images[1] | image_url: width: 600 }}"
-                alt="{{ prod.images[1].alt | default: prod.title | escape }}"
-                class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20"
-                loading="lazy"
-                width="600"
-                height="600"
-              >
-            {% else %}
-              <img
-                src="{{ prod.images[1] }}"
-                alt="{{ prod.title | escape }}"
-                class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20"
-                loading="lazy"
-                width="600"
-                height="600"
-              >
-            {% endif %}
+            <img
+              data-hover-src="{% if prod.images[1].src %}{{ prod.images[1] | image_url: width: 600 }}{% else %}{{ prod.images[1] }}{% endif %}"
+              alt="{{ prod.images[1].alt | default: prod.title | escape }}"
+              class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20 hover-image"
+              loading="lazy"
+              width="600"
+              height="600"
+            >
           {% endif %}
-          {% if prod.featured_image.src %}
-            <img
-              src="{{ prod.featured_image | image_url: width: 600 }}"
-              alt="{{ prod.featured_image.alt | default: prod.title | escape }}"
-              class="absolute inset-0 w-full h-full object-cover transition-all duration-300{% if product.images[1] %} group-hover:opacity-0{% else %} group-hover:scale-105{% endif %}"
-              loading="lazy"
-              width="600"
-              height="600"
-            >
-          {% else %}
-            <img
-              src="{{ prod.featured_image }}"
-              alt="{{ prod.title | escape }}"
-              class="absolute inset-0 w-full h-full object-cover transition-all duration-300{% if prod.images[1] %} group-hover:opacity-0{% else %} group-hover:scale-105{% endif %}"
-              loading="lazy"
-              width="600"
-              height="600"
-            >
+          {% if prod.featured_image %}
+            {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-contain md:object-cover transition-all duration-300' %}
+            {% if prod.images[1] %}
+              {% assign featured_class = featured_class | append: ' group-hover:opacity-0' %}
+            {% else %}
+              {% assign featured_class = featured_class | append: ' group-hover:scale-105' %}
+            {% endif %}
+            {% render 'responsive-image', image: prod.featured_image, image_class: featured_class, wrapper_class: 'absolute inset-0 z-10' %}
           {% endif %}
         {% else %}
           <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -124,6 +103,24 @@
     %}
   </div>
   <div class="flex justify-center my-2">
-    {% render 'quick-add-btn', product: prod %}
+    {% render 'quick-add-btn', product: prod, mobile_hide_qty: true %}
   </div>
+  <script>
+    (function(){
+      function applyHoverImages(){
+        if(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+          document.querySelectorAll('img[data-hover-src]').forEach(function(img){
+            if(!img.getAttribute('src')) img.setAttribute('src', img.getAttribute('data-hover-src'));
+          });
+        }
+      }
+      if(!window.__hoverImagesApplied){
+        window.__hoverImagesApplied = true;
+        applyHoverImages();
+        document.addEventListener('DOMContentLoaded', applyHoverImages);
+      } else {
+        applyHoverImages();
+      }
+    })();
+  </script>
 </article>

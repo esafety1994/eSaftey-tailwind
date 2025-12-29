@@ -13,17 +13,18 @@
   assign button_classes = button_classes | default: 'btn primary-cart-button'
 %}
 
+
 {% if product.available %}
   {% if product.variants.size > 1 %}
     <a
       href="{{ product.url }}"
-      class="{{ button_classes }} quick-add-btn"
+      class="{{ button_classes }} quick-add-btn w-full justify-center text-center"
       aria-label="Select options for {{ product.title }}"
     >
       Select an option
     </a>
   {% else %}
-    {% render 'act-button', product: product %}
+    {% render 'act-button', product: product, mobile_hide_qty: mobile_hide_qty %}
   {% endif %}
 {% else %}
   <button

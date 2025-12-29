@@ -39,12 +39,11 @@
         <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
       {% endif %}
       {% if block.settings.image %}
-        <img
-          src="{{ block.settings.image | image_url }}"
-          alt="{{ block.settings.title }}"
-          style="max-width: {{ block.settings.image_max }};"
-          class="mb-4"
-        >
+        {% render 'responsive-image',
+          image: block.settings.image,
+          wrapper_class: 'w-full h-auto mb-4',
+          image_class: 'w-full h-full object-contain object-center'
+        %}
       {% endif %}
       <div class="text-sm text-white">{{ block.settings.description }}</div>
 

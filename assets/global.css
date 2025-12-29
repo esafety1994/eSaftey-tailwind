@@ -19,6 +19,9 @@ a.underline-animation:hover::after,
 a.underline-animation:focus::after {
 	transform: scaleX(1);
 }
+.read-more-button.underline-animation::after{
+	background: black;
+}
 
 /* Sheet (shadcn-like) styles */
 .sheet-overlay {
