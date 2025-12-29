@@ -29,7 +29,7 @@
           {% for block in section.blocks %}
             {% case block.type %}
               {% when 'announcement_content' %}
-                <li class="glide__slide py-2 text-xs md:text-sm text-[#333333] font-semibold">
+                <li class="glide__slide py-2 text-xs md:text-sm text-[#333333] font-semibold  w-full h-14 md:h-12 ">
                   {{ block.settings.content }}
                 </li>
             {% endcase %}
@@ -42,7 +42,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       new Glide('.glide', {
-        type: 'carousel',
+        type: 'slider',
         autoplay: 8000,
         animationDuration: 1000,
         perView: 1,

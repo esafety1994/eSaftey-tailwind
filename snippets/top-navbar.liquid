@@ -1,0 +1,35 @@
+<div class="flex justify-between md:items-center wrapper flex-col-reverse md:flex-row">
+  <ul class="contact-info flex gap-8 text-sm mt-4 md:mt-0">
+  <li>
+      {% if shop.phone %}
+        <a href="tel:{{ shop.phone }}" class="flex gap-1 group hover:text-bg-light-red">
+          <span class="icon bg-black w-6 flex text-white px-1 rounded-md group-hover:bg-bg-light-red"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></span>
+          <span class="hidden md:block">{{ shop.phone }}</span>
+        </a>
+      {% endif %}
+    </li>
+    <li>
+      {% if shop.email %}
+        <a href="mailto:{{ shop.email }}" class="flex gap-1 group hover:text-bg-light-red">
+          <span class="icon bg-black w-6 flex text-white px-1 rounded-md group-hover:bg-bg-light-red"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></span>
+          <span class="hidden md:block">{{ shop.email }}</span>
+        </a>
+      {% endif %}
+    </li>
+  </ul>
+
+  <nav class="navigation">
+    <ul class="flex flex-col md:flex-row [&>li]:border-r-0 md:gap-4 md:[&>li]:border-r [&>li]:pr-2 [&>li]:last:border-r-0 [&>li]:last:pr-0">
+      {% assign menu = linklists['top-bar'] %}
+      {% if menu %}
+        {% for link in menu.links %}
+          <li class="hover:border-bg-light-red">
+            <a class="text-sm hover:text-bg-light-red" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      {% else %}
+        <li>No menu found.</li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>

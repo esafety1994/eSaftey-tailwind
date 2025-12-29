@@ -3,17 +3,17 @@
     <div>
       {% if shop.brand.logo %}
         <a href="/"
-          ><img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="h-20 object-contain"
+          ><img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" width="200" height="100" class="h-20 object-contain"
         ></a>
       {% else %}
         <h1 class="text-white text-2xl font-bold">{{ shop.name }}</h1>
       {% endif %}
     </div>
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center md:space-x-4">
       <button
         id="shop-trigger"
         aria-expanded="false"
-        class="text-white px-3 py-2 bg-transparent hover:bg-white/5 rounded"
+        class="text-white px-3 py-2 bg-transparent hover:bg-white/5 rounded cursor-pointer"
       >
         Shop
       </button>
@@ -23,7 +23,7 @@
 
   <!-- Drawer for mobile/trigger -->
   {% if section.settings.menu %}
-    {% render 'drawer', menu_handle: section.settings.menu %}
+    {% render 'drawer', menu_handle: section.settings.menu%}
   {% endif %}
   {% render 'cart-drawer' %}
 </section>

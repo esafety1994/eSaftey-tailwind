@@ -1,4 +1,4 @@
-<div class="flex space-x-4 items-center text-white">
+<div class="flex md:space-x-4 items-center text-white">
   <!-- Search Icon -->
   <button id="search-btn" class="p-1 rounded hover:text-bg-light transition">
     <svg class="w-6 h-6 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@
     </svg>
     {% assign cart_count = cart.item_count %}
     {% if cart_count > 0 %}
-      <span class="absolute -top-1 -right-2 bg-bg-light-red text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
+      <span class="absolute -top-1 -right-1 bg-bg-light-red text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
         {% if cart_count > 99 %}
           99+
         {% else %}
