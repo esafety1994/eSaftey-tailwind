@@ -41,7 +41,7 @@
 <responsive-image class="m-image {{ wrapper_class }}"  {{ wrapper_attributes }} style="{{ style | strip | strip_newlines }}">
   {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
 
-  {% assign def_img_size = image.width | times: 2 %}
+  {% assign def_img_size = max_width | default: image.width | times: 2 %}
   {% assign alt = image.alt | default: 'Image - esafety' %}
   <img
       srcset="{%- if image.width >= 165 -%}{{ image | image_url: width:165 }} 165w,{%- endif -%}

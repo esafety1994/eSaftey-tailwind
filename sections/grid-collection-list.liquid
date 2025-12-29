@@ -11,16 +11,16 @@
         {% if section.settings.collection_1 %}
           <a
             href="{{ section.settings.collection_1.url }}"
-            class="block w-full overflow-hidden relative h-[280px] md:h-full"
+            class="block w-full overflow-hidden relative h-[220px] md:h-full"
             style="background-color: {{ section.settings.bg_color_img_1 }}"
           >
         {% else %}
           <div
-            class="block w-full overflow-hidden relative h-[280px] md:h-full"
+            class="block w-full overflow-hidden relative h-[220px] md:h-full"
             style="background-color: {{ section.settings.bg_color_img_1 }}"
           >
         {% endif %}
-        {% render 'responsive-image', image: section.settings.image_1, image_class: 'w-full h-full object-cover' %}
+        {% render 'responsive-image', image: section.settings.image_1, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain' %}
         {% if section.settings.button_text_1 != blank %}
           <span class="absolute  w-full text-center bottom-4">
             <span class="inline-block btn primary-button transition">
@@ -38,23 +38,23 @@
 
     <!-- Second column (stacked top & bottom) -->
     <div
-      class="w-full md:flex-shrink-0 flex flex-col justify-between"
+      class="w-full md:flex-shrink-0 flex flex-col"
       style="flex: 0 0 {{ other }}%; gap: {{ gap }}px;"
     >
       {% if section.settings.image_2 %}
         {% if section.settings.collection_2 %}
           <a
             href="{{ section.settings.collection_2.url }}"
-            class="block overflow-hidden relative h-[280px] md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_2 }}"
+            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_2 }};"
           >
         {% else %}
           <div
-            class="block overflow-hidden relative h-[280px] md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_2 }}"
+            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_2 }};"
           >
         {% endif %}
-        {% render 'responsive-image', image: section.settings.image_2, image_class: 'w-full h-full object-cover' %}
+        {% render 'responsive-image', image: section.settings.image_2, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain' %}
         {% if section.settings.button_text_2 != blank %}
           <span class="absolute w-full text-center bottom-4">
             <span class="inline-block btn primary-button transition">
@@ -73,16 +73,16 @@
         {% if section.settings.collection_3 %}
           <a
             href="{{ section.settings.collection_3.url }}"
-            class="block overflow-hidden relative h-[280px] md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_3 }}"
+            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_3 }};"
           >
         {% else %}
           <div
-            class="block overflow-hidden relative h-[280px] md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_3 }}"
+            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
+            style="background-color: {{ section.settings.bg_color_img_3 }};"
           >
         {% endif %}
-        {% render 'responsive-image', image: section.settings.image_3, image_class: 'w-full h-full object-cover' %}
+        {% render 'responsive-image', image: section.settings.image_3, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain' %}
         {% if section.settings.button_text_3 != blank %}
           <span class="absolute  w-full text-center bottom-4">
             <span class="inline-block btn primary-button transition">
@@ -104,16 +104,16 @@
         {% if section.settings.collection_4 %}
           <a
             href="{{ section.settings.collection_4.url }}"
-            class="block w-full overflow-hidden relative h-[280px] sm:h-[420px] md:h-full"
-            style="background-color: {{ section.settings.bg_color_img_4 }}"
+            class="block w-full overflow-hidden relative h-[220px] sm:h-[420px] md:h-full"
+            style="background-color: {{ section.settings.bg_color_img_4 }};"
           >
         {% else %}
           <div
-            class="block w-full overflow-hidden relative h-[280px] sm:h-[420px] md:h-full"
-            style="background-color: {{ section.settings.bg_color_img_4 }}"
+            class="block w-full overflow-hidden relative h-[220px] sm:h-[420px] md:h-full"
+            style="background-color: {{ section.settings.bg_color_img_4 }};"
           >
         {% endif %}
-        {% render 'responsive-image', image: section.settings.image_4, image_class: 'w-full h-full object-cover' %}
+        {% render 'responsive-image', image: section.settings.image_4, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain',max_width:80 %}
         {% if section.settings.button_text_4 != blank %}
           <span class="absolute  w-full text-center bottom-4">
             <span class="inline-block btn primary-button transition">
@@ -158,16 +158,6 @@
       "step": 4,
       "unit": "px",
       "default": 16
-    },
-    {
-      "type": "range",
-      "id": "border_radius",
-      "label": "Border radius",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "unit": "px",
-      "default": 8
     },
     {
       "type": "header",
