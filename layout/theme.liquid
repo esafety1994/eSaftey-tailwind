@@ -30,21 +30,26 @@
     <!-- Load Poppins from Google Fonts (preconnect + preload for performance) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" onload="this.rel='stylesheet'">
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      onload="this.rel='stylesheet'"
+    >
     <noscript>
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     </noscript>
 
     <style>
       :root {
-        /* Force Poppins as the default font for the theme */
-        --default-font-family: 'Poppins', sans-serif;
-      }
+              /* Force Poppins as the default font for the theme */
+                      --default-font-family: 'Poppins', sans-serif;
+                            }
 
-      /* Ensure common weight classes use Poppins */
-      .font-normal { font-family: 'Poppins', sans-serif !important; font-weight: 400; }
-      .font-semibold { font-family: 'Poppins', sans-serif !important; font-weight: 600; }
-      .font-bold { font-family: 'Poppins', sans-serif !important; font-weight: 700; }
+                                  /* Ensure common weight classes use Poppins */
+                                        .font-normal { font-family: 'Poppins', sans-serif !important; font-weight: 400; }
+                                              .font-semibold { font-family: 'Poppins', sans-serif !important; font-weight: 600; }
+                                                    .font-bold { font-family: 'Poppins', sans-serif !important; font-weight: 700; }
     </style>
     <!-- Load critical styles using Shopify's stylesheet_tag with preload argument (theme-check friendly) -->
     {{ 'glide.core.min.css' | asset_url | stylesheet_tag: preload: true }}
@@ -60,18 +65,35 @@
       {{ content_for_layout }}
     </main>
     <script>
-      (function(){
+      (function () {
         var glideUrl = '{{ "glide.min.js" | asset_url }}';
-        function loadGlide(){ if (window._glideLoaded) return; window._glideLoaded = true; var s = document.createElement('script'); s.src = glideUrl; s.defer = true; document.body.appendChild(s); }
+        function loadGlide() {
+          if (window._glideLoaded) return;
+          window._glideLoaded = true;
+          var s = document.createElement('script');
+          s.src = glideUrl;
+          s.defer = true;
+          document.body.appendChild(s);
+        }
         // If a carousel exists, load immediately
-        if (document.querySelector && document.querySelector('.glide')) { loadGlide(); return; }
+        if (document.querySelector && document.querySelector('.glide')) {
+          loadGlide();
+          return;
+        }
         // Observe DOM for dynamically inserted carousels
         if ('MutationObserver' in window) {
-          var obs = new MutationObserver(function(){ if (document.querySelector('.glide')) { loadGlide(); obs.disconnect(); } });
+          var obs = new MutationObserver(function () {
+            if (document.querySelector('.glide')) {
+              loadGlide();
+              obs.disconnect();
+            }
+          });
           obs.observe(document.documentElement || document.body, { childList: true, subtree: true });
         }
         // Fallback: load after short delay to ensure functionality
-        setTimeout(function(){ if (!window._glideLoaded && document.querySelector('.glide')) loadGlide(); }, 2500);
+        setTimeout(function () {
+          if (!window._glideLoaded && document.querySelector('.glide')) loadGlide();
+        }, 2500);
       })();
     </script>
     {%- if template == 'product' -%}
