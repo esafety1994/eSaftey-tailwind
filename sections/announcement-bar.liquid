@@ -17,24 +17,26 @@
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-circle-x-icon lucide-circle-x"
+        class="size-5"
       >
         <circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>
       </svg>
     </button>
-    <!-- Glide.js slider structure -->
-    <div class="glide">
-      <div class="glide__track" data-glide-el="track">
-        <ul class="glide__slides">
-          {% for block in section.blocks %}
-            {% case block.type %}
-              {% when 'announcement_content' %}
-                <li class="glide__slide py-2 text-xs md:text-sm text-[#333333] font-semibold  w-full h-14 md:h-12 ">
-                  {{ block.settings.content }}
-                </li>
-            {% endcase %}
-          {% endfor %}
-        </ul>
+    <div class="container m-auto">
+      <!-- Glide.js slider structure -->
+      <div class="glide">
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'announcement_content' %}
+                  <li class="glide__slide py-2 text-xs md:text-sm text-[#333333] font-semibold  w-full h-14 md:h-12 ">
+                    {{ block.settings.content }}
+                  </li>
+              {% endcase %}
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
   </section>

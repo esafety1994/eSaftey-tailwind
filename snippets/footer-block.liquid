@@ -1,56 +1,121 @@
-{% comment %} Renders a single footer block. Expects `block` to be passed in. {% endcomment %}
+{% comment %} Renders a single footer block. Expects `block` to be passed in. This snippet uses the existing accordion JS/CSS classes so the footer becomes collapsible on small screens. {% endcomment %}
 {% if block %}
-  {% case block.type %}
-    {% when 'menu' %}
-      {% assign menu = linklists[block.settings.menu] %}
-      {% if block.settings.title != blank %}
-        <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
-      {% elsif menu %}
-        <h4 class="text-base mb-4 text-primary">{{ menu.title }}</h4>
-      {% endif %}
-      {% if menu and menu.links.size > 0 %}
-        <ul class="space-y-2 text-sm">
-          {% for link in menu.links %}
-            <li class="footer-underline">
-              <a href="{{ link.url }}" class="text-white underline-animation">{{ link.title }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <div class="text-sm text-gray-500">No menu assigned.</div>
-      {% endif %}
+  <div class="footer-block">
+    {% case block.type %}
+      {% when 'menu' %}
+        {% assign menu = linklists[block.settings.menu] %}
+        {% if block.settings.title != blank %}
+          {% assign heading = block.settings.title %}
+        {% elsif menu %}
+          {% assign heading = menu.title %}
+        {% else %}
+          {% assign heading = '' %}
+        {% endif %}
 
-    {% when 'our_store' %}
-      {% if block.settings.title != blank %}
-        <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
-      {% endif %}
-      <div class="text-sm text-white mb-4">{{ block.settings.description }}</div>
-      <div class="text-sm text-white">
-        <p>
-          {{ shop.address.street }}, {{ shop.address.city }}, {{ shop.address.province }}
-          {{ shop.address.zip }}
-        </p>
-        <p>{{ shop.phone }}</p>
-        <p>{{ shop.email }}</p>
-      </div>
+        <!-- Mobile: accordion -->
+        <div class="sidebar-faq-qa md:hidden">
+          <button
+            type="button"
+            class="sidebar-faq-q w-full text-left px-0 py-0 focus:outline-none"
+            aria-expanded="false"
+          >
+            <span class="faq-q-text text-base mb-4 text-primary">{{ heading }}</span>
+            <span class="sidebar-faq-icon ml-3 text-primary flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-4"
+              >
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </span>
+          </button>
+          <div class="sidebar-faq-a mt-2" hidden>
+            {% if menu and menu.links.size > 0 %}
+              <ul class="space-y-2 text-sm">
+                {% for link in menu.links %}
+                  <li class="footer-underline">
+                    <a href="{{ link.url }}" class="text-white underline-animation">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <div class="text-sm text-gray-500">No menu assigned.</div>
+            {% endif %}
+          </div>
+        </div>
 
-    {% when 'custom_text' %}
-      {% if block.settings.title != blank %}
-        <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
-      {% endif %}
-      {% if block.settings.image %}
-        {% render 'responsive-image',
-          image: block.settings.image,
-          wrapper_class: 'w-full h-auto mb-4',
-          image_class: 'w-full h-full object-contain object-center'
-        %}
-      {% endif %}
-      <div class="text-sm text-white">{{ block.settings.description }}</div>
+        <!-- Desktop: normal footer block -->
+        <div class="hidden md:block">
+          <h4 class="text-base mb-4 text-primary">{{ heading }}</h4>
+          <div class="text-sm text-white">
+            {% if menu and menu.links.size > 0 %}
+              <ul class="space-y-2 text-sm">
+                {% for link in menu.links %}
+                  <li class="footer-underline">
+                    <a href="{{ link.url }}" class="text-white underline-animation">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <div class="text-sm text-gray-500">No menu assigned.</div>
+            {% endif %}
+          </div>
+        </div>
 
-    {% when 'custom_html' %}
-      {% if block.settings.title != blank %}
-        <h4 class="text-base mb-4 text-white">{{ block.settings.title }}</h4>
-      {% endif %}
-      <div class="text-sm text-white">{{ block.settings.html }}</div>
-  {% endcase %}
+      {% when 'custom_text' %}
+        <!-- Mobile: accordion -->
+        <div class="sidebar-faq-qa md:hidden">
+          <button
+            type="button"
+            class="sidebar-faq-q w-full text-left px-0 py-0 focus:outline-none"
+            aria-expanded="false"
+          >
+            <span class="faq-q-text text-base mb-4 text-primary">{{ block.settings.title }}</span>
+            <span class="sidebar-faq-icon ml-3 text-primary flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-4"
+              >
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </span>
+          </button>
+          <div class="sidebar-faq-a mt-2" hidden>
+            {% if block.settings.image %}
+              {% render 'responsive-image',
+                image: block.settings.image,
+                wrapper_class: 'w-full h-auto mb-4',
+                image_class: 'w-full h-full object-contain object-center'
+              %}
+            {% endif %}
+            <div class="text-sm text-white">{{ block.settings.description }}</div>
+          </div>
+        </div>
+
+        <!-- Desktop: normal footer block -->
+        <div class="hidden md:block">
+          <h4 class="text-base mb-4 text-primary">{{ block.settings.title }}</h4>
+          {% if block.settings.image %}
+            {% render 'responsive-image',
+              image: block.settings.image,
+              wrapper_class: 'w-full h-auto mb-4',
+              image_class: 'w-full h-full object-contain object-center'
+            %}
+          {% endif %}
+          <div class="text-sm text-white">{{ block.settings.description }}</div>
+        </div>
+    {% endcase %}
+  </div>
 {% endif %}

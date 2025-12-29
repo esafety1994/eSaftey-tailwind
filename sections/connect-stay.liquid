@@ -106,7 +106,7 @@
         <h3 class="text-3xl mb-3">{{ section.settings.subscribe_title }}</h3>
         <p class="mb-4 ">{{ section.settings.subscribe_text }}</p>
 
-        <form id="connect-newsletter-{{ section.id }}" class="flex gap-2" method="post" action="/contact">
+        <form id="connect-newsletter-{{ section.id }}" class="flex gap-2 flex-col sm:flex-row" method="post" action="/contact">
           <input type="hidden" name="form_type" value="contact">
           <input type="hidden" name="contact[tags]" value="newsletter">
           <label for="connect-email-{{ section.id }}" class="sr-only">Email</label>
@@ -120,7 +120,7 @@
           >
           <button
             type="submit"
-            class="inline-flex items-center px-4 py-2 bg-bg-light-red text-white rounded-md hover:bg-primary hover:text-black transition-all duration-200 ease-in-out cursor-pointer"
+            class="justify-center inline-flex items-center px-4 py-2 bg-bg-light-red text-white rounded-md hover:bg-primary hover:text-black transition-all duration-200 ease-in-out cursor-pointer"
           >
             {{ section.settings.subscribe_button_label }}
           </button>

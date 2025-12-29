@@ -22,3 +22,14 @@
 .sidebar-faq-q .close-qa-icon { display: none; }
 .sidebar-faq-qa.open .open-qa-icon { display: none; }
 .sidebar-faq-qa.open .close-qa-icon { display: inline-block; }
+
+/* Rotate accordion chevron smoothly when opened */
+.sidebar-faq-q .sidebar-faq-icon svg {
+  transition: transform 220ms cubic-bezier(.4,0,.2,1);
+  transform-origin: 50% 50%;
+  display: block;
+}
+.sidebar-faq-q[aria-expanded="true"] .sidebar-faq-icon svg,
+.sidebar-faq-qa.open .sidebar-faq-icon svg {
+  transform: rotate(180deg);
+}

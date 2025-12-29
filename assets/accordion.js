@@ -21,14 +21,23 @@
           el.setAttribute('aria-expanded','false');
           if (openIcon) openIcon.style.display = '';
           if (closeIcon) closeIcon.style.display = 'none';
-          if (textIcon) textIcon.textContent = '+';
+          if (textIcon) {
+            // don't replace SVG content — only change text when no SVG present
+            try {
+              if (!(textIcon.querySelector && textIcon.querySelector('svg'))) textIcon.textContent = '+';
+            } catch(e){}
+          }
         } else {
           container.classList.add('open');
           if (answer) answer.hidden = false;
           el.setAttribute('aria-expanded','true');
           if (openIcon) openIcon.style.display = 'none';
           if (closeIcon) closeIcon.style.display = '';
-          if (textIcon) textIcon.textContent = '-';
+          if (textIcon) {
+            try {
+              if (!(textIcon.querySelector && textIcon.querySelector('svg'))) textIcon.textContent = '-';
+            } catch(e){}
+          }
         }
       });
 
@@ -37,18 +46,22 @@
 
       // set initial state of icons/answer based on container class or aria
       try {
-        var containerInit = el.closest('.sidebar-faq-qa');
-        if (containerInit){
-          var ans = containerInit.querySelector('.sidebar-faq-a');
-          var openI = el.querySelector('.open-qa-icon');
-          var closeI = el.querySelector('.close-qa-icon');
-          var textI = el.querySelector('.sidebar-faq-icon');
-          var opened = containerInit.classList.contains('open') || el.getAttribute('aria-expanded') === 'true';
-          if (ans) ans.hidden = !opened;
-          if (openI) openI.style.display = opened ? 'none' : '';
-          if (closeI) closeI.style.display = opened ? '' : 'none';
-          if (textI) textI.textContent = opened ? '-' : '+';
-        }
+          var containerInit = el.closest('.sidebar-faq-qa');
+          if (containerInit){
+            var ans = containerInit.querySelector('.sidebar-faq-a');
+            var openI = el.querySelector('.open-qa-icon');
+            var closeI = el.querySelector('.close-qa-icon');
+            var textI = el.querySelector('.sidebar-faq-icon');
+            var opened = containerInit.classList.contains('open') || el.getAttribute('aria-expanded') === 'true';
+            if (ans) ans.hidden = !opened;
+            if (openI) openI.style.display = opened ? 'none' : '';
+            if (closeI) closeI.style.display = opened ? '' : 'none';
+            if (textI) {
+              try {
+                if (!(textI.querySelector && textI.querySelector('svg'))) textI.textContent = opened ? '-' : '+';
+              } catch(e){}
+            }
+          }
       } catch(e){ /* ignore */ }
     });
   }

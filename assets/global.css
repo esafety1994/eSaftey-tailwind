@@ -1,166 +1,207 @@
+@media (width >= 96rem) {
+  .container {
+	max-width: 1300px;
+  }
+}
+
 /* Footer link underline animation: left-to-right using primary color */
 a.underline-animation {
-	position: relative;
-	text-decoration: none;
+  position: relative;
+  text-decoration: none;
 }
 a.underline-animation::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	bottom: -2px;
-	height: 1px;
-	width: 100%;
-	background: var(--color-primary, #1d4ed8);
-	transform: scaleX(0);
-	transform-origin: left;
-	transition: transform 250ms ease;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: var(--color-primary, #1d4ed8);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease;
 }
 a.underline-animation:hover::after,
 a.underline-animation:focus::after {
-	transform: scaleX(1);
+  transform: scaleX(1);
 }
-.read-more-button.underline-animation::after{
-	background: black;
+.read-more-button.underline-animation::after {
+  background: black;
 }
 
 /* Sheet (shadcn-like) styles */
 .sheet-overlay {
-	transition: opacity 200ms ease;
+  transition: opacity 200ms ease;
 }
-.sheet-overlay.hidden { opacity: 0; pointer-events: none; }
-.sheet-overlay.visible { opacity: 1; pointer-events: auto; }
+.sheet-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.sheet-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .sheet {
-	position: fixed;
-	inset: 0;
-	display: flex;
-	z-index: 50;
-	pointer-events: none;
-	justify-content: flex-start; /* align left sheet */
+  position: fixed;
+  inset: 0;
+  display: flex;
+  z-index: 50;
+  pointer-events: none;
+  justify-content: flex-start; /* align left sheet */
 }
 .sheet-content {
-	pointer-events: auto;
-	background: var(--sheet-bg, #0b0b0b);
-	color: var(--sheet-fg, #fff);
-	width: 20rem;
-	max-width: 100%;
-	transform: translateX(-100%);
-	transition: transform 300ms cubic-bezier(.2,.8,.2,1);
-	box-shadow: 0 10px 30px rgba(2,6,23,.6);
-	max-height: 100vh;
-	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+  background: var(--sheet-bg, #0b0b0b);
+  color: var(--sheet-fg, #fff);
+  width: 20rem;
+  max-width: 100%;
+  transform: translateX(-100%);
+  transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  max-height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
-.sheet.open .sheet-content { transform: translateX(0%); }
+.sheet.open .sheet-content {
+  transform: translateX(0%);
+}
 
 @media (min-width: 768px) {
-	.sheet-content { width: 28rem; }
+  .sheet-content {
+    width: 28rem;
+  }
 }
 
 /* Hide native scrollbar thumb until content is hovered (reduces visual chrome when not needed) */
-.sheet-content::-webkit-scrollbar { width: 8px; }
-.sheet-content::-webkit-scrollbar-track { background: transparent; }
-.sheet-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 6px; opacity: 0; transition: opacity 160ms ease; }
-.sheet-content:hover::-webkit-scrollbar-thumb { opacity: 1; }
-.sheet-content { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.14) transparent; }
-.sheet-content:hover { scrollbar-color: rgba(255,255,255,0.36) transparent; }
+.sheet-content::-webkit-scrollbar {
+  width: 8px;
+}
+.sheet-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sheet-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.sheet-content:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+.sheet-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+}
+.sheet-content:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.36) transparent;
+}
 
 /* Mega-menu panels: use height transition with translateY opacity for smooth open/close */
 .mega-panel {
-	height: 0;
-	overflow: hidden;
-	transform: translateY(-6px);
-	opacity: 0;
-	transition: height 260ms cubic-bezier(.2,.8,.2,1), transform 220ms ease, opacity 200ms ease;
+  height: 0;
+  overflow: hidden;
+  transform: translateY(-6px);
+  opacity: 0;
+  transition: height 260ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 220ms ease,
+    opacity 200ms ease;
 }
 .mega-panel.open {
-	transform: translateY(0);
-	opacity: 1;
+  transform: translateY(0);
+  opacity: 1;
 }
-
-
 
 /* Content style from Shopify */
-.shopify-content-box h2{
-    margin:20px 0;
+.shopify-content-box h2 {
+  margin: 20px 0;
 }
 
-.shopify-content-box p{
-    margin:20px 0;
-    font-size: 15px;;
+.shopify-content-box p {
+  margin: 20px 0;
+  font-size: 15px;
 }
 
-.shopify-content-box h3{
-    margin:20px 0;
-    font-size: 30px;
+.shopify-content-box h3 {
+  margin: 20px 0;
+  font-size: 30px;
 }
 
-.shopify-content-box ul{
-    list-style: disc;
-    padding-left: 26px;
+.shopify-content-box ul {
+  list-style: disc;
+  padding-left: 26px;
 }
 
 /******* slider arrows ***********/
 /* Gallery arrows and thumbnail active state */
 .product-gallery-arrow {
-	position: absolute;
-	top: 45%;
-	transform: translateY(-50%);
-	background: rgba(255,255,255,0.9);
-	border-radius: 9999px;
-	width: 36px;
-	height: 36px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-	border: none;
-	cursor: pointer;
-	z-index: 20;
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 9999px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border: none;
+  cursor: pointer;
+  z-index: 20;
 }
-.product-gallery-arrow--left { left: -40px; }
-.product-gallery-arrow--right { right: -40px; }
-.product-gallery-arrow svg { color: #111827; }
+.product-gallery-arrow--left {
+  left: -40px;
+}
+.product-gallery-arrow--right {
+  right: -40px;
+}
+.product-gallery-arrow svg {
+  color: #111827;
+}
 .product-gallery-arrow:hover {
-    background: #FFE61F;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+  background: #ffe61f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
 }
-
 
 .gradient-bg {
-    position: relative;
-    width: 100%;
-    background-image: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(92, 92, 92, 0.8) 100%), url(https://cdn.shopify.com/s/files/1/0638/5175/7736/files/cart-cta-bg.png?v=1748820020);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    max-width: 96%;
-    margin: 14px auto;
-    border-radius: 5px;
+  position: relative;
+  width: 100%;
+  background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(92, 92, 92, 0.8) 100%
+    ),
+    url(https://cdn.shopify.com/s/files/1/0638/5175/7736/files/cart-cta-bg.png?v=1748820020);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  max-width: 96%;
+  margin: 14px auto;
+  border-radius: 5px;
 }
 
 .gradient-bg .content {
-    position: relative;
-    z-index: 1;
-    color: white;
-    padding: 18px 10px;
-    display: grid;
-    grid-gap: 10px;
+  position: relative;
+  z-index: 1;
+  color: white;
+  padding: 18px 10px;
+  display: grid;
+  grid-gap: 10px;
 }
 
 .gradient-bg .content > div {
-    display: grid;
-    grid-template-columns: 20px 1fr;
-    gap: 10px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 10px;
+  align-items: center;
 }
 
 .gradient-bg svg {
-    width: 20px;
-    height: 20px;
-    stroke: white;
+  width: 20px;
+  height: 20px;
+  stroke: white;
 }
 
 .gradient-bg .content span {
-    font-size: 12px;
+  font-size: 12px;
 }

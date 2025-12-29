@@ -1,8 +1,8 @@
 <footer class="py-8 bg-black">
   <div class="container mx-auto px-4">
-    <div class="w-full flex flex-col justify-between gap-y-8 md:flex-row md:flex-wrap">
+    <div class="w-full flex flex-col justify-between md:gap-4 md:flex-row md:flex-wrap">
       {% for block in section.blocks %}
-        <div class="mb-4">
+        <div class="md:mb-4">
           {% render 'footer-block', block: block %}
         </div>
       {% endfor %}
@@ -14,6 +14,30 @@
     {% endif %}
   </div>
 </footer>
+ 
+<script>
+  (function () {
+    try {
+      if (window.__eSafetyAccordionLoadedFooter) {
+        if (window.esafetyAccordionInit) window.esafetyAccordionInit(document);
+        return;
+      }
+      // load globally for the theme so footer accordions work on all devices
+      window.__eSafetyAccordionLoadedFooter = true;
+      var l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = '{{ "accordion.css" | asset_url }}';
+      document.head.appendChild(l);
+      var s = document.createElement('script');
+      s.src = '{{ "accordion.js" | asset_url }}';
+      s.defer = true;
+      s.onload = function () {
+        if (window.esafetyAccordionInit) window.esafetyAccordionInit(document);
+      };
+      document.body.appendChild(s);
+    } catch(e) { console.warn(e); }
+  })();
+</script>
 
 {% schema %}
 {
@@ -53,30 +77,6 @@
       ]
     },
     {
-      "type": "our_store",
-      "name": "About",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Our store"
-        },
-        {
-          "type": "richtext",
-          "id": "description",
-          "label": "Description",
-          "default": "<p>Find a location nearest you.</p>"
-        },
-        {
-          "type": "header",
-          "content": "Contact information",
-          "info": "Go to \"Theme settings > Store contact\" to update these information."
-        },
-      ]
-    },
-    {
       "type": "custom_text",
       "name": "Custom content",
       "limit": 5,
@@ -104,26 +104,6 @@
           "label": "Content",
           "default": "<p>Enter your email below to be the first to know about new collections and product launches.</p>"
         },
-      ]
-    },
-    {
-      "type": "custom_html",
-      "name": "Custom HTML",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Custom text"
-        },
-        {
-          "type": "liquid",
-          "id": "html",
-          "label": "HTML",
-          "info": "Liquid code supported"
-        },
-  
       ]
     }
   ]
