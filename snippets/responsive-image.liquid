@@ -1,0 +1,70 @@
+{%- comment -%}
+    It creates a style tag and it restricts an image from growing larger than its max resolution.
+    Accepts:
+    - max_width: {Number} Max width of the image container
+    - max_height: {Number} Max height of the image container
+    - image: {Object} Image object
+    - image_class: {String} class name of the <img />
+    - image_attributes: {String}  additional HTML attributes of the <img />
+    - wrapper_class: {String} class name of the <div> wrapper
+    - wrapper_attributes: {String} additional HTML attributes of the <div> wrapper
+
+    Usage:
+    In your liquid template file, copy the following line
+    - {% include 'responsive-image' with image: featured_image, image_class: "css-class", wrapper_class: "wrapper-css-class", max_width: 700, max_height: 800 %}
+{%- endcomment -%}
+
+{%- comment -%} Added incremental number to avoid conflict styling code when the same images are using this snippet {%- endcomment -%}
+
+{%- capture style -%}
+  {% assign asp_rat = aspect_ratio | default: image.aspect_ratio %}
+  {% if asp_rat == 'original' %}
+    --aspect-ratio: {{ image.aspect_ratio }};
+  {% else %}
+    --aspect-ratio: {{ asp_rat }};
+  {% endif %}
+  {% if max_width %}
+    --image-width: {{ max_width }};
+  {% endif %}
+  {% if image_width %}
+    --image-width: {{ image_width }};
+  {% endif %}
+{%- endcapture -%}
+{% liquid
+  assign loading = 'lazy'
+  assign fetchpriority = 'low'
+  if index == 1 and section_index < 2 or enable_preload_image
+    assign loading = 'eager'
+    assign fetchpriority = 'high'
+  endif
+%}
+<responsive-image class="m-image {{ wrapper_class }}"  {{ wrapper_attributes }} style="{{ style | strip | strip_newlines }}">
+  {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+
+  {% assign def_img_size = image.width | times: 2 %}
+  {% assign alt = image.alt | default: 'Image - esafety' %}
+  <img
+      srcset="{%- if image.width >= 165 -%}{{ image | image_url: width:165 }} 165w,{%- endif -%}
+        {%- if image.width >= 360 -%}{{ image | image_url: width:360 }} 360w,{%- endif -%}
+        {%- if image.width >= 520 -%}{{ image | image_url: width:520 }} 520w,{%- endif -%}
+        {%- if image.width >= 660 -%}{{ image | image_url: width:660 }} 660w,{%- endif -%}
+        {%- if image.width >= 720 -%}{{ image | image_url: width:720 }} 720w,{%- endif -%}
+        {%- if image.width >= 940 -%}{{ image | image_url: width:940 }} 940w,{%- endif -%}
+        {%- if image.width >= 1080 -%}{{ image | image_url: width:1080 }} 1080w,{%- endif -%}
+        {%- if image.width >= 1500 -%}{{ image | image_url: width:1500 }} 1500w,{%- endif -%}
+        {{ image | image_url: width: def_img_size }} {{ def_img_size }}w"
+      src="{{ image | image_url: width: 360 }}"
+      sizes="(min-width: {{ settings.container_width }}px) {{ settings.container_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+      alt="{{ alt | escape }}"
+      loading="{{ loading }}"
+      fetchPriority="{{ fetchpriority }}"
+      class="{{ image_class }}"
+      width="{{ def_img_size }}"
+      height="{{ def_img_size }}"
+      {{ image_attributes }}
+  >
+  {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
+  <noscript>
+    <img class="{{ image_class }}" loading="lazy" width="" height="" src="{{ image | image_url: width: 1920, height: 680 }}" alt="{{ alt | default: image.alt | escape }}">
+  </noscript>
+</responsive-image>
