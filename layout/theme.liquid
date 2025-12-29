@@ -46,11 +46,12 @@
       .font-semibold { font-family: 'Poppins', sans-serif !important; font-weight: 600; }
       .font-bold { font-family: 'Poppins', sans-serif !important; font-weight: 700; }
     </style>
-    {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
-    {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
-    {{ 'global.css' | asset_url | stylesheet_tag }}
+    <!-- Load critical styles using Shopify's stylesheet_tag with preload argument (theme-check friendly) -->
+    {{ 'glide.core.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'tailwind.output.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'global.css' | asset_url | stylesheet_tag: preload: true }}
     {%- if template == 'product' -%}
-      {{ 'product.css' | asset_url | stylesheet_tag }}
+      {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
   </head>
   <body class="font-normal">
