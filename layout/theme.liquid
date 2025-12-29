@@ -27,8 +27,13 @@
 
     {% assign font_handle = settings.type_base_font | default: 'poppins_n4' %}
 
-    <!-- Load Poppins from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Load Poppins from Google Fonts (preconnect + preload for performance) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" onload="this.rel='stylesheet'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    </noscript>
 
     <style>
       :root {
@@ -53,7 +58,21 @@
     <main id="main" role="main">
       {{ content_for_layout }}
     </main>
-    <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
+    <script>
+      (function(){
+        var glideUrl = '{{ "glide.min.js" | asset_url }}';
+        function loadGlide(){ if (window._glideLoaded) return; window._glideLoaded = true; var s = document.createElement('script'); s.src = glideUrl; s.defer = true; document.body.appendChild(s); }
+        // If a carousel exists, load immediately
+        if (document.querySelector && document.querySelector('.glide')) { loadGlide(); return; }
+        // Observe DOM for dynamically inserted carousels
+        if ('MutationObserver' in window) {
+          var obs = new MutationObserver(function(){ if (document.querySelector('.glide')) { loadGlide(); obs.disconnect(); } });
+          obs.observe(document.documentElement || document.body, { childList: true, subtree: true });
+        }
+        // Fallback: load after short delay to ensure functionality
+        setTimeout(function(){ if (!window._glideLoaded && document.querySelector('.glide')) loadGlide(); }, 2500);
+      })();
+    </script>
     {%- if template == 'product' -%}
       <script defer src="{{ 'product-details.js' | asset_url }}"></script>
     {%- endif -%}
