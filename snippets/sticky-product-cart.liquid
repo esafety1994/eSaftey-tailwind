@@ -14,12 +14,12 @@
     <div class="container m-auto p-3 grid lg:grid-cols-2 gap-4">
       <div class="items-start gap-2 hidden lg:flex">
         <div class="size-16">
-          {% assign img = product.featured_image | default: product.images.first %}
+          {% assign img = product.selected_or_first_available_variant.featured_image | default: product.images.first %}
           {% if img %}
             <img
-              src="{{ img | img_url: '200x' }}"
+              src="{{ img | image_url: '200x' }}"
               alt="{{ product.title }}"
-              class="w-full h-full object-cover"
+              class="sticky-image w-full h-full object-cover"
               width="64"
               height="64"
             >

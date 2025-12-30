@@ -33,6 +33,11 @@ class VariantPicker extends HTMLElement {
     };
     onVariantChange(event) {
         const input = event.currentTarget;
+        // Notify other modules immediately about the selected variant so they
+        // can update UI optimistically before the AJAX replacement completes.
+        try {
+            document.dispatchEvent(new CustomEvent('product:variant:changing', { detail: { variantId: input.value } }));
+        } catch (e) { /* ignore */ }
         const url = `${window.location.pathname}?variant=${input.value}&section_id=${this.sectionId}`;
         const target = document.querySelector('.product-container');
         // show loading overlay + fade
@@ -93,6 +98,14 @@ class VariantPicker extends HTMLElement {
                 } catch (err) {
                     console.warn('VariantPicker: selective update failed', err);
                 }
+
+                // Emit a global replacement event so other modules (sticky cart, swatches)
+                // can synchronise with the newly-fetched content. Use the newContent
+                // if available (it's the fetched .product-container), otherwise fall
+                // back to the existing target in the DOM.
+                try {
+                    document.dispatchEvent(new CustomEvent('product:content:replaced', { detail: { root: newContent || target } }));
+                } catch (e) { /* ignore */ }
 
                 // Remove loading overlay after a short delay to allow re-init
                 setTimeout(function () {

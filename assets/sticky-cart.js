@@ -93,12 +93,20 @@
   // content syncing removed — sticky should render its own content server-side
 
   function getSelectedVariantId(){
-    // Prefer existing form input updated by variant picker
+    // Prefer sticky-specific hidden input (kept in sync with selection), then
+    // the main form input, then radios/selects as fallback.
+    var stickyInput = document.querySelector('input[name="sticky-variant-id"]');
+    if (stickyInput && stickyInput.value) return stickyInput.value;
+
     var formVariant = document.querySelector('form input[name="id"]');
-    if(formVariant && formVariant.value) return formVariant.value;
-    // fallback: any radio checked value (variant picker)
+    if (formVariant && formVariant.value) return formVariant.value;
+
     var checked = document.querySelector('.product-container input[type="radio"]:checked');
-    if(checked) return checked.value;
+    if (checked && checked.value) return checked.value;
+
+    var sel = document.querySelector('.product-container select[name="id"], select[name="id"]');
+    if (sel && sel.value) return sel.value;
+
     return null;
   }
 
@@ -171,47 +179,145 @@
       window.addEventListener('resize', checkScrollThreshold);
     }
 
-    // Quantity controls
-    el.querySelectorAll('.sticky-qty-decrement').forEach(function(b){
-      b.addEventListener('click', function(){
-        var q = el.querySelector('.sticky-quantity-input');
-        var v = parseInt(q.value,10) || 1; v = Math.max(1, v-1); q.value = v;
-        // reflect to main quantity input if present
-        var mainQ = document.querySelector('input[name="quantity"]'); if(mainQ) mainQ.value = q.value;
-      });
-    });
-    el.querySelectorAll('.sticky-qty-increment').forEach(function(b){
-      b.addEventListener('click', function(){
-        var q = el.querySelector('.sticky-quantity-input');
-        var v = parseInt(q.value,10) || 1; v = Math.min(999, v+1); q.value = v;
-        var mainQ = document.querySelector('input[name="quantity"]'); if(mainQ) mainQ.value = q.value;
-      });
-    });
+    // Quantity controls are handled by the `qty-selector` snippet's own script;
+    // avoid duplicating click handlers here to prevent double increments.
 
-    // Add to cart handler
-    var addBtn = el.querySelector('.sticky-add-to-cart');
-    if(addBtn){
-      addBtn.addEventListener('click', function(e){
+    // Add to cart handler — attach to the sticky form's submit button if present,
+    // otherwise attach to any explicit sticky-add-to-cart selector. This ensures
+    // we update the sticky form's hidden `id` before native submit so the right
+    // variant is added.
+    var addBtn = el.querySelector('button[type="submit"], input[type="submit"], .sticky-add-to-cart');
+    if (addBtn) {
+      addBtn.addEventListener('click', function (e) {
+        // Prevent native submit; we'll submit after ensuring the correct id
+        e.preventDefault();
         var variantId = getSelectedVariantId();
-        var qty = parseInt(el.querySelector('.sticky-quantity-input').value,10) || 1;
-        if(!variantId){
+        var qtyElem = el.querySelector('input[name="quantity"]') || el.querySelector('.quantity-input') || document.querySelector('input[name="quantity"]');
+        var qty = 1;
+        try { qty = parseInt(qtyElem && qtyElem.value ? qtyElem.value : 1, 10) || 1; } catch(ex) { qty = 1; }
+        if (!variantId) {
           alert('Please select a variant');
           return;
         }
+
+        // Try to find a form inside the sticky element first
+        var stickyForm = el.querySelector('form[action*="/cart/add"], form');
+        if (stickyForm) {
+          var idInput = stickyForm.querySelector('input[name="id"]');
+          if (idInput) idInput.value = variantId;
+          var qtyInput = stickyForm.querySelector('input[name="quantity"]');
+          if (qtyInput) qtyInput.value = qty;
+          // submit using requestSubmit() when available to respect validation
+          try {
+            if (typeof stickyForm.requestSubmit === 'function') { stickyForm.requestSubmit(); return; }
+            stickyForm.submit(); return;
+          } catch (err) {
+            // fall through to AJAX fallback
+          }
+        }
+
+        // no sticky form found — update main form or fallback to AJAX
         submitAddToCart(variantId, qty);
       });
     }
 
-    // When variant-picker updates the main product content, update sticky hidden variant id and SKU
-    document.addEventListener('product:content:replaced', function(){
+    // Shared update: copy variant id, SKU, price and image from main product DOM into sticky
+    function updateStickyContent(root){
       try{
-        var mainVariant = document.querySelector('form input[name="id"]');
+        root = root || document;
+        var mainVariant = root.querySelector('form input[name="id"]') || document.querySelector('form input[name="id"]');
         var stickyInput = document.querySelector('input[name="sticky-variant-id"]');
         if(mainVariant && stickyInput) stickyInput.value = mainVariant.value;
-        var skuSource = document.querySelector('#product-sku .sku-value');
+
+        // SKU
+        var skuSource = root.querySelector('#product-sku .sku-value') || document.querySelector('#product-sku .sku-value');
         var skuTarget = document.querySelector('.sticky-sku');
         if(skuSource && skuTarget) skuTarget.textContent = skuSource.textContent.trim();
+
+        // Price (copy innerHTML so formatting remains)
+        var priceSrc = root.querySelector('#product-price') || document.getElementById('product-price');
+        var priceTarget = document.getElementById('sticky-price');
+        if(priceSrc && priceTarget) priceTarget.innerHTML = priceSrc.innerHTML;
+
+        // Image: prefer image inside the updated root, fallback to gallery or featured
+        var stickyImg = document.querySelector('.sticky-image');
+        if (stickyImg) {
+          // Determine currently selected variant id
+          var variantId = (mainVariant && mainVariant.value) || (stickyInput && stickyInput.value) || null;
+
+          // Try to find an image associated with the variant inside the supplied root
+          var candidate = null;
+          if (variantId) {
+            // common attribute patterns used by themes for variant-media mapping
+            candidate = root.querySelector('img[data-variant-id="' + variantId + '"]') ||
+                        root.querySelector('img[data-media-id="' + variantId + '"]') ||
+                        root.querySelector('[data-media-id="' + variantId + '"] img') ||
+                        root.querySelector('[data-image-id="' + variantId + '"] img');
+          }
+
+          // fallback: if gallery exists, use its data-start-index to pick the correct image
+          var gallery = root.querySelector('#product-glide') || document.querySelector('#product-glide');
+          if (gallery) {
+            var imgs = gallery.querySelectorAll('img');
+            var startIndex = parseInt(gallery.getAttribute('data-start-index') || gallery.dataset.startIndex || 0, 10) || 0;
+            if (imgs && imgs.length) candidate = imgs[Math.min(startIndex, imgs.length - 1)] || imgs[0];
+          }
+
+          // fallback: featured image marker
+          if (!candidate) candidate = root.querySelector('[data-featured-image] img, img[data-featured-image]');
+          // fallback: gallery first image within the root
+          if (!candidate) candidate = root.querySelector('#product-glide img, .product-media-gallery img');
+          // final fallback: any gallery image on document
+          if (!candidate) candidate = document.querySelector('#product-glide img, .product-media-gallery img');
+
+          if (candidate) {
+            if (candidate.src) stickyImg.src = candidate.src;
+            if (candidate.currentSrc) stickyImg.src = candidate.currentSrc;
+            if (candidate.alt) stickyImg.alt = candidate.alt;
+          }
+        }
       }catch(e){/* ignore */}
+    }
+
+    // ensure sticky content mirrors the initial/default variant on init
+    try { updateStickyContent(); } catch (e) { }
+
+    // Update when variant-picker dispatches (after AJAX replacement)
+    document.addEventListener('product:content:replaced', function(e){
+      var root = (e && e.detail && e.detail.root) ? e.detail.root : null;
+      updateStickyContent(root);
+    });
+
+    // Immediate update when variant selection changes (optimistic)
+    document.addEventListener('product:variant:changing', function(e){
+      try{
+        var vid = e && e.detail && e.detail.variantId ? e.detail.variantId : null;
+        if(!vid) return;
+        var stickyInput = document.querySelector('input[name="sticky-variant-id"]');
+        if(stickyInput) stickyInput.value = vid;
+        // Attempt to update sticky image/price/SKU from document immediately
+        updateStickyContent(document);
+      }catch(err){}
+    });
+
+    // Also listen for input changes (radio/select) to update sticky variant id immediately
+    document.addEventListener('change', function(e){
+      try{
+        var t = e.target;
+        if(!t) return;
+        if(t.matches && (t.matches('input[type="radio"]') || t.matches('select') || t.matches('input[name="id"]'))){
+          // Update sticky variant id quickly so add-to-cart uses current selection
+          var stickyInput = document.querySelector('input[name="sticky-variant-id"]');
+          if(stickyInput){
+            var newVal = null;
+            if(t.matches('input[type="radio"]') && t.value) newVal = t.value;
+            if(t.matches('select')) newVal = t.value;
+            if(t.matches('input[name="id"]')) newVal = t.value;
+            if(newVal) stickyInput.value = newVal;
+          }
+          // let product:content:replaced handle price/image update; no immediate full sync here
+        }
+      }catch(err){}
     });
 
 
