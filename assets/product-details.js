@@ -265,8 +265,41 @@
       if (!root) root = document.querySelector('.product-details-expandable');
       if (root) activateTab(root, 'faq');
       var target = document.getElementById('product-details-target');
-      if (target){ target.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function(){ try { target.focus({preventScroll:true}); } catch (err){} },300); }
+      if (target){ scrollToElement(target); }
     } catch(err){ console.warn(err); }
+  }
+
+  // Expose a global helper for inline anchors to open the Shipping & Return tab
+  window.shippingAnchor = function(e){
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      var target = document.getElementById('product-details-target');
+      if (!target) return;
+      var root = target.closest && target.closest('.product-details-expandable');
+      if (!root) root = document.querySelector('.product-details-expandable');
+      if (root) activateTab(root, 'shipping');
+      scrollToElement(target);
+    } catch(err){ console.warn(err); }
+    // Return false to support inline `onclick="shippingAnchor()"` preventing default navigation
+    return false;
+  };
+
+  // Scroll helper that offsets by a sticky header height (if present)
+  function getHeaderOffset(){
+    try {
+      var header = document.querySelector('[data-sticky-header]') || document.querySelector('.site-header') || document.querySelector('header') || document.querySelector('.header');
+      if (header && header.offsetHeight) return header.offsetHeight;
+    } catch(e){}
+    return 0;
+  }
+
+  function scrollToElement(target, extraOffset){
+    if (!target) return;
+    var headerOffset = (typeof extraOffset === 'number') ? extraOffset : getHeaderOffset();
+    var rect = target.getBoundingClientRect();
+    var top = window.pageYOffset + rect.top - headerOffset - 8; // small breathing room
+    window.scrollTo({ top: top, behavior: 'smooth' });
+    setTimeout(function(){ try { target.focus({preventScroll:true}); } catch (err){} }, 300);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

@@ -14,10 +14,8 @@
       {% render 'product-tags', product: product %}
 
       <h1 class="text-3xl font-semibold mb-4">{{ product.title }}</h1>
+      {% render 'product-review', product: product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
-      <div id="product-price" class="mb-4 text-xl font-semibold">
-        {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
-      </div>
       <div id="product-sku">
         {% assign current_variant = product.selected_or_first_available_variant %}
         {% if current_variant and current_variant.sku %}
@@ -26,6 +24,10 @@
           </div>
         {% endif %}
       </div>
+      <div id="product-price" class="mb-4 text-xl font-semibold">
+        {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
+      </div>
+
       <div class="my-6 border-t-gray-300 border-t pt-6">
         {% render 'product-features', product: product %}
       </div>
@@ -33,9 +35,13 @@
       {% render 'variant_picker' %}
 
       {% render 'act-button', product: product %}
+      {% render 'product-below-act-button', product: product %}
     </div>
   </div>
 </div>
+
+{% comment %} Sticky product cart (fixed under header) {% endcomment %}
+{% render 'sticky-product-cart', product: product %}
 
 {% schema %}
 {

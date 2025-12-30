@@ -36,38 +36,7 @@
     <main id="main" role="main">
       {{ content_for_layout }}
     </main>
-    <script>
-      (function () {
-        var glideUrl = '{{ "glide.min.js" | asset_url }}';
-        function loadGlide() {
-          if (window._glideLoaded) return;
-          window._glideLoaded = true;
-          var s = document.createElement('script');
-          s.src = glideUrl;
-          s.defer = true;
-          document.body.appendChild(s);
-        }
-        // If a carousel exists, load immediately
-        if (document.querySelector && document.querySelector('.glide')) {
-          loadGlide();
-          return;
-        }
-        // Observe DOM for dynamically inserted carousels
-        if ('MutationObserver' in window) {
-          var obs = new MutationObserver(function () {
-            if (document.querySelector('.glide')) {
-              loadGlide();
-              obs.disconnect();
-            }
-          });
-          obs.observe(document.documentElement || document.body, { childList: true, subtree: true });
-        }
-        // Fallback: load after short delay to ensure functionality
-        setTimeout(function () {
-          if (!window._glideLoaded && document.querySelector('.glide')) loadGlide();
-        }, 2500);
-      })();
-    </script>
+    <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
     {%- if template == 'product' -%}
       <script defer src="{{ 'product-details.js' | asset_url }}"></script>
     {%- endif -%}

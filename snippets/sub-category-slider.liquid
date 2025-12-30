@@ -19,11 +19,11 @@
             <div class="flex flex-col items-start gap-3">
               <div class="w-full h-full overflow-hidden rounded-md">
                 {% if col.image != blank %}
-                  <img
-                    src="{{ col.image | image_url: width: 180 }}"
-                    alt="{{ col.title | escape }}"
-                    class="w-full h-28 object-cover"
-                  >
+                  {% render 'responsive-image',
+                    image: col.image,
+                    alt: col.title,
+                    image_class: 'w-full h-28 object-cover'
+                  %}
                 {% else %}
                   <div class="w-full h-28 bg-gray-100 flex items-center justify-center">
                     {{ 'image' | placeholder_svg_tag }}
@@ -55,21 +55,48 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var slider = document.getElementById('{{ slider_id }}');
-    if (slider) {
-      var glide = new Glide(slider, {
-        type: 'slider',
-        startAt: 0,
-        perView: 6,
-        rewind: false,
-        gap: 10,
-        breakpoints: {
-          1024: { perView: 3 },
-          768: { perView: 2 },
-          480: { perView: 1 },
-        },
-      });
-      glide.mount();
+    var subCategoryGlide = new Glide('.sub-category-glide', {
+      type: 'slider',
+      startAt: 0,
+      perView: 6,
+      rewind: false,
+      gap: 10,
+      breakpoints: {
+        1024: { perView: 3 },
+        768: { perView: 2 },
+        480: { perView: 1 },
+      },
+    });
+    var prevBtn = document.querySelector('.sub-category-glide .product-gallery-arrow--left');
+    var nextBtn = document.querySelector('.sub-category-glide .product-gallery-arrow--right');
+
+    function updateArrows() {
+      var index = subCategoryGlide.index;
+      var perView = subCategoryGlide.settings.perView;
+      var slidesCount = subCategoryGlide.track.details.slides.length;
+
+      // Disable PREV on first slide
+      if (index === 0) {
+        prevBtn.disabled = true;
+        prevBtn.classList.add('disabled');
+      } else {
+        prevBtn.disabled = false;
+        prevBtn.classList.remove('disabled');
+      }
+
+      // Disable NEXT on last slide view
+      if (index >= slidesCount - perView) {
+        nextBtn.disabled = true;
+        nextBtn.classList.add('disabled');
+      } else {
+        nextBtn.disabled = false;
+        nextBtn.classList.remove('disabled');
+      }
     }
+
+    // Run on load and after each move
+    subCategoryGlide.on(['mount.after', 'run.after'], updateArrows);
+
+    subCategoryGlide.mount();
   });
 </script>

@@ -24,7 +24,7 @@
     </button>
     <div class="container m-auto">
       <!-- Glide.js slider structure -->
-      <div class="glide">
+      <div class="glide announcement-glide">
         <div class="glide__track" data-glide-el="track">
           <ul class="glide__slides">
             {% for block in section.blocks %}
@@ -43,7 +43,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      new Glide('.glide', {
+      new Glide('.announcement-glide', {
         type: 'slider',
         autoplay: 8000,
         animationDuration: 1000,
