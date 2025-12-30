@@ -51,11 +51,6 @@
 >
   <div class="relative overflow-hidden">
     <div class="block relative w-full z-10 group" style="padding-bottom: 100%;">
-      <!-- Hover Buttons Overlay -->
-      <div class="absolute top-2 right-2 z-30 translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col gap-2">
-        {% render 'quick-view-btn', product: prod %}
-      </div>
-
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
@@ -89,7 +84,7 @@
   <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">
     <a
       href="{{ prod.url }}"
-      class="font-bold underline"
+      class="font-bold"
       style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
     >
       {{ prod.title }}

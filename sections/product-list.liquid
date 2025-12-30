@@ -8,8 +8,7 @@
     style="padding-top: {{ section.settings.section_padding }}px; padding-bottom: {{ section.settings.section_padding }}px;"
   >
     <div
-      class="grid {{ mobile_cols_class }} md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      style="gap: {{ section.settings.grid_gap }}px;"
+      class="grid {{ mobile_cols_class }} gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       {% assign has_products = false %}
       {% for i in (1..8) %}
@@ -22,10 +21,6 @@
             {% render 'product-card',
               product: product,
               show_compare_price: section.settings.show_compare_price,
-              card_background: section.settings.card_background,
-              card_border: section.settings.card_border,
-              card_border_radius: section.settings.card_border_radius,
-              card_padding: section.settings.card_padding,
               title_size: section.settings.product_title_size,
               title_color: section.settings.product_title_color,
               price_size: section.settings.price_size,
@@ -96,52 +91,6 @@
       "content": "Layout"
     },
     {
-      "type": "range",
-      "id": "max_width",
-      "label": "Maximum width",
-      "min": 600,
-      "max": 1600,
-      "step": 100,
-      "unit": "px",
-      "default": 1200
-    },
-    {
-      "type": "range",
-      "id": "section_padding",
-      "label": "Section padding",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Grid gap",
-      "min": 10,
-      "max": 50,
-      "step": 5,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "label": "Columns on mobile",
-      "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
-      ],
-      "default": "2"
-    },
-    {
       "type": "header",
       "content": "Card style"
     },
@@ -158,32 +107,7 @@
       "label": "Background",
       "default": "#ffffff"
     },
-    {
-      "type": "range",
-      "id": "card_border_radius",
-      "label": "Border radius",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "unit": "px",
-      "default": 8
-    },
-    {
-      "type": "color",
-      "id": "card_border",
-      "label": "Border Color",
-      "default": "#D6D4D4"
-    },
-    {
-      "type": "range",
-      "id": "card_padding",
-      "label": "Padding",
-      "min": 10,
-      "max": 40,
-      "step": 5,
-      "unit": "px",
-      "default": 15
-    },
+
     {
       "type": "header",
       "content": "Typography"

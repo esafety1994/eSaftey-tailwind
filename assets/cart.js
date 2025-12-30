@@ -277,9 +277,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const button = this.querySelector('button[type="submit"]');
         const originalText = button ? button.textContent : '';
 
+        function _spinnerHtml() {
+          return '<svg class="animate-spin inline-block w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+        }
+
         if (button) {
-          button.textContent = 'Adding...';
+          button.innerHTML = _spinnerHtml();
           button.disabled = true;
+          button.setAttribute('aria-busy', 'true');
         }
 
         fetch('/cart/add.js', {
@@ -289,7 +294,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
           if (button) {
-            button.textContent = 'Added!';
+            // show spinner briefly while we update UI (replacing text with spinner)
+            button.innerHTML = _spinnerHtml();
             button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
             button.classList.add('bg-green-600', 'hover:bg-green-700');
           }
