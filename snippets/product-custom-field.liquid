@@ -27,7 +27,7 @@
       <input
         type="text"
         id="{{ block.id }}"
-        class="form-field form-field--input"
+        class="form-field form-field--input bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
         placeholder="{{ field_placeholder }}"
         name="properties[{{- field_name -}}]"
         {% if field_required %}
@@ -38,7 +38,7 @@
     {% when 'textarea' %}
       <textarea
         id="{{ block.id }}"
-        class="form-field form-field--input"
+        class="form-field form-field--input bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
         placeholder="{{ field_placeholder }}"
         name="properties[{{- field_name -}}]"
         {% if field_required %}
@@ -50,7 +50,7 @@
       {% assign options = field_options | newline_to_br | split: '<br />' %}
       <select
         id="{{ block.id }}"
-        class="form-field form-field--input"
+        class="form-field form-field--input bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
         name="properties[{{- field_name -}}]"
         {% if field_required %}
           required
