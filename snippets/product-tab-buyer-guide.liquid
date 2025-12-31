@@ -1,23 +1,5 @@
-
-  <p><strong>Prices are based on <em>PER METRE</em> and cut to size <em>FREE OF CHARGE</em>.</strong></p>
-  <br>
-  <h4><strong>Ordering Info / Guide</strong></h4>
-  <ul>
-<li><span class="bullet"></span> Kick Panel is measured in linear metres</strong>.</li>
-    <li><span class="bullet"></span> Prices are per <strong>metre</strong>.</li>
-    <li><span class="bullet"></span> Please allow <strong>2-3</strong> days from the order date.
-  </ul>
-  <p>
-<strong>Determining Your Order: </strong><p>Calculate the total length needed in millimeters and sum them. This gives you the total length required in meters.</p>
-<p>Round up these measurements to the nearest meter (consult the Rounding Up Rule below). This is the quantity you'll be billed for.</p>
-
-<p>For example:</p>
-
-<p>If the total is 2500mm, it equals 2.5 meters, rounded up to 3 meters.
-Since the Kick Panel is sold per meter, I'll be charged for 3 meters as it's rounded up to the next meter.</p>
-
-<p>I should input 3 in the Quantity Box to receive a total of 9 meters.</p>
-
-
-<strong>Rounding Up / Down</strong><p> If the total falls between 2.1 and 2.4 meters, I'll be billed for 3 meters but will receive 3 meters.</p> <p>This rule governs rounding up.</p> 
-<p>Please Note: The maximum length we can provide per piece is 4 meters (4000mm) continuously. For instance, if you need a total of 7.5 meters, you'll receive 4 piece of 4 meters and 1 piece of 3.5 meters, totaling 7.5 meters.</p>
+  {% if buyer_guide_content and buyer_guide_content != blank %}
+      {{ buyer_guide_content }}
+    {% else %}
+        <p><strong>Prices are based on <em>PER METRE</em> and cut to size <em>FREE OF CHARGE</em>.</strong></p>
+{% endif %}
