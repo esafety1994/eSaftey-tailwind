@@ -1,5 +1,9 @@
-  {% if buyer_guide_content and buyer_guide_content != blank %}
-      {{ buyer_guide_content }}
-    {% else %}
-        <p><strong>Prices are based on <em>PER METRE</em> and cut to size <em>FREE OF CHARGE</em>.</strong></p>
+{% if product.metafields.custom.buyer_guide and product.metafields.custom.buyer_guide != blank %}
+  {{ product.metafields.custom.buyer_guide }}
+{% elsif buyer_guide_content and buyer_guide_content != blank %}
+  {{ buyer_guide_content }}
+{% else %}
+  <p>
+    <strong>Prices are based on <em>PER METRE</em> and cut to size <em>FREE OF CHARGE</em>.</strong>
+  </p>
 {% endif %}

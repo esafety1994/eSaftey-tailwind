@@ -16,19 +16,34 @@
       </div>
     </div>
 
-    <div class="border border-gray-300 rounded">
-      <button
-        type="button"
-        class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
-        data-tab-target="specs"
-        aria-expanded="false"
-      >
-        <span>Product Specifications</span>
-        <span class="mobile-accordion-icon">+</span>
-      </button>
-      <div class="px-4 mobile-accordion-panel hidden">{% render 'product-tab-specs', product: product %}</div>
-    </div>
-
+    {% if product.template_suffix == 'product-with-custom-field' %}
+      <div class="border border-gray-300 rounded">
+        <button
+          type="button"
+          class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
+          data-tab-target="specs"
+          aria-expanded="false"
+        >
+          <span>Buyer's Guide</span>
+          <span class="mobile-accordion-icon">+</span>
+        </button>
+        <div class="px-4 mobile-accordion-panel hidden">{% render 'product-tab-buyer-guide', product: product, buyer_guide_content: buyer_guide_content %}</div>
+      </div>
+    {% else %}
+      <div class="border border-gray-300 rounded">
+        <button
+          type="button"
+          class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
+          data-tab-target="specs"
+          aria-expanded="false"
+        >
+          <span>Product Specifications</span>
+          <span class="mobile-accordion-icon">+</span>
+        </button>
+        <div class="px-4 mobile-accordion-panel hidden">{% render 'product-tab-specs', product: product %}</div>
+      </div>
+    {% endif %}
+    
     <div class="border border-gray-300 rounded">
       <button
         type="button"
@@ -66,7 +81,7 @@
         <span class="mobile-accordion-icon">+</span>
       </button>
       <div class="px-4 mobile-accordion-panel hidden">
-        {% render 'product-tab-shipping',shipping_content: shipping_content, show_full: true %}
+        {% render 'product-tab-shipping', shipping_content: shipping_content, show_full: true %}
       </div>
     </div>
   </div>
