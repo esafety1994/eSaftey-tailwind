@@ -1,32 +1,39 @@
-<div class="tab-panel hidden" data-panel="data-sheets">
-  <style>
-    .datasheet-link { background-color:#ffd700; color:#000; padding:8px 12px; border-radius:6px; font-weight:600; display:inline-flex; gap:8px; align-items:center; }
-  </style>
-  <div class="datasheet-section">
-    {% if product.tags contains 'Modular Handrails' %}
-      <ul class="list-none p-0 m-0">
-        <li>
-          <a
-            class="datasheet-link"
-            href="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Cope_Modular_Brochure_eSafetySupplies2025.pdf"
-            target="_blank"
-            >Download Brochure</a
-          >
-        </li>
+<style>
+  .datasheet-link {
+    background-color: #ffd700;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+  }
+</style>
+<div class="datasheet-section">
+  {% if product.tags contains 'Modular Handrails' %}
+    <ul class="list-none p-0 m-0">
+      <li>
+        <a
+          class="datasheet-link"
+          href="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Cope_Modular_Brochure_eSafetySupplies2025.pdf"
+          target="_blank"
+          >Download Brochure</a
+        >
+      </li>
+    </ul>
+  {% else %}
+    {% if product.metafields.custom.product_tabs_product_data_sheet %}
+      {% assign pdf_links = product.metafields.custom.product_tabs_product_data_sheet | split: '|' %}
+      <ul class="flex flex-wrap gap-4 p-0 m-0 list-none">
+        {% for pdf in pdf_links %}
+          <li>
+            <a class="datasheet-link" href="{{ pdf | strip }}" target="_blank">View Data Sheet (PDF)</a>
+          </li>
+        {% endfor %}
       </ul>
     {% else %}
-      {% if product.metafields.custom.product_tabs_product_data_sheet %}
-        {% assign pdf_links = product.metafields.custom.product_tabs_product_data_sheet | split: '|' %}
-        <ul class="flex flex-wrap gap-4 p-0 m-0 list-none">
-          {% for pdf in pdf_links %}
-            <li>
-              <a class="datasheet-link" href="{{ pdf | strip }}" target="_blank">View Data Sheet (PDF)</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="text-sm text-gray-600">Data Sheet coming soon!</p>
-      {% endif %}
+      <p class="text-sm text-gray-600">Data Sheet coming soon!</p>
     {% endif %}
-  </div>
+  {% endif %}
 </div>

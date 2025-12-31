@@ -1,15 +1,22 @@
-<div class="tab-panel" data-panel="description">
-  <div class="prose max-w-none">
-    <div class="desc-preview relative overflow-hidden" style="max-height: 360px;">
-      {{ product.description }}
-      <div
-        class="fade absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none"
-      ></div>
-    </div>
+{% assign show_full = show_full | default: false %}
+
+<div class="prose max-w-none">
+  <div
+    class="desc-preview relative overflow-hidden"
+    {% unless show_full %}
+      style="max-height: 360px;"
+    {% endunless %}
+  >
+    {{ product.description }}
+    <div
+      class="fade absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none"
+    ></div>
+  </div>
+  {% if show_full == false %}
     <div class="mt-2 flex justify-center my-4">
       <button type="button" class="desc-toggle btn outline-button border-gray-400 !normal-case" aria-expanded="false">
         Read more
       </button>
     </div>
-  </div>
+  {% endif %}
 </div>

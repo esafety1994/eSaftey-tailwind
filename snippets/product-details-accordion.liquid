@@ -1,0 +1,91 @@
+<!-- Mobile Accordion (generated from tab buttons above). Visible on small screens only. -->
+<div class="mobile-detail-accordion mt-4 md:hidden">
+  <div class="space-y-2 bg-white">
+    <div class="border border-gray-300 rounded">
+      <button
+        type="button"
+        class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
+        data-tab-target="description"
+        aria-expanded="false"
+      >
+        <span>Product description</span>
+        <span class="mobile-accordion-icon">+</span>
+      </button>
+      <div class="px-4 mobile-accordion-panel hidden">
+        {% render 'product-tab-description', product: product, show_full: true %}
+      </div>
+    </div>
+
+    <div class="border border-gray-300 rounded">
+      <button
+        type="button"
+        class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
+        data-tab-target="specs"
+        aria-expanded="false"
+      >
+        <span>Product Specifications</span>
+        <span class="mobile-accordion-icon">+</span>
+      </button>
+      <div class="px-4 mobile-accordion-panel hidden">{% render 'product-tab-specs', product: product %}</div>
+    </div>
+
+    <div class="border border-gray-300 rounded">
+      <button
+        type="button"
+        class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
+        data-tab-target="data-sheets"
+        aria-expanded="false"
+      >
+        <span>Data Sheets</span>
+        <span class="mobile-accordion-icon">+</span>
+      </button>
+      <div class="px-4 mobile-accordion-panel hidden">{% render 'product-tab-data-sheets', product: product %}</div>
+    </div>
+
+    <div class="border border-gray-300 rounded">
+      <button
+        type="button"
+        class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
+        data-tab-target="faq"
+        aria-expanded="false"
+      >
+        <span>Frequently Asked Questions</span>
+        <span class="mobile-accordion-icon">+</span>
+      </button>
+      <div class="px-4 mobile-accordion-panel hidden">{% render 'product-tab-faq', product: product %}</div>
+    </div>
+
+    <div class="border border-gray-300 rounded">
+      <button
+        type="button"
+        class="mobile-accordion-header w-full flex items-center justify-between p-3 text-base font-semibold"
+        data-tab-target="shipping"
+        aria-expanded="false"
+      >
+        <span>Shipping & Return</span>
+        <span class="mobile-accordion-icon">+</span>
+      </button>
+      <div class="px-4 mobile-accordion-panel hidden">
+        {% render 'product-tab-shipping',shipping_content: shipping_content, show_full: true %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    // Simple delegated accordion: click a header to toggle its adjacent panel.
+    var container = document.querySelector('.mobile-detail-accordion');
+    if (!container) return;
+    container.addEventListener('click', function (e) {
+      var header = e.target.closest('.mobile-accordion-header');
+      if (!header || !container.contains(header)) return;
+      var panel = header.nextElementSibling;
+      if (!panel || !panel.classList) return;
+      var expanded = header.getAttribute('aria-expanded') === 'true';
+      header.setAttribute('aria-expanded', String(!expanded));
+      var icon = header.querySelector('.mobile-accordion-icon');
+      if (icon) icon.textContent = expanded ? '+' : '-';
+      panel.classList.toggle('hidden');
+    });
+  })();
+</script>
