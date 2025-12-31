@@ -3,6 +3,7 @@
   Two-column product page: left (info), right (image carousel with Glide.js)
 {% endcomment %}
 
+{{ section.blocks.type }}
 <div class="container mx-auto px-4 py-8 max-w-7xl">
   <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
     <div>
@@ -28,11 +29,15 @@
         {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
       </div>
 
-      <div class="my-6 border-t-gray-300 border-t pt-6">
+      <div class="my-6 border-gray-300 border-y-1 py-6">
         {% render 'product-features', product: product %}
       </div>
 
       {% render 'variant_picker' %}
+      {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
+      {% if product.template_suffix == 'product-with-custom-field' and custom_block %}
+        {% render 'product-custom-field', block: custom_block, product: product %}
+      {% endif %}
 
       {% render 'act-button', product: product %}
       {% render 'product-below-act-button', product: product %}

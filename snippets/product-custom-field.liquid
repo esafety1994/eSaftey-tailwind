@@ -1,0 +1,68 @@
+{% liquid
+  assign label_hidden = false
+  assign field_type = block.settings.field_type
+  assign field_options = block.settings.field_options
+  assign field_name = block.settings.title
+  assign field_placeholder = block.settings.field_placeholder
+  assign field_required = block.settings.field_required
+  assign show_at_checkout = block.settings.show_at_checkout
+
+  if field_name == blank
+    assign label_hidden = true
+    assign field_name = 'Custom field ' | append: forloop.index
+  endif
+%}
+<div class="m-product-custom-field py-4 flex flex-col gap-2" data-theme-fields data-product-custom-field="{{ field_type }}">
+  <label class="m-product-option--label{% if label_hidden %} m:hidden{% endif %}" for="{{ block.id }}">
+    {{ field_name -}}
+    {%- if field_required -%}
+      <sup class="text-red-500">*</sup>
+    {%- endif %}
+  </label>
+  {% unless show_at_checkout %}
+    {% assign field_name = field_name | prepend: '_' %}
+  {% endunless %}
+  {% case field_type %}
+    {% when 'text' %}
+      <input
+        type="text"
+        id="{{ block.id }}"
+        class="form-field form-field--input"
+        placeholder="{{ field_placeholder }}"
+        name="properties[{{- field_name -}}]"
+        {% if field_required %}
+          required
+        {% endif %}
+        form="{{ product_form_id }}"
+      >
+    {% when 'textarea' %}
+      <textarea
+        id="{{ block.id }}"
+        class="form-field form-field--input"
+        placeholder="{{ field_placeholder }}"
+        name="properties[{{- field_name -}}]"
+        {% if field_required %}
+          required
+        {% endif %}
+        form="{{ product_form_id }}"
+      ></textarea>
+    {% when 'select' %}
+      {% assign options = field_options | newline_to_br | split: '<br />' %}
+      <select
+        id="{{ block.id }}"
+        class="form-field form-field--input"
+        name="properties[{{- field_name -}}]"
+        {% if field_required %}
+          required
+        {% endif %}
+        form="{{ product_form_id }}"
+      >
+        {% if field_placeholder != blank %}
+          <option value="">{{ field_placeholder }}</option>
+        {% endif %}
+        {% for option in options %}
+          <option value="{{ option }}" label="{{ option }}">{{ option }}</option>
+        {% endfor %}
+      </select>
+  {% endcase %}
+</div>
