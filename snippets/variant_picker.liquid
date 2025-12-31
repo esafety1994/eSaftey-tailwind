@@ -1,48 +1,65 @@
 <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'image-swatch.js' | asset_url }}" defer="defer" data-color-map="{{ 'color-map.json' | asset_url }}"></script>
+<script
+  src="{{ 'image-swatch.js' | asset_url }}"
+  defer="defer"
+  data-color-map="{{ 'color-map.json' | asset_url }}"
+></script>
 {% unless product.has_only_default_variant %}
   <variant-picker data-section-id="{{ section.id }}">
     {% for option in product.options_with_values %}
       <fieldset class="variant-picker__option mb-4">
-        {% comment %} server-side selected value for initial display {% endcomment %}
-        {% assign selected_value_name = '' %}
-        {% for _v in option.values %}
-          {% if option.selected_value == _v %}
-            {% assign selected_value_name = _v.name %}
-            {% break %}
-          {% endif %}
-        {% endfor %}
-        <legend class="variant-picker__label font-semibold mb-2">
-          {{ option.name }}
-          <span class="variant-selected-name ml-2 text-sm text-gray-600" aria-hidden="true">
-            {{- selected_value_name -}}
-          </span>
-        </legend>
-        <div class="variant-picker__values flex flex-wrap gap-2">
-          {% assign option_name_down = option.name | downcase %}
-          {% for value in option.values %}
-            {% assign input_id = option.name | handleize | append: '-' | append: value.name | handleize %}
-            <input
-              type="radio"
-              id="{{ input_id }}"
-              {% if option.selected_value == value %}
-                checked
-              {% endif %}
-              name="{{ option.name }}"
-              value="{{ value.variant.id }}"
-              class="hidden"
-            >
-            {% if option_name_down contains 'color' or option_name_down contains 'colour' %}
-              {% render 'color-swatch', for_id: input_id, color_name: value.name, value_name: value.name %}
-            {% else %}
-              <label
-                for="{{ input_id }}"
-                class="variant-picker__value cursor-pointer px-3 py-1 border rounded hover:bg-gray-100"
-              >
-                {{ value.name }}
-              </label>
+        <div class="flex gap-2 items-center">
+          {% comment %} server-side selected value for initial display {% endcomment %}
+          {% assign selected_value_name = '' %}
+          {% for _v in option.values %}
+            {% if option.selected_value == _v %}
+              {% assign selected_value_name = _v.name %}
+              {% break %}
             {% endif %}
           {% endfor %}
+          <legend class="variant-picker__label font-semibold mb-2">
+            {{ option.name }}
+            
+          </legend>
+          <div class="variant-picker__values w-full">
+            {% assign option_name_down = option.name | downcase %}
+            {% if option_name_down contains 'color'
+              or option_name_down contains 'colour'
+              or option_name_down contains 'colr'
+            %}
+              {% for value in option.values %}
+                {% assign input_id = option.name | handleize | append: '-' | append: value.name | handleize %}
+                <input
+                  type="radio"
+                  id="{{ input_id }}"
+                  {% if option.selected_value == value %}
+                    checked
+                  {% endif %}
+                  name="{{ option.name }}"
+                  value="{{ value.variant.id }}"
+                  class="hidden"
+                >
+                {% render 'color-swatch', for_id: input_id, color_name: value.name, value_name: value.name %}
+              {% endfor %}
+            {% else %}
+              <select
+                id="{{ option.name | handleize }}-select"
+                name="{{ option.name }}"
+                class="variant-picker__select border border-gray-300 rounded px-3 py-2 w-full"
+              >
+                {% for value in option.values %}
+                  <option
+                    value="{{ value.variant.id }}"
+                    {% if option.selected_value == value %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ value.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            {% endif %}
+          </div>
         </div>
       </fieldset>
     {% endfor %}

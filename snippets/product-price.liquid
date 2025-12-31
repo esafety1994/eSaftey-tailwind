@@ -32,9 +32,6 @@
             <span class="text-gray-500 line-through mr-2">
               {{ product.compare_at_price | money }}
             </span>
-            {% if req_from != 'sticky' %}
-              <span class="text-green-600">Save: {{ product.compare_at_price | minus: product.price | money }}</span>
-            {% endif %}
           </span>
         {% endif %}
       </span>

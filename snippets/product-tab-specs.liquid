@@ -1,8 +1,7 @@
 {% assign myRichText = product.metafields.custom.product_specification %}
 {% assign rows = myRichText | split: '\n' %}
--{{ myRichText }} -
 {% if myRichText == blank %}
-  <div class="text-sm text-gray-600">N/A</div>
+  <div class="text-sm text-gray-600 py-4">N/A</div>
 {% else %}
   <div class="overflow-x-auto">
     <table class="w-full text-sm text-left text-gray-700 table-auto">

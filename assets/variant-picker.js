@@ -8,19 +8,19 @@ class VariantPicker extends HTMLElement {
     }
 
     connectedCallback() {
-       this.variantSelector = this.querySelectorAll('input[type="radio"]');
+       this.variantSelector = this.querySelectorAll('input[type="radio"], select');
        this.handleChange = this.onVariantChange.bind(this);
 
        this.variantSelector.forEach((selector) => {
            selector.addEventListener('change', this.handleChange);
        });
-       // also update active label styles immediately when selection changes
-       this.variantSelector.forEach((selector) => {
+       // also update active label styles immediately when selection changes (only radios)
+       this.querySelectorAll('input[type="radio"]').forEach((selector) => {
            selector.addEventListener('change', function () { updateActiveOptionStyles(); });
        });
        // also update visible selected option names
        try { updateSelectedOptionNames(this); } catch(e) {}
-       // update selected option names whenever a radio changes
+       // update selected option names whenever an option changes
        this.variantSelector.forEach((selector) => {
            selector.addEventListener('change', () => { try { updateSelectedOptionNames(this); } catch(e) {} });
        });
@@ -169,6 +169,13 @@ function updateSelectedOptionNames(context) {
             // only show for size or color options
             if (!(optionNameLower.indexOf('size') !== -1 || optionNameLower.indexOf('colour') !== -1 || optionNameLower.indexOf('color') !== -1)) {
                 display.textContent = '';
+                return;
+            }
+            // prefer select within this fieldset, otherwise look for radios
+            const sel = fs.querySelector('select');
+            if (sel) {
+                const so = sel.options[sel.selectedIndex];
+                display.textContent = so ? so.text.trim() : '';
                 return;
             }
             // find the checked input within this fieldset (or globally by name)

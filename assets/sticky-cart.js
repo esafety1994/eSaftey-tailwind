@@ -1,19 +1,4 @@
 (function(){
-  function getHeaderHeight(){
-    try{
-      var header = document.querySelector('[data-sticky-header]') || document.querySelector('.site-header') || document.querySelector('header') || document.querySelector('.header');
-      if(header) return header.getBoundingClientRect().height;
-    }catch(e){}
-    return 0;
-  }
-
-  function getFooterHeight(){
-    try{
-      var footer = document.querySelector('[data-sticky-footer]') || document.querySelector('.site-footer') || document.querySelector('footer');
-      if(footer) return footer.getBoundingClientRect().height;
-    }catch(e){}
-    return 0;
-  }
 
   function showSticky(){
     var el = document.querySelector('[data-sticky-cart]');
@@ -108,14 +93,6 @@
     if (sel && sel.value) return sel.value;
 
     return null;
-  }
-
-  function getQuantity(){
-    var q = document.querySelector('input[name="quantity"]') || document.querySelector('input[name="sticky-quantity"]');
-    if(!q) return 1;
-    var n = parseInt(q.value,10);
-    if(isNaN(n) || n<1) return 1;
-    return n;
   }
 
   function submitAddToCart(variantId, quantity){
@@ -234,10 +211,23 @@
         var skuTarget = document.querySelector('.sticky-sku');
         if(skuSource && skuTarget) skuTarget.textContent = skuSource.textContent.trim();
 
-        // Price (copy innerHTML so formatting remains)
+        // Price (copy innerHTML so formatting remains) but strip any "Save" green text
         var priceSrc = root.querySelector('#product-price') || document.getElementById('product-price');
         var priceTarget = document.getElementById('sticky-price');
-        if(priceSrc && priceTarget) priceTarget.innerHTML = priceSrc.innerHTML;
+        if(priceSrc && priceTarget) {
+          try {
+            var tmp = document.createElement('div');
+            tmp.innerHTML = priceSrc.innerHTML || '';
+            // remove any green 'Save' text that shouldn't appear in sticky
+            var save = tmp.querySelectorAll('.text-green-600');
+            if(save && save.length) {
+              save.forEach(function(n){ if(n && n.parentNode) n.parentNode.removeChild(n); });
+            }
+            priceTarget.innerHTML = tmp.innerHTML;
+          } catch(e) {
+            priceTarget.innerHTML = priceSrc.innerHTML;
+          }
+        }
 
         // Image: prefer image inside the updated root, fallback to gallery or featured
         var stickyImg = document.querySelector('.sticky-image');

@@ -12,7 +12,7 @@
     assign field_name = 'Custom field ' | append: forloop.index
   endif
 %}
-<div class="m-product-custom-field py-4 flex flex-col gap-2" data-theme-fields data-product-custom-field="{{ field_type }}">
+<div class="m-product-custom-field py-4 flex flex-col gap-2 mb-4" data-theme-fields data-product-custom-field="{{ field_type }}">
   <label class="m-product-option--label{% if label_hidden %} m:hidden{% endif %}" for="{{ block.id }}">
     {{ field_name -}}
     {%- if field_required -%}
@@ -38,7 +38,7 @@
     {% when 'textarea' %}
       <textarea
         id="{{ block.id }}"
-        class="form-field form-field--input bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
+        class="form-field form-field--input text-sm bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
         placeholder="{{ field_placeholder }}"
         name="properties[{{- field_name -}}]"
         {% if field_required %}

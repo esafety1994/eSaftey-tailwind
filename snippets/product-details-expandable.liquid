@@ -8,6 +8,7 @@
   smooth-scroll and tab behavior. Styling uses Tailwind utility classes.
 {% endcomment %}
 
+
 <div class="product-details-expandable mt-4 border border-gray-200 hidden md:block">
   <!-- Target section (initially hidden on small screens if desired) -->
   <div id="product-details-target" class="" tabindex="-1">
@@ -59,7 +60,13 @@
     <div class="tab-panels mt-4 px-4">
       <div class="tab-panel" data-panel="description">
       {% render 'product-tab-description', product: product %}</div>
-      <div class="tab-panel hidden" data-panel="specs">{% render 'product-tab-specs', product: product %}</div>
+      <div class="tab-panel hidden" data-panel="specs">
+        {% if product.template_suffix == 'product-with-custom-field' %}
+          {% render 'product-tab-buyer-guide', product: product, buyer_guide_content: shipping_content %}
+        {% else %}
+          {% render 'product-tab-specs', product: product %}
+        {% endif %}
+      </div>
       <div class="tab-panel hidden" data-panel="data-sheets">{% render 'product-tab-data-sheets', product: product %}</div>
       <div class="tab-panel hidden" data-panel="faq">{% render 'product-tab-faq', product: product %}</div>
       <div class="tab-panel hidden" data-panel="shipping">{% render 'product-tab-shipping', product: product, shipping_content: shipping_content %}</div>
@@ -67,4 +74,4 @@
   </div>
 </div>
 
-{% render 'product-details-accordion', product: product, shipping_content: shipping_content %}
+{% render 'product-details-accordion', product: product, shipping_content: shipping_content, buyer_guide_content: shipping_content %}
