@@ -75,7 +75,69 @@
         { "type": "checkbox", "id": "show_gift_card_recipient", "label": "Show gift card recipient", "default": true }
       ]
     },
-    { "type": "description", "name": "Description" }
+    { "type": "description", "name": "Description" },
+    {
+      "type": "custom_field",
+      "name": "Custom field",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Need more advanced customization? Use [Teeinblue Product Personalizer](https://teeinblue.com/install/teeinblue?ref=foxecom) app"
+        },
+        {
+          "type": "text",
+          "label": "Field name",
+          "id": "title",
+          "default": "Custom text",
+          "info": "Required, don't leave it blank"
+        },
+        {
+          "type": "select",
+          "label": "Field type",
+          "id": "field_type",
+          "default": "text",
+          "options": [
+            {
+              "label": "Single line text",
+              "value": "text"
+            },
+            {
+              "label": "Multiline text",
+              "value": "textarea"
+            },
+            {
+              "label": "Select",
+              "value": "select"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "label": "Options",
+          "id": "field_options",
+          "info": "Each option in a new line"
+        },
+        {
+          "type": "text",
+          "label": "Placeholder",
+          "id": "field_placeholder"
+        },
+        {
+          "type": "checkbox",
+          "label": "Required",
+          "id": "field_required",
+          "default": false,
+          "info": "If you use “Required” with a checkbox, then the checkbox will need to be checked for the customer to add the item to the cart."
+        },
+        {
+          "type": "checkbox",
+          "label": "Show at checkout",
+          "id": "show_at_checkout",
+          "default": true,
+          "info": "Uncheck this if you don't want the captured information to be shown in the order summary on the checkout pages."
+        }
+      ]
+    }
   ],
   "presets": [{ "name": "Main product", "category": "Products" }]
 }
