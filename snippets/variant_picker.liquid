@@ -7,6 +7,7 @@
 {% unless product.has_only_default_variant %}
   <variant-picker data-section-id="{{ section.id }}">
     {% for option in product.options_with_values %}
+      {% assign option_name_down = option.name | downcase %}
       <fieldset class="variant-picker__option mb-4">
         <div class="flex gap-2 items-center">
           {% comment %} server-side selected value for initial display {% endcomment %}
@@ -17,15 +18,15 @@
               {% break %}
             {% endif %}
           {% endfor %}
-          <legend class="variant-picker__label font-semibold mb-2">
+          <legend class="variant-picker__label font-semibold mb-2 min-w-32">
             {{ option.name }}
             
           </legend>
-          <div class="variant-picker__values w-full">
+          
+          <div class="variant-picker__values w-full ">
             {% assign option_name_down = option.name | downcase %}
             {% if option_name_down contains 'color'
               or option_name_down contains 'colour'
-              or option_name_down contains 'colr'
             %}
               {% for value in option.values %}
                 {% assign input_id = option.name | handleize | append: '-' | append: value.name | handleize %}
@@ -45,7 +46,7 @@
               <select
                 id="{{ option.name | handleize }}-select"
                 name="{{ option.name }}"
-                class="variant-picker__select border border-gray-300 rounded px-3 py-2 w-full"
+                class="variant-picker__select border border-gray-300 rounded px-3 py-2 w-full "
               >
                 {% for value in option.values %}
                   <option

@@ -39,6 +39,8 @@
     --color-white: #fff;
     --spacing: 0.25rem;
     --breakpoint-2xl: 96rem;
+    --container-3xs: 16rem;
+    --container-2xs: 18rem;
     --container-sm: 24rem;
     --container-md: 28rem;
     --container-xl: 36rem;
@@ -596,6 +598,9 @@
   .w-2\.5 {
     width: calc(var(--spacing) * 2.5);
   }
+  .w-2xs {
+    width: var(--container-2xs);
+  }
   .w-3 {
     width: calc(var(--spacing) * 3);
   }
@@ -638,6 +643,12 @@
   .max-w-2xl {
     max-width: var(--container-2xl);
   }
+  .max-w-2xs {
+    max-width: var(--container-2xs);
+  }
+  .max-w-3xs {
+    max-width: var(--container-3xs);
+  }
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
@@ -661,6 +672,9 @@
   }
   .max-w-xl {
     max-width: var(--container-xl);
+  }
+  .min-w-32 {
+    min-width: calc(var(--spacing) * 32);
   }
   .flex-1 {
     flex: 1;
