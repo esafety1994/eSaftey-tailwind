@@ -42,10 +42,6 @@
             "show_gift_card_recipient": true
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
         "custom_field_TTHcFm": {
           "type": "custom_field",
           "settings": {
@@ -56,6 +52,10 @@
             "field_required": true,
             "show_at_checkout": true
           }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
         }
       },
       "block_order": [
@@ -64,8 +64,8 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "description",
-        "custom_field_TTHcFm"
+        "custom_field_TTHcFm",
+        "description"
       ],
       "settings": {}
     },
