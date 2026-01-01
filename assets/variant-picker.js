@@ -89,6 +89,34 @@ class VariantPicker extends HTMLElement {
                         skuTarget.innerHTML = newSku.innerHTML;
                     }
 
+                    // Update stock badge
+                    const newStock = tempDiv.querySelector('#product-stock-badge');
+                    const stockTarget = document.getElementById('product-stock-badge');
+                    if (newStock && stockTarget) {
+                        stockTarget.innerHTML = newStock.innerHTML;
+                    }
+
+                    // Update backorder text
+                    const newBackorder = tempDiv.querySelector('#product-backorder-text');
+                    const backorderTarget = document.getElementById('product-backorder-text');
+                    if (newBackorder && backorderTarget) {
+                        backorderTarget.innerHTML = newBackorder.innerHTML;
+                    }
+
+                    // Update act button (add-to-cart + qty form)
+                    const newAct = tempDiv.querySelector('#product-act-button');
+                    const actTarget = document.getElementById('product-act-button');
+                    if (newAct && actTarget) {
+                        actTarget.innerHTML = newAct.innerHTML;
+                    }
+
+                    // Update sticky cart block if present in fetched HTML
+                    const newSticky = tempDiv.querySelector('[data-sticky-cart]');
+                    const stickyTarget = document.querySelector('[data-sticky-cart]');
+                    if (newSticky && stickyTarget) {
+                        stickyTarget.innerHTML = newSticky.innerHTML;
+                    }
+
                     // Update form hidden variant id (first matching form input)
                     const newVariantInput = tempDiv.querySelector('form input[name="id"]');
                     const existingVariantInput = document.querySelector('form input[name="id"]');

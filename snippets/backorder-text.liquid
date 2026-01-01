@@ -1,0 +1,15 @@
+{%- comment -%} Backorder note — shows `variant.metafields.custom.backorder_note` when status is Back Order {%- endcomment -%}
+<div id="product-backorder-text">
+  {% assign _variant = variant %}
+  {% if _variant == null and product %}
+    {% assign _variant = product.selected_or_first_available_variant %}
+  {% endif %}
+
+  {% if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status %}
+    {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
+
+    {% if status == 'Back Order' %}
+      <div class="my-4 p-2 bg-primary rounded-lg text-grey-600">{{ _variant.metafields.custom.backorder_note }}</div>
+    {% endif %}
+  {% endif %}
+</div>

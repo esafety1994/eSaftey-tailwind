@@ -267,6 +267,40 @@
           }
         }
       }catch(e){/* ignore */}
+      // Also keep sticky button text/state in sync with main button
+      try { updateStickyButton(root); } catch(e) {}
+    }
+
+    function updateStickyButton(root){
+      try{
+        root = root || document;
+        // Find the source submit button inside the main product area
+        var sourceBtn = root.querySelector('#product-act-button button[type="submit"], #product-act-button .primary-cart-button, .product-container button.primary-cart-button, form button.primary-cart-button');
+        var stickyEl = document.querySelector('[data-sticky-cart]');
+        if(!stickyEl || !sourceBtn) return;
+        var stickyBtn = stickyEl.querySelector('button[type="submit"], input[type="submit"], .sticky-add-to-cart');
+        if(!stickyBtn) return;
+
+        // Update text/content without replacing the element so event handlers persist
+        try {
+          // Prefer textContent update; if source has innerHTML extras, copy that instead
+          if(sourceBtn.innerHTML && sourceBtn.innerHTML.trim() !== '') stickyBtn.innerHTML = sourceBtn.innerHTML;
+          else stickyBtn.textContent = sourceBtn.textContent.trim();
+        } catch(e) { stickyBtn.textContent = sourceBtn.textContent.trim(); }
+
+        // Update disabled state and helper classes
+        if(sourceBtn.disabled || sourceBtn.getAttribute('aria-disabled') === 'true'){
+          stickyBtn.disabled = true;
+          stickyBtn.setAttribute('aria-disabled','true');
+          stickyBtn.classList.add('opacity-50');
+          stickyBtn.classList.add('cursor-not-allowed');
+        } else {
+          stickyBtn.disabled = false;
+          stickyBtn.setAttribute('aria-disabled','false');
+          stickyBtn.classList.remove('opacity-50');
+          stickyBtn.classList.remove('cursor-not-allowed');
+        }
+      }catch(e){/* ignore */}
     }
 
     // ensure sticky content mirrors the initial/default variant on init
@@ -287,6 +321,7 @@
         if(stickyInput) stickyInput.value = vid;
         // Attempt to update sticky image/price/SKU from document immediately
         updateStickyContent(document);
+        try { updateStickyButton(document); } catch(e) {}
       }catch(err){}
     });
 

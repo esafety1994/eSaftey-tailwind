@@ -89,14 +89,19 @@
     >
       {{ prod.title }}
     </a>
-
+    {% render 'product-stock-badge', product: prod %}
     {% render 'product-price',
       product: prod,
       show_compare_price: show_compare_price,
       price_size: price_size,
-      price_color: price_color
+      price_color: price_color,
+      layout:'card'
     %}
   </div>
+
+   {% if product.variants.size > 1 %}
+    <div class="text-sm text-gray-500"> <span class="font-medium">{{ product.variants.size }}</span> options available</div>
+  {% endif %}
   <div class="flex justify-center my-2">
     {% render 'quick-add-btn', product: prod, mobile_hide_qty: true %}
   </div>

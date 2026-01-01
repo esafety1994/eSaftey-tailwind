@@ -16,13 +16,16 @@
       <h1 class="text-3xl font-semibold mb-4">{{ product.title }}</h1>
       {% render 'product-review', product: product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
-      <div id="product-sku">
+      <div class="flex gap-4">
+        <div id="product-sku">
         {% assign current_variant = product.selected_or_first_available_variant %}
         {% if current_variant and current_variant.sku %}
           <div class="text-sm text-gray-600 my-4">
             SKU: <span class="sku-value">{{ current_variant.sku }}</span>
           </div>
         {% endif %}
+      </div>
+      {% render 'product-stock-badge', product: product %}
       </div>
       <div id="product-price" class="mb-4 text-xl font-semibold">
         {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
@@ -37,7 +40,7 @@
       {% if product.template_suffix == 'product-with-custom-field' and custom_block %}
         {% render 'product-custom-field', block: custom_block, product: product %}
       {% endif %}
-
+      {% render 'backorder-text', product: product %}
       {% render 'act-button', product: product %}
       {% render 'product-below-act-button', product: product %}
     </div>

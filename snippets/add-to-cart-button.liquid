@@ -1,2 +1,19 @@
 {%- comment -%} Simple add-to-cart button snippet. Accepts `product` (optional) {%- endcomment -%}
-<button type="submit" class="primary-cart-button w-full m-auto justify-center">Add to Cart</button>
+{% assign _variant = variant %}
+{% if _variant == null and product %}
+  {% assign _variant = product.selected_or_first_available_variant %}
+{% endif %}
+
+{% comment %} Determine stock status (fall back to Add to Cart when missing) {% endcomment %}
+{% assign status = '' %}
+{% if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status %}
+  {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
+{% endif %}
+
+{% if status == 'Out of Stock' %}
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center opacity-50 cursor-not-allowed" disabled aria-disabled="true">Out of Stock</button>
+{% elsif status == 'Back Order' %}
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center">Back Order</button>
+{% else %}
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center">Add to Cart</button>
+{% endif %}

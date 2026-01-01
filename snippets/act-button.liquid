@@ -3,11 +3,13 @@
   Pass `product` when rendering: {% render 'act-button', product: product %}
 {%- endcomment -%}
 
-{% form 'product', product %}
-  {% assign current_variant = product.selected_or_first_available_variant %}
-  <input type="hidden" name="id" value="{{ current_variant.id }}">
-  <div class="flex items-center space-x-4">
-    {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
-    {% render 'add-to-cart-button', product: product %}
-  </div>
-{% endform %}
+<div id="product-act-button">
+  {% form 'product', product %}
+    {% assign current_variant = product.selected_or_first_available_variant %}
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+    <div class="flex items-center space-x-4">
+      {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
+      {% render 'add-to-cart-button', product: product %}
+    </div>
+  {% endform %}
+</div>
