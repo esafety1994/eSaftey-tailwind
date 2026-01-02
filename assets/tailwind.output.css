@@ -1234,6 +1234,9 @@
   .text-primary {
     color: var(--color-primary);
   }
+  .text-primary-light {
+    color: var(--color-primary-light);
+  }
   .text-red-500 {
     color: var(--color-red-500);
   }
