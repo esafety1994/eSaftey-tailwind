@@ -1,0 +1,73 @@
+{%- comment -%}
+  product-fixing.liquid
+  Renders a custom element <product-fixing-addons> containing checkboxes for optional fixings.
+  Supports metafields in namespace `fixing`:
+  - fixing.variant_ids (comma-separated variant ids)
+  - fixing.labels (comma-separated labels)
+  - fixing.prices (comma-separated display prices)
+  OR
+  - fixing.products (product reference(s) selected in admin)
+
+  The element is enhanced by assets/product-fixing.js which handles add-to-cart behavior.
+{%- endcomment -%}
+
+{%- comment -%}
+  Robust product-fixing rendering: normalize metafield shapes and output a small debug JSON
+  so maintainers can see what values are passed. This avoids Liquid errors when metafield
+  data shapes differ between stores or editors.
+{%- endcomment -%}
+
+{%- assign refs = product.metafields.fixing.products.value -%}
+{%- if refs == blank -%}
+  {%- assign refs = product.metafields.fixing.products -%}
+{%- endif -%}
+
+{%- if refs and refs.size > 0 -%}
+  <div class="my-4">
+    <h3 class="font-semibold mb-2">Fixings</h3>
+    <product-fixing-addons>
+      <div class="flex flex-wrap gap-2 text-xs items-stretch">
+        <!-- Default option -->
+        <label class="flex">
+          <input type="radio" name="product_fixing_{{ product.id }}" class="peer sr-only addon-radio" value="" checked>
+          <div class="border rounded-lg p-2 h-full flex items-center justify-between gap-4 transition-colors duration-150 cursor-pointer hover:bg-black hover:text-white active:bg-black active:text-white active:scale-95 peer-checked:bg-black peer-checked:text-white">
+            <span>No Fixings</span>
+          </div>
+        </label>
+
+        {%- for r in refs -%}
+          {%- assign resolved = null -%}
+
+          {%- if r.handle -%}
+            {%- assign resolved = all_products[r.handle] -%}
+          {%- elsif r.value and r.value.handle -%}
+            {%- assign resolved = all_products[r.value.handle] -%}
+          {%- elsif r.value and r.value.title -%}
+            {%- assign resolved = r.value -%}
+          {%- elsif r.title -%}
+            {%- assign resolved = r -%}
+          {%- endif -%}
+
+          {%- if resolved -%}
+            {%- assign v = resolved.variants | first -%}
+            <label class="flex">
+              <input type="radio" name="product_fixing_{{ product.id }}" class="peer sr-only addon-radio" data-variant-id="{{ v.id }}" value="{{ v.id }}">
+              <div class="border rounded-lg p-2 h-full flex flex-col justify-between gap-1 transition-colors duration-150 cursor-pointer hover:bg-black hover:text-white active:bg-black active:text-white active:scale-95 peer-checked:bg-black peer-checked:text-white">
+                <span class="block">{{ resolved.title }}</span>
+                <span class="text-sm">{{ v.price | money }}</span>
+              </div>
+            </label>
+          {%- else -%}
+            {%- comment -%} unable to resolve reference; show raw value for debugging {% endcomment -%}
+            <label class="flex opacity-60">
+              <input type="radio" class="sr-only" disabled>
+              <div class="border rounded-lg p-3 h-full flex items-center justify-between gap-4 text-gray-500">{{ r | json }}</div>
+            </label>
+          {%- endif -%}
+
+        {%- endfor -%}
+      </div>
+    </product-fixing-addons>
+  </div>
+  <script src="{{ 'product-fixing.js' | asset_url }}" defer></script>
+{%- endif -%}

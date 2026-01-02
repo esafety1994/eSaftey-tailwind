@@ -36,6 +36,17 @@
       </div>
 
       {% render 'variant_picker' %}
+      {%- comment -%}
+        Optional fixing/add-on UI. Use product metafields in namespace `fixing`.
+        Supported metafields (product-level):
+        - `fixing.variant_ids` (comma-separated variant IDs)
+        - `fixing.labels` (comma-separated labels)
+        - `fixing.prices` (comma-separated display prices)
+        OR
+        - `fixing.products` (product reference(s) selected in admin)
+        The UI is rendered by the `snippets/product-fixing.liquid` snippet.
+      {%- endcomment -%}
+      {% render 'product-fixing', product: product %}
       {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
       {% if product.template_suffix == 'product-with-custom-field' and custom_block %}
         {% render 'product-custom-field', block: custom_block, product: product %}
@@ -43,6 +54,7 @@
       {% render 'backorder-text', product: product %}
       {% render 'act-button', product: product %}
       {% render 'product-below-act-button', product: product %}
+      
     </div>
   </div>
 </div>

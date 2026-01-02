@@ -1,0 +1,31 @@
+{%- comment -%} Renders a stacked list of fixing add-ons for a parent cart item. Expects `parent_key` in the render call {%- endcomment -%}
+<div class="space-y-2 py-2">
+  {% for addon in cart.items %}
+    {% if addon.properties.parent_key == parent_key %}
+      <div class="flex items-center gap-3 p-2 rounded bg-gray-50 justify-between">
+        <div class="flex items-center gap-3 flex-wrap">
+          {% if addon.image %}
+            <a href="{{ addon.url }}" class="inline-block">
+              <img
+                src="{{ addon.image | img_url: '100x100' }}"
+                alt="{{ addon.title }}"
+                class="size-16 object-cover rounded"
+                width="64"
+                height="64"
+              >
+            </a>
+          {% else %}
+            <div class="size-16 bg-gray-100 rounded">{{ 'product-1' | placeholder_svg_tag }}</div>
+          {% endif %}
+          <div class="flex-1">
+            <div class="text-sm font-semibold">
+              <a href="{{ addon.url }}" class="hover:underline">{{ addon.title }}</a>
+            </div>
+            <div class="text-sm text-gray-600">Qty: {{ addon.quantity }}</div>
+          </div>
+        </div>
+        <div class="text-sm font-medium">{{ addon.final_line_price | money }}</div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>

@@ -49,41 +49,85 @@ document.addEventListener('DOMContentLoaded', function () {
     itemsContainer.style.display = 'block';
     emptyNode.style.display = 'none';
 
-    cart.items.forEach(function(item, index){
-      const line = index + 1;
-      const row = document.createElement('div');
-      row.className = 'flex items-center gap-3';
-        // build options/variant display similar to server-rendered cart
-        let optionsHtml = '';
-        try {
-          if (item.options_with_values && item.options_with_values.length) {
-            const parts = [];
-            item.options_with_values.forEach(function(opt){
-              if (opt.value && opt.value !== 'Default Title') parts.push(`<span class="block">${opt.name}: ${opt.value}</span>`);
-            });
-            if (parts.length) optionsHtml = `<div class="text-sm text-gray-600">${parts.join('')}</div>`;
-          }
-        } catch (e) { /* ignore */ }
-        if (!optionsHtml && item.variant_title && item.variant_title !== 'Default Title') {
-          optionsHtml = `<div class="text-sm text-gray-600">${item.variant_title}</div>`;
+    // Build a map of addons keyed by parent_key
+    const addonsByParent = {};
+    cart.items.forEach(function(it){
+      try {
+        if (it.properties && it.properties.is_addon == 'true') {
+          const pk = it.properties.parent_key || '';
+          addonsByParent[pk] = addonsByParent[pk] || [];
+          addonsByParent[pk].push(it);
         }
+      } catch(e) { /* ignore */ }
+    });
 
-        row.innerHTML = `
-          <a href="${item.url}" class="inline-block">
-            <img src="${item.image}" class="w-28 h-28 object-contain border border-grey p-2 rounded" alt="${item.title}">
-          </a>
-          <div class="flex-1">
-            <div class="text-sm"><a href="${item.url}" class="hover:underline">${item.product_title}</a></div>
-            ${optionsHtml}
-            <div class="text-sm mt-2">${formatMoney(item.price)}</div>
-            <div class="mt-2 flex items-center space-x-2">
-              <cart-qty-control data-line="${line}" data-quantity="${item.quantity}"></cart-qty-control>
-              <button type="button" class="cart-item-remove text-sm text-gray-600 ml-2 cursor-pointer" data-line="${line}">Remove</button>
-            </div>
-          </div>
-        `;
+    // Render parent items and their addons
+    cart.items.forEach(function(item, idx){
+      // skip addon items here
+      if (item.properties && item.properties.is_addon == 'true') return;
+      const line = idx + 1;
+      const parentKey = item.key || '';
+      const hasAddons = Array.isArray(addonsByParent[parentKey]) && addonsByParent[parentKey].length > 0;
+
+      const row = document.createElement('div');
+      row.className = 'py-4 flex flex-col sm:flex-row items-start sm:space-x-4 border-b border-grey';
+      row.setAttribute('data-has-addons', hasAddons ? 'true' : 'false');
+
+      // build options/variant display
+      let optionsHtml = '';
+      try {
+        if (item.options_with_values && item.options_with_values.length) {
+          const parts = [];
+          item.options_with_values.forEach(function(opt){
+            if (opt.value && opt.value !== 'Default Title') parts.push(`<span class="block">${opt.name}: ${opt.value}</span>`);
+          });
+          if (parts.length) optionsHtml = `<div class="text-sm text-gray-600">${parts.join('')}</div>`;
+        }
+      } catch (e) { /* ignore */ }
+      if (!optionsHtml && item.variant_title && item.variant_title !== 'Default Title') {
+        optionsHtml = `<div class="text-sm text-gray-600">${item.variant_title}</div>`;
+      }
+
+
+      // parent HTML - use compact layout similar to previous implementation
+      row.innerHTML = `
+        <a href="${item.url}" class="inline-block">
+          <img src="${item.image || ''}" class="size-28 object-contain border border-grey p-2 rounded" alt="${item.title}">
+        </a>
+        <div class="flex-1 ml-3">
+          <div class="text-sm font-semibold"><a href="${item.url}" class="hover:underline">${item.product_title}</a></div>
+          ${optionsHtml}
+          <div class="text-sm mt-2">${formatMoney(item.price)}</div>
+          <div class="mt-2 flex items-center space-x-2">
+            <cart-qty-control data-line="${line}" data-quantity="${item.quantity}"></cart-qty-control>
+            <button type="button" class="cart-item-remove text-sm text-gray-600 ml-2 cursor-pointer" data-line="${line}">Remove</button> </div>
+            ${hasAddons ? `<div class=
+              "mt-2"><button type="button" class="view-fixings-btn text-xs text-gray-600 flex items-center gap-1 underline" data-parent-key="${parentKey}"><span>View Fixings</span><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"size-4 view-fixings-icon transition-transform duration-200\"><path d=\"M9 18l6-6-6-6\"/></svg></button> </div>` : ''}
+          
+          ${hasAddons ? `<div class=\"fixings-panel overflow-hidden mt-2\" data-parent-key=\"${parentKey}\" style=\"max-height:0; transition:max-height 300ms ease;\">` + renderAddonsHTML(addonsByParent[parentKey]) + `</div>` : ''}
+        
+      `;
+
       itemsContainer.appendChild(row);
     });
+
+    // helper to render addon HTML
+    function renderAddonsHTML(addons){
+      if (!addons || !addons.length) return '';
+      return addons.map(function(a){
+        const img = a.image ? `<a href="${a.url}" class="inline-block"><img src="${a.image}" class="size-16 object-cover rounded" alt="${a.title}"></a>` : `<div class="size-16 bg-gray-100 rounded"></div>`;
+        return `
+          <div class="flex items-center gap-3 p-2 rounded bg-gray-50">
+            ${img}
+            <div class="flex-1">
+              <div class="text-sm font-semibold"><a href="${a.url}" class="hover:underline">${a.title}</a></div>
+              <div class="text-sm text-gray-600">Qty: ${a.quantity}</div>
+            </div>
+            <div class="text-sm font-medium">${formatMoney(a.final_line_price || (a.price*a.quantity))}</div>
+          </div>
+        `;
+      }).join('');
+    }
 
     const count = cart.item_count || 0;
     subtotalNode.textContent = formatMoney(cart.items_subtotal_price);

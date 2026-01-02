@@ -75,10 +75,58 @@
     </div>
   </div>
   <div id="cart-drawer-content" class="p-4 overflow-y-auto flex-1">
-    <div id="cart-items" class="space-y-4 overflow-auto">
-      <!-- Cart items will be rendered here via JS -->
-    </div>
-    <div id="cart-empty" class="text-center text-gray-600">Your cart is empty.</div>
+    {% if cart.item_count == 0 %}
+      <div id="cart-items" class="space-y-4 overflow-auto"></div>
+      <div id="cart-empty" class="text-center text-gray-600">Your cart is empty.</div>
+    {% else %}
+      <div id="cart-items" class="space-y-4 overflow-auto">
+        {% for item in cart.items %}
+          {% unless item.properties.is_addon == 'true' %}
+            {% render 'cart-line-item', item: item, index: forloop.index, drawer: true %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+      <div id="cart-empty" class="hidden text-center text-gray-600">Your cart is empty.</div>
+    {% endif %}
+
+    <script>
+      (function(){
+        // Expose binding function so external code (AJAX updates) can re-run it
+        window.bindDrawerFixingToggles = function bindDrawerFixingToggles(){
+          document.querySelectorAll('#cart-drawer .view-fixings-btn').forEach(function(btn){
+            if (btn._fixingsBound) return; btn._fixingsBound = true;
+            btn.addEventListener('click', function(){
+              var key = btn.getAttribute('data-parent-key');
+              var panel = document.querySelector('#cart-drawer .fixings-panel[data-parent-key="'+key+'"]');
+              var icon = btn.querySelector('.view-fixings-icon');
+              if (!panel) return;
+              var isOpen = panel.getAttribute('data-open') === 'true';
+              if (isOpen){
+                panel.style.maxHeight = '0'; panel.setAttribute('data-open','false'); if (icon) icon.style.transform = '';
+              } else {
+                panel.style.maxHeight = panel.scrollHeight + 'px'; panel.setAttribute('data-open','true'); if (icon) icon.style.transform = 'rotate(90deg)';
+                var onTrans = function(){ if (panel.getAttribute('data-open') === 'true') panel.style.maxHeight = panel.scrollHeight + 'px'; panel.removeEventListener('transitionend', onTrans); };
+                panel.addEventListener('transitionend', onTrans);
+              }
+            });
+          });
+        };
+
+        // Run initially
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ window.bindDrawerFixingToggles(); }); else window.bindDrawerFixingToggles();
+
+        // Observe drawer content for changes and re-bind when items are re-rendered
+        (function(){
+          var content = document.getElementById('cart-drawer-content');
+          if (!content || !window.MutationObserver) return;
+          var mo = new MutationObserver(function(mutations){
+            // re-bind after small delay to allow DOM insertion
+            setTimeout(function(){ if (typeof window.bindDrawerFixingToggles === 'function') window.bindDrawerFixingToggles(); }, 20);
+          });
+          mo.observe(content, { childList: true, subtree: true });
+        })();
+      })();
+    </script>
   </div>
 
   <div class="p-4">
@@ -98,7 +146,7 @@
     </div>
     <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
     <div class="py-4 flex gap-3">
-      <button id="cart-view" class="w-full text-center border py-2 rounded">View cart</button>
+      <a href="/cart" class="w-full text-center border py-2 rounded">View cart</a>
       <a
         id="cart-drawer-checkout-btn"
         href="/checkout"
