@@ -1,0 +1,13 @@
+{% comment %} Section wrapper to allow AJAX section rendering of the shipping calculator snippet {% endcomment %}
+<div id="section-{{ section.id }}" class="shipping-calculator-section">
+  {% render 'shipping-calculator' %}
+</div>
+
+{% schema %}
+{
+  "name": "Shipping calculator (drawer)",
+  "settings": [],
+  "blocks": [],
+  "presets": [{ "name": "Shipping calculator" }]
+}
+{% endschema %}

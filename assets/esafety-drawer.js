@@ -111,7 +111,9 @@ if (!window.__esafetyDrawerGlobalInit) {
   window.__esafetyDrawerGlobalInit = true;
   console.debug('esafety-drawer: global init');
   document.addEventListener('click', (e) => {
+    console.log('esafety-drawer: click', e.target);
     const btn = e.target.closest('[data-drawer-target]');
+    console.log('esafety-drawer btn: click', btn);
     if (!btn) return;
     e.preventDefault();
     const targetSelector = (btn.dataset.drawerTarget || '').trim();

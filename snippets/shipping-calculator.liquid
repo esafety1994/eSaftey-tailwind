@@ -1,0 +1,422 @@
+<div class="shipping-calculator" x-data="{ shippingRates: [], isLoading: false, formData: {quantity: 1}, errors: {} }">
+  <div class="m-cart-addon__title m:font-large">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <path d="M19.9993 2.66699V16.0003C19.9993 17.467 18.7993 18.667 17.3327 18.667H2.66602V10.1603C3.63935 11.3203 5.13272 12.0403 6.78605 12.0003C8.13272 11.9737 9.34602 11.4537 10.2527 10.587C10.666 10.2403 11.0127 9.80031 11.2794 9.32031C11.7594 8.50698 12.026 7.54696 11.9993 6.54696C11.9593 4.98696 11.266 3.61366 10.186 2.66699H19.9993Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M29.3327 18.667V22.667C29.3327 24.8803 27.546 26.667 25.3327 26.667H23.9993C23.9993 25.2003 22.7993 24.0003 21.3327 24.0003C19.866 24.0003 18.666 25.2003 18.666 26.667H13.3327C13.3327 25.2003 12.1327 24.0003 10.666 24.0003C9.19935 24.0003 7.99935 25.2003 7.99935 26.667H6.66602C4.45268 26.667 2.66602 24.8803 2.66602 22.667V18.667H17.3327C18.7993 18.667 19.9993 17.467 19.9993 16.0003V6.66699H22.4527C23.4127 6.66699 24.2927 7.18701 24.7727 8.01367L27.0527 12.0003H25.3327C24.5993 12.0003 23.9993 12.6003 23.9993 13.3337V17.3337C23.9993 18.067 24.5993 18.667 25.3327 18.667H29.3327Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10.6667 29.3333C12.1394 29.3333 13.3333 28.1394 13.3333 26.6667C13.3333 25.1939 12.1394 24 10.6667 24C9.19391 24 8 25.1939 8 26.6667C8 28.1394 9.19391 29.3333 10.6667 29.3333Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21.3327 29.3333C22.8054 29.3333 23.9993 28.1394 23.9993 26.6667C23.9993 25.1939 22.8054 24 21.3327 24C19.8599 24 18.666 25.1939 18.666 26.6667C18.666 28.1394 19.8599 29.3333 21.3327 29.3333Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M29.3333 16V18.6667H25.3333C24.6 18.6667 24 18.0667 24 17.3333V13.3333C24 12.6 24.6 12 25.3333 12H27.0533L29.3333 16Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M11.9987 6.66732C11.9987 8.26732 11.2921 9.69398 10.1854 10.6673C9.23872 11.494 8.01203 12.0007 6.66536 12.0007C3.7187 12.0007 1.33203 9.61398 1.33203 6.66732C1.33203 4.98732 2.10536 3.48066 3.33203 2.50732C4.25203 1.77399 5.41203 1.33398 6.66536 1.33398C9.61203 1.33398 11.9987 3.72065 11.9987 6.66732Z" stroke="#595959" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M6.9987 5.00098V7.00098L5.33203 8.00098" stroke="#595959" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Shipping details</span>
+    <svg
+      class="shipping-cal-close"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M9.16992 14.8299L14.8299 9.16992" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14.8299 14.8299L9.16992 9.16992" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="shipping-calculator-form-wrapper">
+    <p class="shipping-cal-form-title">Calculate your rate</p>
+    {% comment %}
+      <div x-show="isLoading">
+          Loading...
+      </div>
+    {% endcomment %}
+    <!--
+      <div x-show="(shippingRates.length > 0 && !isFreeShipping) || noShippingRates" class="shipping-rates-result">
+    -->
+    <div class="shipping-rates-result">
+      <ul x-show="shippingRates.length > 0 && !isFreeShipping" class="shipping-rate">
+        <template x-for="(rate, index) in shippingRates" :key="index">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p>
+              Your estimate: <strong>$<span x-text="parseFloat(rate.total_price).toFixed(2)"></span></strong>
+            </p>
+          </li>
+        </template>
+        <p>{{ 'products.product.shipping_days' | t }}</p>
+      </ul>
+      <ul x-show="noShippingRates" class="no-shipping-rates">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 8V13" stroke="#5D5D5D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M11.9941 16H12.0031" stroke="#5D5D5D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <p>
+            <strong>{{ 'products.product.no_shipping' | t }}</strong>
+          </p>
+          <p>{{ 'products.product.no_shipping_contact' | t }}</p>
+        </div>
+      </ul>
+      <ul x-show="errors && errors.length > 0">
+        <template x-for="(error, index) in errors" :key="index">
+          <li>
+            <span
+              x-text="
+                error.details
+                .replace(/_/g, ' ')
+                .replace('street', 'address')
+                .replace('parameter value', '')
+                .replace('country code', 'Country')
+                .replace(/^\w/, c => c.toUpperCase())
+              "
+            ></span
+            ><br>
+          </li>
+        </template>
+      </ul>
+      <div x-show="isFreeShipping">
+        <p class="free-shipping-calculator">{{ 'products.product.free_shipping_calc' | t }}</p>
+      </div>
+    </div>
+    <form data-address="root">
+      <div class="form-field-group visible-fields quantity" data-line-count="3">
+        <label class="form-field--label" for="QuantityShipping">{{ 'products.product.quantity' | t }}</label>
+        <input
+          x-model="formData.quantity"
+          class="form-field"
+          type="text"
+          id="QuantityShipping"
+          name="quantity"
+          value="1"
+        >
+      </div>
+      <div class="form-field-group hidden">
+        <label class="form-field--label" for="AddressFirstName">{{ 'customer.addresses.first_name' | t }}</label>
+        <input
+          class="form-field"
+          type="text"
+          id="AddressFirstName"
+          name="address[first_name]"
+          value="{{ form.first_name }}"
+        >
+      </div>
+
+      <div class="form-field-group hidden">
+        <label class="form-field--label" for="AddressLastName">{{ 'customer.addresses.last_name' | t }}</label>
+        <input
+          class="form-field"
+          type="text"
+          id="AddressLastName"
+          name="address[last_name]"
+          value="{{ form.last_name }}"
+        >
+      </div>
+
+      <div class="form-field-group hidden">
+        <label class="form-field--label" for="AddressCompany">{{ 'customer.addresses.company' | t }}</label>
+        <input class="form-field" type="text" id="AddressCompany" name="address[company]" value="{{ form.company }}">
+      </div>
+
+      <div class="form-field-group hidden">
+        <label class="form-field--label" for="AddressAddress1">{{ 'customer.addresses.address1' | t }}</label>
+        <input
+          x-model="formData.street"
+          class="form-field"
+          type="text"
+          id="AddressAddress1"
+          name="address[address1]"
+          value="{{ form.address1 }}"
+        >
+      </div>
+
+      <div class="form-field-group hidden">
+        <label class="form-field--label" for="AddressAddress2">{{ 'customer.addresses.address2' | t }}</label>
+        <input
+          class="form-field"
+          x-model="formData.suburb"
+          type="text"
+          id="AddressAddress2"
+          name="address[address2]"
+          value="{{ form.address2 }}"
+        >
+      </div>
+
+      <div class="form-field-group hidden">
+        <label class="form-field--label" for="AddressCity">{{ 'customer.addresses.city' | t }}</label>
+        <input
+          x-model="formData.city"
+          class="form-field"
+          type="text"
+          id="AddressCity"
+          name="address[city]"
+          value="{{ form.city }}"
+        >
+      </div>
+
+      <div class="form-field-group hidden">
+        <label class="form-field--label" for="AddressCountry">{{ 'customer.addresses.country' | t }}</label>
+        <select
+          class="form-field"
+          x-model="formData.country"
+          id="AddressCountry"
+          name="address[country]"
+          data-default="AU"
+        ></select>
+      </div>
+
+      <div class="form-field-group hidden state">
+        <label class="form-field--label" for="AddressProvince">{{ 'customer.addresses.province' | t }}</label>
+        <select
+          class="form-field"
+          x-model="formData.province"
+          id="AddressProvince"
+          name="address[province]"
+          data-default="{{ form.province }}"
+        ></select>
+      </div>
+
+      <div class="form-field-group visible-fields postcode">
+        <label class="form-field--label" for="AddressZip">{{ 'customer.addresses.zip' | t }}</label>
+        <input
+          class="form-field"
+          x-model="formData.zip"
+          type="text"
+          id="AddressZip"
+          name="address[zip]"
+          value="{{ form.zip }}"
+          autocapitalize="characters"
+        >
+      </div>
+
+      <div class="form-field-group  hidden">
+        <label for="AddressPhone">{{ 'customer.addresses.phone' | t }}</label>
+        <input class="form-field" type="tel" id="AddressPhone" name="address[phone]" value="{{ form.phone }}">
+      </div>
+    </form>
+  </div>
+
+  <div class="m-cart-addon__action m:flex m:flex-col shipping-rate-button">
+    <button class="m-spinner-button m-button m-button--primary m-cart-addon--calculate" @click="getShipping">
+      <span>
+        {{ 'cart.general.estimate_shipping_button' | t }}
+      </span>
+      <span class="m-spinner-icon" x-show="isLoading">
+        <span class="calculating">
+          <p>Calculating</p>
+          <svg
+            x-show="isLoading"
+            class="animate-spin m-svg-icon--medium"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" style="display: none;"></circle>
+            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+<style>
+  .shipping-calculator {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    /*right: 0;*/
+    height: 100%;
+    z-index: 99999999999;
+    background: #fff;
+    border-radius: 0;
+    border: none;
+    padding: 0;
+    width: 448px;
+    transition: all 1s ease-out;
+    overflow-y: scroll;
+  }
+  .shipping-calculator.open {
+    right: 0;
+  }
+
+  .shipping-calculator .m-cart-addon__title {
+    padding: 32px 40px 32px 16px !important;
+    gap: 16px;
+    background: var(--Yellow-gradient, linear-gradient(170deg, #fedc13 31.94%, #fac802 99.43%));
+    position: relative;
+  }
+
+  .shipping-calculator .shipping-cal-close {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    margin: 0 !important;
+    cursor: pointer;
+  }
+
+  .shipping-calculator .shipping-calculator-form-wrapper {
+    margin: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--Grey-200, #d6d4d4);
+  }
+
+  .shipping-calculator [data-address='root'] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shipping-rates-result {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #d9d9d9;
+  }
+
+  .shipping-rates-result p {
+    color: #20782c;
+  }
+
+  .shipping-calculator > div {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .shipping-calculator .m-cart-addon__title > span {
+    color: var(--Text-Black, #131313);
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 42px;
+    letter-spacing: -0.24px;
+  }
+  p.shipping-cal-form-title {
+    color: var(--Text-Black, #131313);
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 42px;
+    letter-spacing: -0.18px;
+    margin-bottom: 24px;
+  }
+  .shipping-calculator label.form-field--label {
+    color: #000;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.14px;
+  }
+  .shipping-calculator [data-address='root'] .form-field {
+    border-radius: 6px;
+    border: 1px solid var(--Grey-200, #d6d4d4);
+    background: var(--Background-eWhite, #fff);
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+  }
+
+  .shipping-calculator .no-shipping-rates {
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    border-radius: 12px;
+    background: var(--Concrete-05, #f7f5f5);
+  }
+
+  .shipping-calculator .no-shipping-rates p {
+    color: #5d5d5d;
+    font-family: Poppins, M-Body-Font, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: -0.14px;
+  }
+
+  /*ul.shipping-rate li:nth-child(2) {
+        display: none;
+    }*/
+
+  ul.shipping-rate li {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #deffe2;
+  }
+
+  ul.shipping-rate li:nth-child(3) p {
+    color: #20782c;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.16px;
+  }
+
+  .shipping-calculator button {
+    text-transform: initial;
+  }
+
+  .shipping-calculator span.m-spinner-icon {
+    display: block;
+    top: unset;
+    bottom: unset;
+    left: unset;
+    right: unset;
+    position: relative;
+  }
+
+  .shipping-calculator svg.animate-spin.m-svg-icon--medium {
+    display: block;
+  }
+
+  .shipping-calculator span.calculating {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  @media (max-width: 767px) {
+    .shipping-calculator {
+      width: 100%;
+      max-width: 448px;
+    }
+  }
+
+  @media (max-width: 389px) {
+    .shipping-calculator .m-cart-addon__title {
+      padding: 16px 40px 16px 16px !important;
+    }
+    .shipping-calculator .m-cart-addon__action {
+      padding: 16px;
+    }
+  }
+</style>
+
+<script>
+  function toggleSpans() {
+    const spinnerIcon = document.querySelector('.shipping-calculator button span.m-spinner-icon');
+    const span1 = document.querySelector('.shipping-calculator button span:nth-child(1)');
+    // const span2 = document.querySelector('.shipping-calculator button span.calculating');
+    const isSpinnerVisible = window.getComputedStyle(spinnerIcon).display === 'block';
+    // console.log(isSpinnerVisible)
+    if (isSpinnerVisible) {
+      span1.style.display = 'none';
+      // span2.style.display = 'block';
+    } else {
+      span1.style.display = 'block';
+      // span2.style.display = 'none';
+    }
+  }
+
+  // Check every second (1000ms)
+  setInterval(toggleSpans, 50);
+</script>

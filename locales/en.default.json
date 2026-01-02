@@ -43,7 +43,6 @@
     "password_page": {
       "opening_soon": "Opening Soon"
     },
-    "social": {},
     "search": {
       "title": "Search our store",
       "placeholder": "Search products",
@@ -66,7 +65,7 @@
       "products": "Products"
     },
     "newsletter_form": {
-      "confirmation": "Thanks for subscribing"
+      "confirmation": "Thanks for subscribing!!"
     },
     "payment": {
       "options": "Payment options"
@@ -97,14 +96,6 @@
     "slider": {
       "video": {
         "notice": "Your browser does not support the video tag."
-      }
-    },
-    "lookbook": {
-      "shop_this_look": {
-        "popup": {
-          "title": "Shop this look",
-          "product_title": "Example Product Title"
-        }
       }
     }
   },
@@ -148,7 +139,6 @@
       "drawer_coupon": "Coupon",
       "subtotal": "Subtotal",
       "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout",
-      "taxes_included_shipping_at_checkout": "Tax included. Shipping calculated at checkout",
       "taxes_and_shipping_policy_at_checkout_html": "Taxes and <a href=\"{{ link }}\">shipping</a> calculated at checkout",
       "taxes_included_but_shipping_at_checkout": "Tax included and shipping calculated at checkout",
       "taxes_included_and_shipping_policy_html": "Tax included. <a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
@@ -158,7 +148,7 @@
       "empty": "Your cart is currently empty.",
       "coupon_title": "Add a discount code",
       "estimate_shipping_title": "Estimate shipping rates",
-      "estimate_shipping_button": "Calculate",
+      "estimate_shipping_button": "Calculate shipping rates",
       "note_title": "Add note for seller",
       "cancel": "Cancel",
       "save": "Save",
@@ -173,11 +163,7 @@
       "gift_wrapping_html": "For {{ price }} please wrap the products in this order.",
       "gift_note_placeholder": "Gift message (free and optional)",
       "cart_error": "There was an error while updating your cart. Please try again.",
-      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
-      "delivery_title": "Delivery",
-      "delivery_time": "Delivery time",
-      "delivery_label": "Pick a delivery date:",
-      "delivery_error": "Please choose the current or future time."
+      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart."
     },
     "label": {
       "product": "Product",
@@ -241,7 +227,7 @@
       "page_title": "Account",
       "dashboard": "Dashboard",
       "addresses": "Addresses",
-      "wishlist": "Wishlist",
+      "wishlist": "Quotes",
       "log_out": "Log Out",
       "details": "Account Details",
       "name": "Name",
@@ -309,7 +295,7 @@
       "billing_address": "Billing Address",
       "fulfilled_at_html": "Fulfilled {{ date }}",
       "payment_status": "Payment Status",
-      "shipping_address": "Shipping Address",
+      "shipping_address": "Please select a valid shipping address",
       "fulfillment_status": "Fulfillment Status",
       "discounts": "Discounts",
       "shipping": "Shipping",
@@ -352,7 +338,6 @@
       "product_title": "Example Product Title",
       "product_description": "This area is used to describe your product’s details. Tell customers about the look, feel, and style of your product. Add details on color, materials used, sizing, and where it was made.",
       "collection_title": "Example Collection Title",
-      "collection_description": "Collection's description here that provides details about the collection.",
       "no_content": "This section doesn’t currently include any content. Add content to this section using the sidebar.",
       "blog_readmore": "Read more",
       "blog_tag": "Minimog"
@@ -362,8 +347,8 @@
     "back_to_shopping": "Back to shopping",
     "back": "Back",
     "wishlist": {
-      "title": "Wishlist",
-      "no_products": "No products were added to the wishlist page."
+      "title": "Quotes",
+      "no_products": "No products were added to the Quote page."
     },
     "compare": {
       "title": "Compare",
@@ -389,15 +374,13 @@
       "colors": "Colors",
       "in_stock": "In Stock",
       "out_of_stock": "Out of stock",
-      "low_stock": "Low stock",
-      "backordered": "Backordered",
       "unavailable": "Unavailable",
       "on_sale": "On Sale",
       "from_text_html": "From {{ price }}",
       "quantity": "Quantity",
       "add_to_cart": "Add to cart",
-      "add_to_wishlist": "Add to wishlist",
-      "remove_from_wishlist": "Remove from wishlist",
+      "add_to_wishlist": "Add to Quote",
+      "remove_from_wishlist": "Remove from Quote",
       "add_to_compare": "Compare",
       "add_a_question": "Ask a question",
       "remove_from_compare": "Remove from compare",
@@ -405,6 +388,10 @@
       "zoom_in": "Zoom in",
       "quick_view": "Quick view",
       "collection": "Collection",
+      "shipping_days": "",
+      "free_shipping_calc": "Eligible for Free Shipping",
+      "no_shipping": "No shipping rates found",
+      "no_shipping_contact": "Contact us at 1300 291 700 for the best shipping rate!",
       "decrease_quantity": "Decrease quantity of {{ title }} by one",
       "increase_quantity": "Increase quantity of {{ title }} by one",
       "quantity_input_label": "Quantity for {{ product }}",
@@ -450,31 +437,11 @@
         "unavailable": "Couldn't load pickup availability",
         "refresh": "Refresh"
       },
-      "select_variant": "Please select a variant before adding the product to your cart.",
-      "preorder_note": "Preorder item",
-      "sale_text": "Sale",
-      "choose_an_option": "Choose an option",
-      "inventory_quantity_html": "<span class=\"m-product-inventory__quantity\">{{ quantity }}</span> In stock",
-      "inventory_low_quantity_html": "Only <span class=\"m-product-inventory__quantity\">{{ quantity }}</span> left",
-      "quantity_in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> in cart",
-      "quantity_minimum_of": "Minimum of {{ quantity }}",
-      "quantity_maximum_of": "Maximum of {{ quantity }}",
-      "quantity_multiples_of": "Increments of {{ quantity }}",
-      "volume_pricing": {
-        "title": "Volume Pricing",
-        "note": "Volume pricing available",
-        "minimum": "{{ quantity }}+",
-        "price_at_each": "at {{ price }}/ea",
-        "price_range": "{{ minimum }} - {{ maximum }}",
-        "each": "{{ money }}/ea",
-        "price_at_each_html": "at {{ price }}/ea",
-        "price_range_html": "{{ minimum }} - {{ maximum }}",
-        "each_html": "{{ money }}/ea"
-      },
-      "variant_sold_out_or_unavailable": "Variant sold out or unavailable"
-    },
-    "facets": {
-      "show_more": "Show more"
+      "inc_gst": "inc. GST",
+      "exc_gst": "ex. GST",
+      "gst_exempt": "GST EXEMPT",
+      "volume_discounts_html": "BUY <u>{{ range }}</u> GET <strong>{{ discount_percentage }} OFF</strong>",
+      "back_order": "Back Order"
     }
   },
   "gift_cards": {
@@ -495,24 +462,58 @@
   "date_formats": {
     "month_day_year": "%B %d, %Y"
   },
-  "recipient": {
-    "form": {
-      "checkbox": "I want to send this as a gift",
-      "email_label": "Recipient email",
-      "email_label_optional": "Recipient email (optional)",
-      "email": "Email",
-      "name_label": "Recipient name (optional)",
-      "name": "Name",
-      "message_label": "Message (optional)",
-      "message": "Message",
-      "max_characters": "{{ max_chars }} characters max"
+  "shopify": {
+    "checkout": {
+      "shipping_errors": {
+        "shipping_method_not_available_generic": {
+          "one": "Please select a valid shipping address"
+        },
+        "title": "Please select a valid shipping address"
+      },
+      "delivery_options": {
+        "shipping_address": "Please select a valid shipping address"
+      },
+      "order_summary": {
+        "enter_shipping_address": "Please select a valid shipping address"
+      },
+      "shipping": {
+        "different_shipping_method_summary": "Please select a valid shipping address",
+        "invalid_shipping_method_summary": "Please select a valid shipping address"
+      },
+      "thank_you": {
+        "shipping_address_title": "Please select a valid shipping address",
+        "marker": {
+          "shipping": "Please select a valid shipping address"
+        },
+        "customer_validation_error_phone": "Please add an area code when entering a landline"
+      },
+      "field_errors": {
+        "address_phone_invalid": "Please add an area code when entering a landline",
+        "handle_phone_invalid": "Please add an area code when entering a landline",
+        "address_phone_blank": "Please add an area code when entering a landline",
+        "shipping_line_phone_invalid": "Please add an area code when entering a landline",
+        "sms_marketing_phone_invalid": "Please add an area code when entering a landline"
+      },
+      "wallets": {
+        "errors": {
+          "invalid": {
+            "phone": "Please add an area code when entering a landline"
+          }
+        }
+      }
     }
   },
-  "templates": {
-    "contact": {
-      "form": {
-        "error_heading": "Please adjust the following:"
+  "customer_accounts": {
+    "order_details": {
+      "shipping": {
+        "address": "Please select a valid shipping address"
       }
+    },
+    "addresses": {
+      "edit_modal_title": {
+        "shipping": "Please select a valid shipping address"
+      },
+      "loading_shipping_accessibility_message": "Please select a valid shipping address"
     }
   }
 }
