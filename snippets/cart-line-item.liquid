@@ -20,19 +20,19 @@
     {% if item.image %}
       <a href="{{ item.url }}" class="inline-block">
         <img
-          src="{{ item.image | img_url: '200x200' }}"
+          src="{{ item.image | img_url: '600x' }}"
           alt="{{ item.title }}"
-          height="104"
-          width="104"
-          class="object-cover rounded"
+          class="size-28 object-contain border border-grey p-2 rounded"
+          width="80"
+          height="80"
         >
       </a>
     {% else %}
-      <div class="size-26">{{ 'product-1' | placeholder_svg_tag }}</div>
+      <div class="size-28 bg-gray-100 rounded"></div>
     {% endif %}
 
     <div class="flex-1">
-      <span class="sr-only">has_fixings: {{ has_addons }}</span>
+      
       <div class="text-sm font-semibold">
         <a href="{{ item.url }}" class="hover:underline">{{ item.title }}</a>
       </div>

@@ -80,9 +80,14 @@
       <div id="cart-empty" class="text-center text-gray-600">Your cart is empty.</div>
     {% else %}
       <div id="cart-items" class="space-y-4 overflow-auto">
+        {%- assign parent_index = 0 -%}
         {% for item in cart.items %}
           {% unless item.properties.is_addon == 'true' %}
+            {%- assign parent_index = parent_index | plus: 1 -%}
             {% render 'cart-line-item', item: item, index: forloop.index, drawer: true %}
+            {% if parent_index == 1 %}
+              {% render 'cart-upsell-product' %}
+            {% endif %}
           {% endunless %}
         {% endfor %}
       </div>

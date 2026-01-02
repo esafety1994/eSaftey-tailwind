@@ -35,21 +35,42 @@
 
           <script>
             (function(){
+              // Bind view-fixings buttons on the cart page. Scope lookups to the clicked row
+              // and measure panel height robustly (handles images/loading).
               function bindFixingToggles(){
                 document.querySelectorAll('.view-fixings-btn').forEach(function(btn){
                   if (btn._fixingsBound) return; btn._fixingsBound = true;
                   btn.addEventListener('click', function(){
                     var key = btn.getAttribute('data-parent-key');
-                    var panel = document.querySelector('.fixings-panel[data-parent-key="'+key+'"]');
+                    var scope = btn.closest('[data-has-addons]') || btn.parentNode;
+                    var panel = scope ? scope.querySelector('.fixings-panel[data-parent-key="'+key+'"]') : document.querySelector('.fixings-panel[data-parent-key="'+key+'"]');
                     var icon = btn.querySelector('.view-fixings-icon');
                     if (!panel) return;
                     var isOpen = panel.getAttribute('data-open') === 'true';
                     if (isOpen){
-                      panel.style.maxHeight = '0'; panel.setAttribute('data-open','false'); if (icon) icon.style.transform = '';
+                      // collapse smoothly
+                      panel.style.maxHeight = panel.scrollHeight + 'px';
+                      void panel.offsetHeight;
+                      panel.style.maxHeight = '0';
+                      panel.setAttribute('data-open','false');
+                      if (icon) icon.style.transform = '';
                     } else {
-                      panel.style.maxHeight = panel.scrollHeight + 'px'; panel.setAttribute('data-open','true'); if (icon) icon.style.transform = 'rotate(90deg)';
-                      var onTrans = function(){ if (panel.getAttribute('data-open') === 'true') panel.style.maxHeight = panel.scrollHeight + 'px'; panel.removeEventListener('transitionend', onTrans); };
-                      panel.addEventListener('transitionend', onTrans);
+                      // open: temporarily remove max-height to measure true height, then animate
+                      panel.style.maxHeight = 'none';
+                      requestAnimationFrame(function(){
+                        var h = panel.scrollHeight || 0;
+                        if (!h && panel.children && panel.children.length) {
+                          var sum = 0; for (var i=0;i<panel.children.length;i++) sum += panel.children[i].offsetHeight || 0;
+                          h = sum || 0;
+                        }
+                        panel.style.maxHeight = '0';
+                        void panel.offsetHeight;
+                        panel.style.maxHeight = (h > 0 ? h + 'px' : '9999px');
+                        panel.setAttribute('data-open','true');
+                        if (icon) icon.style.transform = 'rotate(90deg)';
+                        var onTrans = function(){ if (panel.getAttribute('data-open') === 'true') panel.style.maxHeight = panel.scrollHeight + 'px'; panel.removeEventListener('transitionend', onTrans); };
+                        panel.addEventListener('transitionend', onTrans);
+                      });
                     }
                   });
                 });
@@ -100,7 +121,7 @@
           >
           {% if settings.cart_trust_badge %}
             <div class="my-4 flex justify-center w-4/5 m-auto">
-              <img src="{{ settings.cart_trust_badge | img_url: '1080x' }}" alt="Trust badge" class=" object-contain">
+              <img src="{{ settings.cart_trust_badge | img_url: '1080x' }}" alt="Trust badge" class=" object-contain" width="400" height="400">
             </div>
           {% endif %}
         </div>
