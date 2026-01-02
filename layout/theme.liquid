@@ -26,6 +26,7 @@
       {% render 'font-face' %}
     {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
     {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
+    {{ 'esafety-drawer.css' | asset_url | stylesheet_tag }}
     {{ 'global.css' | asset_url | stylesheet_tag }}
     {%- if template == 'product' -%}
       {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
@@ -34,12 +35,15 @@
   <body class="font-normal">
     {% sections 'header-group' %}
     <main id="main" role="main">
+      <button data-drawer-target="#esafety-drawer" data-drawer-side="left">Open</button>
       {{ content_for_layout }}
     </main>
+    <esafety-drawer id="esafety-drawer"></esafety-drawer>
     <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
     {%- if template contains 'product' -%}
       <script defer src="{{ 'product-details.js' | asset_url }}"></script>
     {%- endif -%}
+     <script defer src="{{ 'esafety-drawer.js' | asset_url }}"></script>
     <script defer src="{{ 'cart.js' | asset_url }}"></script>
     <script defer src="{{ 'theme.js' | asset_url }}"></script>
     <script defer src="{{ 'cart-item-control.js' | asset_url }}"></script>
