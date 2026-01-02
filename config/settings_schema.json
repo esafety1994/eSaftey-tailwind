@@ -19,7 +19,17 @@
                 "id": "cart_trust_badge",
                 "label": "Cart trust badge",
                 "info": "Image shown in the cart (trust badge)"
+            },
+            {
+                "type": "header",
+                "content": "Cart Drawer Settings"
+            },
+            {
+                "type": "product",
+                "id": "cart_drawer_upsell_product",
+                "label": "Select product for cart drawer upsell",
             }
+
         ]
     }
 ]
