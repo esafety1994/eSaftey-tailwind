@@ -7,10 +7,10 @@
 
   Shows "Select an option" link for products with multiple variants
 {% endcomment %}
-
 {% liquid
   assign button_text = button_text | default: 'Add to Cart'
   assign button_classes = button_classes | default: 'btn primary-cart-button'
+  assign hide_qty = hide_qty | default: false
 %}
 
 
@@ -24,7 +24,7 @@
       Select an option
     </a>
   {% else %}
-    {% render 'act-button', product: product, mobile_hide_qty: mobile_hide_qty %}
+    {% render 'act-button', product: product, mobile_hide_qty: mobile_hide_qty, hide_qty: hide_qty %}
   {% endif %}
 {% else %}
   <button

@@ -1,1 +1,33 @@
-test
+<div class="px-1 p-3 cart-upsell">
+  <h4 class="font-medium text-lg mb-2">You might also like</h4>
+
+  {% assign prod = settings.cart_drawer_upsell_product %}
+  <div class="bg-gray-50 p-3 rounded-lg flex gap-4 items-start border-rounded">
+    <div class="size-24">
+      <a href="{{ prod.url }}">
+        {% if prod.featured_image %}
+          <img
+            loading="lazy"
+            width="150"
+            height="150"
+            src="{{ prod.featured_image | image_url: width: 350, height: 350 }}"
+            alt="{{ alt | default: image.alt | escape }}"
+            class="object-contain"
+          >
+        {% else %}
+          <div class="inset-0 flex items-center justify-center bg-gray-100">
+            {{ 'product-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </a>
+    </div>
+    <div class="text-sm">
+      <a href="{{ prod.url }}">{{ prod.title }}</a>
+      <div class="mt-1">
+        {{ prod.price | money }}
+      </div>
+    </div>
+
+    <div class="ml-2 w-52">{% render 'quick-add-btn', product: prod, mobile_hide_qty: true, hide_qty: true %}</div>
+  </div>
+</div>

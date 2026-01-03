@@ -1,0 +1,54 @@
+<cart-qty-control data-key="{{ key }}" data-quantity="{{ qty }}" data-is-addon="{{ is_addon }}">
+  <div class="flex gap-1 items-center flex-wrap justify-center">
+    <div
+      class="inline-flex items-center space-x-2 cart-qty-component border p-1 rounded-lg shadow-lg"
+      aria-live="polite"
+    >
+      <button
+        type="button"
+        class="dec w-8 h-8 flex items-center justify-center text-gray-700 hover:text-bg-light-red cursor-pointer"
+        aria-label="Decrease quantity"
+        data-minus
+        data-quantity="{{ qty | minus: 1}}"
+      >
+        {% if qty > 1 %}
+          -
+        {% else %}
+          {% render 'icon-trash-svg', class: 'size-4' %}
+        {% endif %}
+      </button>
+      <span class="qty w-12 text-center border-0" aria-label="Quantity">{{ qty }}</span>
+      <button
+        type="button"
+        class="inc w-8 h-8 flex items-center justify-center text-gray-700 hover:text-bg-light-red cursor-pointer"
+        aria-label="Increase quantity"
+        data-plus
+        data-quantity="{{ qty | plus: 1}}"
+      >
+        +
+      </button>
+      <span class="qty-loading hidden ml-2" aria-hidden="true">
+        <svg class="animate-spin w-5 h-5 text-gray-600 hover:text-bg-light-red" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+      </span>
+    </div>
+    {% if qty > 1 %}
+      <button
+        type="button"
+        data-remove
+        class="cart-item-remove text-sm text-gray-600 ml-2 cursor-pointer"
+        data-quantity="0"
+      >
+        Remove
+      </button>
+    {% endif %}
+  </div>
+</cart-qty-control>
+<noscript>
+  <form action="{{ routes.cart_change_url }}" method="post" class="inline-flex items-center">
+    <input type="hidden" name="line" value="{{ index }}">
+    <input type="number" name="quantity" min="0" value="{{ item.quantity }}" class="w-20 border rounded p-1">
+    <button type="submit" class="ml-2 text-sm bg-gray-100 px-3 py-1 rounded">Update</button>
+  </form>
+</noscript>

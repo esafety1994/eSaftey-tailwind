@@ -2,7 +2,7 @@
 <div class="space-y-2 py-2">
   {% for addon in cart.items %}
     {% if addon.properties.parent_key == parent_key %}
-      <div class="flex items-center gap-3 p-2 rounded bg-gray-50 justify-between">
+      <div class="flex items-center gap-3 p-2 rounded bg-gray-50 justify-between" data-addon-parent_key ="{{ parent_key }}" data-addon-line-key="{{ addon.key }}">
         <div class="flex items-center gap-3 flex-wrap">
           {% if addon.image %}
             <a href="{{ addon.url }}" class="inline-block">

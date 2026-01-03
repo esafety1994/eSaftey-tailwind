@@ -2,14 +2,20 @@
   Act-button wrapper: renders a `form 'product', product` containing the qty selector and add-to-cart button.
   Pass `product` when rendering: {% render 'act-button', product: product %}
 {%- endcomment -%}
+<esafety-cart-action-button>
+  <div id="product-act-button">
+    {% form 'product', product %}
+      {% assign current_variant = product.selected_or_first_available_variant %}
+      <input type="hidden" name="id" value="{{ current_variant.id }}">
+      <div class="flex items-center space-x-4">
+        {% if hide_qty != true %}
+          {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
+        {% endif %}
+        {% render 'add-to-cart-button', product: product %}
+      </div>
+    {% endform %}
+  </div>
+</esafety-cart-action-button>
+<script defer src="{{ 'esafety-cart-actions.js' | asset_url }}"></script>
 
-<div id="product-act-button">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
-    <input type="hidden" name="id" value="{{ current_variant.id }}">
-    <div class="flex items-center space-x-4">
-      {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
-      {% render 'add-to-cart-button', product: product %}
-    </div>
-  {% endform %}
-</div>
+

@@ -205,9 +205,10 @@ a.underline-animation:focus::after {
   width: 100%;
 }
 
-.product-gallery-arrow--left, .product-gallery-arrow--right {
-    display: none;
-  }
+.product-gallery-arrow--left,
+.product-gallery-arrow--right {
+  display: none;
+}
 
 @media (min-width: 640px) {
   .product-gallery-arrow--left {
@@ -216,7 +217,8 @@ a.underline-animation:focus::after {
   .product-gallery-arrow--right {
     right: -10px;
   }
-  .product-gallery-arrow--left, .product-gallery-arrow--right {
+  .product-gallery-arrow--left,
+  .product-gallery-arrow--right {
     display: flex;
   }
 }

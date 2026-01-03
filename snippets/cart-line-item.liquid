@@ -14,13 +14,15 @@
   {%- assign in_drawer = true -%}
 {%- endif -%}
 
-<div class="py-4 flex flex-col sm:flex-row sm:items-center sm:space-x-4 border-b border-grey" data-has-addons="{{ has_addons }}">
+<div
+  class="py-4 flex flex-col sm:flex-row sm:items-center sm:space-x-4 border-b border-grey"
+>
   <!-- Product column -->
   <div class="md:flex-1 flex items-start space-x-4">
     {% if item.image %}
       <a href="{{ item.url }}" class="inline-block">
         <img
-          src="{{ item.image | img_url: '600x' }}"
+          src="{{ item.image | img_url: '300x' }}"
           alt="{{ item.title }}"
           class="size-28 object-contain border border-grey p-2 rounded"
           width="80"
@@ -32,7 +34,6 @@
     {% endif %}
 
     <div class="flex-1">
-      
       <div class="text-sm font-semibold">
         <a href="{{ item.url }}" class="hover:underline">{{ item.title }}</a>
       </div>
@@ -56,18 +57,6 @@
         <div class="text-sm text-gray-600">{{ item.variant.title }}</div>
       {%- endif -%}
 
-      <div class="mt-2 flex items-center gap-3">
-        {% unless in_drawer and is_addon %}
-          <button
-            type="button"
-            class="cursor-pointer cart-item-remove text-gray-700 flex items-center gap-2"
-            data-line="{{ index }}"
-            aria-label="Remove item"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          </button>
-        {% endunless %}
-      </div>
       {% if has_addons %}
         <div class="mt-2">
           <button
@@ -76,22 +65,10 @@
             data-parent-key="{{ item.key }}"
           >
             <span>View Fixings</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="size-4 view-fixings-icon transition-transform duration-200"
-            >
-              <path d="M9 18l6-6-6-6"/>
-            </svg>
+            {% render 'icon-svg-arrow-right', class: 'size-4 view-fixings-icon transition-transform duration-200' %}
           </button>
           <div
             class="fixings-panel overflow-hidden mt-2"
-            data-parent-key="{{ item.key }}"
             style="max-height:0; transition:max-height 300ms ease;"
           >
             {% render 'cart-fixing-list', parent_key: item.key %}
@@ -102,21 +79,16 @@
   </div>
 
   <!-- Price -->
-  <div class="sm:w-40 mx-auto mt-4 sm:mt-0 flex items-center justify-start sm:justify-center">{{ item.price | money }}</div>
+  <div class="sm:w-40 mx-auto mt-4 sm:mt-0 flex items-center justify-start sm:justify-center">
+    {{ item.price | money }}
+  </div>
 
   <!-- Quantity -->
   <div class="sm:w-36 mx-auto mt-4 sm:mt-0 flex items-center justify-start sm:justify-center">
     {% if in_drawer and is_addon %}
       <div class="text-sm text-gray-700">Qty: {{ item.quantity }}</div>
     {% else %}
-      <cart-qty-control data-line="{{ index }}" data-quantity="{{ item.quantity }}"></cart-qty-control>
-      <noscript>
-        <form action="{{ routes.cart_change_url }}" method="post" class="inline-flex items-center">
-          <input type="hidden" name="line" value="{{ index }}">
-          <input type="number" name="quantity" min="0" value="{{ item.quantity }}" class="w-20 border rounded p-1">
-          <button type="submit" class="ml-2 text-sm bg-gray-100 px-3 py-1 rounded">Update</button>
-        </form>
-      </noscript>
+      {% render 'cart-qty-control', key: item.key, qty: item.quantity, is_addon: has_addons %}
     {% endif %}
   </div>
 

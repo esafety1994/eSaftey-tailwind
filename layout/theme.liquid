@@ -23,7 +23,7 @@
 
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
-      {% render 'font-face' %}
+    {% render 'font-face' %}
     {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
     {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
     {{ 'esafety-drawer.css' | asset_url | stylesheet_tag }}
@@ -33,17 +33,39 @@
     {%- endif -%}
   </head>
   <body class="font-normal">
-    {% sections 'header-group' %}
+    <div class="relative">
+      {% sections 'header-group' %}
+      <section class="top-bar hidden container mx-auto px-4 max-w-7xl md:flex py-4 transition-all duration-500">
+        {% render 'top-navbar' %}
+      </section>
+      <header id="site-header" class="site-header transition-all duration-300">
+        <div class=" bg-black p-2 ">
+          <div class="wrapper container flex items-center justify-between m-auto">
+            {% render 'header' %}
+            <!-- Cart Icon -->
+            {% section 'cart-count' %}
+          </div>
+        </div>
+        {% if template == 'product' or template == 'collection' %}
+          {% render 'header-upsell-section' %}
+        {% endif %}
+      </header>
+
+      <!-- spacer to prevent layout jump when header becomes fixed -->
+      <div id="header-spacer" aria-hidden="true" style="display:none"></div>
+    </div>
+
     <main id="main" role="main">
       {{ content_for_layout }}
     </main>
-    <esafety-drawer id="esafety-drawer"></esafety-drawer>
+
+    {% section 'esaftey-cart-drawer' %}
     <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
     {%- if template contains 'product' -%}
       <script defer src="{{ 'product-details.js' | asset_url }}"></script>
     {%- endif -%}
-     <script defer src="{{ 'esafety-drawer.js' | asset_url }}"></script>
-    <script defer src="{{ 'cart.js' | asset_url }}"></script>
+    <script defer src="{{ 'esafety-drawer.js' | asset_url }}"></script>
+
     <script defer src="{{ 'theme.js' | asset_url }}"></script>
     <script defer src="{{ 'cart-item-control.js' | asset_url }}"></script>
     {% sections 'footer-group' %}

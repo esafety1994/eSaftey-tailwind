@@ -17,7 +17,7 @@
       >
         Shop
       </button>
-      <div>{% render 'naviation-icons' %}</div>
+      <div>{% render 'navigation-icons' %}</div>
     </div>
   </div>
 
@@ -25,5 +25,5 @@
   {% if section.settings.menu %}
     {% render 'drawer', menu_handle: section.settings.menu%}
   {% endif %}
-  {% render 'cart-drawer' %}
+  {%- comment -%} Cart drawer rendered globally in layout via section 'esaftey-cart-drawer' {%- endcomment -%}
 </section>

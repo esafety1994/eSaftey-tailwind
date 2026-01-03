@@ -1,0 +1,99 @@
+{%- assign has_addons = false -%}
+{%- for addon_check in cart.items -%}
+  {%- if addon_check.properties.parent_key == item.key -%}
+    {%- assign has_addons = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign is_addon = false -%}
+{%- if item.properties.is_addon == 'true' -%}
+  {%- assign is_addon = true -%}
+{%- endif -%}
+
+<div
+  class="py-4 flex flex-col sm:flex-row sm:items-center sm:space-x-4 border-b border-grey"
+  data-has-addons="{{ has_addons }}"
+>
+  <!-- Product image column -->
+  {% if item.image %}
+    <a href="{{ item.url }}" class="inline-block">
+      <img
+        src="{{ item.image | img_url: '600x' }}"
+        alt="{{ item.title }}"
+        class="size-28 object-contain border border-grey p-2 rounded"
+        width="80"
+        height="80"
+      >
+    </a>
+  {% else %}
+    <div class="size-28 bg-gray-100 rounded"></div>
+  {% endif %}
+
+  <div class="flex-1 ml-3">
+    <div class="text-sm font-semibold">
+      <a href="{{ item.url }}" class="hover:underline">{{ item.title }}</a>
+    </div>
+
+    {%- assign show_options = false -%}
+    {%- if item.options_with_values -%}
+      {%- for opt in item.options_with_values -%}
+        {%- if opt.value and opt.value != 'Default Title' -%}
+          {%- assign show_options = true -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if show_options -%}
+      <div class="text-sm text-gray-600">
+        {%- for opt in item.options_with_values -%}
+          <span class="block">{{ opt.name }}: {{ opt.value }}</span>
+        {%- endfor -%}
+      </div>
+    {%- elsif item.variant.title != 'Default Title' -%}
+      <div class="text-sm text-gray-600">{{ item.variant.title }}</div>
+    {%- endif -%}
+
+    {% if has_addons %}
+      <div class="mt-2">
+        <button
+          type="button"
+          class="view-fixings-btn text-xs text-gray-600 flex items-center gap-1 underline"
+          data-parent-key="{{ item.key }}"
+        >
+          <span>View Fixings</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-4 view-fixings-icon transition-transform duration-200"
+          >
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+        <div
+          class="fixings-panel overflow-hidden mt-2"
+          data-parent-key="{{ item.key }}"
+          style="max-height:0; transition:max-height 300ms ease;"
+        >
+          {% render 'cart-fixing-list', parent_key: item.key %}
+        </div>
+      </div>
+    {% endif %}
+    <!-- Price -->
+    <div class="text-sm mt-2">
+      {{ item.price | money }}
+    </div>
+    <!-- Quantity -->
+    <div class="mt-2 flex items-center space-x-2">
+      {% if in_drawer and is_addon %}
+        <div class="text-sm text-gray-700">Qty: {{ item.quantity }}</div>
+      {% else %}
+        {% render 'cart-qty-control',key: item.key, qty: item.quantity, is_addon: has_addons %}
+      {% endif %}
+    </div>
+  </div>
+</div>
