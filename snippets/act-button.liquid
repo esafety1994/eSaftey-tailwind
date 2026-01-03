@@ -2,20 +2,29 @@
   Act-button wrapper: renders a `form 'product', product` containing the qty selector and add-to-cart button.
   Pass `product` when rendering: {% render 'act-button', product: product %}
 {%- endcomment -%}
+{%- comment -%} Simple add-to-cart button snippet. Accepts `product` (optional) {%- endcomment -%}
+{% assign _variant = variant %}
+{% if _variant == null and product %}
+  {% assign _variant = product.selected_or_first_available_variant %}
+{% endif %}
+
+{% comment %} Determine stock status (fall back to Add to Cart when missing) {% endcomment %}
+{% assign status = '' %}
+{% if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status %}
+  {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
+{% endif %}
 <esafety-cart-action-button>
   <div id="product-act-button">
     {% form 'product', product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
       <div class="flex items-center space-x-4">
-        {% if hide_qty != true %}
+        {% if hide_qty != true and product.available and status != 'Out of Stock' %}
           {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
         {% endif %}
-        {% render 'add-to-cart-button', product: product %}
+        {% render 'add-to-cart-button', status: status %}
       </div>
     {% endform %}
   </div>
 </esafety-cart-action-button>
 <script defer src="{{ 'esafety-cart-actions.js' | asset_url }}"></script>
-
-

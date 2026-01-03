@@ -6,15 +6,20 @@ if (!customElements.get("esafety-cart-action-button")) {
     }
 
     connectedCallback() {
-      this.submitForm = this.querySelector("form");
-      this.submitForm.addEventListener("submit", this.handleSubmit.bind(this));
+      // listen on the custom element so submit events still get handled
+      // if the inner form is replaced by variant scripts
+      this.addEventListener("submit", this.handleSubmit.bind(this));
     }
 
     handleSubmit(event) {
       event.preventDefault();
 
+      // derive the active form (supports cases where variant scripts replace the form)
+      const form = (event.target && event.target.closest && event.target.closest('form')) || this.querySelector('form');
+      if (!form) return;
+
       // toggle loading spinner on primary cart button inside the form
-      const primaryButton = this.submitForm.querySelector('button.primary-cart-button');
+      const primaryButton = form.querySelector('button.primary-cart-button');
       const _origButtonHtml = primaryButton ? primaryButton.innerHTML : null;
       const _origButtonWidth = primaryButton ? primaryButton.style.width : null;
       const setLoading = (loading) => {
@@ -43,8 +48,8 @@ if (!customElements.get("esafety-cart-action-button")) {
       const formData = {
         items: [
           {
-            id: this.submitForm.querySelector('input[name="id"]').value,
-            quantity: this.submitForm.querySelector('input[name="quantity"]').value,
+            id: form.querySelector('input[name="id"]').value,
+            quantity: form.querySelector('input[name="quantity"]').value,
           },
         ],
         sections: "esaftey-cart-drawer,cart-count",
