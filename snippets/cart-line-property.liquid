@@ -12,7 +12,7 @@
       class="m-cart-item__property m:text-sm{% if property_size == 0 or p.last == blank or property_first_char == '_' %} m:hidden{% endif %}"
       data-cart-item-property
     >
-      <span class="m:font-medium" data-cart-item-property-name>{{ p.first }}: </span>
+      <span data-cart-item-property-name>{{ p.first }} </span>
 
       {%- comment -%}
         Check if there was an uploaded file associated
