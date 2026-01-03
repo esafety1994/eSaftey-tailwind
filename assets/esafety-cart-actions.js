@@ -13,13 +13,58 @@ if (!customElements.get("esafety-cart-action-button")) {
 
     handleSubmit(event) {
       event.preventDefault();
+      const customFields = document.querySelector(".m-product-custom-field");
+      let properties = {};
+      if (customFields) {
+        const labels = customFields.querySelectorAll("label");
+        const pairs = Array.from(labels).map((label) => {
+          let fieldEl = null;
+          const forId = label.getAttribute && label.getAttribute("for");
+          if (forId) {
+            fieldEl = document.getElementById(forId);
+          }
+          if (!fieldEl) {
+            let next = label.nextElementSibling;
+            while (
+              next &&
+              !(next.classList && next.classList.contains("form-field"))
+            ) {
+              next = next.nextElementSibling;
+            }
+            fieldEl = next;
+          }
+
+          let value = "";
+          if (fieldEl) {
+            const tag = fieldEl.tagName && fieldEl.tagName.toLowerCase();
+            if (tag === "input" || tag === "textarea" || tag === "select") {
+              value = fieldEl.value || "";
+            } else {
+              value = (fieldEl.textContent || "").trim();
+            }
+          }
+
+          return { label: (label.textContent || "").trim(), value };
+        });
+
+        customFields.fieldPairs = pairs;
+
+        // build a properties object suitable for Shopify cart properties
+        pairs.forEach((p) => {
+          properties[p.label] = p.value || true;
+        });
+      }
 
       // derive the active form (supports cases where variant scripts replace the form)
-      const form = (event.target && event.target.closest && event.target.closest('form')) || this.querySelector('form');
+      const form =
+        (event.target &&
+          event.target.closest &&
+          event.target.closest("form")) ||
+        this.querySelector("form");
       if (!form) return;
 
       // toggle loading spinner on primary cart button inside the form
-      const primaryButton = form.querySelector('button.primary-cart-button');
+      const primaryButton = form.querySelector("button.primary-cart-button");
       const _origButtonHtml = primaryButton ? primaryButton.innerHTML : null;
       const _origButtonWidth = primaryButton ? primaryButton.style.width : null;
       const setLoading = (loading) => {
@@ -28,18 +73,20 @@ if (!customElements.get("esafety-cart-action-button")) {
           // Lock width to avoid layout shift when replacing content with spinner
           try {
             const rect = primaryButton.getBoundingClientRect();
-            primaryButton.style.boxSizing = 'border-box';
-            primaryButton.style.width = rect.width + 'px';
+            primaryButton.style.boxSizing = "border-box";
+            primaryButton.style.width = rect.width + "px";
           } catch (e) {}
-          primaryButton.innerHTML = '<svg class="animate-spin inline-block w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
+          primaryButton.innerHTML =
+            '<svg class="animate-spin inline-block w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>';
           primaryButton.disabled = true;
-          primaryButton.setAttribute('aria-busy', 'true');
+          primaryButton.setAttribute("aria-busy", "true");
         } else {
           // restore original content and width
-          primaryButton.innerHTML = _origButtonHtml || '';
-          if (_origButtonWidth) primaryButton.style.width = _origButtonWidth; else primaryButton.style.width = '';
+          primaryButton.innerHTML = _origButtonHtml || "";
+          if (_origButtonWidth) primaryButton.style.width = _origButtonWidth;
+          else primaryButton.style.width = "";
           primaryButton.disabled = false;
-          primaryButton.removeAttribute('aria-busy');
+          primaryButton.removeAttribute("aria-busy");
         }
       };
 
@@ -50,10 +97,13 @@ if (!customElements.get("esafety-cart-action-button")) {
           {
             id: form.querySelector('input[name="id"]').value,
             quantity: form.querySelector('input[name="quantity"]').value,
+            properties: properties,
           },
         ],
         sections: "esaftey-cart-drawer,cart-count",
       };
+
+      console.log("Adding to cart", formData);
 
       fetch(window.Shopify.routes.root + "cart/add.js", {
         method: "POST",
@@ -70,7 +120,7 @@ if (!customElements.get("esafety-cart-action-button")) {
           setLoading(false);
         })
         .catch((err) => {
-          console.error('Add to cart failed', err);
+          console.error("Add to cart failed", err);
           setLoading(false);
         });
     }

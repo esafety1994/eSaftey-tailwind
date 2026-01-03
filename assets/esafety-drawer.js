@@ -117,8 +117,6 @@ class EsafetyDrawer extends HTMLElement {
     const newHTML = event.detail.sections["esaftey-cart-drawer"];
     const newCount = event.detail.sections["cart-count"];
 
-    console.log("newHTML", newHTML);
-
     fakeElement.innerHTML = newHTML;
     fakeCount.innerHTML = newCount;
 

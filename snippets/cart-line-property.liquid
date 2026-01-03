@@ -1,0 +1,41 @@
+{%- liquid
+  assign property_size = item.properties | size
+  assign properties =
+  if property_size > 0
+    assign properties = item.properties
+  endif
+-%}
+<ul>
+  {%- for p in properties -%}
+    {%- assign property_first_char = p.first | slice: 0 -%}
+    <li
+      class="m-cart-item__property m:text-sm{% if property_size == 0 or p.last == blank or property_first_char == '_' %} m:hidden{% endif %}"
+      data-cart-item-property
+    >
+      <span class="m:font-medium" data-cart-item-property-name>{{ p.first }}: </span>
+
+      {%- comment -%}
+        Check if there was an uploaded file associated
+      {%- endcomment -%}
+      <span data-cart-item-property-value>
+        {%- if p.last contains '/uploads/' -%}
+          <a href="{{ p.last }}" data-role="product-upload" target="_blank">{{ p.last | split: '/' | last }}</a>
+        {%- else -%}
+          {{ p.last }}
+        {%- endif -%}
+      </span>
+    </li>
+    {%- if p.first contains 'optionSetId' -%}
+      <li class="m-cart-item__property tpo-product-option">
+        <div
+          data-edit-product-option="{{ p.last }}"
+          data-item-key="{{ item.key }}"
+          data-product-id="{{ item.product.id }}"
+          data-variant-id="{{ item.id }}"
+          data-item-quantity="{{ item.quantity }}"
+          data-customizer-item-key="{{ item.properties['_itemKey'] }}"
+        ></div>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>

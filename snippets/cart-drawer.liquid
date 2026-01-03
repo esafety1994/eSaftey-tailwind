@@ -107,7 +107,7 @@
         </div>
         <div id="cart-empty" class="hidden text-center text-gray-600">Your cart is empty.</div>
       {% endif %}
-<span id="cart-total" class="hidden">{{ cart.items_subtotal_price | money }}</span>
+      <span id="cart-total" class="hidden">{{ cart.items_subtotal_price | money }}</span>
       <script>
         (function () {
           // Expose binding function so external code (AJAX updates) can re-run it
