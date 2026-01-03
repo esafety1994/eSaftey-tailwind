@@ -97,14 +97,12 @@ class EsafetyDrawer extends HTMLElement {
   }
 
   cartRender(event) {
-    console.log("esafety-drawer: cartRender event received", event);
+    console.log("esafety-drawer cartRender called");
     const fakeElement = document.createElement("div");
     const fakeCount = document.createElement("div");
 
     const newHTML = event.detail.sections["esaftey-cart-drawer"];
     const newCount = event.detail.sections["cart-count"];
-
-    console.log("esafety-drawer: cartRender called", newHTML);
 
     fakeElement.innerHTML = newHTML;
     fakeCount.innerHTML = newCount;

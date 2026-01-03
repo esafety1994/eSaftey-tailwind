@@ -20,13 +20,12 @@
     <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" /><path d="M9 11v-5a3 3 0 0 1 6 0v5" />
   </svg>
   {% assign cart_count = cart.item_count %}
-  {% if cart_count > 0 %}
-    <span class="cart-count absolute -top-1 -right-1 bg-bg-light-red text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
-      {% if cart_count > 99 %}
-        99+
-      {% else %}
-        {{ cart_count }}
-      {% endif %}
-    </span>
-  {% endif %}
+
+  <span class="cart-count absolute -top-1 -right-1 bg-bg-light-red text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
+    {% if cart_count > 99 %}
+      99+
+    {% else %}
+      {{ cart_count }}
+    {% endif %}
+  </span>
 </button>

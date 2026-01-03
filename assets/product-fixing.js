@@ -15,6 +15,7 @@ class ProductFixingAddons extends HTMLElement {
 
     // Ensure we only patch fetch once to watch for main product add responses
     if (!window.__pf_fetch_patched) {
+      
       window.__pf_fetch_patched = true;
       const _origFetch = window.fetch.bind(window);
       window.fetch = async function(resource, init) {
@@ -41,7 +42,7 @@ class ProductFixingAddons extends HTMLElement {
               try { await window.fetchCart(); } catch(e) {}
             }
             if (typeof window.openCartDrawer === 'function') {
-              window.openCartDrawer();
+              //window.openCartDrawer();
             } else {
               const cartBtn = document.getElementById('cart-btn');
               if (cartBtn) cartBtn.click();
@@ -93,19 +94,26 @@ class ProductFixingAddons extends HTMLElement {
           let mainItem = null;
           try { mainItem = await mainResp.json(); } catch(e) { mainItem = null; }
           const parentKey = mainItem && mainItem.key ? mainItem.key : null;
-
-          await fetch('/cart/add.js', {
+          const addonResp = await fetch('/cart/add.js', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ id: addonId, quantity: qty, properties: parentKey ? { is_addon: 'true', parent_key: parentKey } : { is_addon: 'true' } })
+            body: JSON.stringify({ id: addonId, quantity: qty, properties: parentKey ? { is_addon: 'true', parent_key: parentKey } : { is_addon: 'true' }, sections: "esaftey-cart-drawer,cart-count" })
           });
+          let addonData = null;
+          try { addonData = await addonResp.json(); } catch(e) { addonData = null; }
+          // dispatch render with the addon response (cart JSON)
+          try { document.documentElement.dispatchEvent(new CustomEvent('cart:render', { detail: addonData, bubbles: true })); } catch(e) {}
         } else {
           // No addon selected — add main product normally
-          await fetch('/cart/add.js', {
+
+          const mainResp = await fetch('/cart/add.js', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ id: mainVariant, quantity: qty })
+            body: JSON.stringify({ id: mainVariant, quantity: qty, sections: "esaftey-cart-drawer,cart-count" })
           });
+          let mainData = null;
+          try { mainData = await mainResp.json(); } catch(e) { mainData = null; }
+          try { document.documentElement.dispatchEvent(new CustomEvent('cart:render', { detail: mainData, bubbles: true })); } catch(e) {}
         }
 
         // Refresh cart UI and open drawer
@@ -113,7 +121,7 @@ class ProductFixingAddons extends HTMLElement {
           try { await fetchCart(); } catch(e) {}
         }
         if (typeof openCartDrawer === 'function') {
-          openCartDrawer();
+          try { openCartDrawer(); } catch(e) {}
         } else {
           const cartBtn = document.getElementById('cart-btn');
           if (cartBtn) cartBtn.click();
@@ -123,6 +131,7 @@ class ProductFixingAddons extends HTMLElement {
         // fallback: submit the form normally
         try { this.submit(); } catch(e) {}
       } finally {
+                console.log('openCartDrawer called');
         if (button) {
           setTimeout(() => { button.textContent = originalText || ''; button.disabled = false; button.removeAttribute('aria-busy'); }, 300);
         }

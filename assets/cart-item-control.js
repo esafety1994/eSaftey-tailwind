@@ -29,7 +29,7 @@ class CartQtyControl extends HTMLElement {
     }
 
     let updates = {
-      [itemKey]: event.target.dataset.quantity,
+      [itemKey]: event.target.dataset.quantity | 0,
     };
 
     if (addonLineKey) {
@@ -42,7 +42,7 @@ class CartQtyControl extends HTMLElement {
     };
 
     this.setLoading(true);
-
+    console.log("Sending cart update:", formData);
     fetch(window.Shopify.routes.root + "cart/update.js", {
       method: "POST",
       headers: {
@@ -55,7 +55,7 @@ class CartQtyControl extends HTMLElement {
         return response.json();
       })
       .then((data) => {
-        console.log("Item quantity updated:", data.json);
+        console.log("Item quantity updated:", data);
         // if we're currently on the cart page, reload so the canonical cart view is updated
         if (
           window.location &&
@@ -78,14 +78,6 @@ class CartQtyControl extends HTMLElement {
       .catch((error) => {
         console.error("Error:", error);
       });
-
-    /*const formData = { sections: "esaftey-cart-drawer,cart-count" };
-    fetch
-    // otherwise dispatch render event for drawer/mini-cart updates
-        document.documentElement.dispatchEvent(
-          new CustomEvent("cart:render", { detail: data, bubbles: true })
-        );
-        this.setLoading(false);*/
   }
 
   disconnectedCallback() {
