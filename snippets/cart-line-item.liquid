@@ -13,7 +13,7 @@
 {%- if drawer == true or drawer == 'true' -%}
   {%- assign in_drawer = true -%}
 {%- endif -%}
-{{ item | json}}
+<div class="hidden">{{ item | json}}</div>
 <div
   class="py-4 flex flex-col sm:flex-row sm:items-center sm:space-x-4 border-b border-grey"
 >
