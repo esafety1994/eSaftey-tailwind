@@ -107,7 +107,7 @@
         </div>
         <div id="cart-empty" class="hidden text-center text-gray-600">Your cart is empty.</div>
       {% endif %}
-
+<span id="cart-total" class="hidden">{{ cart.items_subtotal_price | money }}</span>
       <script>
         (function () {
           // Expose binding function so external code (AJAX updates) can re-run it
@@ -174,8 +174,8 @@
       </form>
 
       <div class="flex items-center justify-between mb-3">
-        <span id="cart-subtotal-label" class="font-medium">Subtotal (0 items)</span>
-        <span id="cart-subtotal" class="font-semibold">$0.00</span>
+        <span id="cart-subtotal-label" class="font-medium">Subtotal (<span data-item-count-drawer>0</span> items)</span>
+        <span id="cart-subtotal" data-cart-total-drawer class="font-semibold">$0.00</span>
       </div>
       <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
       <div class="py-4 flex gap-3">
