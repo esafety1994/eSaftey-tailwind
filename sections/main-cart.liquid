@@ -4,13 +4,14 @@
     {{ 'cart.general.title' | t }}
 {%- endcapture -%}
   {% render 'page-title', title: page_title, show_breadcrumb: true %}
-  <a href="#" id="esafetyClearCart" class="text-sm underline mb-4 inline-block">Clear Cart</a>
+
   {% if cart.item_count == 0 %}
     <div class="text-center py-12">
       <p class="text-gray-600 mb-4">Your cart is currently empty.</p>
       <a href="/" class="inline-block bg-black text-white px-4 py-2 rounded">Return to shop</a>
     </div>
   {% else %}
+    <a href="#" id="esafetyClearCart" class="text-sm underline mb-4 inline-block">Clear Cart</a>
     <div class="grid gap-6">
       <div>
         <form id="cart-update-form" action="{{ routes.cart_url }}" method="post">
