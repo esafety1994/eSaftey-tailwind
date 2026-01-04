@@ -33,7 +33,7 @@
       "type": "blog-list",
       "name": "Blog list",
       "settings": {
-        "blog": "",
+        "blog": "charity-blog",
         "posts_limit": 3,
         "heading": "OUR CHARITIES",
         "heading_color": "#000000",
