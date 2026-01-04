@@ -11,21 +11,6 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
-    "connect_stay_TTJjBE": {
-      "type": "connect-stay",
-      "name": "Connect / Stay in touch",
-      "settings": {
-        "follow_title": "Follow us",
-        "follow_text": "Stay up to date on promotions, giveaways, BTS and free resources",
-        "use_theme_social": true,
-        "subscribe_title": "Let's stay in touch",
-        "subscribe_text": "Sign up for news and exclusive offers.",
-        "email_placeholder": "Your email address",
-        "subscribe_button_label": "Subscribe",
-        "success_message": "Thanks — we'll be in touch.",
-        "error_message": "Sorry, something went wrong. Please try again."
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -79,7 +64,6 @@
     }
   },
   "order": [
-    "connect_stay_TTJjBE",
     "footer"
   ]
 }
