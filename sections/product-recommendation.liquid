@@ -73,7 +73,7 @@
 
                     <div class="p-4">
                       {% if p.available and p.variants and p.variants.size == 1 %}
-                        <form method="post" action="/cart/add">
+                        <form method="post" action="/cart/add" class="esafety-ajax-add">
                           <input type="hidden" name="id" value="{{ p.variants.first.id }}">
                           <button
                             type="submit"
@@ -428,7 +428,7 @@
                   glideHtml += '</div>';
                   glideHtml += '<div class="p-4">';
                   if (p.available && p.variants && p.variants.length == 1) {
-                    glideHtml += '<form method="post" action="/cart/add"><input type="hidden" name="id" value="'+(p.variants[0].id || '')+'"><button type="submit" class="w-full inline-flex items-center justify-center px-3 py-2 primary-cart-button">Add to cart</button></form>';
+                    glideHtml += '<form method="post" action="/cart/add" class="esafety-ajax-add"><input type="hidden" name="id" value="'+(p.variants[0].id || '')+'"><button type="submit" class="w-full inline-flex items-center justify-center px-3 py-2 primary-cart-button">Add to cart</button></form>';
                   } else {
                     glideHtml += '<a href="'+href+'" class="w-full inline-flex items-center justify-center px-3 py-2 primary-cart-button">Select options</a>';
                   }
@@ -511,6 +511,16 @@
     {% endif %}
   </product-recommendations>
 </div>
+  <script>
+    (function(){
+      try{
+        var s = document.createElement('script');
+        s.src = '{{ "recommendation-add-to-cart.js" | asset_url }}';
+        s.defer = true;
+        document.head.appendChild(s);
+      }catch(e){/*ignore*/}
+    })();
+  </script>
 
 {% schema %}
 {
