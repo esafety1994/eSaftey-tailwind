@@ -1,3 +1,7 @@
+.container{
+  width: 96%;
+  margin: auto;
+}
 @media (width >= 96rem) {
   .container {
     max-width: 1300px;
