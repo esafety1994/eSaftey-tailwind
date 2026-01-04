@@ -1,0 +1,86 @@
+<!-- Shipping goals snippet - Tailwind based -->
+{%- comment -%}
+  Displays a shipping progress bar and message. Replace the icon markup where needed.
+  Usage: {% render 'shipping-goals', current_amount: 25.00, free_shipping_threshold: 50.00 %}
+{%- endcomment -%}
+
+{%- assign current = cart.checkout_charge_amount | default: 0 | plus: 0 -%}
+{%- assign threshold = free_shipping_threshold | default: 50000 | plus: 0 -%}
+{%- assign pct = 0 -%}
+{%- if threshold > 0 -%}
+  {%- assign pct = current | times: 100 | divided_by: threshold | round -%}
+  {%- if pct > 100 -%}
+    {%- assign pct = 100 -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign unlocked = false -%}
+{%- if threshold > 0 and current >= threshold -%}
+  {%- assign unlocked = true -%}
+{%- endif -%}
+
+{%- assign fill_class = 'bg-primary' -%}
+{%- assign icon_border_class = 'border-primary' -%}
+{%- assign icon_text_class = 'text-primary' -%}
+{%- if unlocked -%}
+  {%- assign fill_class = 'bg-emerald-600' -%}
+  {%- assign icon_border_class = 'border-emerald-700' -%}
+  {%- assign icon_text_class = 'text-emerald-700' -%}
+{%- endif -%}
+
+{%- comment -%} if cart contains any product tagged 'bulky', do not render shipping goals {%- endcomment -%}
+{%- assign bulky = false -%}
+{%- for item in cart.items -%}
+  {%- if item.product and item.product.tags and item.product.tags contains 'Bulky' -%}
+    {%- assign bulky = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- unless bulky -%}
+<div class="shipping-goals w-full my-4 p-4 bg-white rounded-lg shadow-sm">
+  <div class="flex items-start gap-3">
+    <div class="flex-1">
+      <div class="flex items-baseline justify-between">
+        {%- if current >= threshold and threshold > 0 -%}
+          <p class="text-sm text-gray-700">You are eligible for <strong>FREE Shipping.</strong></p>
+        {%- else -%}
+          <p class="text-sm text-gray-700">
+            Spend <span class="font-semibold">{{ threshold | money }}</span> to unlock free shipping
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="mt-2">
+        <div class="relative w-full h-3 bg-gray-100 rounded-full overflow-visible">
+          <div
+            class="absolute inset-0 {{ fill_class }} rounded-full"
+            style="width: {{ pct }}%; transition: width 450ms cubic-bezier(.2,.9,.2,1);"
+          ></div>
+
+          <!-- icon positioned at the progress point -->
+          <div
+            class="absolute top-1/2 transform -translate-y-1/2 pointer-events-none"
+            style="left: calc({{ pct }}% - 0.75rem); transition: left 450ms cubic-bezier(.2,.9,.2,1), transform 350ms ease;"
+          >
+            <div
+              class="bg-white rounded-full p-1 shadow-sm {{ icon_border_class }} {{ icon_text_class }} transition-transform duration-300 {% if unlocked %}scale-110{% endif %}"
+              style="border-width:1px;"
+            >
+              {% render 'icon-svg-star-solid', class: 'size-4 ', stroke_width: 1.25 %}
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 text-xs text-gray-600">
+          {%- if current >= threshold and threshold > 0 -%}
+          {%- elsif threshold <= 0 -%}
+            <span>Set a free shipping threshold</span>
+          {%- else -%}
+            <span class="font-semibold">{{ threshold | minus: current | money }}</span> away from free shipping
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endunless -%}
