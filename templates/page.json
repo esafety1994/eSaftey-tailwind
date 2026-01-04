@@ -9,9 +9,18 @@
  */
 {
   "sections": {
+    "title": {
+      "type": "page-tittle",
+      "name": "Page Title",
+      "settings": {
+        "container": "container max-w-7xl mx-auto py-4"
+      }
+    },
     "main": {
       "type": "page",
-      "settings": {}
+      "settings": {
+        "container": "container max-w-7xl mx-auto py-4"
+      }
     },
     "breadcrumb_WrJrMP": {
       "type": "breadcrumb",
@@ -19,8 +28,5 @@
       "settings": {}
     }
   },
-  "order": [
-    "breadcrumb_WrJrMP",
-    "main"
-  ]
+  "order": ["title", "breadcrumb_WrJrMP", "main"]
 }
