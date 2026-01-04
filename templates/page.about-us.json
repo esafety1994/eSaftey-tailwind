@@ -13,8 +13,44 @@
       "type": "page",
       "settings": {}
     },
+    "custom_liquid_V6gfRD": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<section\n  aria-label=\"Hero\"\n  class=\"relative bg-cover bg-center h-72 md:h-[520px] lg:h-[640px]\"\n  style=\"background-image: url('//esafetysupplies.com.au/cdn/shop/files/esafety-supplies-warehouse.jpg?v=1704863849')\"\n>\n  <div class=\"absolute inset-0 bg-black/30\" aria-hidden=\"true\"></div>\n  <div class=\"relative z-10 flex items-center justify-center h-full px-6\">\n    <h1 class=\"text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white text-center\">\n      The eSafety Supplies Story\n    </h1>\n  </div>\n</section>",
+        "custom_class": ""
+      }
+    },
+    "custom_liquid_QaTP38": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<section class=\"container max-w-7xl mx-auto py-4 shopify-content-box text-center\">\n    <p>\n      eSafety Supplies is the leading safety equipment supplier, we simply offer the best products and services on the\n      market!&nbsp; We specialize in car park protection, street furniture, signage, site safety &amp; equipment, asset\n      protection, and workplace safety and are considered one of Australia's premier and trusted suppliers. We have a\n      comprehensive range featuring <strong>over 3,889+ products </strong>and counting designed to meet the diverse\n      needs of various trade, construction, and building industries across Australia.&nbsp;\n    </p>\n    <p>\n      Our story began humbly in a garage seven years ago, fueled by a passion for redefining safety standards, and\n      today, we stand as a testament to growth, with a community of <strong>121,328+ happy customers</strong>. We have\n      evolved into a trusted industry leader, strategically located in Wetherill Park, Sydney.&nbsp;\n    </p>\n</section>",
+        "custom_class": ""
+      }
+    },
+    "custom_liquid_AhezMj": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<section class=\"container max-w-7xl mx-auto py-4 shopify-content-box\">\n  <h3 class=\"py-8 text-2xl text-center\">WHY WE STARTED</h3>\n  <div>\n    <p>\n      On a mission to revolutionize safety solutions, eSafety Supplies was founded to confront industry challenges\n      directly. We don't just resolve issues; we embody the ethos of being \"Simply Better\" in every facet of our\n      operations.\n    </p>\n    <ul class=\"grid gap-4\">\n      <li>\n        <strong>Reliable safety equipment:</strong> In a sea of dodgy options, find peace of mind with eSafety\n        Supplies—your trusted supplier for handpicked, top-notch safety gear that won't let you down.\n      </li>\n      <li>\n        <strong>All-in-one safety supplier: </strong>No more hassle, no more searching. At eSafety Supplies, we're your\n        all-in-one safety destination, tailored to cater to the varied requirements of trade, construction, and building\n        industries across Australia.&nbsp;\n      </li>\n      <li>\n        <strong>Expertise &amp; excellent customer service</strong>: Here at eSafety Supplies, we offer exceptional\n        customer support and clear, dependable guidance to ensure you're always well-informed.\n      </li>\n      <li>\n        <strong>Nationwide delivery simplified: </strong>Whether you need it urgently or Australia-wide, eSafety\n        Supplies offers walk-in, same-day delivery, courier, and click-and-collect options, ensuring convenience every\n        step of the way\n      </li>\n    </ul>\n    <p>\n      Beyond mere compliance, we believe safety can spark innovation, enhance efficiency, and drive excellence. At\n      eSafety Supplies, we stand at the forefront, committed to making safety \"Simply Better.\n    </p>\n  </div>\n</section>",
+        "custom_class": ""
+      }
+    },
+    "custom_liquid_UNpGrV": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<section class=\"container max-w-7xl mx-auto py-4 shopify-content-box\">\n  <div class=\"flex gap-8 flex-col lg:flex-row items-start justify-center\">\n    <img\n      srcset=\"//esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933&amp;width=165 165w,//esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933&amp;width=360 360w,//esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933&amp;width=533 533w,//esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933&amp;width=720 720w,//esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933&amp;width=940 940w,//esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933&amp;width=1066 1066w,//esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933 1200w\"\n      src=\"https://esafetysupplies.com.au/cdn/shop/files/WEB_ROUNDED_SQUARE.png?v=1709160933&amp;width=360\"\n      sizes=\"367px\"\n      alt=\"\"\n      loading=\"lazy\"\n      fetchpriority=\"low\"\n      class=\"mx-auto\"\n      width=\"367\"\n      height=\"367\"\n    >\n    <div>\n      <h3 class=\"text-xl font-semibold mb-3 text-center lg:text-left\">WHY WE ARE SIMPLY BETTER</h3>\n      <div class=\"prose text-gray-800\">\n        <p>‘Simply Better' is not just a slogan, but a promise we're committed to through:</p>\n        <ul class=\"list-disc pl-5 space-y-2\">\n          <li>\n            <strong>Top Quality Products:</strong> eSafety Supplies ensures top-tier safety with a commitment to\n            sourcing exceptional products.\n          </li>\n          <li>\n            <strong>Exceptional Service:</strong> Our team goes beyond expectations, offering expert guidance for a\n            seamless customer journey.\n          </li>\n          <li><strong>Fast &amp; Nationwide Delivery:</strong> Reliable Australia-wide delivery options.</li>\n          <li><strong>Extensive Product Catalog:</strong> A one-stop solution with thousands of products.</li>\n          <li><strong>Competitive Value:</strong> Price-beat, referral and loyalty programs to deliver value.</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n</section>",
+        "custom_class": ""
+      }
+    }
   },
   "order": [
     "main",
+    "custom_liquid_V6gfRD",
+    "custom_liquid_QaTP38",
+    "custom_liquid_AhezMj",
+    "custom_liquid_UNpGrV"
   ]
 }
