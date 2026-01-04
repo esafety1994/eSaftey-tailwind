@@ -11,6 +11,21 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
+    "connect_stay_TTJjBE": {
+      "type": "connect-stay",
+      "name": "Connect / Stay in touch",
+      "settings": {
+        "follow_title": "Follow us",
+        "follow_text": "Stay up to date on promotions, giveaways, BTS and free resources",
+        "use_theme_social": true,
+        "subscribe_title": "Let's stay in touch",
+        "subscribe_text": "Sign up for news and exclusive offers.",
+        "email_placeholder": "Your email address",
+        "subscribe_button_label": "Subscribe",
+        "success_message": "Thanks — we'll be in touch.",
+        "error_message": "Sorry, something went wrong. Please try again."
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -19,40 +34,35 @@
           "settings": {
             "title": "eSafety Supplies",
             "image_max": "300px",
-            "description": "<p>ABN – 78 630 262 789</p><p><a href=\"tel:1300 291 700\">1300 291 700</a></p><p>Monday to Friday: 7AM - 5PM</p><p>Saturday: 8AM - 12PM</p><p><a href=\"mailto:sales@esafetysupplies.com.au\">sales@esafetysupplies.com.au</a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">37 Bentley St, </a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">Wetherill Park NSW 2164</a></p>",
-            "width": "25%"
+            "description": "<p>ABN – 78 630 262 789</p><p><a href=\"tel:1300 291 700\">1300 291 700</a></p><p>Monday to Friday: 7AM - 5PM</p><p>Saturday: 8AM - 12PM</p><p><a href=\"mailto:sales@esafetysupplies.com.au\">sales@esafetysupplies.com.au</a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">37 Bentley St, </a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">Wetherill Park NSW 2164</a></p>"
           }
         },
         "7ebc2f78-975b-4a81-b874-103c3355a866": {
           "type": "menu",
           "settings": {
             "menu": "quick-links",
-            "title": "Quick link",
-            "width": "16%"
+            "title": "Quick link"
           }
         },
         "49e72833-c68f-4a7b-ab64-3ef0cae99bcb": {
           "type": "menu",
           "settings": {
             "menu": "about-us",
-            "title": "About Us",
-            "width": "16%"
+            "title": "About Us"
           }
         },
         "menu_FRaF7R": {
           "type": "menu",
           "settings": {
             "menu": "policies",
-            "title": "Policies",
-            "width": "16%"
+            "title": "Policies"
           }
         },
         "menu_8WHn7V": {
           "type": "menu",
           "settings": {
             "menu": "customer-service",
-            "title": "Customer Service",
-            "width": "16%"
+            "title": "Customer Service"
           }
         }
       },
@@ -69,6 +79,7 @@
     }
   },
   "order": [
+    "connect_stay_TTJjBE",
     "footer"
   ]
 }
