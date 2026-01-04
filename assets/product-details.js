@@ -293,6 +293,35 @@
     return 0;
   }
 
+  window.triggerShippingEstimate = function(e){
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      var ship = document.querySelector('.shipping-calculator');
+      if (ship) {
+        // ensure close button inside calculator will close it
+        try {
+          var closeBtn = ship.querySelector('.shipping-cal-close');
+          if (closeBtn) {
+            closeBtn.removeEventListener('click', function(){});
+            closeBtn.addEventListener('click', function(ev){
+              ev && ev.preventDefault && ev.preventDefault();
+              ship.classList.remove('open');
+            });
+          }
+        } catch (err) {}
+
+        // open the shipping calculator as a drawer
+        ship.classList.add('open');
+      } else {
+        console.warn('No .shipping-calculator element found to open');
+      }
+    } catch (err) {
+      console.warn('triggerShippingEstimate error', err);
+    }
+    // return false so inline `onclick="triggerShippingEstimate(event)"` prevents navigation
+    return false;
+  }
+  
   function scrollToElement(target, extraOffset){
     if (!target) return;
     var headerOffset = (typeof extraOffset === 'number') ? extraOffset : getHeaderOffset();

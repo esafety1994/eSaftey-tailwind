@@ -1,5 +1,5 @@
 <div class="shipping-calculator" x-data="{ shippingRates: [], isLoading: false, formData: {quantity: 1}, errors: {} }">
-  <div class="m-cart-addon__title m:font-large">
+  <div class="m-cart-addon__title m:font-large flex gap-2 items-center">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
       <path d="M19.9993 2.66699V16.0003C19.9993 17.467 18.7993 18.667 17.3327 18.667H2.66602V10.1603C3.63935 11.3203 5.13272 12.0403 6.78605 12.0003C8.13272 11.9737 9.34602 11.4537 10.2527 10.587C10.666 10.2403 11.0127 9.80031 11.2794 9.32031C11.7594 8.50698 12.026 7.54696 11.9993 6.54696C11.9593 4.98696 11.266 3.61366 10.186 2.66699H19.9993Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M29.3327 18.667V22.667C29.3327 24.8803 27.546 26.667 25.3327 26.667H23.9993C23.9993 25.2003 22.7993 24.0003 21.3327 24.0003C19.866 24.0003 18.666 25.2003 18.666 26.667H13.3327C13.3327 25.2003 12.1327 24.0003 10.666 24.0003C9.19935 24.0003 7.99935 25.2003 7.99935 26.667H6.66602C4.45268 26.667 2.66602 24.8803 2.66602 22.667V18.667H17.3327C18.7993 18.667 19.9993 17.467 19.9993 16.0003V6.66699H22.4527C23.4127 6.66699 24.2927 7.18701 24.7727 8.01367L27.0527 12.0003H25.3327C24.5993 12.0003 23.9993 12.6003 23.9993 13.3337V17.3337C23.9993 18.067 24.5993 18.667 25.3327 18.667H29.3327Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -23,6 +23,7 @@
       <path d="M14.8299 14.8299L9.16992 9.16992" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </div>
+
   <div class="shipping-calculator-form-wrapper">
     <p class="shipping-cal-form-title">Calculate your rate</p>
     {% comment %}
@@ -83,11 +84,11 @@
       </div>
     </div>
     <form data-address="root">
-      <div class="form-field-group visible-fields quantity" data-line-count="3">
+      <div class="form-field-group visible-fields quantity flex flex-col" data-line-count="3">
         <label class="form-field--label" for="QuantityShipping">{{ 'products.product.quantity' | t }}</label>
         <input
           x-model="formData.quantity"
-          class="form-field"
+          class="form-field p-2 my-3"
           type="text"
           id="QuantityShipping"
           name="quantity"
@@ -179,10 +180,10 @@
         ></select>
       </div>
 
-      <div class="form-field-group visible-fields postcode">
+      <div class="form-field-group visible-fields postcode flex flex-col">
         <label class="form-field--label" for="AddressZip">{{ 'customer.addresses.zip' | t }}</label>
         <input
-          class="form-field"
+          class="form-field p-2 my-3"
           x-model="formData.zip"
           type="text"
           id="AddressZip"
@@ -200,16 +201,16 @@
   </div>
 
   <div class="m-cart-addon__action m:flex m:flex-col shipping-rate-button">
-    <button class="m-spinner-button m-button m-button--primary m-cart-addon--calculate" @click="getShipping">
+    <button class="m-spinner-button m-button m-button--primary m-cart-addon--calculate btn primary-button w-full" @click="getShipping">
       <span>
         {{ 'cart.general.estimate_shipping_button' | t }}
       </span>
       <span class="m-spinner-icon" x-show="isLoading">
-        <span class="calculating">
+        <span class="calculating flex gap-2 items-center">
           <p>Calculating</p>
           <svg
             x-show="isLoading"
-            class="animate-spin m-svg-icon--medium"
+            class="animate-spin m-svg-icon--medium size-3"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
