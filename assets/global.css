@@ -1,4 +1,4 @@
-.container{
+.container {
   width: 96%;
   margin: auto;
 }
@@ -118,6 +118,7 @@ a.underline-animation:focus::after {
 /* Content style from Shopify */
 .shopify-content-box h2 {
   margin: 20px 0;
+  font-size: 24px;
 }
 
 .shopify-content-box p {
@@ -134,7 +135,9 @@ a.underline-animation:focus::after {
   list-style: disc;
   padding-left: 26px;
 }
-
+.shopify-content-box a {
+  text-decoration: underline;
+}
 /******* slider arrows ***********/
 /* Gallery arrows and thumbnail active state */
 .product-gallery-arrow {

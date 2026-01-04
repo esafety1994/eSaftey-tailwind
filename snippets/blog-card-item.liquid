@@ -1,0 +1,41 @@
+<article class="h-full flex flex-col max-w-[280px] md:max-w-sm m-auto">
+  {% if article.image %}
+    <a href="{{ article.url }}" class="w-full h-48 relative overflow-hidden">
+      {% render 'responsive-image',
+        image: article.image,
+        width: 720,
+        aspect_ratio: 1.777,
+        wrapper_class: 'absolute inset-0',
+        image_class: 'w-full h-full object-cover object-center'
+      %}
+    </a>
+  {% endif %}
+
+  <div class="mt-4 flex flex-col justify-between flex-grow">
+    <div>
+      <div class="text-xs uppercase">
+        {{ article.published_at | date: '%B %d, %Y' }}
+      </div>
+      <h3 class="text-lg font-medium my-2">
+        <a href="{{ article.url }}" class="hover:text-blue-600 transition-colors">
+          {{ article.title }}
+        </a>
+      </h3>
+
+      {% if article.excerpt != blank %}
+        <p class="text-gray-600 text-sm mb-3 line-clamp-3">
+          {{ article.excerpt | strip_html | truncate: 150 }}
+        </p>
+      {% endif %}
+    </div>
+
+    <div>
+      <a
+        href="{{ article.url }}"
+        class="read-more-button underline-animation"
+      >
+        Read more
+      </a>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,81 @@
+<section class="container max-w-7xl mx-auto py-8">
+  <nav class="text-sm text-gray-500 mb-4" aria-label="Breadcrumb">
+    <a href="/" class="hover:underline">Home</a>
+    <span class="mx-2">/</span>
+    <a href="{{ blog.url }}" class="hover:underline">{{ blog.title }}</a>
+    <span class="mx-2">/</span>
+    <span class="text-gray-700">{{ article.title }}</span>
+  </nav>
+
+  <div class="flex gap-16 flex-wrap md:flex-nowrap">
+    <div>
+      <header class="my-6">
+        <h1 class="text-3xl font-semibold text-center">{{ article.title }}</h1>
+        <div class="text-sm text-gray-600 mt-2 text-center">
+          {% if article.author %}
+            by <span>{{ article.author }}</span>
+          {%- endif %}
+          on <span>{{ article.published_at | date: '%B %d, %Y' }}</span>
+        </div>
+      </header>
+
+      <div class="my-4">
+        {% if article.image %}
+          <div class="mb-6 w-full h-64 md:h-96 overflow-hidden rounded">
+            {% render 'responsive-image',
+              image: article.image,
+              width: 980,
+              aspect_ratio: 2.5,
+              wrapper_class: 'w-full h-full relative',
+              image_class: 'w-full h-full object-cover object-center'
+            %}
+          </div>
+        {% endif %}
+
+        <article class="prose prose-lg max-w-none text-gray-800 mb-8 shopify-content-box">
+          {{ article.content }}
+        </article>
+        {% render 'article-share-nav', article: article, blog: blog %}
+      </div>
+    </div>
+    <aside class="max-w-xl w-full">
+      {% if article.tags.size > 0 %}
+        <div class="mb-8">
+          <h3 class="text-sm font-semibold mb-2">Tags</h3>
+          <div class="flex flex-wrap gap-2">
+            {% for tag in article.tags %}
+              <a
+                href="{{ blog.url }}?tag={{ tag | url_encode }}"
+                class="text-sm px-3 py-1 bg-gray-100 rounded hover:bg-gray-200"
+              >
+                {{- tag -}}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </aside>
+  </div>
+
+  {% comment %} Related posts: show up to 3 other articles from same blog {% endcomment %}
+  {% assign related_count = 0 %}
+  <div class="mt-12">
+    <h3 class="text-xl font-semibold mb-4">Related Articles</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for a in blog.articles %}
+        {% if a.id != article.id and related_count < 4 %}
+          {% render 'blog-card-item', article: a %}
+          {% assign related_count = related_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Article Template",
+  "settings": [],
+  "presets": [{ "name": "Article" }]
+}
+{% endschema %}
