@@ -17,13 +17,22 @@
       "type": "custom-liquid",
       "name": "Custom liquid",
       "settings": {
-        "custom_liquid": "",
+        "custom_liquid": "<div class=\"image-overlay\">\n  <div class=\"chHeroContentWrapper\">\n    <div class=\"chHeroContent m:text-center md:m:text-left m-text--black\">\n      <h1 class=\"chHeroHeading\">\n        Together We Are Strengthening Humanity\n      </h1>\n      <div class=\"chHeroCopy\">\n        <p>At the heart of our mission is a commitment to giving back. We believe that strong communities are built through compassion, collaboration, and support for those in need. That’s why we partner with a range of charities and support local initiatives, contributing both time and resources to make a real difference. Whether it’s fundraising, volunteering, raising awareness or providing direct assistance, charitable work is not just an occasional gesture for us - it’s an integral part of how we do business and who we are.</p>\n      </div>      \n    </div>\n  </div>\n  <div class=\"bg-overlay\"></div>\n</div>\n<style>\n  .image-overlay {\n    position: relative;\n    width: 100%;\n    height: 510px;\n    background-image: url('https://cdn.shopify.com/s/files/1/0638/5175/7736/files/charities-banner.jpg?v=1755556706'); \n    background-size: cover;\n    background-position: center;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n  .bg-overlay{\n      background: rgb(0 0 0 / 9%);\n      flex: 1;\n      width: 100%;\n      height: 100%;\n      position: absolute;\n  }\n  .chHeroContentWrapper{\n    max-width: 1340px;\n    width:94%;\n    margin: auto;\n\n  }\n  .chHeroContent {\n    display: grid;\n    gap: 25px;\n    max-width: 480px;\n  }\n  .chHeroHeading{\n    font-weight:800;\n  }\n  .chHeroCopy{\n    font-size:16px;\n  }\n  @media (max-width: 980px) {\n    .chHeroContent {\n      margin: auto;\n      text-align: center;\n    }\n  }\n</style>",
+        "custom_class": ""
+      }
+    },
+    "custom_liquid_bi9cHN": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"chCtaWrapper\">\n  <div class=\"chCtaLeftCol\">\n    <div class=\"chCtaLeftColItem\">\n      <div class=\"chCtaHeading\">\n        <span>8</span>\n        <span>K</span>\n      </div>\n      <div class=\"chCtaCopy\">Number of Supporters</div>\n    </div>\n    <div class=\"chCtaLeftColItem\">\n      <div class=\"chCtaHeading\">\n        <span>3.2</span>\n        <span>K</span>\n      </div>\n      <div class=\"chCtaCopy\">Number of Volunteers</div>\n    </div>\n    <div class=\"chCtaLeftColItem\">\n      <div class=\"chCtaHeading\">\n        <span>90</span>\n        <span>%</span>\n      </div>\n      <div class=\"chCtaCopy\">Projects Completed</div>\n    </div>\n  </div>\n  <div class=\"chCtaRightCol\">\n    <div>Our Goal<br/>is to help<br/>Poor People</div>\n  </div>\n</div>\n\n<style>\n.chCtaWrapper{\n    max-width: 1340px;\n    margin: 40px auto;\n    display: grid;\n    grid-template-columns: 1fr 270px;\n}\n\n.chCtaLeftCol{\n    background: #FEDC13;\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    align-items: center;\n}\n\n.chCtaLeftColItem{\n    font-family: 'M-Heading-Font';\n    font-weight: 800;\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    padding: 20px 0;\n    max-width: 140px;\n    text-align: center;\n    margin: auto;\n    gap: 6px;\n}\n\n.chCtaHeading {\n    font-size: 42px;\n    display: flex;\n    gap: 5px;\n    position:relative;\n}\n.chCtaHeading::after {\n  content: \"\";\n  position: absolute;\n  bottom: 0;\n  width: 60px;\n  border-bottom: 2px solid #fff;\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.chCtaCopy {\n    line-height: 1.2;\n    font-weight: 400;\n}\n\n.chCtaRightCol{\n  background: black;\n  display: flex;\n  align-items: center;\n  justify-content: start;\n}\n\n.chCtaRightCol > div{\n  max-width: 200px;\n  margin-left: 37px;\n  font-size: 24px;\n  color: #FEDC13;\n  line-height: 1.15;\n  font-weight: 400;\n}\n@media (max-width: 610px) {\n  .chCtaWrapper{\n    grid-template-columns: 1fr;\n  }\n  .chCtaRightCol{\n    justify-content: center;\n    padding: 20px 0;\n    text-align: center;\n  }\n}\n\n@media (max-width: 440px) {\n  .chCtaLeftCol{\n    grid-template-columns: 1fr;\n  }\n}\n</style>",
         "custom_class": ""
       }
     }
   },
   "order": [
     "main",
-    "custom_liquid_aEGVQj"
+    "custom_liquid_aEGVQj",
+    "custom_liquid_bi9cHN"
   ]
 }
