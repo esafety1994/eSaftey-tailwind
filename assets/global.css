@@ -229,3 +229,18 @@ a.underline-animation:focus::after {
     display: flex;
   }
 }
+
+.accordion-wrapper.accordion-open [data-icon] {
+  transform: rotate(90deg);
+}
+.accordion-wrapper [data-icon] {
+  transform: rotate(0deg);
+}
+.accordion-content {
+  padding-top: 0;
+  height: 0;
+}
+.accordion-wrapper.accordion-open .accordion-content {
+  height: auto;
+  padding-top: 1rem;
+}

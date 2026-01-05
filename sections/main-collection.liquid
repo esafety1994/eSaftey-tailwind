@@ -23,8 +23,37 @@
         <div class="sticky top-48">
           <div class="p-2 px-4 border border-gray-200 rounded-lg mb-2">
             <h3 class="text-lg mb-4">Filters</h3>
+            <div>
+              {% assign filter_blank = true %}
+              {% for filter in collection.filters %}
+                {% for value in filter.active_values %}
+                  {% assign filter_blank = false %}
+                  <input
+                    data-remove-url="{{ value.url_to_remove }}"
+                    type="hidden"
+                    value="{{ filter.value | handle }}"
+                    name="{{ filter.label | handle }}"
+                  >
+                  <label
+                    for="{{filter.label | handle}}-{{value.label | handle}}"
+                    class="text-sm text-black cursor-pointer bg-gray-100 rounded-full px-3 py-1 inline-flex mb-2 mr-2 items-center gap-1"
+                  >
+                    {{ value.label }}
+                    {% render 'icon-svg-close', class: 'size-3', stroke_width: '1' %}
+                  </label>
+                {% endfor %}
+              {% endfor %}
+
+              {% unless filter_blank %}
+                <span
+                  data-clear-filters
+                  class="mb-4 text-sm text-bg-light-red cursor-pointer bg-gray-200 rounded-full px-3 py-1 inline-flex mr-2 items-center gap-1"
+                  >Clear filters {% render 'icon-svg-close', class: 'size-3', stroke_width: '1' -%}
+                </span>
+              {% endunless %}
+            </div>
+            {% render 'collection-filter' %}
           </div>
-          {% render 'collection-filter' %}
         </div>
       {% endif %}
     </aside>

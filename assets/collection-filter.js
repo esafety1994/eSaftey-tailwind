@@ -11,7 +11,13 @@ class CollectionFilters extends HTMLElement {
     this.handleClick = this.handleClick.bind(this);
     this.minRange = this.querySelector('input[type="range"][data-min-value]');
     this.maxRange = this.querySelector('input[type="range"][data-max-value]');
-    this.filterInputs?.forEach((input) => {
+    this.clearFilter = document.querySelector('span[data-clear-filters]');
+    this.clearFilter?.addEventListener("click", () => {
+      const u = new URL(window.location.href);
+      u.search = '';
+      window.location.href = u.toString();
+    });
+    this.filterInputs.forEach((input) => {
       input.addEventListener("change", this.handleClick);
     });
   }
@@ -19,24 +25,20 @@ class CollectionFilters extends HTMLElement {
   handleClick(event) {
     const input = event.currentTarget;
     let url;
-
+    this.filterTabs = Array.from(document.querySelectorAll("accordion-tab"));
     if (input.dataset.addUrl && input.dataset.removeUrl) {
       url = new URL(
         input.checked ? input.dataset.addUrl : input.dataset.removeUrl,
         window.location.origin
       );
-    }else{
-        console.log("Range filter changed", this.minRange.dataset.param);
-        url = new URL(location.href);
-        url.searchParams.delete(this.minRange.dataset.param);
-        url.searchParams.delete(this.maxRange.dataset.param);
+    } else {
+      url = new URL(location.href);
+      url.searchParams.delete(this.minRange.dataset.param);
+      url.searchParams.delete(this.maxRange.dataset.param);
 
-        url.searchParams.set(this.minRange.dataset.param, this.minRange.value);
-        url.searchParams.set(this.maxRange.dataset.param, this.maxRange.value);
+      url.searchParams.set(this.minRange.dataset.param, this.minRange.value);
+      url.searchParams.set(this.maxRange.dataset.param, this.maxRange.value);
     }
-
-    console.log("Navigating to:", url.toString());
-
     url.searchParams.set("section_id", this.sectionId);
 
     fetch(url.toString())
@@ -46,6 +48,14 @@ class CollectionFilters extends HTMLElement {
       .then((html) => {
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = html;
+        const openFilters = this.filterTabs.map((value, index) => {
+          return value.classList.contains("accordion-open") ? index : -1;
+        }).filter((index) => index !== -1);
+        openFilters.forEach((index) => {
+          const currentFilter =
+            tempDiv.querySelectorAll("accordion-tab")[index];
+          currentFilter.classList.add("accordion-open");
+        });
         document.querySelector(".collection-inner-element").innerHTML =
           tempDiv.querySelector(".collection-inner-element").innerHTML;
 
@@ -56,7 +66,9 @@ class CollectionFilters extends HTMLElement {
         console.error("Error fetching collection filters:", error);
       });
   }
-  disconnectedCallback() {}
+  disconnectedCallback() {
+    document.body.removeEventListener("click", this.handleClick);
+  }
 }
 
 customElements.define("collection-filters", CollectionFilters);
