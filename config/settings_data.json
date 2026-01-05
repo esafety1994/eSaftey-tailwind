@@ -117,6 +117,11 @@
         "settings": {
           "enable_ajax_atc": true
         }
+      },
+      "5182184951224911228": {
+        "type": "shopify://apps/rapid-search/blocks/script/bd827795-feaa-41a8-9219-2b83f238aa7d",
+        "disabled": false,
+        "settings": {}
       }
     }
   }
