@@ -31,7 +31,8 @@
     {%- if template == 'product' -%}
       {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
-  </head>
+    {% render 'rapid-search-settings' %}
+</head>
   <body class="font-normal">
     <div class="relative">
       {% sections 'header-group' %}
