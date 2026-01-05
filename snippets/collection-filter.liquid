@@ -1,85 +1,76 @@
-{% if collection.all_tags.size > 0 %}
-  <div class=" hidden mb-6">
-    <h3 class="text-sm font-medium mb-2">Tags</h3>
-    <ul class="space-y-2 text-sm">
-      {% for tag in collection.all_tags %}
-        <li>
-          <a
-            href="{{ collection.url }}?constraint={{ tag | url_encode }}"
-            class="text-gray-700 hover:text-black"
-          >
-            {{- tag -}}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
-{% endif %}
-
 {% for filter in collection.filters %}
-  <collection-filters data-section-id="{{ section.id }}" class="mb-6">
-    <div>{{ filter.label }}</div>
-    <div>
-      {% if filter.type == 'list' or filter.type == 'boolean' %}
-        {% for value in filter.values %}
-          <div class="flex items-center gap-2 mb-2">
-            <input
-              type="checkbox"
-              id="{{filter.label | handle}}-{{value.label | handle}}"
-              name="{{ filter.label | handle }}"
-              data-add-url="{{ value.url_to_add  }}"
-              data-remove-url="{{ value.url_to_remove }}"
-              class="w-4 h-4 border-gray-300 rounded"
-              {% if value.active %}
-                checked
-              {% endif %}
-            >
-            <label
-              for="{{filter.label | handle}}-{{value.label | handle}}"
-              class="text-sm text-gray-700 cursor-pointer"
-            >
-              {{ value.label }}
-            </label>
+  <div class="border border-gray-200 rounded-lg p-4 mb-2">
+    <collection-filters data-section-id="{{ section.id }}">
+      <accordion-tab>
+        <div data-header class="flex justify-between items-center">
+          <div>{{ filter.label }}</div>
+          <div data-icon class="transition-transform duration-400 ease-in-out">
+            {% render 'icon-svg-chevron-right' %}
           </div>
-        {% endfor %}
-      {% else %}
-        {% if filter.min_value.value %}
-          {% assign min_value = filter.min_value.value | divided_by: 100.0 %}
-        {% else %}
-          {% assign min_value = 0.0 %}
-        {% endif %}
-
-        {% if filter.max_value.value %}
-          {% assign max_value = filter.max_value.value | divided_by: 100.0 %}
-        {% else %}
-          {% assign max_value = filter.range_max | divided_by: 100.0 %}
-        {% endif %}
-        <div>
-          <input
-            type="range"
-            id="{{ filter.min_value.param_name }}"
-            name="{{ filter.min_value.param_name }}"
-            min="0"
-            max="{{ filter.range_max | divided_by: 100.0 | round | plus:1}}"
-            value="{{ min_value }}"
-            class="w-full mb-2"
-            data-param="{{ filter.min_value.param_name }}"
-            data-min-value
-          >
-
-          <input
-            type="range"
-            id="{{ filter.max_value.param_name }}"
-            name="{{ filter.max_value.param_name }}"
-            min="0"
-            max="{{ filter.range_max | divided_by: 100.0 | round | plus:1}}"
-            value="{{ max_value }}"
-            class="w-full mb-2"
-            data-param="{{ filter.max_value.param_name }}"
-            data-max-value
-          >
         </div>
-      {% endif %}
-    </div>
-  </collection-filters>
+        <div data-content class="overflow-hidden transition-all duration-400 ease-in-out">
+          {% if filter.type == 'list' or filter.type == 'boolean' %}
+            {% for value in filter.values %}
+              <div class="flex items-center gap-2 mb-2">
+                <input
+                  type="checkbox"
+                  id="{{filter.label | handle}}-{{value.label | handle}}"
+                  name="{{ filter.label | handle }}"
+                  data-add-url="{{ value.url_to_add  }}"
+                  data-remove-url="{{ value.url_to_remove }}"
+                  class="w-4 h-4 border-gray-300 rounded"
+                  {% if value.active %}
+                    checked
+                  {% endif %}
+                >
+                <label
+                  for="{{filter.label | handle}}-{{value.label | handle}}"
+                  class="text-sm text-gray-700 cursor-pointer"
+                >
+                  {{ value.label }}
+                </label>
+              </div>
+            {% endfor %}
+          {% else %}
+            {% if filter.min_value.value %}
+              {% assign min_value = filter.min_value.value | divided_by: 100.0 %}
+            {% else %}
+              {% assign min_value = 0.0 %}
+            {% endif %}
+
+            {% if filter.max_value.value %}
+              {% assign max_value = filter.max_value.value | divided_by: 100.0 %}
+            {% else %}
+              {% assign max_value = filter.range_max | divided_by: 100.0 %}
+            {% endif %}
+            <div>
+              <input
+                type="range"
+                id="{{ filter.min_value.param_name }}"
+                name="{{ filter.min_value.param_name }}"
+                min="0"
+                max="{{ filter.range_max | divided_by: 100.0 | round | plus:1}}"
+                value="{{ min_value }}"
+                class="w-full mb-2"
+                data-param="{{ filter.min_value.param_name }}"
+                data-min-value
+              >
+
+              <input
+                type="range"
+                id="{{ filter.max_value.param_name }}"
+                name="{{ filter.max_value.param_name }}"
+                min="0"
+                max="{{ filter.range_max | divided_by: 100.0 | round | plus:1}}"
+                value="{{ max_value }}"
+                class="w-full mb-2"
+                data-param="{{ filter.max_value.param_name }}"
+                data-max-value
+              >
+            </div>
+          {% endif %}
+        </div>
+      </accordion-tab>
+    </collection-filters>
+  </div>
 {% endfor %}
