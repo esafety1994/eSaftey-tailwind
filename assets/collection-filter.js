@@ -41,30 +41,56 @@ class CollectionFilters extends HTMLElement {
     }
     url.searchParams.set("section_id", this.sectionId);
 
+    this._showSpinner();
     fetch(url.toString())
-      .then((response) => {
-        return response.text();
-      })
+      .then((response) => response.text())
       .then((html) => {
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = html;
-        const openFilters = this.filterTabs.map((value, index) => {
-          return value.classList.contains("accordion-open") ? index : -1;
-        }).filter((index) => index !== -1);
+        const openFilters = this.filterTabs
+          .map((value, index) => (value.classList.contains("accordion-open") ? index : -1))
+          .filter((index) => index !== -1);
         openFilters.forEach((index) => {
-          const currentFilter =
-            tempDiv.querySelectorAll("accordion-tab")[index];
-          currentFilter.classList.add("accordion-open");
+          const currentFilter = tempDiv.querySelectorAll("accordion-tab")[index];
+          if (currentFilter) currentFilter.classList.add("accordion-open");
         });
-        document.querySelector(".collection-inner-element").innerHTML =
-          tempDiv.querySelector(".collection-inner-element").innerHTML;
+        const target = document.querySelector(".collection-inner-element");
+        if (target && tempDiv.querySelector(".collection-inner-element")) {
+          target.innerHTML = tempDiv.querySelector(".collection-inner-element").innerHTML;
+        }
 
         url.searchParams.delete("section_id");
         window.history.pushState({}, "", url.toString());
       })
       .catch((error) => {
         console.error("Error fetching collection filters:", error);
+      })
+      .finally(() => {
+        this._hideSpinner();
       });
+  }
+
+  _showSpinner() {
+    if (document.getElementById('collection-filter-spinner')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'collection-filter-spinner';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-white/60';
+    overlay.innerHTML = `
+      <div class="flex items-center gap-3 p-4">
+        <svg class="animate-spin h-6 w-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+      
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  _hideSpinner() {
+    const el = document.getElementById('collection-filter-spinner');
+    if (el) el.remove();
   }
   disconnectedCallback() {
     document.body.removeEventListener("click", this.handleClick);
