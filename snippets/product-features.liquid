@@ -47,7 +47,7 @@
         {% assign item = part | strip | replace_first: '&bull;', '' | replace_first: '•', '' %}
         {% assign item = item | replace_first: '>', '' | replace_first: ':', '' | replace_first: '\t', '' | strip %}
         {% if item != '' and item != ' ' and item.size > 1 and taken < 3 %}
-          <li>{{ item }}</li>
+          <li class="text-sm">{{ item }}</li>
           {% assign taken = taken | plus: 1 %}
         {% endif %}
       {% endfor %}

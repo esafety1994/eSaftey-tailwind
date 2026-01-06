@@ -11,12 +11,11 @@
     </div>
     <!-- Product Info (Right) -->
     <div>
-      {% render 'product-tags', product: product %}
-
       <h1 class="text-3xl font-semibold mb-4">{{ product.title }}</h1>
+      {% render 'product-tags', product: product %}
       {% render 'product-review', product: product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
-      <div class="flex gap-4">
+      <div class="flex gap-4 items-center">
         <div id="product-sku">
         {% assign current_variant = product.selected_or_first_available_variant %}
         {% if current_variant and current_variant.sku %}
@@ -52,7 +51,7 @@
         {% render 'product-custom-field', block: custom_block, product: product %}
       {% endif %}
       {% render 'backorder-text', product: product %}
-      {% render 'act-button', product: product %}
+      {% render 'act-button', product: product, showPlus:true %}
       {% render 'product-below-act-button', product: product %}
       
     </div>

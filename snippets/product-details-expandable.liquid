@@ -8,7 +8,7 @@
   smooth-scroll and tab behavior. Styling uses Tailwind utility classes.
 {% endcomment %}
 
-<div class="product-details-expandable mt-4 border border-gray-200 hidden md:block">
+<div class="product-details-expandable mt-4 border border-gray-200 hidden md:block shopify-content-box ">
   <!-- Target section (initially hidden on small screens if desired) -->
   <div id="product-details-target" class="" tabindex="-1">
     <div class="tabs bg-gray-100">
@@ -19,7 +19,7 @@
           role="tab"
           aria-selected="true"
         >
-          Product description
+          Product Description
         </button>
         {% if product.template_suffix == 'product-with-custom-field' %}
           <button

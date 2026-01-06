@@ -1,4 +1,3 @@
-
 {% if status == 'Out of Stock' %}
   <button
     type="submit"
@@ -9,7 +8,9 @@
     Out of Stock
   </button>
 {% elsif status == 'Back Order' %}
-  <button type="submit" class="primary-cart-button w-full m-auto justify-center">Back Order</button>
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}">{% if showPlus %}{% render 'icon-svg-circle-plus', classes: 'inline-block mr-2 size-6' %}{% endif %}Back Order</button>
 {% else %}
-  <button type="submit" class="primary-cart-button w-full m-auto justify-center">Add to Cart</button>
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}">
+    {% if showPlus %}{% render 'icon-svg-circle-plus', classes: 'inline-block mr-2 size-6' %}{% endif %}Add to Cart
+  </button>
 {% endif %}

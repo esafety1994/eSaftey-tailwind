@@ -1,6 +1,6 @@
 <section class="w-full flex flex-col space-y-4">
   <div class="flex items-center flex-wrap justify-between">
-    <div class="order-1 flex items-center w-32">
+    <div class="order-1 flex items-center w-32 md:w-auto">
       {% if shop.brand.logo %}
         <a href="/">
           <img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" width="200" height="100" class="h-16 md:h-20 object-contain">

@@ -2,52 +2,55 @@
 
 @theme {
   --color-primary: oklch(0.89 0.16 85.6);
-  --color-primary-yellow:#ffe8a0;
-  --color-primary-light:#FFE61F;
-  --color-grey:#dedede;
-  --color-bg-light:#fee9a7;
-  --color-bg-light-blue:#b1d4dd;
-  --color-bg-light-red:#cf4949;
-  --color-bg-light-pink:#f2dccb;  
+  --color-primary-yellow: #ffe8a0;
+  --color-primary-light: #ffe61f;
+  --color-grey: #dedede;
+  --color-bg-light: #fee9a7;
+  --color-bg-light-blue: #b1d4dd;
+  --color-bg-light-red: #cf4949;
+  --color-bg-light-pink: #f2dccb;
+  --color-btn-text-yellow: #fdec12;
 }
 
 @layer utilities {
   .group-hover\:opacity-100 {
     opacity: 1;
   }
-  
 }
-h2{
+h2 {
   @apply text-5xl font-medium;
 }
 
-.wrapper{
+.wrapper {
   @apply max-w-screen-2xl m-auto w-full;
 }
 
-.btn{
+.btn {
   @apply font-medium rounded-lg shadow-lg px-8 py-3 uppercase transition-all duration-300 ease-in-out cursor-pointer;
 }
-.primary-button{
+.primary-button {
   @apply bg-black text-white hover:bg-black/80 hover:scale-105;
 }
 
-.secondary-button{
+.secondary-button {
   @apply bg-primary text-black hover:bg-black hover:text-white;
 }
 
-.white-button{
+.white-button {
   @apply bg-white text-black hover:bg-black hover:text-white;
 }
-.outline-button{
-  @apply bg-transparent border
+.outline-button {
+  @apply bg-transparent border;
 }
 
-.primary-cart-button{
-  @apply cursor-pointer bg-black text-primary-light hover:bg-black/80 hover:scale-105 flex gap-2 normal-case items-center rounded-none py-4 px-4 sm:px-8 text-center;
+.primary-cart-button {
+  @apply cursor-pointer bg-black text-btn-text-yellow hover:bg-black/80 hover:scale-105 flex gap-2 normal-case items-center py-4 px-4 sm:px-8 text-center font-semibold text-lg rounded-lg;
 }
 
-.icon-button{
+.quick-add-btn {
+  @apply font-normal text-base;
+}
+.icon-button {
   @apply rounded-full p-4;
 }
 .read-more-button {

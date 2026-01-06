@@ -13,6 +13,7 @@
 {% if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status %}
   {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
 {% endif %}
+{% assign showPlus = showPlus | default: false %}
 <esafety-cart-action-button>
   <div id="product-act-button">
     {% form 'product', product %}
@@ -22,7 +23,7 @@
         {% if hide_qty != true and product.available and status != 'Out of Stock' %}
           {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
         {% endif %}
-        {% render 'add-to-cart-button', status: status %}
+        {% render 'add-to-cart-button', status: status, showPlus: showPlus, button_classes: button_classes %}
       </div>
     {% endform %}
   </div>
