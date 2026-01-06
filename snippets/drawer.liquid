@@ -13,7 +13,7 @@
           <h2 id="sheet-title" class="text-lg font-bold">{{ shop.name }}</h2>
         {% endif %}
       </div>
-      <button id="sheet-close" aria-label="Close menu">&times;</button>
+      <button id="sheet-close" aria-label="Close menu" class="text-white mr-6 border rounded-full p-1">{% render 'icon-svg-close',class:"size-3", stroke_width:"1.5" %}</button>
     </div>
     <div class="overflow-y-auto h-full">
       {% assign drawer_menu = menu_handle | default: 'main-menu' %}
