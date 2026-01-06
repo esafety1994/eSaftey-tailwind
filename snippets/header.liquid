@@ -18,9 +18,4 @@
       <div>{% render 'navigation-icons' %}</div>
     </div>
   </div>
-  <!-- Drawer for mobile/trigger -->
-  {% if section.settings.menu %}
-    {% render 'drawer', menu_handle: section.settings.menu%}
-  {% endif %}
-  {%- comment -%} Cart drawer rendered globally in layout via section 'esaftey-cart-drawer' {%- endcomment -%}
 </section>

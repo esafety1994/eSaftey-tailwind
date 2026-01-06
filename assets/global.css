@@ -56,15 +56,12 @@ a.underline-animation:focus::after {
 }
 .sheet-content {
   pointer-events: auto;
-  background: var(--sheet-bg, #0b0b0b);
-  color: var(--sheet-fg, #fff);
   width: 20rem;
   max-width: 100%;
   transform: translateX(-100%);
   transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
   max-height: 100vh;
-  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 .sheet.open .sheet-content {
@@ -113,6 +110,19 @@ a.underline-animation:focus::after {
 .mega-panel.open {
   transform: translateY(0);
   opacity: 1;
+}
+
+/* When mega-panels are rendered inside the sheet/drawer, they should be visible
+   and not use the accordion height-collapse behaviour. Override for sheet context. */
+.sheet .sheet-content > .mega-panel {
+  /* Only make the immediate mega-panel inside the sheet visible.
+     Keep nested .mega-panel elements collapsed so JS can extract them
+     and render subpanels without showing nested lists inline. */
+  height: auto;
+  overflow: visible;
+  transform: none;
+  opacity: 1;
+  transition: none;
 }
 
 /* Content style from Shopify */
@@ -243,4 +253,47 @@ a.underline-animation:focus::after {
 .accordion-wrapper.accordion-open .accordion-content {
   height: auto;
   padding-top: 1rem;
+}
+
+/* Mega-menu visual tweaks: enforce top-level and sub-level sizes, hover and borders */
+.mega-menu > ul > li > div > a {
+  display: block;
+  width: 100%;
+  font-size: 1.125rem; /* larger top-level */
+  padding: 12px;
+}
+
+.mega-menu > ul > li > div > a:hover {
+  background: #fddc14 !important;
+  color: #000 !important;
+}
+
+/* Sub-level headings (inside panels) full width, hover yellow and border change */
+.mega-menu .mega-panel a {
+  display: block;
+  width: 100%;
+  font-size: 1rem; /* increase sub-menu font */
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.mega-menu .mega-panel a:hover {
+  background: #fddc14 !important;
+  color: #000 !important;
+  border-bottom-color: #000 !important;
+}
+
+/* Ensure no leftover SVG toggles are visible */
+.mega-toggle svg {
+  display: none !important;
+}
+
+/* Subpanel header styling (yellow background, black text) */
+.sheet .subpanel-header {
+  background: #fddc14;
+  color: #000;
+}
+.sheet .subpanel-header .view-all {
+  color: #000;
 }

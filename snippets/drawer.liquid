@@ -1,10 +1,10 @@
 {% comment %} Sheet component (left sheet) {% endcomment %}
 <div id="sheet-overlay" class="sheet-overlay hidden fixed inset-0 bg-black/50 z-40"></div>
 
-<div id="site-sheet" class="sheet" aria-hidden="true">
-  <div class="sheet-content bg-black text-white" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
-    <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-      <div>
+<div id="site-sheet" class="sheet overflow" aria-hidden="true">
+  <div class="sheet-content bg-white text-black overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="border-b border-gray-800 bg-black flex items-center justify-between">
+      <div class="p-4 ">
         {% if shop.brand.logo %}
           <a href="/"
             ><img src="{{ shop.brand.logo | image_url: width: 180 }}" alt="{{ shop.name }}" class="h-16 object-contain"
@@ -13,10 +13,11 @@
           <h2 id="sheet-title" class="text-lg font-bold">{{ shop.name }}</h2>
         {% endif %}
       </div>
-      <button id="sheet-close" aria-label="Close menu" class="text-white">&times;</button>
+      <button id="sheet-close" aria-label="Close menu">&times;</button>
     </div>
-    <div class="p-4 overflow-y-auto h-full">
-      {% render 'mega-menu', menu_handle: menu_handle %}
+    <div class="overflow-y-auto h-full">
+      {% assign drawer_menu = menu_handle | default: 'main-menu' %}
+      {% render 'mega-menu', menu_handle: drawer_menu %}
     </div>
   </div>
 </div>
