@@ -47,7 +47,9 @@
             <div class="w-8">{% section 'cart-count' %}</div>
           </div>
         </div>
+        {% render 'navbar' %}
         {% if template == 'product' or template == 'collection' %}
+
           {% render 'header-upsell-section' %}
         {% endif %}
       </header>

@@ -1,0 +1,410 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {}
+    },
+    "faq_thiTjt": {
+      "type": "faq",
+      "blocks": {
+        "faq_eUFWBG": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Where is eSafety Supplies located?",
+            "answer": "<p>We are an Australian-owned and operated company based in Sydney, NSW. All our products are shipped from our local warehouse to ensure fast and reliable delivery Australia-wide.</p>",
+            "tags": "NSW, Company Name, AU, Sydney, Location"
+          }
+        },
+        "faq_WLQYnG": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "How do I unsubscribe from your mailing list?",
+            "answer": "<p>To unsubscribe from the eSafety Supplies promotional mailing list, please click the unsubscribe link at the bottom of any email you receive from us. You can not unsubscribe from any emails in relation to orders.</p>",
+            "tags": "Unsubscribe, Mail, Email, Opt out"
+          }
+        },
+        "faq_geDWmh": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Can eSafety Supplies donate something for my charity?",
+            "answer": "<p>We receive countless requests to sponsor or support many worthy causes throughout the year. Unfortunately we are unable to consider all requests. As we do not want to discriminate by supporting some and not others, we proactively give back to the community through our partner affiliations. If you feel there's a great fit, submit a form on our Contact Us page; if it aligns, we will get in touch.</p>",
+            "tags": "Sponsor, Support, Community, Charity"
+          }
+        },
+        "faq_89jKTz": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Is pricing ex-GST or Inc-GST?",
+            "answer": "<p>The pricing for all products on our website is shown including GST with the excluding GST price shown alternatively below the product price. You will get a total pricing breakdown upon checkout, reflecting the GST for the entire order.</p>",
+            "tags": "GST, Inc, Ex, Price"
+          }
+        },
+        "faq_DnweXp": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "How do I download product spec sheets?",
+            "answer": "<p>If a datasheet is available, you'll find it in the data sheet tab under the product. If not available, request it via the product information request form on the website.</p>",
+            "tags": "Product Spec, sheets, Datasheet"
+          }
+        },
+        "faq_BR9w6G": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Can I view your catalogue online?",
+            "answer": "<p>Yes, you can view our catalogue online, request a hard copy via our Contact Us form, or pick one up at our Wetherill Park warehouse.</p>",
+            "tags": "Catalogue, Contact"
+          }
+        },
+        "faq_eTghVe": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "What types of safety products do you sell?",
+            "answer": "<p>- Bollards and safety barriers</p><p>- Speed humps and traffic control</p><p>- Car park safety equipment</p><p>- Convex mirrors</p><p>- Safety signs</p><p>- Wheel stops</p><p>- Disability access ramps</p>",
+            "tags": "Safety Products, Cark Park, Mirrors, Signs,"
+          }
+        },
+        "faq_7EFxDU": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Can you install safety products for me?",
+            "answer": "<p>Currently, we do not offer installation services, but all products come with instructions. We recommend using licensed tradespeople for items requiring fixing.</p>",
+            "tags": "install, fixing, Services"
+          }
+        },
+        "faq_JeHJW7": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "How do I choose the right bollard or safety product?",
+            "answer": "<p>Our team is here to help you choose the correct product to meet legal requirements and your site's needs. Contact us for free product advice and recommendations.</p>",
+            "tags": "Bollard, Safety"
+          }
+        },
+        "faq_eqnGmd": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Do you have a physical showroom?",
+            "answer": "<p>We operate as an online store. For large quantities or specialized products, please contact us before ordering.</p>",
+            "tags": "Showroom"
+          }
+        },
+        "faq_cVHRCN": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Do you offer customised safety signs or products?",
+            "answer": "<p>Yes, we can provide custom safety signs to your specifications. Email sales@esafetysupplies.com.au for a quote.</p>",
+            "tags": "Custom, Safety Signs"
+          }
+        },
+        "faq_kUdf8Q": {
+          "type": "faq",
+          "settings": {
+            "category": "General",
+            "question": "Do you provide quotes for tenders or projects?",
+            "answer": "<p>Absolutely. We supply councils, schools, and commercial projects with quotes for tenders. Please email sales@esafetysupplies.com.au with your specification and timeline.</p>",
+            "tags": "Quotes, Projects, Tendors"
+          }
+        },
+        "faq_C3tMA6": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Do you offer Australia-wide delivery?",
+            "answer": "<p>Yes, we deliver Australia-wide, including regional and remote areas. We use trusted couriers for fast, reliable delivery.</p>",
+            "tags": "Delivery, Couriers, Remote, Regional"
+          }
+        },
+        "faq_73Rw9P": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "How much does delivery cost?",
+            "answer": "<p>FREE delivery for standard orders over $499 (some exclusions apply). Free Click & Collect from our Wetherill Park warehouse. Some large or bulky items may incur additional charges.</p>",
+            "tags": "Free, Charges, Click & Collect, Delivery"
+          }
+        },
+        "faq_6ggDad": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "How long will my order take to arrive?",
+            "answer": "<p>Most orders are dispatched in 24-48 hours. Typical delivery times: Sydney Metro: 1-2 business days; NSW Regional, VIC, QLD: 2-4 business days; WA, SA, NT, TAS: 4-7 business days. Times are estimates only.</p>",
+            "tags": "Time, Delivery, Sydney, NSW, VIC, QLD, SA, NT, TAS"
+          }
+        },
+        "faq_8Dba94": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Do you provide your own delivery service?",
+            "answer": "<p>We offer eSafety Delivery for Sydney Metro orders only. Contact our sales team to check eligibility and costings.</p>",
+            "tags": "Delivery, Service, Costs, Sydney"
+          }
+        },
+        "faq_p3rGfY": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "I have an urgent requirement - can you provide express deliveries?",
+            "answer": "<p>Yes, express and same day delivery (Sydney) is available for an extra cost if applicable. Next day delivery for most other regions. Contact us to arrange.</p>",
+            "tags": "Express, Delivery, Urgent"
+          }
+        },
+        "faq_exYK3A": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "What is Click & Collect?",
+            "answer": "<p>This free service lets you order online and collect from our Wetherill Park warehouse.</p>",
+            "tags": "Click & Collect, Service"
+          }
+        },
+        "faq_JEN98D": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "What is a Special Order item and backorders?",
+            "answer": "<p>Special/back-ordered items are sourced from suppliers on request, usually arriving at our warehouse within 10 business days, then dispatched.</p>",
+            "tags": "Special Order, Backorders"
+          }
+        },
+        "faq_dkAeLD": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Can I return my order?",
+            "answer": "<p>Yes! You can return goods to our Wetherill Park location if within 30 days and undamaged. Restocking fees may apply.</p>",
+            "tags": "Return, Undamaged, 30 days"
+          }
+        },
+        "faq_P6pRUL": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Can I return or exchange an item?",
+            "answer": "<p>If unused and in its original packaging, you may return or exchange within 30 days. See our Returns Policy for details.</p>",
+            "tags": "Return, Exchange"
+          }
+        },
+        "faq_CWhek9": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "What if my item is faulty or damaged?",
+            "answer": "<p>If your item arrives damaged or faulty, contact us within 7 days so we can arrange a replacement or refund.</p>",
+            "tags": "Faulty, Damaged"
+          }
+        },
+        "faq_hV93k4": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Do you supply to councils, schools, and large organisations?",
+            "answer": "<p>Yes. We regularly supply councils, schools, construction firms, and government departments. Contact us for tailored pricing or bulk orders.</p>",
+            "tags": "Supply, Councils, Schools"
+          }
+        },
+        "faq_pHMkrT": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Do you ship internationally?",
+            "answer": "<p>Currently, we only ship within Australia.</p>",
+            "tags": "Ship , International"
+          }
+        },
+        "faq_QGPCxQ": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Do you price match competitors?",
+            "answer": "<p>If you find a better price for an identical item in stock elsewhere, contact us and we will do our best to match or beat it.</p>",
+            "tags": "Price Match, Competitors"
+          }
+        },
+        "faq_wMhL9P": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "How do I install bollards or speed humps?",
+            "answer": "<p>Each product comes with installation instructions. Generally requires anchoring into concrete or bitumen. Use a licensed installer for compliance.</p>",
+            "tags": "Install , Bollards, Speed Humps"
+          }
+        },
+        "faq_PGJKmw": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Do you offer installation advice for councils or commercial projects?",
+            "answer": "<p>Yes, we can provide product recommendations and installation advice to ensure compliance with Australian standards and local regulations.</p>",
+            "tags": "Installation, Council, Commercial"
+          }
+        },
+        "faq_WVM63F": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "What industries do you supply?",
+            "answer": "<ul><li>Councils</li><li>Schools and universities</li><li>Shopping centres and retail</li><li>Warehouses and factories</li><li>Builders and contractors</li><li>Government departments</li><li>Commercial property managers</li></ul>",
+            "tags": "Industries, Supply, Councils, Schools, Warehouse, Shopping Centres"
+          }
+        },
+        "faq_QKAa7M": {
+          "type": "faq",
+          "settings": {
+            "category": "Delivery",
+            "question": "Do you offer site safety audits?",
+            "answer": "<p>We do not provide formal audits, but can advise on products to improve your site's safety and compliance. Contact us for tailored recommendations.</p>",
+            "tags": "Safety Audits"
+          }
+        },
+        "faq_gQTifX": {
+          "type": "faq",
+          "settings": {
+            "category": "Ordering Online",
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept Visa, Mastercard, American Express, PayPal, Afterpay, and Zip Pay.</p>",
+            "tags": "Online, Pay, Card, Payment Methods"
+          }
+        },
+        "faq_EDTmhE": {
+          "type": "faq",
+          "settings": {
+            "category": "Ordering Online",
+            "question": "Can I pick up my order from your warehouse?",
+            "answer": "<p>At this stage, we are an online-only store, and orders are delivered via courier. For special arrangements, contact us for large projects.</p>",
+            "tags": "Pick up, Courier, Delivery, Warehouse"
+          }
+        },
+        "faq_pAVVbE": {
+          "type": "faq",
+          "settings": {
+            "category": "Ordering Online",
+            "question": "Do I need to register before I place an order?",
+            "answer": "<p>No, you can checkout as a guest. However, creating an account makes repeat orders and tracking easier.</p>",
+            "tags": "Register, Track Orders, Create Account"
+          }
+        },
+        "faq_mGBpgj": {
+          "type": "faq",
+          "settings": {
+            "category": "Ordering Online",
+            "question": "How do I track or view my orders?",
+            "answer": "<p>After placing your order, you'll get email confirmation. To view past orders, log in to your account (if you have one); all past orders are under Order History.</p>",
+            "tags": "Email, Orders, Accounts, Order History"
+          }
+        },
+        "faq_8AWYaK": {
+          "type": "faq",
+          "settings": {
+            "category": "My Account",
+            "question": "How can I create an account?",
+            "answer": "<p>You can create an account on our website to manage orders, track deliveries, and save your details for faster checkout.</p>",
+            "tags": "Create an Account, Manage Orders, Track"
+          }
+        },
+        "faq_nfGjEp": {
+          "type": "faq",
+          "settings": {
+            "category": "My Account",
+            "question": "Can I order as a guest?",
+            "answer": "<p>Yes, you can checkout without creating an account. Having an account makes order tracking and reordering easier.</p>",
+            "tags": "Account, Guest, Create an Account"
+          }
+        },
+        "faq_anDiNf": {
+          "type": "faq",
+          "settings": {
+            "category": "My Account",
+            "question": "I have forgotten my password",
+            "answer": "<p>You can reset your password by clicking 'Forgot Password' at login. Instructions will be sent by email.</p>",
+            "tags": "Forgotten Password, Login, Email"
+          }
+        },
+        "faq_iDBPpT": {
+          "type": "faq",
+          "settings": {
+            "category": "My Account",
+            "question": "Can I change my email address?",
+            "answer": "<p>Yes. Business and corporate customers should contact us via email or call 1300 291 700. Online shoppers can update their details in their account preferences after logging in.</p>",
+            "tags": "Change Email, Contact Us, Logging in , Account"
+          }
+        }
+      },
+      "block_order": [
+        "faq_eUFWBG",
+        "faq_WLQYnG",
+        "faq_geDWmh",
+        "faq_89jKTz",
+        "faq_DnweXp",
+        "faq_BR9w6G",
+        "faq_eTghVe",
+        "faq_7EFxDU",
+        "faq_JeHJW7",
+        "faq_eqnGmd",
+        "faq_cVHRCN",
+        "faq_kUdf8Q",
+        "faq_C3tMA6",
+        "faq_73Rw9P",
+        "faq_6ggDad",
+        "faq_8Dba94",
+        "faq_p3rGfY",
+        "faq_exYK3A",
+        "faq_JEN98D",
+        "faq_dkAeLD",
+        "faq_P6pRUL",
+        "faq_CWhek9",
+        "faq_hV93k4",
+        "faq_pHMkrT",
+        "faq_QGPCxQ",
+        "faq_wMhL9P",
+        "faq_PGJKmw",
+        "faq_WVM63F",
+        "faq_QKAa7M",
+        "faq_gQTifX",
+        "faq_EDTmhE",
+        "faq_pAVVbE",
+        "faq_mGBpgj",
+        "faq_8AWYaK",
+        "faq_nfGjEp",
+        "faq_anDiNf",
+        "faq_iDBPpT"
+      ],
+      "custom_css": [],
+      "name": "FAQ (Search + Categories)",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "subtitle": "Find quick answers about shipping, returns, products and more.",
+        "show_search": true,
+        "search_placeholder": "Search by question, keyword or tag",
+        "empty_text": "No FAQs match your filters.",
+        "help_text": "Still Need Help?",
+        "help_link": "shopify://pages/contact-us"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq_thiTjt"
+  ]
+}

@@ -2,115 +2,403 @@
 <script defer src="{{ 'collection-filter.js' | asset_url }}"></script>
 
 <section id="collection-section-{{ section.id }}" class="container mx-auto px-4 py-8 max-w-7xl">
-  <div class="mb-6">
-    <h1 class="text-4xl font-semibold text-center">{{ collection.title }}</h1>
-    {% if collection.metafields.custom.description_below_the_title != blank %}
-      <p class="text-center my-4 text-base leading-loose">
-        {{ collection.metafields.custom.description_below_the_title | newline_to_br }}
-      </p>
-    {% endif %}
-  </div>
-  <div class="mb-6">
-    {%- assign collection_list = collection.metafields.custom.child_collections.value -%}
+  <div class="snize" id="snize_results"></div>
 
-    {%- if collection_list != blank -%}
-      {% render 'sub-category-slider', collection_list: collection_list %}
-    {%- endif -%}
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 collection-inner-element">
-    <aside class="hidden md:block md:col-span-3">
-      {% if section.settings.show_filters %}
-        <div class="sticky top-48">
-          <div class="p-2 px-4 border border-gray-200 rounded-lg mb-2">
-            <h3 class="text-lg mb-4">Filters</h3>
-            <div>
-              {% assign filter_blank = true %}
-              {% for filter in collection.filters %}
-                {% for value in filter.active_values %}
-                  {% assign filter_blank = false %}
-                  <input
-                    data-remove-url="{{ value.url_to_remove }}"
-                    type="hidden"
-                    value="{{ filter.value | handle }}"
-                    name="{{ filter.label | handle }}"
-                  >
-                  <label
-                    for="{{filter.label | handle}}-{{value.label | handle}}"
-                    class="text-sm text-black cursor-pointer bg-gray-100 rounded-full px-3 py-1 inline-flex mb-2 mr-2 items-center gap-1"
-                  >
-                    {{ value.label }}
-                    {% render 'icon-svg-close', class: 'size-3', stroke_width: '1' %}
-                  </label>
-                {% endfor %}
-              {% endfor %}
 
-              {% unless filter_blank %}
-                <span
-                  data-clear-filters
-                  class="mb-4 text-sm text-bg-light-red cursor-pointer bg-gray-200 rounded-full px-3 py-1 inline-flex mr-2 items-center gap-1"
-                  >Clear filters {% render 'icon-svg-close', class: 'size-3', stroke_width: '1' -%}
-                </span>
-              {% endunless %}
-            </div>
-          </div>
-          {% render 'collection-filter' %}
+<div id="snize_skeleton_results">
+    <div class="snize-main-panel snize-skeleton-card">
+        <div class="snize-main-panel-controls">
+            <span class="snize-skeleton-text"></span>
+            <span class="snize-skeleton-text"></span>
+            <span class="snize-skeleton-text"></span>
         </div>
-      {% endif %}
-    </aside>
-
-    <div class="md:col-span-9">
-      {% if collection.products_count == 0 %}
-        <div class="text-center py-24">
-          <div class="mx-auto w-24 h-24 flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" width="66" height="62" fill="none">
-              <defs/>
-              <path fill="{{ fill | default: '#9a9a9a' }}" d="M.99 8.21c0 6.534-.066 7.59-.495 7.59S0 18.341 0 36.821c0 20.394.033 21.054.66 22.341.363.759 1.089 1.65 1.584 2.013.858.66 1.485.66 30.36.759L62.106 62l1.287-.726c.825-.462 1.518-1.221 1.947-2.079.627-1.32.66-2.046.66-22.374 0-18.48-.066-21.021-.495-21.021s-.495-1.056-.495-7.59V.62H.99v7.59zm5.676-2.739l2.871 2.904-2.805 3.696C5.214 14.117 3.795 15.8 3.63 15.8c-.198 0-.33-2.508-.33-6.6 0-3.63.099-6.6.264-6.6.132 0 1.551 1.287 3.102 2.871zm49.665-.264L53.79 7.814V15.8H12.21V7.814L9.669 5.207 7.161 2.6h51.678l-2.508 2.607zM62.7 9.2c0 4.092-.132 6.6-.33 6.6-.165 0-1.584-1.683-3.102-3.729l-2.805-3.696 2.871-2.904c1.551-1.584 2.97-2.871 3.102-2.871.165 0 .264 2.97.264 6.6zM9.9 13.82v1.98H8.415c-.825 0-1.485-.066-1.485-.165 0-.231 2.673-3.795 2.838-3.795.066 0 .132.891.132 1.98zm47.817-.165c.726.99 1.353 1.881 1.353 1.98 0 .099-.66.165-1.485.165H56.1v-1.98c0-1.089.066-1.98.132-1.98s.726.825 1.485 1.815zm5.973 24.387v19.965l-.792.924-.792.924H3.894l-.792-.924-.792-.924V18.11h61.38v19.932z"/>
-              <path fill="{{ fill | default: '#9a9a9a' }}" d="M17.589 22.07c-1.782 1.089-2.706 3.696-1.584 4.62.627.528 1.089.165 1.716-1.353.891-2.211 3.267-2.211 4.158 0 .627 1.518 1.089 1.881 1.716 1.353 1.155-.957.066-3.828-1.782-4.785-1.353-.66-2.937-.627-4.224.165zM43.989 22.07c-1.782 1.089-2.706 3.696-1.584 4.62.627.528 1.056.198 1.683-1.254.561-1.386.957-1.716 2.178-1.716 1.056 0 1.881.759 2.145 2.013.33 1.716 2.079 1.452 2.079-.33 0-3.003-3.828-4.983-6.501-3.333z"/>
-              <path fill="{{ fill | default: '#9a9a9a' }}" d="M18.942 25.172c-.099.264-.132 2.838-.066 5.742l.099 5.214 1.221 2.475c2.772 5.577 8.844 8.844 14.718 7.92 4.884-.759 8.943-3.795 11.088-8.283 1.023-2.145 1.023-2.178 1.023-7.755v-5.61h-1.65l-.198 4.95c-.231 5.016-.396 6.072-1.452 8.118-2.046 3.927-6.336 6.567-10.758 6.567-3.465 0-7.788-2.178-9.636-4.851-1.98-2.871-2.31-4.191-2.508-9.669-.198-4.983-.231-5.115-.957-5.214-.429-.066-.792.099-.924.396z"/>
-            </svg>
-          </div>
-          <p class="text-gray-600">Sorry, there are no products in this collection</p>
-        </div>
-      {% else %}
-        <!-- todo sub cat listing from metafiled child category - -->
-        <!-- todo sort feature drop down - -->
-        {% paginate collection.products by section.settings.products_per_page %}
-          {% assign cols = section.settings.columns %}
-          {% assign col_class = 'md:grid-cols-3' %}
-          {% if cols == '2' %}
-            {% assign col_class = 'md:grid-cols-2' %}
-          {% elsif cols == '3' %}
-            {% assign col_class = 'md:grid-cols-3' %}
-          {% elsif cols == '4' %}
-            {% assign col_class = 'md:grid-cols-4' %}
-          {% endif %}
-
-          <div class="grid grid-cols-2 {{ col_class }} gap-6">
-            {% for p in collection.products %}
-              {% assign prod = p %}
-              {% if p.handle and all_products[p.handle] %}
-                {% assign prod = all_products[p.handle] %}
-              {% endif %}
-              <div class="w-full">
-                {% render 'product-card', product: prod, max_tags: 2 %}
-              </div>
-            {% endfor %}
-          </div>
-
-          {% render 'pagination', paginate: paginate, base_url: collection.url %}
-        {% endpaginate %}
-      {% endif %}
-      <div>
-        {% render 'collection-video' %}
-
-        {% render 'collection-faq', faq_data: collection.metafields.custom.faq_content_1.value %}
-
-        <div class="my-12 shopify-content-box">
-          {{ collection.metafields.custom.collection_description | metafield_tag }}
-        </div>
-      </div>
+        <div class="snize-main-panel-dropdown"><span class="snize-skeleton-text snize-full-width"></span></div>
     </div>
-  </div>
+    <div class="snize-header">
+        <span class="snize-search-results-header snize-skeleton-text snize-full-width"></span>
+    </div>
+    <div class="snize-horizontal-filters snize-product-filters">
+        <div class="snize-filters-dropdown snize-skeleton-card small">
+            <span class="snize-skeleton-text snize-full-width"></span>
+        </div>
+        <div class="snize-filters-dropdown snize-skeleton-card small">
+            <span class="snize-skeleton-text snize-full-width"></span>
+        </div>
+        <div class="snize-filters-dropdown snize-skeleton-card small">
+            <span class="snize-skeleton-text snize-full-width"></span>
+        </div>
+    </div>
+    <div class="snize-filters-sidebar snize-product-filters">
+        <div class="snize-product-filters-block snize-skeleton-card">
+            <div class="snize-product-filters-title"><span class="snize-skeleton-text snize-full-width"></span></div>
+            <div class="snize-product-filters-list">
+                <span class="snize-skeleton-text snize-full-width"></span>
+                <span class="snize-skeleton-text snize-full-width"></span>
+                <span class="snize-skeleton-text snize-full-width"></span>
+            </div>
+        </div>
+        <div class="snize-product-filters-block snize-skeleton-card">
+            <div class="snize-product-filters-title"><span class="snize-skeleton-text snize-full-width"></span></div>
+            <div class="snize-product-filters-list">
+                <span class="snize-skeleton-text snize-full-width"></span>
+                <span class="snize-skeleton-text snize-full-width"></span>
+                <span class="snize-skeleton-text snize-full-width"></span>
+            </div>
+        </div>
+        <div class="snize-product-filters-block snize-skeleton-card">
+            <div class="snize-product-filters-title"><span class="snize-skeleton-text snize-full-width"></span></div>
+            <div class="snize-product-filters-list">
+                <span class="snize-skeleton-text snize-full-width"></span>
+                <span class="snize-skeleton-text snize-full-width"></span>
+                <span class="snize-skeleton-text snize-full-width"></span>
+            </div>
+        </div>
+    </div>
+    <div class="snize-search-results-main-content">
+            <div id="snize-search-results-wrapper" class="snize-search-results-grid-mode snize-three-columns">
+            <ul class="snize-search-results-content">
+                <li class="snize-product">
+                    <div class="snize-item snize-skeleton-card">
+                        <div class="snize-thumbnail-wrapper">
+                            <div class="snize-thumbnail"></div>
+                        </div>
+                        <div class="snize-overhidden">
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="snize-product">
+                    <div class="snize-item snize-skeleton-card">
+                        <div class="snize-thumbnail-wrapper">
+                            <div class="snize-thumbnail"></div>
+                        </div>
+                        <div class="snize-overhidden">
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="snize-product">
+                    <div class="snize-item snize-skeleton-card">
+                        <div class="snize-thumbnail-wrapper">
+                            <div class="snize-thumbnail"></div>
+                        </div>
+                        <div class="snize-overhidden">
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="snize-product">
+                    <div class="snize-item snize-skeleton-card">
+                        <div class="snize-thumbnail-wrapper">
+                            <div class="snize-thumbnail"></div>
+                        </div>
+                        <div class="snize-overhidden">
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="snize-product">
+                    <div class="snize-item snize-skeleton-card">
+                        <div class="snize-thumbnail-wrapper">
+                            <div class="snize-thumbnail"></div>
+                        </div>
+                        <div class="snize-overhidden">
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                            <span class="snize-skeleton-text snize-full-width"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+<!--
+    @keyframes snize-skeleton-anim {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+    #snize_skeleton_results * {
+        box-sizing: border-box;
+    }
+    /* Fix for some themes */
+    #snize_skeleton_results ul li:before,
+    #snize_skeleton_results ul li:after {
+        display: none;
+    }
+    #snize_skeleton_results .snize-skeleton-card {
+        padding: 10px;
+        border: 1px solid #eee;
+    }
+    #snize_skeleton_results .snize-skeleton-text {
+        height: 8px;
+        background: #eee;
+        border-radius: 3px;
+        display: inline-block;
+        animation: snize-skeleton-anim 2s infinite;
+    }
+    #snize_skeleton_results .snize-skeleton-text.snize-full-width:last-child {
+        width: 100%;
+    }
+    #snize_skeleton_results .snize-skeleton-text.snize-full-width:first-child:not(:last-child) {
+        width: 80%;
+    }
+    #snize_skeleton_results .snize-skeleton-text.snize-full-width:nth-child(2):not(:last-child) {
+        width: 95%;
+    }
+    #snize_skeleton_results .snize-skeleton-text.snize-full-width:last-child:not(:first-child) {
+        width: 60%;
+    }
+    #snize_skeleton_results .snize-main-panel .snize-main-panel-controls {
+        width: 70%;
+        display: inline-block;
+    }
+    #snize_skeleton_results .snize-main-panel .snize-main-panel-controls > span {
+        width: 100px;
+        margin-right: 15px;
+    }
+    #snize_skeleton_results .snize-main-panel .snize-main-panel-controls > span:nth-child(2) {
+        width: 120px;
+    }
+    #snize_skeleton_results .snize-main-panel .snize-main-panel-controls > span:nth-child(3) {
+        width: 80px;
+    }
+    #snize_skeleton_results .snize-main-panel .snize-main-panel-dropdown {
+        width: 29%;
+        text-align: right;
+        display: inline-block;
+    }
+    #snize_skeleton_results .snize-main-panel .snize-main-panel-dropdown > span {
+        max-width: 160px;
+    }
+    #snize_skeleton_results .snize-header {
+        padding: 12px 0 12px 0;
+        margin: 20px 0 15px 0;
+        width: 250px;
+    }
+    #snize_skeleton_results .snize-horizontal-filters {
+        padding: 3px;
+        margin-bottom: 26px;
+    }
+    #snize_skeleton_results .snize-horizontal-filters .snize-filters-dropdown {
+        display: inline-block;
+        width: 100px;
+        border-radius: 3px;
+        margin-right: 7px;
+        padding: 2px 15px 2px 15px;
+    }
+    #snize_skeleton_results .snize-horizontal-filters .snize-filters-dropdown:nth-child(2) {
+        width: 120px;
+    }
+    #snize_skeleton_results .snize-horizontal-filters .snize-filters-dropdown:nth-child(3) {
+        with: 80px;
+    }
+    #snize_skeleton_results .snize-filters-sidebar {
+        float: left;
+        width: 225px;
+    }
+    #snize_skeleton_results .snize-filters-sidebar > .snize-skeleton-card:not(:last-child) {
+        border-bottom: none;
+    }
+    #snize_skeleton_results .snize-filters-sidebar .snize-product-filters-title {
+        padding: 4px 0 12px 0;
+    }
+    #snize_skeleton_results .snize-filters-sidebar .snize-product-filters-title > span.snize-full-width {
+        width: 40%;
+    }
+    #snize_skeleton_results .snize-filters-sidebar .snize-product-filters-list > span {
+        margin: 1px 0 12px 0;
+    }
+    #snize_skeleton_results .snize-filters-sidebar .snize-product-filters-list > span:last-child {
+        margin-bottom: 10px;
+    }
+    #snize_skeleton_results .snize-search-results-main-content {
+        margin-left: 225px;
+    }
+    #snize_skeleton_results ul.snize-search-results-content {
+        margin: 0 0 0 -1%;
+        padding: 0 0 0 20px;
+        list-style: none;
+        white-space: nowrap;
+    }
+    #snize_skeleton_results ul.snize-search-results-content > li {
+        display: inline-block;
+    }
+    #snize_skeleton_results .snize-three-columns ul.snize-search-results-content > li {
+        width: 30.3%;
+        width: calc(100%/3 - 2%);
+    }
+    #snize_skeleton_results li.snize-product {
+        cursor: pointer;
+        margin: 0 1% 2%;
+        white-space: normal;
+    }
+    #snize_skeleton_results li.snize-product .snize-thumbnail-wrapper {
+        position: relative;
+    }
+    #snize_skeleton_results li.snize-product .snize-thumbnail-wrapper .snize-thumbnail {
+        margin: -10px -10px 0px -10px;
+        background: #eee;
+        height: 180px;
+    }
+    #snize_skeleton_results li.snize-product .snize-overhidden {
+        padding-bottom: 20px;
+        text-align: center;
+    }
+    #snize_skeleton_results li.snize-product .snize-overhidden > span {
+        margin: 15px 0 0 0;
+    }
+    #snize_skeleton_results ul.snize-search-results-content li.snize-product:nth-child(4),
+    #snize_skeleton_results ul.snize-search-results-content li.snize-product:nth-child(5) {
+        display: none;
+    }
+    /* 4-column view */
+    #snize_skeleton_results div.snize-four-columns ul.snize-search-results-content li.snize-product {
+        width: 22.5%;
+        width: calc(100%/4 - 2%);
+    }
+    #snize_skeleton_results div.snize-four-columns ul.snize-search-results-content li.snize-product:nth-child(4) {
+        display: inline-block;
+    }
+    /* 5-column view */
+    #snize_skeleton_results div.snize-five-columns ul.snize-search-results-content li.snize-product {
+        width: 17.5%;
+        width: calc(100%/5 - 2%);
+    }
+    #snize_skeleton_results div.snize-five-columns ul.snize-search-results-content li.snize-product:nth-child(4),
+    #snize_skeleton_results div.snize-five-columns ul.snize-search-results-content li.snize-product:nth-child(5) {
+        display: inline-block;
+    }
+    /* Tablet view 2-column mode */
+    @media (min-width: 768px) and (max-width: 910px) {
+        #snize_skeleton_results ul.snize-search-results-content li.snize-product {
+            width: 46%;
+            width: calc(50% - 10px);
+            min-width: 160px;
+            margin: 0 5px 10px;
+        }
+        #snize_skeleton_results ul.snize-search-results-content li.snize-product:nth-child(3) {
+            display: none;
+        }
+    }
+    /* Mobile view 2-column mode */
+    @media (max-width: 768px) {
+        #snize_skeleton_results .snize-main-panel > div.snize-main-panel-controls,
+        #snize_skeleton_results .snize-main-panel > div.snize-main-panel-dropdown {
+            text-align: left;
+            width: 100%;
+        }
+        #snize_skeleton_results .snize-main-panel .snize-main-panel-controls > span:not(:first-child) {
+           display: none;
+        }
+        #snize_skeleton_results .snize-main-panel > div.snize-main-panel-dropdown {
+            margin-top: 12px;
+        }
+        #snize_skeleton_results .snize-header {
+            margin: 3px 0 12px 0;
+        }
+        #snize_skeleton_results .snize-filters-sidebar {
+            display: none;
+        }
+        #snize_skeleton_results .snize-search-results-main-content {
+            margin-left: 0;
+        }
+        #snize_skeleton_results .snize-horizontal-filters .snize-filters-dropdown:not(:first-child) {
+            display: none;
+        }
+        #snize_skeleton_results .snize-horizontal-filters .snize-filters-dropdown:first-child {
+            padding: 10px;
+            width: 100%;
+        }
+        #snize_skeleton_results .snize-horizontal-filters .snize-filters-dropdown:first-child > span {
+            width: 100px;
+        }
+        #snize_skeleton_results .snize-horizontal-filters {
+            margin-bottom: 18px;
+        }
+        #snize_skeleton_results ul.snize-search-results-content {
+            margin: 0;
+            padding: 0;
+        }
+        #snize_skeleton_results ul.snize-search-results-content li.snize-product:nth-child(3) {
+            display: none;
+        }
+        #snize_skeleton_results ul.snize-search-results-content li.snize-product {
+            width: 46%;
+            width: calc(50% - 10px);
+            min-width: 160px;
+            margin: 0 5px 10px;
+        }
+    }
+    /* Mobile view one-column mode */
+    @media (max-width: 370px) {
+        #snize_skeleton_results ul.snize-search-results-content li.snize-product {
+            width: 96%;
+            width: calc(100% - 10px);
+        }
+        #snize_skeleton_results ul.snize-search-results-content li.snize-product:not(:first-child) {
+            display: none;
+        }
+    }
+    /* Themes hack */
+    div.grid div.grid-item.large--two-thirds.push--large--one-sixth {
+        left: 0;
+        width: 100%;
+    }
+-->
+</style>
+<script type="text/javascript">
+// <![CDATA[
+(function(window, undefined) {
+    var snize_results = document.getElementById('snize_results');
+    if (snize_results != null && snize_results != undefined && snize_results.innerHTML != '') {
+        return;
+    }
+    sInterval = setInterval(function() {
+        var snize_results = document.getElementById('snize_results');
+        if (snize_results != null && snize_results != undefined && snize_results.innerHTML != '') {
+            clearInterval(sInterval);
+            var skeleton_results = document.getElementById('snize_skeleton_results');
+            skeleton_results.parentNode.removeChild(skeleton_results);
+            return;
+        }
+        var grid_wrapper = document.getElementById('snize-search-results-wrapper');
+        if (grid_wrapper.offsetWidth >= 1055) {
+            grid_wrapper.className = grid_wrapper.className.replace(/(?:^|\s)snize-three-columns(?!\S)/g , '').replace(/(?:^|\s)snize-four-columns(?!\S)/g , '');
+            if (!grid_wrapper.className.match(/(?:^|\s)snize-five-columns(?!\S)/)) {
+                grid_wrapper.className += ' snize-five-columns';
+            }
+        } else if (grid_wrapper.offsetWidth >= 915) {
+            grid_wrapper.className = grid_wrapper.className.replace(/(?:^|\s)snize-three-columns(?!\S)/g , '').replace(/(?:^|\s)snize-five-columns(?!\S)/g , '');
+            if (!grid_wrapper.className.match(/(?:^|\s)snize-four-columns(?!\S)/)) {
+                grid_wrapper.className += ' snize-four-columns';
+            }
+        } else {
+            grid_wrapper.className = grid_wrapper.className.replace(/(?:^|\s)snize-four-columns(?!\S)/g , '').replace(/(?:^|\s)snize-five-columns(?!\S)/g , '');
+            if (!grid_wrapper.className.match(/(?:^|\s)snize-three-columns(?!\S)/)) {
+                grid_wrapper.className += ' snize-three-columns';
+            }
+        }
+    }, 30);
+    if (window.location.href.indexOf('collection=') != -1) {
+        var elements = document.getElementsByClassName('snize-search-results-page-title');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].style.display = 'none';
+        }
+    }
+})(window);
+// ]]>
+</script>
 </section>
 
 {% schema %}
