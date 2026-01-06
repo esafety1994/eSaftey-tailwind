@@ -1,26 +1,23 @@
 <section class="w-full flex flex-col space-y-4">
-  <div class="flex items-center justify-between">
-    <div>
+  <div class="flex items-center flex-wrap justify-between">
+    <div class="order-1 flex items-center w-32">
       {% if shop.brand.logo %}
-        <a href="/"
-          ><img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" width="200" height="100" class="h-16 md:h-20 object-contain"
-        ></a>
+        <a href="/">
+          <img src="{{ shop.brand.logo | image_url: width: 400 }}" alt="{{ shop.name }}" width="200" height="100" class="h-16 md:h-20 object-contain">
+        </a>
       {% else %}
         <h1 class="text-white text-2xl font-bold">{{ shop.name }}</h1>
       {% endif %}
     </div>
-    <div class="flex items-center md:space-x-4">
-      <button
-        id="shop-trigger"
-        aria-expanded="false"
-        class="text-white px-3 py-2 bg-transparent hover:bg-white/5 rounded cursor-pointer"
-      >
-        Shop
-      </button>
+
+    <div class="order-3 ml-10 sm:ml-auto md:mx-auto w-full sm:max-w-xs md:max-w-md mt-3 md:mt-0 sm:order-2 md:flex-1">
+      {% render 'searchbox' %}
+    </div>
+
+    <div class="order-2 sm:order-3 flex items-center md:space-x-4">
       <div>{% render 'navigation-icons' %}</div>
     </div>
   </div>
-
   <!-- Drawer for mobile/trigger -->
   {% if section.settings.menu %}
     {% render 'drawer', menu_handle: section.settings.menu%}
