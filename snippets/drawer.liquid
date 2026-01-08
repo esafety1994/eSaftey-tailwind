@@ -7,13 +7,13 @@
       <div class="p-4 ">
         {% if shop.brand.logo %}
           <a href="/"
-            ><img src="{{ shop.brand.logo | image_url: width: 180 }}" alt="{{ shop.name }}" class="h-16 object-contain"
+            ><img src="{{ shop.brand.logo | image_url: width: 350 }}" alt="{{ shop.name }}" class="h-18 object-contain" height="150" width="150"
           ></a>
         {% else %}
           <h2 id="sheet-title" class="text-lg font-bold">{{ shop.name }}</h2>
         {% endif %}
       </div>
-      <button id="sheet-close" aria-label="Close menu" class="text-white mr-6 border rounded-full p-1">{% render 'icon-svg-close',class:"size-3", stroke_width:"1.5" %}</button>
+      <button id="sheet-close" aria-label="Close menu" class="sm:hidden text-white mr-6 border rounded-full p-1">{% render 'icon-svg-close',class:"size-3", stroke_width:"1.5" %}</button>
     </div>
     <div class="overflow-y-auto h-full">
       {% assign drawer_menu = menu_handle | default: 'main-menu' %}

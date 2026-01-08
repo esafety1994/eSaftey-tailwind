@@ -66,36 +66,33 @@ a.underline-animation:focus::after {
 }
 .sheet.open .sheet-content {
   transform: translateX(0%);
+  transition: width 220ms ease;
+}
+.sheet-subpanel.panel-level-1{
+  background-color: #f5f4f4;
+}
+.sheet-subpanel.panel-level-2{
+  background-color: #e6e6e6;
 }
 
+/* Root-level collapsed state requested: shrink to 120px, hide logo and root titles */
+@media (min-width: 1024px) {
+  .sheet.collapsed-root .sheet-content {
+    width: 162px !important;
+    transition: width 220ms ease;
+    overflow: visible;
+  }
+  .sheet.collapsed-root .sheet-content img.h-18,
+  .root-menu-title { transition: opacity 320ms;}
+  .sheet.collapsed-root .root-menu-title {
+    opacity: 0;
+    font-size: 0;
+  }
+}
 @media (min-width: 768px) {
   .sheet-content {
     width: 28rem;
   }
-}
-
-/* Hide native scrollbar thumb until content is hovered (reduces visual chrome when not needed) */
-.sheet-content::-webkit-scrollbar {
-  width: 8px;
-}
-.sheet-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-.sheet-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 160ms ease;
-}
-.sheet-content:hover::-webkit-scrollbar-thumb {
-  opacity: 1;
-}
-.sheet-content {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
-}
-.sheet-content:hover {
-  scrollbar-color: rgba(255, 255, 255, 0.36) transparent;
 }
 
 /* Mega-menu panels: use height transition with translateY opacity for smooth open/close */
@@ -257,7 +254,6 @@ a.underline-animation:focus::after {
 
 /* Mega-menu visual tweaks: enforce top-level and sub-level sizes, hover and borders */
 .mega-menu > ul > li > div > a {
-  display: block;
   width: 100%;
   font-size: 1.125rem; /* larger top-level */
   padding: 12px;
@@ -289,11 +285,12 @@ a.underline-animation:focus::after {
   display: none !important;
 }
 
-/* Subpanel header styling (yellow background, black text) */
-.sheet .subpanel-header {
-  background: #fddc14;
-  color: #000;
+/* Highlight active root menu item */
+.mega-item-link.root-active {
+  background: #FDDC14 !important;
+  color: #000 !important;
 }
-.sheet .subpanel-header .view-all {
-  color: #000;
+.mega-item-link.root-active .menu-icon {
+  opacity: 1;
 }
+

@@ -1,0 +1,8 @@
+{% comment %} Renders `text` with each word capitalized (Title Case) {% endcomment %}
+{% assign words = text | split: ' ' %}
+{% assign out = '' %}
+{% for w in words %}
+  {% assign cap = w | downcase | capitalize %}
+  {% assign out = out | append: ' ' | append: cap %}
+{% endfor %}
+{{ out | strip }}

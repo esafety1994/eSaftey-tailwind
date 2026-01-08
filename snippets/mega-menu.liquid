@@ -4,6 +4,8 @@
   <nav class="mega-menu w-full text-black">
     <ul class="space-y-1">
       {% for item in menu.links %}
+        {% assign obj = item.object %}
+
         <li>
           {% if item.links and item.links.size > 0 %}
             {% assign has_children = true %}
@@ -16,17 +18,30 @@
           <div class="flex w-full items-center justify-between">
             {% if has_children %}
               <a
-                href="{{ item.url }}"
-                class="mega-item-link bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold"
+                href="#"
+                data-href="{{ item.url }}"
+                class="mega-item-link bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold capitalize flex gap-2 items-center h-14"
                 data-has-children="true"
                 data-index="{{ ns_outer }}"
                 data-title="{{ item.title }}"
               >
-                {{- item.title -}}
+                {% if obj and obj.metafields.menu.icon %}
+                  <img
+                    src="{{ obj.metafields.menu.icon | image_url: width: 32 }}"
+                    alt="{{ link.title }}"
+                    class="menu-icon"
+                    width="32"
+                    height="32"
+                  >
+                {% endif %}
+                <span class="root-menu-title">{{- item.title | downcase -}}</span>
               </a>
             {% else %}
-              <a href="{{ item.url }}" class="bg-white font-semibold text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold">
-                {{- item.title -}}
+              <a
+                href="{{ item.url }}"
+                class="bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold capitalize"
+              >
+                {{- item.title | downcase -}}
               </a>
             {% endif %}
           </div>
@@ -47,20 +62,17 @@
                     {% if has_grand %}
                       <div class="flex w-full items-center justify-between">
                         <a
-                          href="{{ child.url }}"
-                          class="mega-item-link block text-sm text-black pl-3 py-3 flex-1 font-normal hover:bg-[#FDDC14] hover:text-black"
+                          href="#"
+                          data-href="{{ child.url }}"
+                          class="mega-item-link block text-black flex-1 font-normal hover:bg-[#FDDC14] hover:text-black capitalize "
                           data-has-children="true"
                           data-index="{{ ns_child }}"
                           data-title="{{ child.title }}"
                         >
-                          {{- child.title -}}
+                          <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">
+                            {{- child.title | downcase -}}
+                          </span>
                         </a>
-                        <button
-                          class="mega-toggle ml-2 p-1"
-                          aria-expanded="false"
-                          data-target="mega-{{ ns_child }}"
-                          aria-label="Toggle {{ child.title }} submenu"
-                        ></button>
                       </div>
 
                       <div id="mega-{{ ns_child }}" class="mega-panel bg-[#e6e6e6]">
@@ -69,9 +81,9 @@
                             <li>
                               <a
                                 href="{{ grand.url }}"
-                                class="block text-sm text-black pl-3 py-3 font-normal hover:bg-[#FDDC14] hover:text-black"
+                                class="block text-black hover:bg-[#FDDC14] hover:text-black capitalize test"
                               >
-                                {{- grand.title -}}
+                                <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">{{- grand.title | downcase -}}</span>
                               </a>
                             </li>
                           {% endfor %}
@@ -80,9 +92,9 @@
                     {% else %}
                       <a
                         href="{{ child.url }}"
-                        class="block text-sm text-black pl-3 py-3 font-normal hover:bg-[#FDDC14] hover:text-black"
+                        class="block text-sm text-black pl-3 py-3 font-normal hover:bg-[#FDDC14] hover:text-black capitalize"
                       >
-                        {{- child.title -}}
+                        {{- child.title | downcase -}}
                       </a>
                     {% endif %}
                   </li>
