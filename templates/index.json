@@ -75,11 +75,11 @@
       "settings": {
         "first_column_width": 50,
         "gap": 16,
-        "bg_color_img_1": "#fee9a7",
+        "bg_color_img_1": "#ffd438",
         "image_1": "shopify://shop_images/wheel-stops-transparent.png",
         "button_text_1": "Wheel Stops",
         "collection_1": "rubber-wheel-stops",
-        "bg_color_img_2": "#b1d4dd",
+        "bg_color_img_2": "#fee9a7",
         "image_2": "shopify://shop_images/Rectangle_13.png",
         "button_text_2": "Height Bars",
         "collection_2": "height-bar",
@@ -87,7 +87,7 @@
         "image_3": "shopify://shop_images/signage-transparent.png",
         "button_text_3": "Signage",
         "collection_3": "abe-extinguishers",
-        "bg_color_img_4": "#f1ddcb",
+        "bg_color_img_4": "#fee9a7",
         "image_4": "shopify://shop_images/bollard-transparent.png",
         "button_text_4": "Bollards",
         "collection_4": "bollards"
