@@ -141,14 +141,17 @@ document.addEventListener("DOMContentLoaded", function () {
         panel.style.top = "0";
         var finalLeft = level === 1 ? 160 : anchorRect ? anchorRect.right : 160;
         panel.style.left = finalLeft + "px";
-        panel.style.width = "360px";
+        // start collapsed and grow on open so it appears to expand to the right
+        panel.style.width = "0px";
         panel.style.maxWidth = "40%";
         panel.style.height = "100vh";
-        panel.style.transform = "translateX(-30px)";
-        panel.style.transition = "transform 260ms ease";
+        panel.style.transform = "translateX(-10px)";
+        panel.style.transition = "width 180ms cubic-bezier(.2,.9,.2,1), transform 180ms cubic-bezier(.2,.9,.2,1)";
         panel.style.pointerEvents = "auto";
         panel.style.boxShadow = "0 6px 18px rgba(0,0,0,0.12)";
         panel.style.zIndex = 2000;
+        panel.style.overflow = "hidden";
+        panel.style.boxSizing = "border-box";
 
         var header = document.createElement("div");
         header.className = "p-4 border-b flex items-center justify-between";
@@ -177,9 +180,18 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (e) {}
         panel.dataset.level = String(level);
 
-        // animate in
+        // animate in: expand width and slide to final position
         requestAnimationFrame(function () {
-          panel.style.transform = "translateX(0)";
+          try {
+            var desired = 360;
+            var maxAllowed = Math.floor(window.innerWidth * 0.4);
+            var targetWidth = Math.min(desired, Math.max(220, maxAllowed));
+            panel.style.width = targetWidth + "px";
+            panel.style.transform = "translateX(0)";
+          } catch (e) {
+            panel.style.transform = "translateX(0)";
+            panel.style.width = "360px";
+          }
         });
 
         // close button
@@ -200,26 +212,33 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         document.addEventListener("mousedown", outsideHandler);
         panel._outsideHandler = outsideHandler;
-
         panel.dataset.desktop = "true";
         return panel;
       };
+
+      // If opening level-1, ensure any level-2 panels are closed first and wait for them.
+      if (level === 1) {
+        // If any desktop panels exist (level-1 or level-2), immediately hide and remove them
+        // so the new root's first panel can slide in cleanly.
+        var anyPanels = document.querySelectorAll('.desktop-subpanel');
+        if (anyPanels && anyPanels.length) {
+          anyPanels.forEach(function (p) {
+            try {
+              // stop ongoing transitions and hide immediately
+              p.style.transition = '';
+              p.style.display = 'none';
+              if (p._outsideHandler) document.removeEventListener('mousedown', p._outsideHandler);
+              if (p.parentElement) p.parentElement.removeChild(p);
+            } catch (e) {}
+          });
+        }
+        // continue to build the requested level-1 panel immediately
+      }
 
       // Ensure only one panel at this level. If existing panel found, handle toggle or replace.
       var existingAtLevel = document.querySelector(
         ".desktop-subpanel.panel-level-" + level
       );
-
-      // If opening level-1, close any level-2 panels first
-      if (level === 1) {
-        var level2 = document.querySelectorAll(
-          ".desktop-subpanel.panel-level-2"
-        );
-        if (level2 && level2.length)
-          level2.forEach(function (p) {
-            closeSubpanel(p);
-          });
-      }
 
       if (existingAtLevel) {
         var srcIdx =
@@ -244,17 +263,11 @@ document.addEventListener("DOMContentLoaded", function () {
           return existingAtLevel;
         }
 
-        // replace: wait for close animation then create
+        // replace: wait for close animation then create (use callback)
         var onClose = function () {
-          try {
-            existingAtLevel.removeEventListener("transitionend", onClose);
-          } catch (e) {}
           buildPanel();
         };
-        try {
-          existingAtLevel.addEventListener("transitionend", onClose);
-        } catch (e) {}
-        closeSubpanel(existingAtLevel);
+        closeSubpanel(existingAtLevel, onClose);
         return null;
       }
 
@@ -290,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
     panel.style.background = "inherit";
     panel.style.pointerEvents = "auto";
     panel.style.transform = "translateX(100%)";
-    panel.style.transition = "transform 260ms ease";
+    panel.style.transition = "transform 180ms cubic-bezier(.2,.9,.2,1)";
     panel.style.zIndex = 10;
 
     var header = document.createElement("div");
@@ -327,49 +340,62 @@ document.addEventListener("DOMContentLoaded", function () {
     return panel;
   }
 
-  function closeSubpanel(panel) {
-    if (!panel) return;
+  // Close subpanel (desktop or mobile). Accepts optional callback executed after removal.
+  function closeSubpanel(panel, callback) {
+    if (!panel) {
+      try { if (typeof callback === 'function') callback(); } catch (e) {}
+      return;
+    }
+    // Desktop panel: collapse width and slide left, then remove
     if (panel.dataset && panel.dataset.desktop === "true") {
-      // desktop: animate closed then remove and cleanup outside click handler
       if (panel._outsideHandler)
         document.removeEventListener("mousedown", panel._outsideHandler);
-      // animate back to closed offset and remove after transition
       try {
+        panel.style.width = "0px";
         panel.style.transform = "translateX(-30px)";
       } catch (e) {}
       var onEnd = function () {
         try {
           panel.removeEventListener("transitionend", onEnd);
         } catch (e) {}
-            if (panel.parentElement) {
-              // clear any root-active on the source link for this panel
-              var src = panel.dataset && panel.dataset.srcIdx ? panel.dataset.srcIdx : null;
-              if (src) {
-                var links = document.querySelectorAll('.mega-item-link[data-index="' + src + '"]');
-                if (links && links.length) links.forEach(function (ln) { ln.classList.remove('root-active'); });
-              }
-            }
-            if (panel.parentElement) panel.parentElement.removeChild(panel);
+        if (panel.parentElement) {
+          var src = panel.dataset && panel.dataset.srcIdx ? panel.dataset.srcIdx : null;
+          if (src) {
+            var links = document.querySelectorAll('.mega-item-link[data-index="' + src + '"]');
+            if (links && links.length) links.forEach(function (ln) { ln.classList.remove('root-active'); });
+          }
+          panel.parentElement.removeChild(panel);
+        }
+        try { if (typeof callback === 'function') callback(); } catch (e) {}
       };
       try {
         panel.addEventListener("transitionend", onEnd);
       } catch (e) {
         setTimeout(function () {
           if (panel.parentElement) panel.parentElement.removeChild(panel);
+          try { if (typeof callback === 'function') callback(); } catch (e) {}
         }, 300);
       }
       return;
     }
 
-    panel.style.transform = "translateX(100%)";
-    panel.addEventListener("transitionend", function onEnd() {
-      panel.removeEventListener("transitionend", onEnd);
+    // Mobile sheet panel: slide out right then remove
+    try { panel.style.transform = "translateX(100%)"; } catch (e) {}
+    var onEndMobile = function () {
+      try { panel.removeEventListener("transitionend", onEndMobile); } catch (e) {}
       var container = panel.parentElement;
       if (panel.parentElement) panel.parentElement.removeChild(panel);
-      // remove container if empty
       if (container && container.children.length === 0) container.remove();
-    });
+      try { if (typeof callback === 'function') callback(); } catch (e) {}
+    };
+    try {
+      panel.addEventListener("transitionend", onEndMobile);
+    } catch (e) {
+      setTimeout(onEndMobile, 300);
+    }
   }
+
+  
 
   // Delegate clicks on mega-item-link to open subpanel if item has children
   // Use capture phase so we can prevent navigation before other handlers

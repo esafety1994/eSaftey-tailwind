@@ -92,9 +92,9 @@
                     {% else %}
                       <a
                         href="{{ child.url }}"
-                        class="block text-sm text-black pl-3 py-3 font-normal hover:bg-[#FDDC14] hover:text-black capitalize"
+                        class="block text-black hover:bg-[#FDDC14] hover:text-black capitalize test"
                       >
-                        {{- child.title | downcase -}}
+                       <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block"> {{- child.title | downcase -}}</span>
                       </a>
                     {% endif %}
                   </li>
