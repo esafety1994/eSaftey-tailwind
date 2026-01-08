@@ -32,9 +32,11 @@
         "announcement_content_AdfwYt"
       ],
       "settings": {
-        "show-announcement": true
+        "show-announcement": false
       }
     }
   },
-  "order": ["announcement"]
+  "order": [
+    "announcement"
+  ]
 }
