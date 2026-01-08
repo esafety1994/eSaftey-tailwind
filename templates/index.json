@@ -93,6 +93,59 @@
         "collection_4": "bollards"
       }
     },
+    "top_collection_qjTiyL": {
+      "type": "top-collection",
+      "blocks": {
+        "collection_XtYejR": {
+          "type": "collection",
+          "settings": {
+            "collection": "flexible-bollards"
+          }
+        },
+        "collection_EpTFKi": {
+          "type": "collection",
+          "settings": {
+            "collection": "wheelchair-ramps"
+          }
+        },
+        "collection_jU7yAY": {
+          "type": "collection",
+          "settings": {
+            "collection": "floor-warning-safety-stickers"
+          }
+        },
+        "collection_q3jUrT": {
+          "type": "collection",
+          "settings": {
+            "collection": "floor-marking-masking-tape"
+          }
+        },
+        "collection_6gTJ4G": {
+          "type": "collection",
+          "settings": {
+            "collection": "kerb-ramps"
+          }
+        },
+        "collection_PKTMfp": {
+          "type": "collection",
+          "settings": {
+            "collection": "construction-temporary-fencing"
+          }
+        }
+      },
+      "block_order": [
+        "collection_XtYejR",
+        "collection_EpTFKi",
+        "collection_jU7yAY",
+        "collection_q3jUrT",
+        "collection_6gTJ4G",
+        "collection_PKTMfp"
+      ],
+      "name": "Top Collections",
+      "settings": {
+        "heading": "Top Collections"
+      }
+    },
     "product_list_D7UkQp": {
       "type": "product-list",
       "name": "Product grid",
@@ -147,6 +200,7 @@
   "order": [
     "carousel_kxG3tk",
     "grid_collection_list_gNtHbb",
+    "top_collection_qjTiyL",
     "product_list_D7UkQp",
     "blog_list_VRk9pE",
     "connect_stay_mk7WnL"
