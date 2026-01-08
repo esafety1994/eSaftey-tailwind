@@ -1,22 +1,24 @@
 <section class="top-collections py-8">
   <div class="container mx-auto px-4">
     {% if section.settings.heading != blank %}
-      <h2 class="text-2xl font-semibold mb-6">{{ section.settings.heading }}</h2>
+      <h3 class="text-2xl md:text-4xl font-semibold mb-6 text-center uppercase md:mb-12">{{ section.settings.heading }}</h3>
     {% endif %}
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
       {% for block in section.blocks %}
         {% assign coll = collections[block.settings.collection] %}
         {% if coll %}
           <a href="{{ coll.url }}" class="group block">
-            <div class="w-full overflow-hidden rounded bg-gray-100" style="aspect-ratio:1/1;">
-              {% if coll.image %}
-                <img src="{{ coll.image | img_url: '600x' }}" alt="{{ coll.title }}" class="w-full h-full object-cover transition-transform group-hover:scale-105" />
-              {% else %}
-                <div class="flex items-center justify-center h-full text-gray-500">{{ 'No image' }}</div>
-              {% endif %}
-            </div>
-            <p class="mt-2 text-center text-sm font-medium">{{ coll.title }}</p>
+            {% if coll.image %}
+              {% render 'responsive-image',
+                image: coll.image,
+                alt: coll.title,
+                image_class: 'w-auto h-22 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto',
+              %}
+            {% else %}
+              <div class="flex items-center justify-center h-full text-gray-500">{{ 'No image' }}</div>
+            {% endif %}
+            <p class="mt-2 text-center text-sm md:text-base">{{ coll.title }}</p>
           </a>
         {% endif %}
       {% endfor %}
