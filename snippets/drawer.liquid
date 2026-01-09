@@ -2,18 +2,30 @@
 <div id="sheet-overlay" class="sheet-overlay hidden fixed inset-0 bg-black/50 z-40"></div>
 
 <div id="site-sheet" class="sheet overflow" aria-hidden="true">
-  <div class="sheet-content bg-white text-black overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
-    <div class="border-b border-gray-800 bg-black flex items-center justify-between">
+  <div
+    class="sheet-content bg-white text-black overflow-hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="sheet-title"
+  >
+    <div class="flex lg:hidden border-b border-gray-800 bg-black items-center justify-between">
       <div class="p-4 ">
         {% if shop.brand.logo %}
           <a href="/"
-            ><img src="{{ shop.brand.logo | image_url: width: 350 }}" alt="{{ shop.name }}" class="h-18 object-contain" height="150" width="150"
+            ><img
+              src="{{ shop.brand.logo | image_url: width: 350 }}"
+              alt="{{ shop.name }}"
+              class="h-18 object-contain"
+              height="150"
+              width="150"
           ></a>
         {% else %}
           <h2 id="sheet-title" class="text-lg font-bold">{{ shop.name }}</h2>
         {% endif %}
       </div>
-      <button id="sheet-close" aria-label="Close menu" class="sm:hidden text-white mr-6 border rounded-full p-1">{% render 'icon-svg-close',class:"size-3", stroke_width:"1.5" %}</button>
+      <button id="sheet-close" aria-label="Close menu" class="sm:hidden text-white mr-6 border rounded-full p-1">
+        {% render 'icon-svg-close', class: 'size-3', stroke_width: '1.5' %}
+      </button>
     </div>
     <div class="overflow-y-auto h-full">
       {% assign drawer_menu = menu_handle | default: 'main-menu' %}

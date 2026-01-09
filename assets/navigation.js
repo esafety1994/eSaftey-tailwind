@@ -24,6 +24,33 @@ document.addEventListener("DOMContentLoaded", function () {
   function openNavSheet(trigger) {
     if (!sheet || !overlay) return;
     lastFocused = document.activeElement;
+    try {
+      var content = sheet.querySelector('.sheet-content');
+      var isDesktop = window.matchMedia('(min-width:1024px)').matches;
+      if (!content) {
+        // nothing to do
+      } else if (!isDesktop) {
+        // Clear any inline positioning on small screens
+        content.style.marginTop = '';
+        sheet.style.top = '';
+        sheet.style.height = '';
+      } else if (trigger && typeof trigger.getBoundingClientRect === 'function') {
+        var rect = trigger.getBoundingClientRect();
+        var hdr = document.getElementById('site-header');
+        if (hdr && hdr.classList && hdr.classList.contains('is-sticky')) {
+          // Sticky header on large screens: pin sheet below header
+          sheet.style.top = '161px';
+          sheet.style.height = 'calc(100vh - 161px)';
+          content.style.marginTop = '';
+        } else {
+          // Large screens, header not sticky: position content under trigger (+49)
+          sheet.style.top = '';
+          sheet.style.height = '';
+          var base = rect.top; // viewport y
+          content.style.marginTop = (base + 49) + 'px';
+        }
+      }
+    } catch (e) {}
     sheet.classList.add("open");
     // Ensure any previous 'collapsed-root' state is cleared when opening
     sheet.classList.remove("collapsed-root");
@@ -53,6 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeNavSheet(trigger) {
     if (!sheet || !overlay) return;
     sheet.classList.remove("open");
+
+    try {
+      var content = sheet.querySelector('.sheet-content');
+      if (content) content.style.marginTop = '';
+      sheet.style.top = '';
+      sheet.style.height = '';
+    } catch (e) {}
+
     // Clear collapsed-root so next open shows default menu
     sheet.classList.remove("collapsed-root");
     // remove any highlighted root items on close
@@ -67,9 +102,6 @@ document.addEventListener("DOMContentLoaded", function () {
     sheet.setAttribute("aria-hidden", "true");
     overlay.classList.remove("visible");
     overlay.classList.add("hidden");
-    var header = document.createElement("div");
-    header.className =
-      "p-4 border-b flex items-center justify-between subpanel-header";
     document.body.classList.remove("overflow-hidden");
     if (lastFocused && typeof lastFocused.focus === "function")
       lastFocused.focus();
