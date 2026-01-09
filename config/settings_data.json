@@ -12,6 +12,7 @@
     "type_base_font": "poppins_n4",
     "cart_trust_badge": "shopify://shop_images/trust-badge.webp",
     "cart_drawer_upsell_product": "the-air-duster-2000",
+    "use_minified_assets": true,
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
@@ -35,26 +36,6 @@
         ],
         "settings": {
           "show-announcement": true
-        }
-      },
-      "header": {
-        "type": "header",
-        "blocks": {
-          "mega_menu_item_MXFMei": {
-            "type": "mega_menu_item",
-            "settings": {
-              "menu_item": "TRAFFIC, ROAD & SAFETY SIGNS",
-              "menu_item_image": "shopify://shop_images/CUSTOM_SIGN_COLOR_MATCHED.jpg",
-              "menu_item_link": "shopify://products/custom-sign-reflective-diamond-600-x-600"
-            }
-          }
-        },
-        "block_order": [
-          "mega_menu_item_MXFMei"
-        ],
-        "settings": {
-          "show_search": true,
-          "menu": "main-menu"
         }
       },
       "footer": {
@@ -107,6 +88,14 @@
         "settings": {
           "footer_bottom_menu": ""
         }
+      },
+      "cart-count": {
+        "type": "cart-count",
+        "settings": {}
+      },
+      "esaftey-cart-drawer": {
+        "type": "esaftey-cart-drawer",
+        "settings": {}
       }
     },
     "content_for_index": [],
@@ -117,11 +106,6 @@
         "settings": {
           "enable_ajax_atc": true
         }
-      },
-      "5182184951224911228": {
-        "type": "shopify://apps/rapid-search/blocks/script/bd827795-feaa-41a8-9219-2b83f238aa7d",
-        "disabled": false,
-        "settings": {}
       }
     }
   }
