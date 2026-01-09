@@ -13,41 +13,31 @@
         {% endif %}
 
         <!-- Mobile: accordion -->
-        <div class="sidebar-faq-qa md:hidden">
-          <button
-            type="button"
-            class="sidebar-faq-q w-full text-left px-0 py-0 focus:outline-none"
-            aria-expanded="false"
-          >
-            <span class="faq-q-text text-base mb-4 text-primary">{{ heading }}</span>
-            <span class="sidebar-faq-icon ml-3 text-primary flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="size-4"
-              >
-                <path d="m6 9 6 6 6-6"/>
-              </svg>
-            </span>
-          </button>
-          <div class="sidebar-faq-a mt-2" hidden>
-            {% if menu and menu.links.size > 0 %}
-              <ul class="space-y-2 text-sm">
-                {% for link in menu.links %}
-                  <li class="footer-underline">
-                    <a href="{{ link.url }}" class="text-white underline-animation">{{ link.title }}</a>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <div class="text-sm text-gray-500">No menu assigned.</div>
-            {% endif %}
-          </div>
+        <div class="md:hidden">
+          <accordion-tab class="accordion-wrapper">
+            <div data-header class="flex justify-between items-center">
+              <span class="text-base mb-4 text-primary">{{ heading }}</span>
+              <div data-icon class="transition-transform duration-300 ease-in-out">
+                {% render 'icon-svg-chevron-right', class: 'text-primary size-6' %}
+              </div>
+            </div>
+            <div
+              data-content
+              class="accordion-content overflow-hidden transition-all duration-300 ease-in-out"
+            >
+              {% if menu and menu.links.size > 0 %}
+                <ul class="space-y-2 text-sm pb-4">
+                  {% for link in menu.links %}
+                    <li class="footer-underline">
+                      <a href="{{ link.url }}" class="text-white underline-animation">{{ link.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <div class="text-sm text-gray-500">No menu assigned.</div>
+              {% endif %}
+            </div>
+          </accordion-tab>
         </div>
 
         <!-- Desktop: normal footer block -->
@@ -70,38 +60,28 @@
 
       {% when 'custom_text' %}
         <!-- Mobile: accordion -->
-        <div class="sidebar-faq-qa md:hidden">
-          <button
-            type="button"
-            class="sidebar-faq-q w-full text-left px-0 py-0 focus:outline-none"
-            aria-expanded="false"
-          >
-            <span class="faq-q-text text-base mb-4 text-primary">{{ block.settings.title }}</span>
-            <span class="sidebar-faq-icon ml-3 text-primary flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="size-4"
-              >
-                <path d="m6 9 6 6 6-6"/>
-              </svg>
-            </span>
-          </button>
-          <div class="sidebar-faq-a mt-2" hidden>
-            {% if block.settings.image %}
-              {% render 'responsive-image',
-                image: block.settings.image,
-                wrapper_class: 'w-full h-auto mb-4',
-                image_class: 'w-full h-full object-contain object-center'
-              %}
-            {% endif %}
-            <div class="text-sm text-white">{{ block.settings.description }}</div>
-          </div>
+        <div class="md:hidden">
+          <accordion-tab class="accordion-wrapper">
+            <div data-header class="flex justify-between items-center">
+              <span class="text-base mb-4 text-primary">{{ block.settings.title }}</span>
+              <div data-icon class="transition-transform duration-300 ease-in-out">
+                {% render 'icon-svg-chevron-right', class: 'text-primary size-6' %}
+              </div>
+            </div>
+            <div
+              data-content
+              class="accordion-content overflow-hidden transition-all duration-300 ease-in-out"
+            >
+              {% if block.settings.image %}
+                {% render 'responsive-image',
+                  image: block.settings.image,
+                  wrapper_class: 'w-full h-auto mb-4',
+                  image_class: 'w-full h-full object-contain object-center'
+                %}
+              {% endif %}
+              <div class="text-sm text-white pb-4">{{ block.settings.description }}</div>
+            </div>
+          </accordion-tab>
         </div>
 
         <!-- Desktop: normal footer block -->

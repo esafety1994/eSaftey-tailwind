@@ -14,30 +14,7 @@
     {% endif %}
   </div>
 </footer>
- 
-<script>
-  (function () {
-    try {
-      if (window.__eSafetyAccordionLoadedFooter) {
-        if (window.esafetyAccordionInit) window.esafetyAccordionInit(document);
-        return;
-      }
-      // load globally for the theme so footer accordions work on all devices
-      window.__eSafetyAccordionLoadedFooter = true;
-      var l = document.createElement('link');
-      l.rel = 'stylesheet';
-      l.href = '{{ "accordion.css" | asset_url }}';
-      document.head.appendChild(l);
-      var s = document.createElement('script');
-      s.src = '{{ "accordion.js" | asset_url }}';
-      s.defer = true;
-      s.onload = function () {
-        if (window.esafetyAccordionInit) window.esafetyAccordionInit(document);
-      };
-      document.body.appendChild(s);
-    } catch(e) { console.warn(e); }
-  })();
-</script>
+
 
 {% schema %}
 {

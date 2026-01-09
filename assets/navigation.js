@@ -1,3 +1,11 @@
+/*
+ * Navigation / Sheet + Subpanel controller
+ * - Handles opening/closing the left sheet (mobile) and desktop subpanels
+ * - Positions panels relative to the header or site content on large screens
+ * - Keeps focus management and accessibility attributes
+ *
+ * Production: debug logging removed and transitions are handled gracefully.
+ */
 document.addEventListener("DOMContentLoaded", function () {
   // Elements
   var sheet = document.getElementById("site-sheet");
@@ -38,9 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
         var rect = trigger.getBoundingClientRect();
         var hdr = document.getElementById('site-header');
         if (hdr && hdr.classList && hdr.classList.contains('is-sticky')) {
-          // Sticky header on large screens: pin sheet below header
-          sheet.style.top = '161px';
-          sheet.style.height = 'calc(100vh - 161px)';
+          // Sticky header on large screens: pin sheet below header (use actual header height)
+          var headerHeight = hdr.offsetHeight || hdr.getBoundingClientRect().height || 0;
+          sheet.style.top = headerHeight + 'px';
+          sheet.style.height = 'calc(100vh - ' + headerHeight + 'px)';
           content.style.marginTop = '';
         } else {
           // Large screens, header not sticky: position content under trigger (+49)
@@ -79,32 +88,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function closeNavSheet(trigger) {
     if (!sheet || !overlay) return;
+    // start close animation
     sheet.classList.remove("open");
-
-    try {
-      var content = sheet.querySelector('.sheet-content');
-      if (content) content.style.marginTop = '';
-      sheet.style.top = '';
-      sheet.style.height = '';
-    } catch (e) {}
-
-    // Clear collapsed-root so next open shows default menu
-    sheet.classList.remove("collapsed-root");
-    // remove any highlighted root items on close
-    try {
-      var prevActive2 =
-        sheet.querySelectorAll &&
-        sheet.querySelectorAll(".mega-item-link.root-active");
-      if (prevActive2 && prevActive2.length) prevActive2.forEach(function (n) { n.classList.remove('root-active'); });
-    } catch (e) {
-      /* ignore */
-    }
-    sheet.setAttribute("aria-hidden", "true");
+    // hide overlay immediately so clicks don't get intercepted
     overlay.classList.remove("visible");
     overlay.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-    if (lastFocused && typeof lastFocused.focus === "function")
-      lastFocused.focus();
+
+    // After the sheet transition finishes, clear inline top/height, restore body scroll and focus
+    try {
+      var content = sheet.querySelector('.sheet-content');
+      var cleared = false;
+      var onTransEnd = function (ev) {
+        if (ev && ev.propertyName && ev.propertyName.indexOf('transform') === -1) return;
+        if (cleared) return;
+        cleared = true;
+        try {
+          if (content) content.style.marginTop = '';
+        } catch (e) {}
+        try {
+          sheet.style.top = '';
+          sheet.style.height = '';
+        } catch (e) {}
+        // Clear collapsed-root so next open shows default menu
+        try { sheet.classList.remove("collapsed-root"); } catch (e) {}
+        // remove any highlighted root items on close
+        try {
+          var prevActive2 = sheet.querySelectorAll && sheet.querySelectorAll(".mega-item-link.root-active");
+          if (prevActive2 && prevActive2.length) prevActive2.forEach(function (n) { n.classList.remove('root-active'); });
+        } catch (e) {}
+        try { sheet.setAttribute("aria-hidden", "true"); } catch (e) {}
+        try { document.body.classList.remove("overflow-hidden"); } catch (e) {}
+        try { if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus(); } catch (e) {}
+        try { content.removeEventListener('transitionend', onTransEnd); } catch (e) {}
+      };
+      if (content) {
+        content.addEventListener('transitionend', onTransEnd);
+        // fallback: ensure cleanup even if transitionend doesn't fire
+        setTimeout(onTransEnd, 600);
+      } else {
+        // no content element, cleanup immediately
+        onTransEnd();
+      }
+    } catch (e) {
+      // fallback immediate cleanup
+      try { sheet.style.top = ''; sheet.style.height = ''; } catch (e) {}
+      try { sheet.classList.remove("collapsed-root"); } catch (e) {}
+      try { document.body.classList.remove("overflow-hidden"); } catch (e) {}
+      try { if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus(); } catch (e) {}
+    }
   }
 
   // Direct binding if trigger exists at load
@@ -170,7 +201,36 @@ document.addEventListener("DOMContentLoaded", function () {
         panel.classList.add("panel-level-" + level);
         panel.setAttribute("role", "dialog");
         panel.style.position = "fixed";
-        panel.style.top = "0";
+        // Position panel below sticky header on large screens when header is sticky
+        try {
+          var _isDesktop = window.matchMedia('(min-width:1024px)').matches;
+          var _topOffset = 0;
+          if (_isDesktop) {
+            // If header is sticky prefer header height. Otherwise align with `#main` top
+            try {
+              var _hdr = document.getElementById('site-header');
+              if (_hdr && _hdr.classList && _hdr.classList.contains('is-sticky')) {
+                _topOffset = _hdr.offsetHeight || _hdr.getBoundingClientRect().height || 0;
+              } else {
+                var mainEl = document.getElementById('main');
+                if (mainEl) {
+                  var mainRect = mainEl.getBoundingClientRect();
+                  _topOffset = Math.max(0, Math.floor(mainRect.top));
+                } else if (sourceLink && typeof sourceLink.getBoundingClientRect === 'function') {
+                  var srcRect = sourceLink.getBoundingClientRect();
+                  _topOffset = Math.max(0, Math.floor(srcRect.top));
+                }
+              }
+            } catch (e) {
+              _topOffset = 0;
+            }
+          }
+          
+          panel.style.top = _topOffset + "px";
+          panel.style.height = 'calc(100vh - ' + _topOffset + 'px)';
+        } catch (err) {
+          panel.style.top = "0";
+        }
         var finalLeft = level === 1 ? 160 : anchorRect ? anchorRect.right : 160;
         panel.style.left = finalLeft + "px";
         // start collapsed and grow on open so it appears to expand to the right
@@ -196,7 +256,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var body = document.createElement("div");
         body.className = "subpanel-body overflow-y-auto h-full";
-        body.style.height = "calc(100vh - 56px)";
+        try {
+          var _bodyTop = (typeof _topOffset !== 'undefined' && _topOffset > 0) ? _topOffset : 56;
+          body.style.height = 'calc(100vh - ' + _bodyTop + 'px)';
+        } catch (err) {
+          body.style.height = "calc(100vh - 56px)";
+        }
         body.innerHTML = innerHtml || "";
 
         panel.appendChild(header);
@@ -328,6 +393,8 @@ document.addEventListener("DOMContentLoaded", function () {
     panel.className = "sheet-subpanel";
     panel.setAttribute("role", "dialog");
     panel.style.position = "absolute";
+    // For mobile panels, leave top at 0 (no lg offset). If header is sticky on large screens
+    // the desktop logic will handle positioning.
     panel.style.top = 0;
     panel.style.left = 0;
     panel.style.width = "100%";
@@ -471,16 +538,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!panelEl) panelEl = document.getElementById("mega-" + idx);
       var hasChildren = hasChildrenAttr === "true" || !!panelEl;
       // debug log to help diagnose unexpected navigation
-      try {
-        console.debug(
-          "[navigation] click idx=",
-          idx,
-          "hasChildrenAttr=",
-          hasChildrenAttr,
-          "panelEl=",
-          !!panelEl
-        );
-      } catch (e) {}
+      // (production) removed debug logging
       if (!hasChildren) return;
       e.preventDefault();
       e.stopPropagation();
@@ -547,13 +605,9 @@ document.addEventListener("DOMContentLoaded", function () {
       var panelEl = null;
       if (menuRoot) panelEl = menuRoot.querySelector("#mega-" + idx);
       if (!panelEl) panelEl = document.getElementById("mega-" + idx);
-      if (!panelEl)
-        console.debug(
-          "[navigation] no source panel found for",
-          idx,
-          "inside",
-          menuRoot
-        );
+      if (!panelEl) {
+        // no source panel found for this index
+      }
       var inner = panelEl ? panelEl.innerHTML : "";
       var shopTrig = document.getElementById("shop-trigger");
       // prefer the non-navigating data-href if present (we moved real URLs into data-href for parents)
