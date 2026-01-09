@@ -32,4 +32,17 @@
 
         ]
     }
+,
+    {
+        "name": "Performance",
+        "settings": [
+            {
+                "type": "checkbox",
+                "id": "use_minified_assets",
+                "label": "Use minified JS assets",
+                "default": false,
+                "info": "When enabled the theme will load *.min.js files if present. Useful for production builds."
+            }
+        ]
+    }
 ]
