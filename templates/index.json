@@ -155,26 +155,7 @@
         "collection_3": "cheap-deals"
       }
     },
-    "product_list_D7UkQp": {
-      "type": "product-list",
-      "name": "Product grid",
-      "settings": {
-        "product_1": "bike-rack-galvanised-coat-hanger-large",
-        "product_2": "dark-green-wheelie-bin-80l-capacity",
-        "product_3": "stair-nosing-esn22",
-        "product_4": "the-air-duster-2000",
-        "product_5": "dnc-3955-190gsm-hoop-reflective-cotton-drill-coveralls-orange-navy",
-        "product_6": "above-ground-bench-seat-with-backrest",
-        "product_7": "surface-mount-bollard-90mm",
-        "product_8": "automatic-parking-lock-spare-remote-key",
-        "show_compare_price": true,
-        "card_background": "#ffffff",
-        "product_title_size": 18,
-        "product_title_color": "#000000",
-        "price_size": 15,
-        "price_color": "#000000"
-      }
-    },
+
     "blog_list_VRk9pE": {
       "type": "blog-list",
       "name": "Blog list",
@@ -211,7 +192,6 @@
     "grid_collection_list_gNtHbb",
     "top_collection_qjTiyL",
     "collection_tabs_e8iAVr",
-    "product_list_D7UkQp",
     "blog_list_VRk9pE",
     "connect_stay_mk7WnL"
   ]
