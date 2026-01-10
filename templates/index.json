@@ -211,6 +211,60 @@
         "success_message": "Thanks — we'll be in touch.",
         "error_message": "Sorry, something went wrong. Please try again."
       }
+    },
+    "image_strip_LRcwDT": {
+      "type": "image-strip",
+      "blocks": {
+        "image_block_dzmAXA": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_23.png"
+          }
+        },
+        "image_block_4nPVHx": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_24.png"
+          }
+        },
+        "image_block_7tkmb9": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_25.png"
+          }
+        },
+        "image_block_Unc74J": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_26.png"
+          }
+        },
+        "image_block_EMcFHG": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_27.png"
+          }
+        },
+        "image_block_zFwCYV": {
+          "type": "image_block",
+          "settings": {
+            "image": "shopify://shop_images/Rectangle_28.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_block_dzmAXA",
+        "image_block_4nPVHx",
+        "image_block_7tkmb9",
+        "image_block_Unc74J",
+        "image_block_EMcFHG",
+        "image_block_zFwCYV"
+      ],
+      "name": "Image Strip",
+      "settings": {
+        "title": "@FOLLOW US ON INSTAGRAM",
+        "image_height": 200
+      }
     }
   },
   "order": [
@@ -220,6 +274,7 @@
     "collection_tabs_e8iAVr",
     "hero_full_bg_Bp4zeG",
     "blog_list_VRk9pE",
-    "connect_stay_mk7WnL"
+    "connect_stay_mk7WnL",
+    "image_strip_LRcwDT"
   ]
 }
