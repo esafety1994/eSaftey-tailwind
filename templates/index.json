@@ -266,6 +266,14 @@
         "success_message": "Thanks — we'll be in touch.",
         "error_message": "Sorry, something went wrong. Please try again."
       }
+    },
+    "custom_liquid_Rt76mc": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"flex flex-wrap -mx-4\">\n  <!-- Item (repeat 4+) -->\n  <div class=\"w-full sm:w-1/2 lg:w-1/4 px-4 mb-6\">\n    <div class=\"h-full flex items-start gap-4\">\n      <!-- Circular icon -->\n      <div class=\"flex-shrink-0\">\n        <div class=\"w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center\">\n          <!-- Example SVG icon (replace) -->\n          <svg class=\"w-6 h-6 text-white\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n            <path d=\"M12 2v20M2 12h20\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          </svg>\n        </div>\n      </div>\n\n      <!-- Title / Subtitle -->\n      <div class=\"flex flex-col justify-center min-w-0\">\n        <h3 class=\"text-lg font-semibold truncate\">Item Title</h3>\n        <p class=\"text-sm text-gray-500 truncate\">Item subtitle or short description</p>\n      </div>\n    </div>\n  </div>\n  <!-- /Item -->\n</div>",
+        "custom_class": ""
+      }
     }
   },
   "order": [
@@ -276,6 +284,7 @@
     "hero_full_bg_Bp4zeG",
     "blog_list_VRk9pE",
     "image_strip_LRcwDT",
-    "connect_stay_mk7WnL"
+    "connect_stay_mk7WnL",
+    "custom_liquid_Rt76mc"
   ]
 }
