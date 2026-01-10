@@ -14,6 +14,13 @@
     "footer": {
       "type": "footer",
       "blocks": {
+        "footer_stay_in_touch_MdFcNF": {
+          "type": "footer-stay-in-touch",
+          "settings": {
+            "heading": "Let's Stay in touch",
+            "content": "<p>Subscribe for exclusive offers, latest news & new product launches</p>"
+          }
+        },
         "custom_text_gnBQQN": {
           "type": "custom_text",
           "settings": {
@@ -45,14 +52,13 @@
         }
       },
       "block_order": [
+        "footer_stay_in_touch_MdFcNF",
         "custom_text_gnBQQN",
         "7ebc2f78-975b-4a81-b874-103c3355a866",
         "49e72833-c68f-4a7b-ab64-3ef0cae99bcb",
         "menu_8WHn7V"
       ],
-      "settings": {
-        "footer_bottom_menu": ""
-      }
+      "settings": {}
     }
   },
   "order": [
