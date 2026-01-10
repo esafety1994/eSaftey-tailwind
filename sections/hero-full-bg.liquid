@@ -20,27 +20,32 @@
     ></div>
   {% endif %}
 
-  <div class="relative z-20 container mx-auto px-4 py-24">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+  <div class="relative z-20 container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-stretch">
       {% for block in section.blocks %}
-        <div class="block-content text-white">
-          {% if block.settings.heading != blank %}
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">{{ block.settings.heading }}</h2>
+        {% assign img_url = block.settings.background_image | img_url: '1600x' %}
+        <div class="block-content text-white relative overflow-hidden rounded-md" style="background-image: url('{{ img_url }}'); background-size: cover; background-position: center; min-height: 360px;">
+          {% if block.settings.overlay_opacity and block.settings.overlay_opacity > 0 %}
+            <div class="absolute inset-0" style="background-color: rgba(0,0,0,{{ block.settings.overlay_opacity | divided_by: 100 }});"></div>
           {% endif %}
-          {% if block.settings.content != blank %}
-            <div class="prose prose-invert max-w-none">{{ block.settings.content }}</div>
-          {% endif %}
-          {% if forloop.first and section.settings.button_text != blank %}
-            <div class="mt-6">
-              <a
-                href="{{ section.settings.button_url }}"
-                class="inline-block bg-white text-black px-6 py-3 rounded font-semibold"
-              >
-                {{- section.settings.button_text -}}
-              </a>
-            </div>
-          {% endif %}
+          <div class="relative p-8 h-full flex flex-col justify-center">
+            {% if block.settings.heading != blank %}
+              <h2 class="text-2xl md:text-3xl font-bold mb-3">{{ block.settings.heading }}</h2>
+            {% endif %}
+            {% if block.settings.content != blank %}
+              <div class="prose prose-invert max-w-none mb-4">{{ block.settings.content }}</div>
+            {% endif %}
+            {% if block.settings.button_text != blank %}
+              <div class="mt-4">
+                <a href="{{ block.settings.button_url }}" class="inline-block bg-white text-black px-6 py-3 rounded font-semibold">{{ block.settings.button_text }}</a>
+              </div>
+            {% endif %}
+          </div>
         </div>
+      {% endfor %}
+      {% assign missing = 2 | minus: section.blocks.size %}
+      {% for i in (1..missing) %}
+        <div class="block-content text-white bg-gray-100 rounded-md" style="min-height:360px"></div>
       {% endfor %}
     </div>
   </div>
@@ -56,26 +61,20 @@
 {
   "name": "Hero — Full Background",
   "settings": [
-    { "type": "image_picker", "id": "background_image", "label": "Background image" },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "label": "Overlay opacity (0-100)",
-      "min": 0,
-      "max": 90,
-      "step": 5,
-      "default": 40
-    },
-    { "type": "text", "id": "button_text", "label": "Button text", "default": "Shop now" },
-    { "type": "url", "id": "button_url", "label": "Button URL" }
+    { "type": "image_picker", "id": "background_image", "label": "Section background image (optional)", "info": "Optional overall background; individual block images take precedence." },
+    { "type": "range", "id": "overlay_opacity", "label": "Section overlay opacity (0-100)", "min": 0, "max": 90, "step": 5, "default": 0 }
   ],
   "blocks": [
     {
       "type": "column",
       "name": "Column",
       "settings": [
+        { "type": "image_picker", "id": "background_image", "label": "Column background image" },
+        { "type": "range", "id": "overlay_opacity", "label": "Column overlay opacity (0-100)", "min": 0, "max": 90, "step": 5, "default": 30 },
         { "type": "text", "id": "heading", "label": "Heading" },
-        { "type": "richtext", "id": "content", "label": "Content" }
+        { "type": "richtext", "id": "content", "label": "Content" },
+        { "type": "text", "id": "button_text", "label": "Button text" },
+        { "type": "url", "id": "button_url", "label": "Button URL" }
       ]
     }
   ],
