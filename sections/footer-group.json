@@ -33,13 +33,6 @@
           "type": "menu",
           "settings": {
             "menu": "about-us",
-            "title": "About Us"
-          }
-        },
-        "menu_FRaF7R": {
-          "type": "menu",
-          "settings": {
-            "menu": "policies",
             "title": "Policies"
           }
         },
@@ -55,7 +48,6 @@
         "custom_text_gnBQQN",
         "7ebc2f78-975b-4a81-b874-103c3355a866",
         "49e72833-c68f-4a7b-ab64-3ef0cae99bcb",
-        "menu_FRaF7R",
         "menu_8WHn7V"
       ],
       "settings": {
