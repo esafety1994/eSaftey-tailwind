@@ -79,6 +79,10 @@
     },
     "tooltip": {
       "not_found": "Tooltip type not found"
+    },
+    "taxes": {
+      "include_tax_copy": "inc. GST",
+      "exclude_tax_copy": "Tax excluded."
     }
   },
   "sections": {

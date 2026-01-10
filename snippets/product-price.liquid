@@ -44,25 +44,29 @@
     </div>
 
   {% else %}
-    <span class="font-semibold flex flex-col {% if layout == 'card' %} flex-col-reverse{% endif %}">
-      <span>
-        {{- product.price | money }}
+    <span class="font-semibold flex justify-between">
+      <span class="flex flex-wrap items-center justify-start gap-1.5">
+        <span>{{ product.price | money }}</span>
         {% if product.tags contains 'isgstexempt' %}
           <span>
-            <span class="ml-2 text-sm">(GST Exempt)</span>
+            <span class="ml-2 text-sm">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
           </span>
         {% else %}
-          <span class="ml-2 text-sm">(inc GST)</span>
+          <span class="text-sm">({{ 'general.taxes.include_tax_copy' | t }})</span>
         {% endif -%}
       </span>
       {% if product.compare_at_price > product.price and show_compare_price %}
         <span>
-          <span class="text-gray-500 line-through mr-2">
-            {{ product.compare_at_price | money }}
+          <span class="text-bg-light-red line-through flex flex-wrap ml-4 justify-end">
+            <span>{{ product.compare_at_price | money }}</span>
+            {% if product.tags contains 'isgstexempt' %}
+              <span>
+                <span class="ml-2 text-sm">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
+              </span>
+            {% else %}
+              <span class="ml-2 text-sm">({{ 'general.taxes.include_tax_copy' | t }})</span>
+            {% endif -%}
           </span>
-          {% if req_from != 'sticky' %}
-            <span class="text-green-600">Save: {{ product.compare_at_price | minus: product.price | money }}</span>
-          {% endif %}
         </span>
       {% endif %}
     </span>

@@ -6,23 +6,24 @@
   {% endif %}
 
   {% if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status %}
-    {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
-
-    {% assign display_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-green-700"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>' %}
-
-    {% if status == 'Back Order' or status == 'Out of Stock' or status == 'Low Stock' %}
-      {% assign display_icon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-yellow-700">\n        <circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path>\n      </svg>' %}
-    {% endif %}
-
+    {% assign status = _variant.metafields.custom.stock_status.value
+      | default: _variant.metafields.custom.stock_status
+    %}
     <span class="flex py-1 text-sm gap-1 items-center ">
-      {{ display_icon }}
-      {{ status }}
+      {% if status == 'Back Order' or status == 'Out of Stock' or status == 'Low Stock' %}
+        {% render 'icon-svg-circle-x', class: 'size-6 text-yellow-700', stroke_width: 1.5 %}
+        <span class="text-yellow-700">{{ status }}</span>
+      {% else %}
+        {% render 'icon-svg-circle-check', class: 'size-6 text-green-700', stroke_width: 1.5 %}
+        <span class="text-green-700">{{ status }}</span>
+      {% endif %}
+
+      
     </span>
   {% else %}
     <span class="flex py-1 text-sm gap-1 items-center ">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-green-700"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-      In Stock
+      {% render 'icon-svg-circle-check', class: 'size-6 text-green-700', stroke_width: 1.5 %}
+      <span class="text-green-700">In Stock</span>
     </span>
   {% endif %}
 </div>
-
