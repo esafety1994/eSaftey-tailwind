@@ -155,7 +155,6 @@
         "collection_3": "cheap-deals"
       }
     },
-
     "blog_list_VRk9pE": {
       "type": "blog-list",
       "name": "Blog list",
@@ -185,6 +184,41 @@
         "success_message": "Thanks — we'll be in touch.",
         "error_message": "Sorry, something went wrong. Please try again."
       }
+    },
+    "hero_full_bg_Bp4zeG": {
+      "type": "hero-full-bg",
+      "blocks": {
+        "column_jhMrKL": {
+          "type": "column",
+          "settings": {
+            "background_image": "shopify://shop_images/Rectangle_18.png",
+            "overlay_opacity": 30,
+            "heading": "",
+            "content": "",
+            "button_text": "Catalogue 2026",
+            "button_url": "shopify://pages/catalogue"
+          }
+        },
+        "column_bUWT3P": {
+          "type": "column",
+          "settings": {
+            "background_image": "shopify://shop_images/Rectangle_19.png",
+            "overlay_opacity": 30,
+            "heading": "",
+            "content": "",
+            "button_text": "eSolar Lighting Brochures",
+            "button_url": "shopify://pages/contact-us"
+          }
+        }
+      },
+      "block_order": [
+        "column_jhMrKL",
+        "column_bUWT3P"
+      ],
+      "name": "Hero — Full Background",
+      "settings": {
+        "overlay_opacity": 0
+      }
     }
   },
   "order": [
@@ -193,6 +227,7 @@
     "top_collection_qjTiyL",
     "collection_tabs_e8iAVr",
     "blog_list_VRk9pE",
-    "connect_stay_mk7WnL"
+    "connect_stay_mk7WnL",
+    "hero_full_bg_Bp4zeG"
   ]
 }
