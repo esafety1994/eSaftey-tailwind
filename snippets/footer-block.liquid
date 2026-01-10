@@ -96,6 +96,8 @@
           {% endif %}
           <div class="text-sm text-white">{{ block.settings.description }}</div>
         </div>
+      {% when 'footer-stay-in-touch' %}
+        {% render 'footer-stay-in-touch', block: block %}
     {% endcase %}
   </div>
 {% endif %}

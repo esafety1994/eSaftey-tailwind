@@ -1,0 +1,29 @@
+<div class="text-white w-72">
+  <h3 class="uppercase font-semibold">{{ block.settings.heading }}</h3>
+  <div class="mt-2 text-sm mb-4">{{ block.settings.content }}</div>
+  {% form 'customer' %}
+    <div class="relative w-full">
+      <input
+        type="email"
+        name="contact[email]"
+        placeholder="Enter email address"
+        required
+        class="w-full pr-28 py-2 pl-4 h-11 border-2 border-primary-yellow rounded-full text-black placeholder-gray-500 focus:outline-none"
+        aria-label="Email address"
+      >
+
+      <button
+        type="submit"
+        class="absolute right-1 top-1/2 transform -translate-y-1/2 bg-primary text-black rounded-full px-4 py-2 text-sm font-semibold shadow"
+        aria-label="Subscribe"
+      >
+        {{ block.settings.button_text }}
+      </button>
+    </div>
+  {% endform %}
+  <div>
+    <div class="flex flex-wrap gap-4 items-center justify-center py-4 ">
+      {% render 'socials-links', icon_size: 'size-4', icon_color: 'text-black', icon_background: 'bg-primary-yellow', icon_border: 'rounded-full', icon_wrapper_class: 'p-1.5' %}
+    </div>
+  </div>
+</div>
