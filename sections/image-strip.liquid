@@ -1,0 +1,75 @@
+{% comment %}
+  Section: Image Strip
+  - Add multiple image blocks in the theme editor (image + title)
+  - Frontend displays all images in a single flex row, equal height, shrinking to fit
+{% endcomment %}
+
+<section id="image-strip-{{ section.id }}" class="image-strip-section py-6">
+  <div class="container mx-auto px-4">
+    <div
+      class="image-strip flex gap-4 items-stretch"
+      style="--img-height: {{ section.settings.image_height | default: 200 }}px;"
+    >
+      {% for block in section.blocks %}
+        {% assign img = block.settings.image %}
+        <div class="image-item flex-1 min-w-0 relative overflow-hidden rounded">
+          {% if img != blank %}
+            <img
+              src="{{ img | img_url: '800' }}"
+              alt="{{ block.settings.title | escape }}"
+              class="w-full h-full object-cover"
+              style="height:var(--img-height);"
+              loading="lazy"
+              width="800"
+              height="800"
+            >
+          {% else %}
+            <div class="w-full" style="height:var(--img-height); background:#f3f4f6"></div>
+          {% endif %}
+          {% if block.settings.title != blank %}
+            <div class="absolute left-3 right-3 bottom-3 text-sm font-semibold text-white drop-shadow-md">
+              {{ block.settings.title }}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    /* Ensure items shrink equally and keep equal height */
+    #image-strip-{{ section.id }} .image-strip { display:flex; flex-wrap:nowrap; }
+    #image-strip-{{ section.id }} .image-item { flex: 1 1 0; min-width: 0; }
+    #image-strip-{{ section.id }} .image-item img { display:block; width:100%; height:var(--img-height); object-fit:cover; }
+    @media (max-width: 640px) {
+      #image-strip-{{ section.id }} .image-strip { gap: 0.5rem; }
+    }
+  </style>
+
+  {% schema %}
+{
+  "name": "Image Strip",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title (optional)" },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height (px)",
+      "min": 80,
+      "max": 800,
+      "step": 10,
+      "default": 200
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_block",
+      "name": "Image",
+      "settings": [{ "type": "image_picker", "id": "image", "label": "Image" }]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Image Strip", "category": "Gallery" }]
+}
+  {% endschema %}
+</section>
