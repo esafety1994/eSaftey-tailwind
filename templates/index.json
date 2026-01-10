@@ -155,36 +155,6 @@
         "collection_3": "cheap-deals"
       }
     },
-    "blog_list_VRk9pE": {
-      "type": "blog-list",
-      "name": "Blog list",
-      "settings": {
-        "blog": "esafety-blogs",
-        "posts_limit": 4,
-        "heading": "BLOG POSTS",
-        "heading_color": "#000000",
-        "subheading": "",
-        "subheading_color": "#666666",
-        "button_text": "VIEW ALL",
-        "button_url": "shopify://blogs/esafety-blogs",
-        "button_style": "primary-button"
-      }
-    },
-    "connect_stay_mk7WnL": {
-      "type": "connect-stay",
-      "name": "Connect / Stay in touch",
-      "settings": {
-        "follow_title": "Follow us",
-        "follow_text": "Stay up to date on promotions, giveaways, BTS and free resources",
-        "use_theme_social": true,
-        "subscribe_title": "LET'S STAY IN TOUCH",
-        "subscribe_text": "Subscribe for exclusive offers,  latest news & new product launches",
-        "email_placeholder": "Your email address",
-        "subscribe_button_label": "Subscribe",
-        "success_message": "Thanks — we'll be in touch.",
-        "error_message": "Sorry, something went wrong. Please try again."
-      }
-    },
     "hero_full_bg_Bp4zeG": {
       "type": "hero-full-bg",
       "blocks": {
@@ -219,6 +189,36 @@
       "settings": {
         "overlay_opacity": 0
       }
+    },
+    "blog_list_VRk9pE": {
+      "type": "blog-list",
+      "name": "Blog list",
+      "settings": {
+        "blog": "esafety-blogs",
+        "posts_limit": 3,
+        "heading": "BLOG POSTS",
+        "heading_color": "#000000",
+        "subheading": "",
+        "subheading_color": "#666666",
+        "button_text": "VIEW ALL",
+        "button_url": "shopify://blogs/esafety-blogs",
+        "button_style": "primary-button"
+      }
+    },
+    "connect_stay_mk7WnL": {
+      "type": "connect-stay",
+      "name": "Connect / Stay in touch",
+      "settings": {
+        "follow_title": "Follow us",
+        "follow_text": "Stay up to date on promotions, giveaways, BTS and free resources",
+        "use_theme_social": true,
+        "subscribe_title": "LET'S STAY IN TOUCH",
+        "subscribe_text": "Subscribe for exclusive offers,  latest news & new product launches",
+        "email_placeholder": "Your email address",
+        "subscribe_button_label": "Subscribe",
+        "success_message": "Thanks — we'll be in touch.",
+        "error_message": "Sorry, something went wrong. Please try again."
+      }
     }
   },
   "order": [
@@ -226,8 +226,8 @@
     "grid_collection_list_gNtHbb",
     "top_collection_qjTiyL",
     "collection_tabs_e8iAVr",
+    "hero_full_bg_Bp4zeG",
     "blog_list_VRk9pE",
-    "connect_stay_mk7WnL",
-    "hero_full_bg_Bp4zeG"
+    "connect_stay_mk7WnL"
   ]
 }
