@@ -2,7 +2,7 @@
 
 @theme {
   --color-primary: #FFDC06;
-  --color-primary-yellow: #ffe8a0;
+  --color-primary-yellow: #FDDC14;
   --color-primary-light: #ffe61f;
   --color-grey: #dedede;
   --color-bg-light: #fee9a7;
@@ -55,4 +55,7 @@ h2 {
 }
 .read-more-button {
   @apply uppercase pb-2 font-medium;
+}
+.primary-button-bordered {
+  @apply rounded-4xl bg-primary-yellow border-1 border-black text-black hover:bg-black hover:text-white;
 }

@@ -46,11 +46,16 @@
   {% assign prod = all_products[product.handle] %}
 {% endif %}
 <article
-  class="product-card flex flex-col overflow-hidden transition-transform transform p-3 h-[580px] md:h-full max-w-sm m-auto 2xl:max-w-none"
+  class="product-card flex flex-col overflow-hidden transition-transform transform p-1.5 h-[580px] md:h-full max-w-sm m-auto 2xl:max-w-none"
   style="background-color: {{ card_background }}; border: 1px solid {{ card_border }}; border-radius: {{ card_border_radius }}px;"
 >
   <div class="relative overflow-hidden">
     <div class="block relative w-full z-10 group" style="padding-bottom: 100%;">
+      <div class="image-skeleton absolute inset-0 z-30 flex items-center justify-center bg-gray-200">
+        <div class="w-24 h-24 bg-gray-300 rounded animate-pulse"></div>
+      </div>
+      {% render 'product-badges', product: prod %}
+      <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">{% render 'quotify-button', class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black ' %}</div>
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
@@ -64,13 +69,17 @@
             >
           {% endif %}
           {% if prod.featured_image %}
-            {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-contain md:object-cover transition-all duration-300' %}
+            {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-cover transition-all duration-300' %}
             {% if prod.images[1] %}
               {% assign featured_class = featured_class | append: ' group-hover:opacity-0' %}
             {% else %}
               {% assign featured_class = featured_class | append: ' group-hover:scale-105' %}
             {% endif %}
-            {% render 'responsive-image', image: prod.featured_image, image_class: featured_class, wrapper_class: 'absolute inset-0 z-10' %}
+            {% render 'responsive-image',
+              image: prod.featured_image,
+              image_class: featured_class,
+              wrapper_class: 'absolute inset-0 z-10'
+            %}
           {% endif %}
         {% else %}
           <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -95,32 +104,17 @@
       show_compare_price: show_compare_price,
       price_size: price_size,
       price_color: price_color,
-      layout:'card'
+      layout: 'card'
     %}
   </div>
 
-   {% if product.variants.size > 1 %}
-    <div class="text-sm text-gray-500"> <span class="font-medium">{{ product.variants.size }}</span> options available</div>
+  {% if product.variants.size > 1 %}
+    <div class="text-sm text-gray-500">
+      <span class="font-medium">{{ product.variants.size }}</span> options available
+    </div>
   {% endif %}
   <div class="flex justify-center my-2">
     {% render 'quick-add-btn', product: prod, mobile_hide_qty: true %}
   </div>
-  <script>
-    (function(){
-      function applyHoverImages(){
-        if(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches){
-          document.querySelectorAll('img[data-hover-src]').forEach(function(img){
-            if(!img.getAttribute('src')) img.setAttribute('src', img.getAttribute('data-hover-src'));
-          });
-        }
-      }
-      if(!window.__hoverImagesApplied){
-        window.__hoverImagesApplied = true;
-        applyHoverImages();
-        document.addEventListener('DOMContentLoaded', applyHoverImages);
-      } else {
-        applyHoverImages();
-      }
-    })();
-  </script>
+  {% render 'product-card-scripts' %}
 </article>

@@ -1,0 +1,36 @@
+{%- comment -%}
+  Snippet: product-badges
+  Renders discount or NEW badge for a product.
+  Expects: `product` variable passed in (full product object)
+{%- endcomment -%}
+
+{% assign prod_local = product %}
+
+{% assign compare_price = prod_local.compare_at_price_max | default: 0 %}
+{% assign selling_price = prod_local.price_max | default: prod_local.price | default: 0 %}
+{% assign show_discount = false %}
+{% assign discount_pct = 0 %}
+{% if compare_price > selling_price and compare_price > 0 %}
+  {% assign diff = compare_price | minus: selling_price %}
+  {% assign discount_pct = diff | times: 100 | divided_by: compare_price | round %}
+  {% if discount_pct > 0 %}
+    {% assign show_discount = true %}
+  {% endif %}
+{% endif %}
+
+{% assign is_new = false %}
+{% for t in prod_local.tags %}
+  {% assign t_down = t | downcase | strip %}
+  {% if t_down == 'new' or t_down == 'new-arrival' or t_down == 'new arrival' or t_down == 'newarrival' %}
+    {% assign is_new = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<div class="badges absolute top-3 left-3 z-40 flex flex-col items-end gap-2">
+  {% if show_discount %}
+    <div class="discount-badge bg-primary-yellow text-black rounded-full text-sm font-semibold size-15 flex items-center justify-center leading-none">-{{ discount_pct }}%</div>
+  {% elsif is_new %}
+    <div class="new-badge bg-black text-primary-yellow rounded-full text-sm font-semibold size-15 flex items-center justify-center leading-none">NEW</div>
+  {% endif %}
+</div>

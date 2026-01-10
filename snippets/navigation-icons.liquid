@@ -3,12 +3,5 @@
   <button id="profile-btn" class="p-1 rounded hover:text-bg-light transition">
     {% render 'icon-svg-user', class: 'size-6 cursor-pointer' %}
   </button>
-  <button
-    data-quotify-cart
-    data-shop="{{ shop.metafields.quotify.shop_id }}"
-    type="button"
-    class="p-1 rounded hover:text-bg-light transition"
-  >
-    {% render 'icon-svg-clipboard', class: 'size-6 cursor-pointer' %}
-  </button>
+  {% render 'quotify-button' %}
 </div>

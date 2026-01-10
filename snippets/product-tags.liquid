@@ -54,11 +54,13 @@
     {% endif %}
 
     {% comment %} New Arrival {% endcomment %}
-    {% if product.tags contains 'New Arrival' %}
-      {% if display_limit == 0 or tag_count < display_limit %}
-        <span class="bg-black text-white">New Arrival</span>
-        {% assign tag_count = tag_count | plus: 1 %}
+    {% comment %} // moved to product-bagdes.liquid to avoid duplication 
+      {% if product.tags contains 'New Arrival' %}
+        {% if display_limit == 0 or tag_count < display_limit %}
+          <span class="bg-black text-white">New Arrival</span>
+          {% assign tag_count = tag_count | plus: 1 %}
+        {% endif %}
       {% endif %}
-    {% endif %}
+    {% endcomment %}
   </div>
 {% endif %}
