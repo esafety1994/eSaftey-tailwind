@@ -1,6 +1,6 @@
-<article class="h-full flex flex-col max-w-[280px] md:max-w-sm m-auto">
+<article class="h-full flex flex-col max-w-[280px] md:max-w-sm lg:max-w-md m-auto">
   {% if article.image %}
-    <a href="{{ article.url }}" class="w-full h-48 relative overflow-hidden">
+    <a href="{{ article.url }}" class="w-full h-48 lg:h-62 relative overflow-hidden">
       {% render 'responsive-image',
         image: article.image,
         width: 720,

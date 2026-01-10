@@ -985,6 +985,9 @@
   .\!rounded-3xl {
     border-radius: var(--radius-3xl) !important;
   }
+  .\!rounded-4xl {
+    border-radius: var(--radius-4xl) !important;
+  }
   .rounded {
     border-radius: 0.25rem;
   }
@@ -2113,6 +2116,11 @@
       display: none;
     }
   }
+  .lg\:h-62 {
+    @media (width >= 64rem) {
+      height: calc(var(--spacing) * 62);
+    }
+  }
   .lg\:h-64 {
     @media (width >= 64rem) {
       height: calc(var(--spacing) * 64);
@@ -2136,6 +2144,11 @@
   .lg\:w-48 {
     @media (width >= 64rem) {
       width: calc(var(--spacing) * 48);
+    }
+  }
+  .lg\:max-w-md {
+    @media (width >= 64rem) {
+      max-width: var(--container-md);
     }
   }
   .lg\:grid-cols-2 {

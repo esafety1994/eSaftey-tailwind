@@ -6,38 +6,40 @@
 {% assign blog = blogs[section.settings.blog] %}
 {% assign posts_limit = section.settings.posts_limit | default: 3 %}
 
-<div class="container m-auto" {{ section.shopify_attributes }}>
-    {% if section.settings.heading != blank %}
-      <h3 class="text-3xl font-semibold text-center mb-8 md:mb-12" style="color: {{ section.settings.heading_color }};">
-        {{ section.settings.heading }}
-      </h3>
-    {% endif %}
+<div class="container m-auto py-6" {{ section.shopify_attributes }}>
+  {% if section.settings.heading != blank %}
+    <h3 class="text-3xl font-semibold text-center mb-8 md:mb-12" style="color: {{ section.settings.heading_color }};">
+      {{ section.settings.heading }}
+    </h3>
+  {% endif %}
 
-    {% if section.settings.subheading != blank %}
-      <p class="text-lg text-center mb-6" style="color: {{ section.settings.subheading_color }};">
-        {{ section.settings.subheading }}
-      </p>
-    {% endif %}
+  {% if section.settings.subheading != blank %}
+    <p class="text-lg text-center mb-6" style="color: {{ section.settings.subheading_color }};">
+      {{ section.settings.subheading }}
+    </p>
+  {% endif %}
 
-    {% if blog and blog.articles.size > 0 %}
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14 md:gap-6">
-        {% render 'blog-card', blog: blog, posts_limit: posts_limit %}
-      </div>
-    {% else %}
-      <p class="text-center text-gray-500 py-8">No blog posts found.</p>
-    {% endif %}
+  {% if blog and blog.articles.size > 0 %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      {% for article in blog.articles limit: posts_limit %}
+        {% render 'blog-card-item', article: article %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-center text-gray-500 py-8">No blog posts found.</p>
+  {% endif %}
 
-    {% if section.settings.button_text != blank and section.settings.button_url != blank %}
-      <div class="text-center my-12 md:my-16">
-        <a
-          href="{{ section.settings.button_url }}"
-          class="btn {{ section.settings.button_style }}"
-        >
-          {{ section.settings.button_text }}
-        </a>
-      </div>
-    {% endif %}
-  </div>
+  {% if section.settings.button_text != blank and section.settings.button_url != blank %}
+    <div class="text-center my-12 md:my-16">
+      <a
+        href="{{ section.settings.button_url }}"
+        class="btn {{ section.settings.button_style }}"
+      >
+        {{ section.settings.button_text }}
+      </a>
+    </div>
+  {% endif %}
+</div>
 
 {% schema %}
 {
