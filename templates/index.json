@@ -146,6 +146,15 @@
         "heading": "Top Collections"
       }
     },
+    "collection_tabs_e8iAVr": {
+      "type": "collection-tabs",
+      "name": "Collection Tabs",
+      "settings": {
+        "collection_1": "new-arrivals",
+        "collection_2": "best-sellers",
+        "collection_3": "cheap-deals"
+      }
+    },
     "product_list_D7UkQp": {
       "type": "product-list",
       "name": "Product grid",
@@ -201,6 +210,7 @@
     "carousel_kxG3tk",
     "grid_collection_list_gNtHbb",
     "top_collection_qjTiyL",
+    "collection_tabs_e8iAVr",
     "product_list_D7UkQp",
     "blog_list_VRk9pE",
     "connect_stay_mk7WnL"
