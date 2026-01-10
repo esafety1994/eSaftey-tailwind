@@ -85,9 +85,7 @@
           "menu_NwDpXW",
           "menu_cXPgBJ"
         ],
-        "settings": {
-          "footer_bottom_menu": ""
-        }
+        "settings": {}
       },
       "cart-count": {
         "type": "cart-count",
