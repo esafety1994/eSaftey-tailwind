@@ -162,9 +162,6 @@
           "type": "column",
           "settings": {
             "background_image": "shopify://shop_images/Rectangle_18.png",
-            "overlay_opacity": 30,
-            "heading": "",
-            "content": "",
             "button_text": "Catalogue 2026",
             "button_url": "shopify://pages/catalogue"
           }
@@ -173,9 +170,6 @@
           "type": "column",
           "settings": {
             "background_image": "shopify://shop_images/Rectangle_19.png",
-            "overlay_opacity": 30,
-            "heading": "",
-            "content": "",
             "button_text": "eSolar Lighting Brochures",
             "button_url": "shopify://pages/contact-us"
           }
@@ -186,9 +180,7 @@
         "column_bUWT3P"
       ],
       "name": "Hero — Full Background",
-      "settings": {
-        "overlay_opacity": 0
-      }
+      "settings": {}
     },
     "blog_list_VRk9pE": {
       "type": "blog-list",
@@ -196,7 +188,7 @@
       "settings": {
         "blog": "esafety-blogs",
         "posts_limit": 3,
-        "heading": "BLOG POSTS",
+        "heading": "LATEST FROM BLOG",
         "heading_color": "#000000",
         "subheading": "",
         "subheading_color": "#666666",
