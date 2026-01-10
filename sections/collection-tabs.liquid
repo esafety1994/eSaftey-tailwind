@@ -1,0 +1,117 @@
+{% comment %}
+Section: Collection Tabs
+Allows selecting 3 collections in the editor and displays them as tabs.
+Each tab shows up to 8 products in a 2-column grid (total 8: 2 columns x 4 rows).
+{% endcomment %}
+<section id="collection-tabs-{{ section.id }}" class="section-collection-tabs py-8">
+  <div class="container mx-auto px-4">
+    <div class="tabs mb-6 flex gap-3" role="tablist">
+      {% assign collections_list = '' | split: ',' %}
+      {% for i in (1..3) %}
+        {% assign col_setting = section.settings['collection_' | append: i ] %}
+        {% if col_setting != blank and collections[col_setting] %}
+          {% assign col = collections[col_setting] %}
+          {% assign collections_list = collections_list | push: col.handle %}
+          <button
+            type="button"
+            class="tab-btn px-4 py-2 bg-white border rounded-md shadow-sm text-sm"
+            data-tab-index="{{ forloop.index0 }}"
+            role="tab"
+            aria-controls="collection-panel-{{ section.id }}-{{ forloop.index0 }}"
+            aria-selected="{{ forloop.first }}">
+            {{ col.title }}
+          </button>
+        {% else %}
+          <button
+            type="button"
+            class="tab-btn px-4 py-2 bg-white border rounded-md shadow-sm text-sm opacity-50 cursor-not-allowed"
+            disabled
+            aria-disabled="true">
+            Select collection
+          </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="tab-panels">
+      {% for i in (1..3) %}
+        {% assign col_setting = section.settings['collection_' | append: i ] %}
+        {% assign panel_index = forloop.index0 %}
+        <div
+          id="collection-panel-{{ section.id }}-{{ panel_index }}"
+          class="tab-panel {% unless forloop.first %}hidden{% endunless %}"
+          role="tabpanel"
+          aria-labelledby="tab-{{ section.id }}-{{ panel_index }}">
+
+          {% if col_setting != blank and collections[col_setting] %}
+            {% assign col = collections[col_setting] %}
+            <h3 class="collection-title text-lg font-semibold mb-4">{{ col.title }}</h3>
+            <div class="grid grid-cols-2 gap-4">
+              {% for product in col.products limit:8 %}
+                <div class="product-card bg-white border rounded p-3">
+                  <a href="{{ product.url }}" class="block">
+                    {% if product.featured_image %}
+                      <img src="{{ product.featured_image | img_url: '480x480' }}" alt="{{ product.title }}" class="w-full h-auto object-cover mb-2" />
+                    {% else %}
+                      <div class="w-full h-40 bg-gray-100 mb-2"></div>
+                    {% endif %}
+                    <div class="product-info">
+                      <div class="product-title text-sm font-medium mb-1">{{ product.title }}</div>
+                      <div class="product-price text-sm text-gray-700">{{ product.price | money }}</div>
+                    </div>
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-sm text-gray-500">No collection selected for this tab.</p>
+          {% endif %}
+
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    /* Minimal styles to ensure spacing works even without Tailwind build */
+    #collection-tabs-{{ section.id }} .tab-btn[aria-selected="true"]{box-shadow:0 1px 2px rgba(0,0,0,.05);border-color:#111}
+    #collection-tabs-{{ section.id }} .tab-panel.hidden{display:none}
+  </style>
+
+  <script>
+    (function(){
+      var root = document.getElementById('collection-tabs-{{ section.id }}');
+      if (!root) return;
+
+      var tabs = root.querySelectorAll('.tab-btn');
+      var panels = root.querySelectorAll('.tab-panel');
+
+      tabs.forEach(function(tab, idx){
+        tab.addEventListener('click', function(){
+          if (tab.disabled) return;
+          // deactivate all
+          tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); t.classList.remove('ring-2'); });
+          panels.forEach(function(p){ p.classList.add('hidden'); });
+
+          // activate clicked
+          tab.setAttribute('aria-selected','true');
+          var panel = root.querySelector('#collection-panel-{{ section.id }}-' + (tab.dataset.tabIndex || idx));
+          if (panel) panel.classList.remove('hidden');
+        });
+      });
+    })();
+  </script>
+
+  {% schema %}
+  {
+    "name": "Collection Tabs",
+    "settings": [
+      { "type": "collection", "id": "collection_1", "label": "Collection 1" },
+      { "type": "collection", "id": "collection_2", "label": "Collection 2" },
+      { "type": "collection", "id": "collection_3", "label": "Collection 3" }
+    ],
+    "presets": [ { "name": "Collection Tabs", "category": "Collections" } ]
+  }
+  {% endschema %}
+
+</section>
