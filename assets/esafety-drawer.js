@@ -10,6 +10,7 @@ class EsafetyDrawer extends HTMLElement {
       this.querySelector(".esafety-drawer-panel");
     this.closeButton = this.querySelector("[data-drawer-close]");
     this.cartCount = document.querySelector(".cart-count");
+    this._isScrollLocked = false;
   }
 
   connectedCallback() {
@@ -53,10 +54,15 @@ class EsafetyDrawer extends HTMLElement {
     } else {
       this.setAttribute("open", "");
     }
-    // lock background scroll
+    // lock background scroll (only once)
     try {
-      this._previousBodyOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
+      if (!this._isScrollLocked) {
+        this._previousBodyOverflow = document.body.style.overflow;
+        this._previousHtmlOverflow = document.documentElement.style.overflow;
+        document.body.style.overflow = "hidden";
+        document.documentElement.style.overflow = "hidden";
+        this._isScrollLocked = true;
+      }
     } catch (e) {
       // ignore in restricted environments
     }
@@ -67,9 +73,13 @@ class EsafetyDrawer extends HTMLElement {
     if (this.panel) {
       // hide overlay immediately so clicks don't get intercepted
       if (this.overlay) this.overlay.classList.add("hidden");
-      // restore body overflow immediately
+      // restore body/html overflow immediately (only if we locked it)
       try {
-        document.body.style.overflow = this._previousBodyOverflow || "";
+        if (this._isScrollLocked) {
+          document.body.style.overflow = this._previousBodyOverflow || "";
+          document.documentElement.style.overflow = this._previousHtmlOverflow || "";
+          this._isScrollLocked = false;
+        }
       } catch (e) {}
 
       // move panel offscreen depending on its current position (right vs left)
@@ -98,7 +108,11 @@ class EsafetyDrawer extends HTMLElement {
     } else {
       if (this.overlay) this.overlay.classList.add("hidden");
       try {
-        document.body.style.overflow = this._previousBodyOverflow || "";
+        if (this._isScrollLocked) {
+          document.body.style.overflow = this._previousBodyOverflow || "";
+          document.documentElement.style.overflow = this._previousHtmlOverflow || "";
+          this._isScrollLocked = false;
+        }
       } catch (e) {}
     }
 
