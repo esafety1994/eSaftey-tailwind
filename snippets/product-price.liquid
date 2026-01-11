@@ -14,7 +14,12 @@
   assign show_ex_gst = show_ex_gst | default: false
   assign req_from = req_from | default: 'normal'
   assign layout = layout | default: 'standard'
+  assign gst_text_size = gst_text_size | default: 'text-sm'
 %}
+{% if layout == 'search' %}
+  {% assign gst_text_size = 'text-xs' %}
+{% endif %}
+
 <div
   class="grid gap-2 my-4 items-center"
   style="font-size: {{ price_size }}; color: {{ price_color }};"
@@ -24,9 +29,9 @@
       <span class="font-semibold">
         <span>{{ product.price | money }}</span>
         {% if product.tags contains 'isgstexempt' %}
-          <span class="ml-2 text-sm">(ex. GST)</span>
+          <span class="ml-2 {{ gst_text_size }}">(ex. GST)</span>
         {% else %}
-          <span class="ml-2 text-sm">(inc GST)</span>
+          <span class="ml-2 {{ gst_text_size }}">(inc GST)</span>
         {% endif %}
         {% if product.compare_at_price > product.price and show_compare_price %}
           <span>
@@ -44,30 +49,58 @@
     </div>
 
   {% else %}
-    <span class="font-semibold flex justify-between">
-      <span class="flex flex-wrap items-center justify-start gap-1.5">
-        <span>{{ product.price | money }}</span>
-        {% if product.tags contains 'isgstexempt' %}
+    <span class="font-semibold flex justify-between {% if layout == 'search' %}flex-col{% endif %}">
+      {% if layout == 'search' %}
+        <span class="flex flex-wrap items-center justify-start">
+          <span>{{ product.price | money }}</span>
+          {% if product.tags contains 'isgstexempt' %}
+            <span>
+              <span class="ml-0.5 {{ gst_text_size }}">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
+            </span>
+          {% else %}
+            <span class="ml-0.5 {{ gst_text_size }}">({{ 'general.taxes.include_tax_copy' | t }})</span>
+          {% endif -%}
+        </span>
+      {% else %}
+        <span class="flex flex-wrap items-center justify-start gap-1.5">
+          <span>{{ product.price | money }}</span>
+          {% if product.tags contains 'isgstexempt' %}
+            <span>
+              <span class="ml-2 {{ gst_text_size }}">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
+            </span>
+          {% else %}
+            <span class="ml-2 {{ gst_text_size }}">({{ 'general.taxes.include_tax_copy' | t }})</span>
+          {% endif -%}
+        </span>
+      {% endif -%}
+      {% if product.compare_at_price > product.price and show_compare_price %}
+        {% if layout == 'search' %}
           <span>
-            <span class="ml-2 text-sm">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
+            <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start">
+              <span>{{ product.compare_at_price | money }}</span>
+              {% if product.tags contains 'isgstexempt' %}
+                <span>
+                  <span class="ml-0.5 {{ gst_text_size }}">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
+                </span>
+              {% else %}
+                <span class="ml-0.5 {{ gst_text_size }}">({{ 'general.taxes.include_tax_copy' | t }})</span>
+              {% endif -%}
+            </span>
           </span>
         {% else %}
-          <span class="text-sm">({{ 'general.taxes.include_tax_copy' | t }})</span>
-        {% endif -%}
-      </span>
-      {% if product.compare_at_price > product.price and show_compare_price %}
-        <span>
-          <span class="text-bg-light-red line-through flex flex-wrap ml-4 justify-end">
-            <span>{{ product.compare_at_price | money }}</span>
-            {% if product.tags contains 'isgstexempt' %}
-              <span>
-                <span class="ml-2 text-sm">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
-              </span>
-            {% else %}
-              <span class="ml-2 text-sm">({{ 'general.taxes.include_tax_copy' | t }})</span>
-            {% endif -%}
+          <span>
+            <span class="text-bg-light-red line-through flex flex-wrap ml-4 justify-end">
+              <span>{{ product.compare_at_price | money }}</span>
+              {% if product.tags contains 'isgstexempt' %}
+                <span>
+                  <span class="ml-2 {{ gst_text_size }}">({{ 'general.taxes.exclude_tax_copy' | t }})</span>
+                </span>
+              {% else %}
+                <span class="ml-2 {{ gst_text_size }}">({{ 'general.taxes.include_tax_copy' | t }})</span>
+              {% endif -%}
+            </span>
           </span>
-        </span>
+        {% endif %}
       {% endif %}
     </span>
     {% if show_ex_gst %}

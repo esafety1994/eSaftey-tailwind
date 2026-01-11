@@ -12,6 +12,11 @@
 {% comment %} Display up to two priority tags: Sale, Bulky, Best Sellers, New Arrival {% endcomment %}
 {% assign tag_count = 0 %}
 {% comment %} optional `max_tags` render param: if not provided (or 0) show all tags {% endcomment %}
+
+{% assign default_class = " gap-3 [&>span]:inline-block [&>span]:text-sm [&>span]:px-3 [&>span]:py-2" %}
+{% if layout == "search" %}
+  {% assign default_class = " gap-1 [&>span]:inline-block [&>span]:text-xs [&>span]:px-1.5 [&>span]:py-1.2" %}
+{% endif %}
 {% if max_tags == null %}
   {% assign display_limit = 0 %}
 {% else %}
@@ -28,7 +33,7 @@
 {% endfor %}
 
 {% if is_on_sale or product.tags.size > 0 %}
-  <div class="flex flex-wrap gap-3 py-2 [&>span]:inline-block [&>span]:text-sm [&>span]:px-3 [&>span]:py-2 [&>span]:rounded-full [&>span]:font-medium">
+  <div class="flex flex-wrap py-2  [&>span]:rounded-full [&>span]:font-medium {{ default_class }}">
     {% comment %} Sale first {% endcomment %}
     {% if is_on_sale %}
       {% if display_limit == 0 or tag_count < display_limit %}

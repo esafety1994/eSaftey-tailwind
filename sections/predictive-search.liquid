@@ -1,0 +1,89 @@
+{%- if predictive_search.performed -%}
+  <div id="predictive-search-results" class="mx-auto w-full max-w-4xl px-0 md:px-5 bg-white p-6">
+    <div class="flex gap-4">
+      <!-- Left column: 37% width -->
+      <div class="basis-[37%] flex flex-col justify-stretch ">
+        <div>
+          <div
+            id="predictive-search-suggestions"
+            class="leading-none uppercase border-b border-[#333333] font-medium text-[#333333] text-[14px] tracking-[0px] mx-2 pb-1.5 mb-1"
+          >
+            Popular suggestions
+          </div>
+          <ul role="group" aria-labelledby="predictive-search-suggestions" class="pl-6 text-sm">
+            {% if predictive_search.resources.queries and predictive_search.resources.queries.size > 0 %}
+              {% for term in predictive_search.resources.queries limit: 5 %}
+                <li class="py-1 cursor-pointer">
+                  <a href="{{ term.url }}" class="m-search-item" tabindex="-1">
+                    <div class="">
+                      <p
+                        class=""
+                        aria-label="{{ term.text }}"
+                      >
+                        {{ term.styled_text }}
+                      </p>
+                    </div>
+                  </a>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li class="py-1 cursor-pointer">bag</li>
+              <li class="py-1 cursor-pointer">bags</li>
+              <li class="py-1 cursor-pointer">bag organizer</li>
+            {% endif %}
+          </ul>
+
+          <div
+            id="predictive-search-collections"
+            class="leading-none uppercase border-b border-[#333333] font-medium text-[#333333] text-[14px] tracking-[0px] mx-2 pb-1.5 mb-1 py-4"
+          >
+            Collections
+          </div>
+          <ul role="group" aria-labelledby="predictive-search-collections" class="mt-4 pl-6">
+            {% if predictive_search.resources.collections and predictive_search.resources.collections.size > 0 %}
+              {% for coll in predictive_search.resources.collections limit: 5 %}
+                <li class="py-1">
+                  <a href="{{ coll.url }}" class="text-sm">{{ coll.title }}</a>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li class="py-1 text-sm text-gray-500">No categories were found</li>
+            {% endif %}
+          </ul>
+          {%- comment -%} Pages removed; View all button moved to bottom of products column {%- endcomment -%}
+        </div>
+        <div class="mt-auto mb-6">
+          <a
+            href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}"
+            class="view-all-results btn primary-button w-full inline-flex items-center justify-center px-4 py-2 text-sm font-medium"
+            role="button"
+            data-query="{{ predictive_search.terms | url_encode }}"
+          >
+            View all <span id="res-qty"> &nbsp; </span> results <span class="ml-2"> {% render 'icon-svg-arrow-right' %}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right column: 61% width -->
+      <div class="basis-[61%]">
+        <h3
+          id="predictive-search-products"
+          class="leading-none uppercase border-b border-[#333333] font-medium text-[#333333] text-[14px] tracking-[0px] mx-2 pb-1.5 mb-1"
+        >
+          Products
+        </h3>
+        <div id="predictive-products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-4">
+          {% if predictive_search.resources.products and predictive_search.resources.products.size > 0 %}
+            {% for product in predictive_search.resources.products %}
+              {% render 'search-product-card', product: product %}
+            {% endfor %}
+          {% else %}
+            <div class="text-sm text-gray-500">
+              No products found for <strong>{{ predictive_search.terms }}</strong>.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

@@ -1,16 +1,20 @@
+{% assign small_classes = '' %}
+{% if button_small %}
+  {% assign small_classes = ' !p-2 !text-xs' %}
+{% endif %}
 {% if status == 'Out of Stock' %}
   <button
     type="submit"
-    class="primary-cart-button w-full m-auto justify-center opacity-50 cursor-not-allowed"
+    class="primary-cart-button w-full m-auto justify-center opacity-50 cursor-not-allowed{{ small_classes }}"
     disabled
     aria-disabled="true"
   >
     Out of Stock
   </button>
 {% elsif status == 'Back Order' %}
-  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}">{% if showPlus %}{% render 'icon-svg-circle-plus', classes: 'inline-block mr-2 size-6' %}{% endif %}Back Order</button>
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}{{ small_classes }}">{% if showPlus %}{% render 'icon-svg-circle-plus', classes: 'inline-block mr-2 size-6' %}{% endif %}Back Order</button>
 {% else %}
-  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}">
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}{{ small_classes }}">
     {% if showPlus %}{% render 'icon-svg-circle-plus', classes: 'inline-block mr-2 size-6' %}{% endif %}Add to Cart
   </button>
 {% endif %}

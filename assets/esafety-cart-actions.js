@@ -224,11 +224,23 @@ if (!customElements.get("esafety-cart-action-button")) {
 
       setLoading(true);
 
+      // Safely read quantity (default to 1 when no quantity input present)
+      var qtyEl = form.querySelector('input[name="quantity"]');
+      var qty = 1;
+      try {
+        if (qtyEl && qtyEl.value) qty = parseInt(qtyEl.value, 10) || 1;
+      } catch (e) {
+        qty = 1;
+      }
+
+      var idEl = form.querySelector('input[name="id"]');
+      var variantId = idEl && idEl.value ? idEl.value : null;
+
       const formData = {
         items: [
           {
-            id: form.querySelector('input[name="id"]').value,
-            quantity: form.querySelector('input[name="quantity"]').value,
+            id: variantId,
+            quantity: qty,
             properties: properties,
           },
         ],

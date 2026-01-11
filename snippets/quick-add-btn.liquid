@@ -11,25 +11,28 @@
   assign button_text = button_text | default: 'Add to Cart'
   assign button_classes = button_classes | default: 'btn primary-cart-button'
   assign hide_qty = hide_qty | default: false
+  assign button_small = button_small | default: false
 %}
-
+{% if button_small %}
+  {% assign small_classes = ' !p-2 !text-xs' %}
+{% endif %}
 
 {% if product.available %}
   {% if product.variants.size > 1 %}
     <a
       href="{{ product.url }}"
-      class="{{ button_classes }} quick-add-btn w-full justify-center text-center"
+      class="{{ button_classes }} quick-add-btn w-full justify-center text-center {{ small_classes }}"
       aria-label="Select options for {{ product.title }}"
     >
       Select an option
     </a>
   {% else %}
-    {% render 'act-button', product: product, mobile_hide_qty: mobile_hide_qty, hide_qty: hide_qty, button_classes:"quick-add-btn" %}
+    {% render 'act-button', product: product, mobile_hide_qty: mobile_hide_qty, hide_qty: hide_qty, button_classes:"quick-add-btn", button_small: button_small %}
   {% endif %}
 {% else %}
   <button
     disabled
-    class="bg-gray-400 text-white px-4 py-2 rounded-md font-medium text-sm cursor-not-allowed"
+    class="bg-gray-400 text-white px-4 py-2 rounded-md font-medium text-sm cursor-not-allowed {{ small_classes }}"
     aria-label="Out of stock"
   >
     Out of Stock

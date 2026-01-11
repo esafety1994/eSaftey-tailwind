@@ -1,4 +1,10 @@
 {% comment %} Variant stock status pill — shows `variant.metafields.custom.stock_status` {% endcomment %}
+{% assign size_class = 'size-6' %}
+{% assign text_class = 'text-base' %}
+{% if layout == 'search' %}
+  {% assign size_class = 'size-4' %}
+  {% assign text_class = 'text-xs' %}
+{% endif %}
 <div id="product-stock-badge" class="text-gray-600">
   {% assign _variant = variant %}
   {% if _variant == null and product %}
@@ -11,19 +17,20 @@
     %}
     <span class="flex py-1 text-sm gap-1 items-center ">
       {% if status == 'Back Order' or status == 'Out of Stock' or status == 'Low Stock' %}
-        {% render 'icon-svg-circle-x', class: 'size-6 text-yellow-700', stroke_width: 1.5 %}
-        <span class="text-yellow-700">{{ status }}</span>
+        {% capture check_class %}{{ size_class }} text-yellow-700{% endcapture %}
+        {% render 'icon-svg-circle-x', class: check_class, stroke_width: 1.5 %}
+        <span class="text-yellow-700 {{ text_class }}">{{ status }}</span>
       {% else %}
-        {% render 'icon-svg-circle-check', class: 'size-6 text-green-700', stroke_width: 1.5 %}
-        <span class="text-green-700">{{ status }}</span>
+        {% capture check_class %}{{ size_class }} text-green-700{% endcapture %}
+        {% render 'icon-svg-circle-check', class: check_class, stroke_width: 1.5 %}
+        <span class="text-green-700 {{ text_class }}">{{ status }}</span>
       {% endif %}
-
-      
     </span>
   {% else %}
     <span class="flex py-1 text-sm gap-1 items-center ">
-      {% render 'icon-svg-circle-check', class: 'size-6 text-green-700', stroke_width: 1.5 %}
-      <span class="text-green-700">In Stock</span>
+      {% capture check_class %}{{ size_class }} text-green-700{% endcapture %}
+      {% render 'icon-svg-circle-check', class: check_class, stroke_width: 1.5 %}
+      <span class="text-green-700 {{ text_class }}">In Stock</span>
     </span>
   {% endif %}
 </div>

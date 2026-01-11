@@ -155,9 +155,7 @@ document.addEventListener("Searchanise.Loaded", function () {
               fullCard += '<article class="product-card flex flex-col overflow-hidden transition-transform transform p-1.5 h-[580px] md:h-full max-w-sm m-auto 2xl:max-w-none" style="background-color:#ffffff;border:1px solid #D6D4D4;border-radius:0;padding:0.375rem;">';
               fullCard += '  <div class="relative overflow-hidden">';
               fullCard += '    <div class="block relative w-full z-10 group" style="padding-bottom:100%;">';
-              fullCard += '      <div class="image-skeleton absolute inset-0 z-30 flex items-center justify-center bg-gray-200" style="display:none;">';
-              fullCard += '        <div class="w-24 h-24 bg-gray-300 rounded animate-pulse"></div>';
-              fullCard += '      </div>';
+              // image skeleton removed
               // left badges (discount/new)
               if (badgesHtml) {
                 fullCard += '      <div class="badges absolute top-3 left-3 z-40 flex flex-col items-end gap-2">' + badgesHtml + '</div>';

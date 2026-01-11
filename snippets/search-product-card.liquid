@@ -1,0 +1,82 @@
+{% comment %}
+  Copy of `product-card.liquid` for predictive search rendering
+  Used by `sections/predictive-search.liquid` as a lightweight product card
+{% endcomment %}
+
+{% liquid
+  assign show_vendor = show_vendor | default: false
+  assign show_compare_price = show_compare_price | default: true
+  assign card_padding = card_padding | default: '15px'
+%}
+
+{% assign prod = product %}
+{% if product.handle and all_products[product.handle] %}
+  {% assign prod = all_products[product.handle] %}
+{% endif %}
+<article
+  class="w-full product-card flex flex-col overflow-hidden transition-transform transform p-1.5 h-full max-w-sm m-auto 2xl:max-w-none border border-gray-400 rounded-none"
+>
+  <div class="relative overflow-hidden h-40">
+    <div class="block relative w-full z-10 group h-40">
+      {%- comment -%} image skeleton removed — skeleton no longer used {%- endcomment -%}
+      {% render 'product-badges', product: prod %}
+      <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">
+        {% render 'quotify-button',
+          class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black '
+        %}
+      </div>
+      <a href="{{ prod.url }}" class="absolute inset-0 z-20 block h-40">
+        {% if prod.featured_image %}
+          {% if prod.images[1] %}
+            <img
+              data-hover-src="{% if prod.images[1].src %}{{ prod.images[1] | image_url: width: 400 }}{% else %}{{ prod.images[1] }}{% endif %}"
+              alt="{{ prod.images[1].alt | default: prod.title | escape }}"
+              class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20 hover-image"
+              loading="lazy"
+              width="400"
+              height="400"
+            >
+          {% endif %}
+          {% if prod.featured_image %}
+            {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-cover transition-all duration-300' %}
+            {% if prod.images[1] %}
+              {% assign featured_class = featured_class | append: '  h-40group-hover:opacity-0' %}
+            {% else %}
+              {% assign featured_class = featured_class | append: ' group-hover:scale-105' %}
+            {% endif %}
+            {% render 'responsive-image',
+              image: prod.featured_image,
+              image_class: featured_class,
+              wrapper_class: 'absolute inset-0 z-10'
+            %}
+          {% endif %}
+        {% else %}
+          <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+            {{ 'product-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </a>
+    </div>
+  </div>
+  {% render 'product-tags', product: prod, max_tags: 2, layout: 'search' %}
+  <div class="flex flex-col gap-1 flex-grow" style="padding: {{ card_padding }}px;">
+    <a
+      href="{{ prod.url }}"
+      class="font-semibold text-xs"
+    >
+      {{ prod.title }}
+    </a>
+    {% render 'product-stock-badge', product: prod, layout: 'search' %}
+    {% render 'product-price',
+      product: prod,
+      show_compare_price: show_compare_price,
+      price_size: '12px',
+      price_color: '#000000',
+      layout: 'search'
+    %}
+  </div>
+
+  <div class="flex justify-center my-2">
+    {% render 'quick-add-btn', product: prod, hide_qty: true, button_small: true %}
+  </div>
+</article>

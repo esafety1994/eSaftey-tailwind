@@ -51,9 +51,7 @@
 >
   <div class="relative overflow-hidden">
     <div class="block relative w-full z-10 group" style="padding-bottom: 100%;">
-      <div class="image-skeleton absolute inset-0 z-30 flex items-center justify-center bg-gray-200">
-        <div class="w-24 h-24 bg-gray-300 rounded animate-pulse"></div>
-      </div>
+      {%- comment -%} image skeleton removed — skeleton no longer used {%- endcomment -%}
       {% render 'product-badges', product: prod %}
       <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">{% render 'quotify-button', class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black ' %}</div>
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
@@ -116,5 +114,4 @@
   <div class="flex justify-center my-2">
     {% render 'quick-add-btn', product: prod, mobile_hide_qty: true %}
   </div>
-  {% render 'product-card-scripts' %}
 </article>

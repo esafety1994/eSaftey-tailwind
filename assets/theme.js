@@ -73,3 +73,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Hover image helper: move from inline snippet to central theme asset
+window.applyHoverImages = function(){
+  try{
+    if(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+      document.querySelectorAll('img[data-hover-src]').forEach(function(img){
+        if(!img.getAttribute('src')) img.setAttribute('src', img.getAttribute('data-hover-src'));
+      });
+    }
+  }catch(e){ /* ignore */ }
+};
+
+document.addEventListener('DOMContentLoaded', function(){
+  try{ window.applyHoverImages(); } catch(e){}
+});
