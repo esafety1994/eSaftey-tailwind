@@ -68,10 +68,10 @@ a.underline-animation:focus::after {
   transform: translateX(0%);
   transition: width 220ms ease;
 }
-.sheet-subpanel.panel-level-1{
+.sheet-subpanel.panel-level-1 {
   background-color: #f5f4f4;
 }
-.sheet-subpanel.panel-level-2{
+.sheet-subpanel.panel-level-2 {
   background-color: #e6e6e6;
 }
 
@@ -83,7 +83,9 @@ a.underline-animation:focus::after {
     overflow: visible;
   }
   .sheet.collapsed-root .sheet-content img.h-18,
-  .root-menu-title { transition: opacity 320ms;}
+  .root-menu-title {
+    transition: opacity 320ms;
+  }
   .sheet.collapsed-root .root-menu-title {
     opacity: 0;
     font-size: 0;
@@ -287,10 +289,30 @@ a.underline-animation:focus::after {
 
 /* Highlight active root menu item */
 .mega-item-link.root-active {
-  background: #FDDC14 !important;
+  background: #fddc14 !important;
   color: #000 !important;
 }
 .mega-item-link.root-active .menu-icon {
   opacity: 1;
 }
 
+/* Hide native browser search clear button for desktop and mobile inputs */
+#Search::-webkit-search-cancel-button,
+#Search::-webkit-search-decoration,
+#Search::-webkit-search-results-button,
+#Search::-webkit-search-results-decoration,
+#SearchMobile::-webkit-search-cancel-button,
+#SearchMobile::-webkit-search-decoration,
+#SearchMobile::-webkit-search-results-button,
+#SearchMobile::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+#Search::-ms-clear,
+#Search::-ms-reveal,
+#SearchMobile::-ms-clear,
+#SearchMobile::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
