@@ -90,16 +90,6 @@
           {% render 'pagination', paginate: paginate, base_url: search.url %}
         {% endpaginate %}
       {% endif %}
-
-      <div>
-        {% render 'collection-video' %}
-
-        <div class="my-12 shopify-content-box">
-          {% if searchDescription != blank %}
-            {{ searchDescription | metafield_tag }}
-          {% endif %}
-        </div>
-      </div>
     </div>
   </div>
 </section>
