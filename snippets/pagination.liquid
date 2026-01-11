@@ -33,61 +33,19 @@
   </div>
 
   <div class="flex items-center gap-2">
-    {% if total <= 5 %}
-      {% for i in (1..total) %}
-        {% if i == current %}
-          <span class="px-3 py-1 bg-primary text-white rounded">{{ i }}</span>
+    {%- if paginate.parts.size > 0 -%}
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          <a href="{{ part.url }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">{{ part.title }}</a>
         {% else %}
-          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">
-            {{- i -}}
-          </a>
+          {% if part.title == paginate.current_page %}
+            <span class="px-3 py-1 bg-primary text-white rounded">{{ part.title }}</span>
+          {% else %}
+            <span class="px-3">{{ part.title }}</span>
+          {% endif %}
         {% endif %}
       {% endfor %}
-    {% else %}
-      {% if current == 1 %}
-        <span class="px-3 py-1 bg-primary text-black rounded">1</span>
-      {% else %}
-        <a href="{{ base_url }}?{{ page_param }}=1" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">1</a>
-      {% endif %}
-
-      {% assign start = current | minus: 1 %}
-      {% assign end = current | plus: 1 %}
-      {% if start < 2 %}
-        {% assign start = 2 %}
-        {% assign end = start | plus: 2 %}
-      {% endif %}
-      {% assign last_minus_one = total | minus: 1 %}
-      {% if end > last_minus_one %}
-        {% assign end = last_minus_one %}
-        {% assign start = end | minus: 2 %}
-      {% endif %}
-
-      {% if start > 2 %}
-        <span class="px-2">---</span>
-      {% endif %}
-
-      {% for i in (start..end) %}
-        {% if i == current %}
-          <span class="px-3 py-1 bg-primary text-black rounded">{{ i }}</span>
-        {% else %}
-          <a href="{{ base_url }}?{{ page_param }}={{ i }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">
-            {{- i -}}
-          </a>
-        {% endif %}
-      {% endfor %}
-
-      {% if end < last_minus_one %}
-        <span class="px-2">---</span>
-      {% endif %}
-
-      {% if current == total %}
-        <span class="px-3 py-1 bg-primary text-black rounded">{{ total }}</span>
-      {% else %}
-        <a href="{{ base_url }}?{{ page_param }}={{ total }}" class="px-3 py-1 bg-gray-100 rounded hover:bg-primary">
-          {{- total -}}
-        </a>
-      {% endif %}
-    {% endif %}
+    {%- endif -%}
   </div>
 
   <div>

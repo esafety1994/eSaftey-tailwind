@@ -22,6 +22,8 @@ class CollectionFilters extends HTMLElement {
     });
   }
 
+  
+
   handleClick(event) {
     const input = event.currentTarget;
     let url;

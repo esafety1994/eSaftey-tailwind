@@ -19,6 +19,7 @@
             <div>
               {% assign filter_blank = true %}
               {% comment %} render active filter tokens (if any) {% endcomment %}
+               
               {% for filter in search.filters %}
                 {% for value in filter.active_values %}
                   {% assign filter_blank = false %}
@@ -49,8 +50,7 @@
           </div>
 
           {% comment %} Reuse the collection filter UI but provide `collection` as the `search` object so snippet finds `filters` {% endcomment %}
-          {% assign collection = search %}
-          {% render 'collection-filter' %}
+          {% render 'collection-filter', filter_mode: 'search' %}
         </div>
       {% endif %}
     </aside>

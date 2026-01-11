@@ -1,3 +1,12 @@
+{% assign filter_mode = filter_mode | default: 'collection' %}
+{% if filter_mode == 'collection' %}
+  {% assign collection = collection %}
+{% elsif filter_mode == 'search' %}
+  {% assign collection = search %}
+{% endif %}
+
+{% comment %} Collection Filters Snippet — renders the filters for collections or search results {% endcomment %}
+{% if collection.filters.size > 0 %}
 {% for filter in collection.filters %}
   <div class="border border-gray-200 rounded-lg p-4 mb-2">
     <collection-filters data-section-id="{{ section.id }}">
@@ -74,3 +83,4 @@
     </collection-filters>
   </div>
 {% endfor %}
+{% endif %}
