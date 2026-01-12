@@ -1,0 +1,475 @@
+<!-- contact-us.liquid -->
+{% comment %} theme-check-disable RemoteAsset {% endcomment %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@800&family=Poppins&display=swap" rel="stylesheet">
+{% comment %} theme-check-enable RemoteAsset {% endcomment %}
+
+<div class="contact-form-container">
+  <div class="contact-form-header">
+    <h2>{{ settings.contact_form_title | default: "Send us a message" }}</h2>
+    <p>{{ settings.contact_form_subtitle | default: "Tell us a few details and we'll get back to you. For urgent enquiries, please call 1300 291 700." }}</p>
+  </div>
+  
+  <div class="contact-content-wrapper">
+    {% form 'contact' %}
+  <!-- SUCCESS MESSAGE - Shows when form is submitted successfully -->
+  {% if form.posted_successfully? %}
+    <div class="form-success-message">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#10B981"/>
+      </svg>
+      <h3>Message Sent Successfully!<br></h3>
+      
+    </div>
+  <script>
+    // Only reload if we haven't already reloaded
+    if (!window.location.search.includes('reloaded=true')) {
+      setTimeout(function() {
+        // Add parameter to prevent infinite loop
+        if (window.location.search.includes('reloaded=true')) {
+          window.location.href = window.location.pathname;
+        } else {
+          window.location.href = window.location.pathname + '?reloaded=true';
+        }
+      }, 5000);
+    }
+  </script>
+  {% endif %}
+  
+  <!-- ERROR MESSAGE - Shows if there are form errors -->
+  {% if form.errors %}
+    <div class="form-errors">
+      {{ form.errors | default_errors }}
+    </div>
+  {% endif %}
+      <div class="form-row">
+        <div class="form-group">
+          <label for="first-name">{{ settings.first_name_label | default: "First name*" }}</label>
+          <input 
+            type="text" 
+            id="first-name" 
+            name="contact[first_name]" 
+            placeholder="{{ settings.first_name_placeholder | default: 'Enter your first name' }}"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="last-name">{{ settings.last_name_label | default: "Last name*" }}</label>
+          <input 
+            type="text" 
+            id="last-name" 
+            name="contact[last_name]" 
+            placeholder="{{ settings.last_name_placeholder | default: 'Enter your last name' }}"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">{{ settings.email_label | default: "Email*" }}</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="contact[email]" 
+            placeholder="{{ settings.email_placeholder | default: 'you@company.com' }}"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="phone">{{ settings.phone_label | default: "Phone" }}</label>
+          <input 
+            type="tel" 
+            id="phone" 
+            name="contact[phone]" 
+            placeholder="{{ settings.phone_placeholder | default: '04xx xxx xxx' }}"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="company">{{ settings.company_label | default: "Company" }}</label>
+          <input 
+            type="text" 
+            id="company" 
+            name="contact[company]" 
+            placeholder="{{ settings.company_placeholder | default: 'Your company name' }}"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="order-number">{{ settings.order_number_label | default: "Order number (optional)" }}</label>
+          <input 
+            type="text" 
+            id="order-number" 
+            name="contact[order_number]" 
+            placeholder="{{ settings.order_number_placeholder | default: '#12345' }}"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="topic">{{ settings.topic_label | default: "What can we help you with?*" }}</label>
+        <select id="topic" name="contact[topic]" required>
+          <option value="" disabled selected>{{ settings.topic_placeholder | default: "Select a topic" }}</option>
+          <option value="general">General Inquiry</option>
+          <option value="support">Technical Support</option>
+          <option value="billing">Billing Question</option>
+          <option value="returns">Returns & Refunds</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">{{ settings.message_label | default: "Message*" }}</label>
+        <textarea 
+          id="message" 
+          name="contact[body]" 
+          rows="5" 
+          placeholder="{{ settings.message_placeholder | default: 'How can we help? Please share as much detail as possible.' }}"
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="privacy-policy" name="contact[privacy_policy]" required>
+        <label for="privacy-policy">{{ settings.privacy_label | default: "I agree to the Privacy Policy and consent to be contacted about my enquiry." }}</label>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.33 3.66996C20.1408 3.48213 19.9035 3.35008 19.6442 3.28833C19.3849 3.22659 19.1135 3.23753 18.86 3.31996L4.23 8.19996C3.95867 8.28593 3.71891 8.45039 3.54099 8.67255C3.36307 8.89471 3.25498 9.16462 3.23037 9.44818C3.20576 9.73174 3.26573 10.0162 3.40271 10.2657C3.5397 10.5152 3.74754 10.7185 4 10.85L10.07 13.85L13.07 19.94C13.1906 20.1783 13.3751 20.3785 13.6029 20.518C13.8307 20.6575 14.0929 20.7309 14.36 20.73H14.46C14.7461 20.7089 15.0192 20.6023 15.2439 20.4239C15.4686 20.2456 15.6345 20.0038 15.72 19.73L20.67 5.13996C20.7584 4.88789 20.7734 4.6159 20.7132 4.35565C20.653 4.09541 20.5201 3.85762 20.33 3.66996ZM4.85 9.57996L17.62 5.31996L10.53 12.41L4.85 9.57996ZM14.43 19.15L11.59 13.47L18.68 6.37996L14.43 19.15Z" fill="currentColor"></path>
+        </svg>
+        {{ settings.submit_button_text | default: "Send message" }}
+      </button>
+    {% endform %}
+
+    <div class="contact-info">
+      <div class="info-section">
+        <h3>Business hours</h3>
+        <div class="business-hours">
+          <p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16">
+              <path d="M464 256a208 208 0 1 1 -416 0 208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0 256 256 0 1 0 -512 0zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/>
+            </svg>
+            Mon-Fri: 7:00am – 5:00pm
+          </p>
+          <p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16">
+              <path d="M464 256a208 208 0 1 1 -416 0 208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0 256 256 0 1 0 -512 0zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/>
+            </svg>
+            Sat: 8:00am – 12:00pm
+          </p>
+          <p>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16">
+              <path d="M464 256a208 208 0 1 1 -416 0 208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0 256 256 0 1 0 -512 0zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/>
+            </svg>
+            Sun & Public Holidays: Closed
+          </p>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Head Office</h3>
+        <p>37 Bentley St, Wetherill Park NSW 2164</p>
+        <a href="https://www.google.com/maps/place/eSafety+Supplies/@-33.8448213,150.8804722,17z/data=!3m1!4b1!4m6!3m5!1s0x6b1297723e37047b:0x2673f6790247db27!8m2!3d-33.8448213!4d150.8830471!16s%2Fg%2F11f62vnwng?entry=ttu&g_ep=EgoyMDI1MTExMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-link">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16">
+            <style>
+              .st1 {
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 2;
+                stroke-linejoin: round;
+                stroke-miterlimit: 10;
+              }
+            </style>
+            <path class="st1" d="M25,13c0,8-9,15-9,15s-9-7-9-15c0-5,4-9,9-9S25,8,25,13z"></path>
+            <circle class="st1" cx="16" cy="13" r="3"></circle>
+          </svg>
+          View on Google Maps
+        </a>
+      </div>
+
+      <div class="info-section">
+        <h3>Popular links</h3>
+        <ul class="popular-links">
+          <li>
+            <a href="/pages/shipping-policy">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 6H3V17.25H3.375H4.5H4.52658C4.70854 18.5221 5.80257 19.5 7.125 19.5C8.44743 19.5 9.54146 18.5221 9.72342 17.25H15.0266C15.2085 18.5221 16.3026 19.5 17.625 19.5C18.9474 19.5 20.0415 18.5221 20.2234 17.25H21.75V12.4393L18.3107 9H16.5V6ZM16.5 10.5V14.5026C16.841 14.3406 17.2224 14.25 17.625 14.25C18.6721 14.25 19.5761 14.8631 19.9974 15.75H20.25V13.0607L17.6893 10.5H16.5ZM15 15.75V9V7.5H4.5V15.75H4.75261C5.17391 14.8631 6.07785 14.25 7.125 14.25C8.17215 14.25 9.07609 14.8631 9.49739 15.75H15ZM17.625 18C17.0037 18 16.5 17.4963 16.5 16.875C16.5 16.2537 17.0037 15.75 17.625 15.75C18.2463 15.75 18.75 16.2537 18.75 16.875C18.75 17.4963 18.2463 18 17.625 18ZM8.25 16.875C8.25 17.4963 7.74632 18 7.125 18C6.50368 18 6 17.4963 6 16.875C6 16.2537 6.50368 15.75 7.125 15.75C7.74632 15.75 8.25 16.2537 8.25 16.875Z" fill="currentColor"></path>
+              </svg>
+              Shipping & delivery
+            </a>
+          </li>
+          <li>
+            <a href="/pages/shipping-returns">
+              <svg width="22" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.4898 14.9907C19.8414 16.831 18.6124 18.4108 16.9879 19.492C15.3635 20.5732 13.4316 21.0972 11.4835 20.9851C9.5353 20.873 7.67634 20.1308 6.18668 18.8704C4.69703 17.61 3.65738 15.8996 3.22438 13.997C2.79138 12.0944 2.98849 10.1026 3.78602 8.32177C4.58354 6.54091 5.93827 5.06746 7.64608 4.12343C9.35389 3.17941 11.3223 2.81593 13.2546 3.08779C16.5171 3.54676 18.6725 5.91142 21 8M21 8V2M21 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              Returns & refunds
+            </a>
+          </li>
+          <li>
+            <a href="/pages/terms-conditions">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2.26953V6.40007C14 6.96012 14 7.24015 14.109 7.45406C14.2049 7.64222 14.3578 7.7952 14.546 7.89108C14.7599 8.00007 15.0399 8.00007 15.6 8.00007H19.7305M14 2.26953C13.6785 2.13409 13.3229 2 12.8 2H8.6C7.43913 2 6.20087 2 5.408 2.78231C4.8 3.38504 4.8 4.33688 4.8 6.4V17.6C4.8 19.6631 4.8 20.6149 5.408 21.2177C6.20087 22 7.43913 22 8.6 22H15.4C16.5609 22 17.7991 22 18.592 21.2177C19.2 20.6149 19.2 19.6631 19.2 17.6V9.2C19.2 8.67714 19.0659 8.32152 18.9305 8M14 2.26953C14.1341 2.59099 14.2685 2.94661 14.2685 3.2C14.2685 4.47276 14.2685 5.60004 14.2685 6.40007C14.2685 7.17689 14.2685 7.76012 14.8 8.00007H19.2L14 2.26953Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Terms & conditions
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.contact-form-container,
+.contact-form-container * {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 400 !important;
+}
+
+.contact-content-wrapper {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  gap: 30px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.contact-form-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form-header {
+  grid-column: 1 / -1;
+  margin-bottom: 30px;
+}
+
+.contact-form-header h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #333;
+  letter-spacing: -1px !important;
+  font-family: 'Encode Sans', sans-serif !important;
+  font-weight: 800 !important;
+  font-stretch: 75%;
+}
+
+.contact-form-header p {
+  color: #333;
+  line-height: 1.6;
+}
+
+.form-success {
+  background: #d4edda;
+  color: #155724;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #c3e6cb;
+}
+
+.form-errors {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #f5c6cb;
+}
+
+.form-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color:rgb(0, 0, 0);
+  outline: none;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checkbox-group input {
+  width: auto;
+  margin-top: 5px;
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+  font-weight: normal;
+}
+
+.submit-btn {
+  background-color: #FEDC13;
+  color: black;
+  border: none;
+  padding: 14px 30px;
+  font-size: 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 27%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:hover {
+  background-color: #000;
+  color: white;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-section {
+  margin-bottom: 30px;
+  padding: 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 14px;
+  background-color: white;
+}
+
+.info-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 600;
+}
+.info-section a {
+  position: relative;
+  z-index: 1;
+}
+
+.overlay, .blocking-div {
+  pointer-events: none; /* auto is opposite */
+}
+.business-hours p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+.business-hours svg {
+  flex-shrink: 0;
+}
+
+.map-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 14px;
+  background-color: #FEDC13;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.map-link:hover {
+  background-color: black;
+  color: white;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.popular-links {
+  list-style: none;
+  padding: 0;
+}
+
+.popular-links li {
+  margin-bottom: 10px;
+}
+
+.popular-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  text-decoration: underline;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.popular-links a:hover {
+  text-decoration: underline;
+}
+
+.popular-links svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .contact-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .submit-btn {
+    width: 100%;
+  }
+}
+
+</style>
