@@ -24,11 +24,16 @@
     "main": {
       "type": "page",
       "settings": {}
+    },
+    "contact-us":{
+      "type":"contact-us",
+      "settings":{}
     }
   },
   "order": [
     "title",
     "breadcrumb_WrJrMP",
-    "main"
+    "main",
+    "contact-us"
   ]
 }
