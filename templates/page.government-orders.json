@@ -9,24 +9,132 @@
  */
 {
   "sections": {
-    "title": {
-      "type": "page-tittle",
-      "name": "Page Title",
-      "settings": {}
-    },
     "main": {
-      "type": "page",
-      "settings": {}
-    },
-    "breadcrumb_WrJrMP": {
-      "type": "breadcrumb",
-      "name": "Breadcrumb",
-      "settings": {}
+      "type": "government-orders",
+      "blocks": {
+        "badge1": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Federal"
+          }
+        },
+        "badge2": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "State & Territory"
+          }
+        },
+        "coverage_badge_zD3djw": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Local Government"
+          }
+        },
+        "coverage_badge_PJrpJP": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Education (K–12 & Tertiary)"
+          }
+        },
+        "badge3": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Health & Emergency Services"
+          }
+        },
+        "step1": {
+          "type": "step",
+          "settings": {
+            "title": "Request a Quote (optional)",
+            "desc": "Email SKUs/quantities to receive a formal quote for approval."
+          }
+        },
+        "step2": {
+          "type": "step",
+          "settings": {
+            "title": "Raise your PO",
+            "desc": "Create a Purchase Order referencing our ABN and quote/invoice number."
+          }
+        },
+        "step3": {
+          "type": "step",
+          "settings": {
+            "title": "Email the PO",
+            "desc": "Send to orders@esafetysupplies.com.au. We'll confirm stock and ETA."
+          }
+        },
+        "step4": {
+          "type": "step",
+          "settings": {
+            "title": "Delivery & Invoice",
+            "desc": "Goods ship with a tax invoice emailed to Accounts Payable."
+          }
+        },
+        "faq1": {
+          "type": "faq",
+          "settings": {
+            "q": "Can we submit a Purchase Order after delivery?",
+            "a": "For audit compliance we require a valid PO prior to shipment. If urgent, contact us and we can hold stock while your PO is raised."
+          }
+        },
+        "faq_byhtbc": {
+          "type": "faq",
+          "settings": {
+            "q": "Who qualifies for government payment terms?",
+            "a": "Australian Government (Federal, State, Local), public schools and universities, public hospitals, and emergency services. Private entities with government funding may also qualify on review."
+          }
+        },
+        "faq_MrGwEi": {
+          "type": "faq",
+          "settings": {
+            "q": "How do we send POs and where are invoices sent?",
+            "a": "Send POs to orders@esafetysupplies.com.au\n. Tax invoices are emailed to your nominated Accounts Payable contact when goods ship."
+          }
+        },
+        "faq_ncMe4E": {
+          "type": "faq",
+          "settings": {
+            "q": "What are your delivery timeframes and shipping coverage?",
+            "a": "We ship Australia-wide. In-stock items usually dispatch promptly after PO receipt; any lead times or backorders are confirmed with ETA in your order acknowledgement."
+          }
+        }
+      },
+      "block_order": [
+        "badge1",
+        "badge2",
+        "coverage_badge_zD3djw",
+        "coverage_badge_PJrpJP",
+        "badge3",
+        "step1",
+        "step2",
+        "step3",
+        "step4",
+        "faq1",
+        "faq_byhtbc",
+        "faq_MrGwEi",
+        "faq_ncMe4E"
+      ],
+      "custom_css": [
+        "h2 {color: white;}",
+        ".go-section-head h2 {color: black !important;}"
+      ],
+      "settings": {
+        "heading": "Government Orders & Payment Terms",
+        "intro": "eSafety Supplies proudly supplies Australian government, education, and health organisations. We accept official Purchase Orders and offer approved account terms to simplify your procurement.",
+        "legal_name": "eSafety Supplies Pty Ltd",
+        "abn": "78 630 262 789",
+        "accounts_email": "accounts@esafetysupplies.com.au",
+        "po_email": "orders@esafetysupplies.com.au",
+        "phone": "1300 291 700",
+        "address": "37 Bentley Street, Wetherill Park NSW 2164",
+        "payment_terms": "30 days from invoice (EOM)",
+        "gov_apply_link": "",
+        "primary_color": "#222222",
+        "accent_color": "#ffffff"
+      }
     }
   },
   "order": [
-    "title",
-    "breadcrumb_WrJrMP",
     "main"
   ]
 }
