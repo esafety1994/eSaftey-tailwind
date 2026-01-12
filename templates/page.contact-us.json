@@ -11,16 +11,18 @@
   "sections": {
     "title": {
       "type": "page-tittle",
+      "disabled": true,
       "name": "Page Title",
-      "settings": {}
-    },
-    "main": {
-      "type": "page",
       "settings": {}
     },
     "breadcrumb_WrJrMP": {
       "type": "breadcrumb",
+      "disabled": true,
       "name": "Breadcrumb",
+      "settings": {}
+    },
+    "main": {
+      "type": "page",
       "settings": {}
     }
   },
