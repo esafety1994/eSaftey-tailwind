@@ -1,0 +1,383 @@
+{% comment %}
+  eSafety Supplies — Government Orders & Payment Terms
+  Section for Online Store 2.0 themes.
+  Edit content via Theme Editor (blocks for badges, steps, portals, downloads, FAQs).
+{% endcomment %}
+
+<section class="gov-orders color-scheme-1">
+  <div class="go-container">
+    <!-- Hero -->
+    <div class="go-hero">
+      <div class="go-eyebrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1l9 4v6c0 5.55-3.84 10.74-9 12C6.84 21.74 3 16.55 3 11V5l9-4zm0 2.18L5 6.06v4.94c0 4.64 3.22 9.03 7 10.35c3.78-1.32 7-5.71 7-10.35V6.06l-7-2.88zM11 7h2v5h-2V7zm0 6h2v2h-2v-2z"/></svg>
+        Government & Public Sector Purchasing
+      </div>
+      <h1 class="go-title">{{ section.settings.heading | escape }}</h1>
+      {% if section.settings.intro != blank %}
+        <p class="go-intro">{{ section.settings.intro }}</p>
+      {% endif %}
+      <div class="go-cta-row">
+        {% if section.settings.apply_link != blank %}
+          <a class="go-btn go-btn--primary" href="{{ section.settings.apply_link }}">Apply for a Government Account</a>
+        {% endif %}
+        </div>
+      {% assign coverage = section.blocks | where: 'type', 'coverage_badge' %}
+      {% if coverage.size > 0 %}
+        <div class="go-badges">
+          {% for b in coverage %}
+            <span class="go-badge"><span class="tick">&#10003;</span> {{ b.settings.text }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Key terms -->
+    <div class="go-cards">
+      <div class="go-card">
+        <div class="go-card-head">
+          <div class="go-icon" aria-hidden="true">⏱</div>
+          <h3>Payment Terms</h3>
+        </div>
+        <p>Standard terms for approved government bodies: <strong>{{ section.settings.payment_terms | escape }}</strong>. Statements issued monthly. No credit card required for PO accounts.</p>
+      </div>
+      <div class="go-card">
+        <div class="go-card-head">
+          <div class="go-icon" aria-hidden="true">🏛️</div>
+          <h3>Purchase Orders</h3>
+        </div>
+        <p>We accept official <strong>Purchase Orders</strong> via email. Ensure the PO includes ABN, delivery details, item codes, and an authorised signatory.</p>
+      </div>
+      <div class="go-card">
+        <div class="go-card-head">
+          <div class="go-icon" aria-hidden="true">💳</div>
+          <h3>Payment Methods</h3>
+        </div>
+        <p>Bank transfer (EFT), credit card, or procurement card. Send remittances to <strong>{{ section.settings.accounts_email }}</strong> with PO/Invoice number.</p>
+      </div>
+    </div>
+
+    <!-- How to order -->
+    {% assign steps = section.blocks | where: 'type', 'step' %}
+    {% if steps.size > 0 %}
+      <div class="go-section-head">
+        <h2>How to place a Government Order</h2>
+      </div>
+      <div class="go-grid go-grid--4">
+        {% for s in steps %}
+          <div class="go-card">
+            <div class="go-step">
+              <div class="go-step-icon" aria-hidden="true">✔</div>
+              <div>
+                <div class="go-step-title">{{ s.settings.title }}</div>
+                <div class="go-step-desc">{{ s.settings.desc }}</div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Supplier details -->
+    <div class="go-section-head">
+      <h2>Supplier Details</h2>
+    </div>
+    <div class="go-supplier">
+      <div class="go-supplier-grid">
+        <table class="go-supplier-table">
+  <tbody>
+    <tr>
+      <th scope="row">Legal Entity</th>
+      <td>{{ section.settings.legal_name }}</td>
+    </tr>
+    <tr>
+      <th scope="row">ABN</th>
+      <td>{{ section.settings.abn }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Accounts Email</th>
+      <td><a href="mailto:{{ section.settings.accounts_email }}">{{ section.settings.accounts_email }}</a></td>
+    </tr>
+    <tr>
+      <th scope="row">PO Email</th>
+      <td><a href="mailto:{{ section.settings.po_email }}">{{ section.settings.po_email }}</a></td>
+    </tr>
+    <tr>
+      <th scope="row">Phone</th>
+      <td><a href="tel:{{ section.settings.phone | replace: ' ', '' }}">{{ section.settings.phone }}</a></td>
+    </tr>
+    <tr>
+      <th scope="row">Head Office</th>
+      <td>{{ section.settings.address }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Standard Terms</th>
+      <td>{{ section.settings.payment_terms }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+        {% assign portals = section.blocks | where: 'type', 'portal' %}
+        {% if portals.size > 0 %}
+          <div class="go-portal">
+            <h3>Supported Procurement Portals</h3>
+            <p class="go-subtle">We can transact via major Australian procurement platforms. If you require a specific network, let us know and we’ll connect your entity.</p>
+            <ul class="go-portal-list">
+              {% for p in portals %}
+                <li>
+                  <span>🛡 {{ p.settings.name }}</span>
+                  <em>{{ p.settings.status }}</em>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Forms & documents -->
+    {% assign docs = section.blocks | where: 'type', 'document' %}
+    {% if docs.size > 0 %}
+      <div class="go-section-head">
+        <h2>Forms & Documents</h2>
+      </div>
+      <div class="go-grid go-grid--4">
+        {% for d in docs %}
+          <a class="go-card go-doc" href="{{ d.settings.url }}" target="_blank" rel="noopener">
+            <div class="go-doc-icon" aria-hidden="true">📄</div>
+            <div>
+              <div class="go-doc-title">{{ d.settings.name }}</div>
+              <div class="go-doc-meta">PDF / 1–2 pages</div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- FAQs -->
+    {% assign faqs = section.blocks | where: 'type', 'faq' %}
+    {% if faqs.size > 0 %}
+      <div class="go-section-head">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="go-faq">
+        {% for f in faqs %}
+          <details class="go-faq-item">
+            <summary class="go-faq-q">{{ f.settings.q }}</summary>
+            <div class="go-faq-a">{{ f.settings.a }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- CTA band -->
+    <div class="go-cta">
+      <h2>Open a Government Account</h2>
+      <p>Send us your organisation details and we’ll set up PO-based purchasing with your approved payment terms.</p>
+      <div class="go-cta-actions">
+        {% if section.settings.apply_link != blank %}
+          <a class="go-btn go-btn--invert" href="{{ section.settings.apply_link }}">Start Application</a>
+        {% endif %}
+          <a class="go-btn go-btn--outline" href="tel:{{ section.settings.phone | replace: ' ', '' }}">Call {{ section.settings.phone }}</a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .go-hero .go-intro{
+  max-width: none;          /* remove the 720px cap */
+  line-height: 1.6;
+  word-break: normal;
+  overflow-wrap: break-word;
+  white-space: normal;
+  hyphens: auto;
+}
+.tick {
+  font-size: 20px;
+  margin-right: 6px;
+  font-weight: bold;
+  color: #000;
+}
+
+    .gov-orders { --go-primary: {{ section.settings.primary_color }}; --go-accent: {{ section.settings.accent_color }}; --go-border: #e5e7eb; --go-text: #0b1220; --go-muted: #64748b; background: #f8fafc; }
+    .gov-orders .go-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 60px; }
+    .go-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--go-border); border-radius: 999px; padding: 6px 10px; font-size: 12px; color: var(--go-text); }
+    .go-title { font-size: clamp(32px, 4vw, 44px); margin: 10px 0 8px; color: var(--go-text); font-weight: 800; }
+    .go-intro { color: var(--go-muted); font-size: 18px; max-width: 720px; }
+    .go-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .go-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; border-radius: 14px; font-weight: 700; text-decoration: none; }
+    .go-btn--primary { background: var(--go-primary); color: #fff; }
+    .go-btn--ghost { border: 1px solid var(--go-border); color: var(--go-primary); background: #fff; }
+    .go-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .go-badge { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--go-border); border-radius: 999px; padding: 6px 12px; font-size: 13px; color: var(--go-text); background: #fff; }
+    .go-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0 10px; }
+    .go-card { background: #fff; border-radius: 18px; border: 1px solid var(--go-border); padding: 18px; }
+    .go-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .go-card-head h3 { margin: 0; font-size: 18px; }
+    .go-icon { width: 60px; height: 60px; display: grid; font-size: 32px; place-items: center; border: 1px solid var(--go-border); border-radius: 10px; background: #f1f5f9; }
+    .go-section-head h2 { font-size: 24px; margin: 28px 0 12px; color: var(--go-text); font-weight: 800; }
+    .go-grid { display: grid; gap: 16px; }
+    .go-grid--4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .go-step { display: flex; gap: 12px; }
+    .go-step-icon { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--go-border); border-radius: 10px; background: #f1f5f9; font-weight: 700; }
+    .go-step-title { font-weight: 700; }
+    .go-step-desc { color: var(--go-muted); font-size: 14px; margin-top: 4px; }
+    .go-supplier { margin-top: 10px; }
+    .go-supplier-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
+    .go-list { display: grid; gap: 10px; }
+    .go-list-row { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border-radius: 10px; padding: 10px 12px; }
+    .go-list-row dt { font-weight: 600; }
+    .go-portal h3 { margin: 0 0 6px; font-size: 18px; }
+    .go-subtle { color: var(--go-muted); font-size: 14px; }
+    .go-portal-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+    .go-portal-list li { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border-radius: 10px; padding: 10px 12px; }
+    .go-doc { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+    .go-doc-icon { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--go-border); border-radius: 10px; background: #f1f5f9; font-size: 18px; }
+    .go-doc-title { font-weight: 700; }
+    .go-doc-meta { color: var(--go-muted); font-size: 12px; }
+    .go-faq { display: grid; gap: 10px; }
+    .go-faq-item { background: #fff; border: 1px solid var(--go-border); border-radius: 14px; padding: 12px 16px; }
+    .go-faq-q { cursor: pointer; font-weight: 700; }
+    .go-faq-a { color: var(--go-muted); margin-top: 10px; }
+    .go-cta { margin-top: 24px; background: var(--go-primary); color: #fff; border-radius: 24px; padding: 28px; text-align: center; }
+    .go-cta h2 { margin: 0; font-size: 28px; }
+    .go-cta p { opacity: 0.95; max-width: 760px; margin: 8px auto 0; }
+    .go-cta-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+    .go-btn--invert { background: #fff; color: #0f172a; }
+    .go-btn--outline { border: 1px solid rgba(255,255,255,.6); color: #fff; }
+    @media (max-width: 980px) {
+      .go-cards { grid-template-columns: 1fr; }
+      .go-grid--4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .go-supplier-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .go-grid--4 { grid-template-columns: 1fr; }
+    }
+.go-supplier-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid var(--go-border);
+  border-radius: 12px;
+  overflow: hidden; /* rounds the outer corners */
+}
+
+.go-supplier-table th,
+.go-supplier-table td {
+  padding: 12px 16px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--go-border);
+}
+
+.go-supplier-table th {
+  width: 32%;
+  background: #f8fafc;
+  text-align: left;
+  font-weight: 700;
+  color: var(--go-text);
+}
+
+.go-supplier-table td {
+  color: var(--go-muted);
+}
+
+.go-supplier-table tr:last-child th,
+.go-supplier-table tr:last-child td {
+  border-bottom: none;
+}
+
+.go-supplier-table a {
+  color: var(--go-primary);
+  text-decoration: none;
+}
+.go-supplier-table a:hover {
+  text-decoration: underline;
+}
+
+/* Optional: tighter on small screens */
+@media (max-width: 640px) {
+  .go-supplier-table th,
+  .go-supplier-table td { padding: 12px; }
+  .go-supplier-table th { width: 40%; }
+}
+
+
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Govt orders (eSafety)",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Government Orders & Payment Terms" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "eSafety Supplies proudly supplies Australian government, education, and health organisations. We accept official Purchase Orders and offer approved account terms to simplify your procurement." },
+    { "type": "text", "id": "legal_name", "label": "Legal entity", "default": "eSafety Supplies Pty Ltd" },
+    { "type": "text", "id": "abn", "label": "ABN", "default": "00 000 000 000" },
+    { "type": "text", "id": "accounts_email", "label": "Accounts email", "default": "accounts@esafetysupplies.com.au" },
+    { "type": "text", "id": "po_email", "label": "PO email", "default": "orders@esafetysupplies.com.au" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "1300 000 000" },
+    { "type": "text", "id": "address", "label": "Head office address", "default": "Sydney NSW" },
+    { "type": "text", "id": "payment_terms", "label": "Payment terms", "default": "30 days from invoice (EOM)" },
+    { "type": "url", "id": "gov_apply_link", "label": "Apply link (optional)" },
+    { "type": "color", "id": "primary_color", "label": "Primary brand colour", "default": "#0F766E" },
+    { "type": "color", "id": "accent_color", "label": "Accent colour", "default": "#F59E0B" }
+  ],
+  "blocks": [
+    {
+      "type": "coverage_badge",
+      "name": "Coverage badge",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Federal" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Request a Quote (optional)" },
+        { "type": "textarea", "id": "desc", "label": "Description", "default": "Email SKUs/quantities to receive a formal quote for approval." }
+      ]
+    },
+    {
+      "type": "portal",
+      "name": "Procurement portal",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Portal name", "default": "VendorPanel" },
+        { "type": "text", "id": "status", "label": "Status/Notes", "default": "Available on request" }
+      ]
+    },
+    {
+      "type": "document",
+      "name": "Document link",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Document name", "default": "Certificate of Currency" },
+        { "type": "url", "id": "url", "label": "File URL" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question", "default": "Who qualifies for government payment terms?" },
+        { "type": "textarea", "id": "a", "label": "Answer", "default": "Australian Government (Federal, State, Local), public schools and universities, public hospitals, and emergency services. Private entities with government funding may also qualify on review." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Govt orders (eSafety)",
+      "category": "Pages",
+      "settings": {
+        "gov_apply_link": "/contact"
+      },
+      "blocks": [
+        { "type": "coverage_badge", "settings": { "text": "Federal" } },
+        { "type": "coverage_badge", "settings": { "text": "State & Territory" } },
+        { "type": "coverage_badge", "settings": { "text": "Local Authorities" } },
+        { "type": "step", "settings": { "title": "Request a Quote (optional)", "desc": "Email SKUs/quantities to receive a formal quote for approval." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
