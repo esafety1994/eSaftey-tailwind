@@ -19,9 +19,10 @@
   <div class="grid grid-cols-1 md:grid-cols-12 gap-6 collection-inner-element">
     <aside class="hidden md:block md:col-span-3">
       {% if section.settings.show_filters %}
-        <div class="sticky top-48">
+        <div class="sticky top-56 my-12">
           <div class="p-2 px-4 border border-gray-200 rounded-lg mb-2">
             <h3 class="text-lg mb-4">Filters</h3>
+            <span class="text-sm mb-2 block">Sort By: <span data-sort-display>Featured</span></span>
             <div>
               {% assign filter_blank = true %}
               {% for filter in collection.filters %}
@@ -43,6 +44,26 @@
                 {% endfor %}
               {% endfor %}
 
+              {%- comment -%} Render active price range as a pill {%- endcomment -%}
+              {% for filter in collection.filters %}
+                {% if filter.type != 'list' %}
+                  {% if filter.min_value.value or filter.max_value.value %}
+                    {% assign pmin = filter.min_value.value | divided_by: 100.0 | round: 2 %}
+                    {% assign pmax = filter.max_value.value | divided_by: 100.0 | round: 2 %}
+                    <label
+                      data-remove-price
+                      data-section-id="{{ section.id }}"
+                      data-min-param="{{ filter.min_value.param_name }}"
+                      data-max-param="{{ filter.max_value.param_name }}"
+                      class="text-sm text-black cursor-pointer bg-gray-100 rounded-full px-3 py-1 inline-flex mb-2 mr-2 items-center gap-2"
+                    >
+                      ${{ pmin }} - ${{ pmax }}
+                      {% render 'icon-svg-close', class: 'size-3', stroke_width: '1' %}
+                    </label>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+
               {% unless filter_blank %}
                 <span
                   data-clear-filters
@@ -58,6 +79,7 @@
     </aside>
 
     <div class="md:col-span-9">
+      {% render 'sort-dropdown', base_url: collection.url, section_id: section.id %}
       {% if collection.products_count == 0 %}
         <div class="text-center py-24">
           <div class="mx-auto w-24 h-24 flex items-center justify-center mb-6">

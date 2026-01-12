@@ -57,14 +57,16 @@
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
+            {% assign hover_url = prod.images[1] | image_url: width: 600 %}
             <img
-              data-hover-src="{% if prod.images[1].src %}{{ prod.images[1] | image_url: width: 600 }}{% else %}{{ prod.images[1] }}{% endif %}"
+              src="{{ hover_url }}"
+              data-hover-src="{{ hover_url }}"
               alt="{{ prod.images[1].alt | default: prod.title | escape }}"
               class="absolute inset-0 w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20 hover-image"
               loading="lazy"
               width="600"
               height="600"
-            >
+            />
           {% endif %}
           {% if prod.featured_image %}
             {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-cover transition-all duration-300' %}
