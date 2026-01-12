@@ -11,22 +11,34 @@
   "sections": {
     "title": {
       "type": "page-tittle",
+      "disabled": true,
       "name": "Page Title",
-      "settings": {}
-    },
-    "main": {
-      "type": "page",
       "settings": {}
     },
     "breadcrumb_WrJrMP": {
       "type": "breadcrumb",
+      "disabled": true,
       "name": "Breadcrumb",
       "settings": {}
+    },
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {}
+    },
+    "custom_liquid_Ky4ND7": {
+      "type": "custom-liquid",
+      "name": "Custom liquid",
+      "settings": {
+        "custom_liquid": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Why Choose eSafety Supplies</title>\n\n  <!-- Include Poppins font from Google Fonts -->\n  <link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap\" rel=\"stylesheet\">\n\n  <link href=\"https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css\" rel=\"stylesheet\">\n</head>\n<body class=\"bg-gray-50 text-gray-800 font-poppins\">\n  <section class=\"max-w-6xl mx-auto px-6 py-16\">\n    <h1 class=\"text-4xl font-bold text-center text-blue-800 mb-10\">Why Choose eSafety Supplies?</h1>\n    <p class=\"text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12\">At eSafety Supplies, our mission is simple: to help businesses and individuals stay safe, compliant, and equipped with the right protective gear — every time. Here’s what sets us apart:</p>\n\n    <div class=\"grid md:grid-cols-2 gap-8\">\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Australia-Wide Free Shipping*</h2>\n        <p>We believe safety should be accessible — that’s why we offer <strong>free shipping across Australia</strong> on orders over a set amount. No hidden fees or surprises at checkout.</p>\n        <p class=\"text-sm text-gray-500 mt-2\">*Exclusions apply — large/bulky items or remote regions.</p>\n      </div>\n\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Trade & Business-Friendly Credit Options</h2>\n        <p>Get your business set up quickly with tailored credit terms — no complex paperwork, just straightforward service to keep your operations running smoothly.</p>\n      </div>\n\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Premium Quality Brands, Expertly Selected</h2>\n        <p>Every product we stock meets or exceeds Australian Standards. You can trust what you buy to perform when it matters most.</p>\n      </div>\n\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Dedicated Support & Technical Expertise</h2>\n        <p>Our expert team provides support in product selection, compliance advice, and custom safety solutions for your workplace.</p>\n      </div>\n\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Tailored Solutions for Your Environment</h2>\n        <p>From construction to warehousing, we understand your unique safety needs and provide tailored packages to match.</p>\n      </div>\n\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Competitive Pricing with Transparency</h2>\n        <p>We offer honest, competitive pricing with no hidden costs. Our aim is to provide value without compromising quality.</p>\n      </div>\n\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Australian-Owned & Operated</h2>\n        <p>Proudly Australian-owned, we understand local safety standards and deliver fast service across the country.</p>\n      </div>\n\n      <div class=\"bg-white shadow-md rounded-2xl p-6\">\n        <h2 class=\"text-xl font-semibold text-blue-700 mb-2\">✅ Trusted By Hundreds of Clients</h2>\n        <p>From large contractors to small businesses, clients across Australia trust us for reliable safety equipment and service.</p>\n      </div>\n    </div>\n\n    <div class=\"text-center mt-16\">\n      <h3 class=\"text-2xl font-bold text-blue-800 mb-4\">In Summary</h3>\n      <p class=\"text-lg max-w-3xl mx-auto text-gray-600 mb-8\">When you choose eSafety Supplies, you’re partnering with a team committed to helping you <strong>stay safe, compliant, and productive</strong>. We make safety simple, reliable, and value-driven.</p>\n\n      <div class=\"flex flex-wrap justify-center gap-4\">\n        <a href=\"https://account.esafetysupplies.com.au/authentication/login?client_id=77038c81-3478-481f-bdcf-48b83b5d30db&locale=en&redirect_uri=%2Fauthentication%2Foauth%2Fauthorize%3Fclient_id%3D77038c81-3478-481f-bdcf-48b83b5d30db%26locale%3Den%26nonce%3D54e5d56d-f8a4-4db8-bd75-e03a522e4f0e%26redirect_uri%3Dhttps%253A%252F%252Faccount.esafetysupplies.com.au%252Fcallback%253Fsource%253Dcore%26region_country%3DAU%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWN4a6IgS5V0HiwhGtY5dZn0&region_country=AU\" \n          class=\"cta-button\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Open a Trade Account\n        </a>\n\n        <a href=\"https://esafetysupplies.com.au\" \n          class=\"cta-button\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Browse Our Range\n        </a>\n\n        <a href=\"https://esafetysupplies.com.au/pages/contact\" \n          class=\"cta-button\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Contact Our Team\n        </a>\n      </div>\n    </div>\n\n  </section>\n\n  <style>\n    /* styles.css */\n\n    /* Make all headings black */\n    h1, h2, h3 {\n      color: black;\n    }\n\n    /* Optional — keep Tailwind’s structure */\n    h1 {\n      font-size: 2.25rem; /* text-4xl */\n      font-weight: 700;\n      text-align: center;\n      margin-bottom: 2.5rem;\n    }\n\n    h2 {\n      font-size: 1.25rem; /* text-xl */\n      font-weight: 600;\n      margin-bottom: 0.5rem;\n    }\n\n    h3 {\n      font-size: 1.5rem; /* text-2xl */\n      font-weight: 700;\n      margin-bottom: 1rem;\n      text-align: center;\n    }\n\n    /* CTA Buttons (Black default, yellow hover) */\n    .cta-button {\n      display: inline-block;\n      background-color: #000000; /* black fill */\n      color: #ffffff; /* white text */\n      border: 2px solid #000000; /* black border to start */\n      border-radius: 9999px; /* full round */\n      padding: 0.75rem 1.5rem;\n      font-weight: 600;\n      transition: all 0.3s ease;\n    }\n\n    .cta-button:hover {\n      background-color: #FFD700; /* no fill */\n      color: #000000; /* black text */\n      border-color: #FFD700; /* yellow border */\n    }\n\n    /* Apply Poppins font globally */\n    body, h1, h2, h3, p {\n      font-family: 'Poppins', sans-serif;\n    }\n  </style>\n\n</body>\n</html>",
+        "custom_class": ""
+      }
     }
   },
   "order": [
     "title",
     "breadcrumb_WrJrMP",
-    "main"
+    "main",
+    "custom_liquid_Ky4ND7"
   ]
 }
