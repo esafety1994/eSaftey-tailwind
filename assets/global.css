@@ -4,7 +4,7 @@
 }
 @media (width >= 96rem) {
   .container {
-    max-width: 1300px;
+    max-width: 1440px;
   }
 }
 
@@ -318,24 +318,26 @@ a.underline-animation:focus::after {
 }
 
 /* Range input styles for collection filters */
-.range-black{
+.range-black {
   -webkit-appearance: none;
   appearance: none;
   height: 0.5rem;
   background: transparent;
 }
-.range-black:focus{ outline: none; }
-.range-black{
+.range-black:focus {
+  outline: none;
+}
+.range-black {
   display: block;
   height: 1rem;
   padding: 0;
 }
-.range-black::-webkit-slider-runnable-track{
+.range-black::-webkit-slider-runnable-track {
   height: 0.5rem;
   background: transparent; /* use external track */
   border-radius: 0.25rem;
 }
-.range-black::-webkit-slider-thumb{
+.range-black::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 1rem;
@@ -344,15 +346,23 @@ a.underline-animation:focus::after {
   border-radius: 9999px;
   margin-top: -0.25rem;
 }
-.range-black::-moz-range-track{
+.range-black::-moz-range-track {
   height: 0.5rem;
   background: #e5e7eb;
   border-radius: 0.25rem;
 }
-.range-black::-moz-range-thumb{
+.range-black::-moz-range-thumb {
   width: 1rem;
   height: 1rem;
   background: #000;
   border-radius: 9999px;
   border: none;
+}
+.ar-nav-menu li:after {
+  content: "|";
+  margin-left: 10px;
+  color: #000;
+}
+.ar-nav-menu li:last-child:after {
+  content: "";
 }

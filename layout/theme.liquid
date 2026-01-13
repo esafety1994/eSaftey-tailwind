@@ -36,12 +36,12 @@
   <body class="font-normal">
     <div class="relative">
       {% sections 'header-group' %}
-      <section class="top-bar hidden container mx-auto px-4 max-w-7xl md:flex py-4 transition-all duration-500">
+      <section class="top-bar hidden container mx-auto px-4 md:flex py-1.5 transition-all duration-500">
         {% render 'top-navbar' %}
       </section>
       <header id="site-header" class="site-header transition-all duration-300">
-        <div class="bg-black px-2 py-4">
-          <div class="container !max-w-6xl flex items-center justify-between m-auto py-4">
+        <div class="bg-black px-2 lg:py-2">
+          <div class="container flex items-center justify-between m-auto">
             {% render 'header' %}
             <!-- Cart Icon -->
             <div class="w-8">{% section 'cart-count' %}</div>

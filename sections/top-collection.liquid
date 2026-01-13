@@ -13,7 +13,7 @@
               {% render 'responsive-image',
                 image: coll.image,
                 alt: coll.title,
-                image_class: 'w-auto h-22 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto',
+                image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto',
               %}
             {% else %}
               <div class="flex items-center justify-center h-full text-gray-500">{{ 'No image' }}</div>

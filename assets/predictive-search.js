@@ -22,6 +22,31 @@ class PredictiveSearch extends HTMLElement {
       } catch (err) {}
     });
 
+    // Trigger predictive search when clicking the search icon/svg
+    try {
+      // Try to find an element that represents the search toggle inside this component.
+      // Prefer an explicit submit button or a data attribute if present; fall back to a span/svg.
+      let toggle = this.querySelector('button[type="submit"], [data-search-toggle], .search .search-toggle, span > svg, .search span');
+      if (toggle) {
+        // If we got an SVG element, use its closest wrapper (span) as the clickable target
+        try {
+          if (toggle.tagName && toggle.tagName.toLowerCase() === 'svg') {
+            toggle = toggle.closest('span') || toggle;
+          }
+        } catch (e) {}
+
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          try {
+            this.input.focus();
+            if (this.input.value && this.input.value.trim().length) {
+              this.onChange();
+            }
+          } catch (err) {}
+        });
+      }
+    } catch (err) {}
+
     // bind mobile input if present (overlay may be added server-side)
     this._bindMobileInputs();
     // bind and register document pointerdown handler (capture) to close when clicking outside

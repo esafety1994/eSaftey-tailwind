@@ -19,11 +19,11 @@
   </ul>
 
   <nav class="navigation">
-    <ul class="flex flex-col items-stretch md:flex-row [&>li]:border-r-0 md:gap-4 md:[&>li]:border-r [&>li]:pr-2 [&>li]:last:border-r-0 [&>li]:last:pr-0">
+    <ul class="ar-nav-menu flex flex-col items-stretch md:flex-row  md:gap-4">
       {% assign menu = linklists['top-bar'] %}
       {% if menu %}
         {% for link in menu.links %}
-          <li class="hover:border-bg-light-red">
+          <li class="hover:border-bg-light-red flex items-center">
             <a class="text-xs hover:text-bg-light-red" href="{{ link.url }}">{{ link.title }}</a>
           </li>
         {% endfor %}
