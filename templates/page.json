@@ -13,13 +13,13 @@
       "type": "page-tittle",
       "name": "Page Title",
       "settings": {
-        "container": "container max-w-7xl mx-auto py-4"
+        "container": "container mx-auto py-4"
       }
     },
     "main": {
       "type": "page",
       "settings": {
-        "container": "container max-w-7xl mx-auto py-4"
+        "container": "container mx-auto py-4"
       }
     },
     "breadcrumb_WrJrMP": {
