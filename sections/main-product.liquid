@@ -7,7 +7,9 @@
   <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
     <div>
       {% render 'product-media-gallery' %}
+      {% render 'product-quotify-button', product: product %}
       {% render 'product-faq-preview', product: product %}
+
     </div>
     <!-- Product Info (Right) -->
     <div>

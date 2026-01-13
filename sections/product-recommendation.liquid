@@ -58,7 +58,7 @@
                       {% if display_price %}
                         <p class="text-sm text-gray-600 mt-1">
                           {{ display_price | money }}
-                          {% if p.tags contains 'isgstexempt' %}
+                          {% if p.tags contains 'gst-exempt' %}
                             <span class="ml-2 text-sm">(GST Exempt)</span>
                           {% else %}
                             <span class="ml-2 text-sm">(inc GST)</span>
@@ -396,7 +396,7 @@
                   } else if (rawPrice) { price = String(rawPrice); }
                   // GST detection from tags (tags may be string CSV or array)
                   var isGstExempt = false;
-                  if (p.tags){ if (typeof p.tags === 'string'){ if (p.tags.indexOf('isgstexempt') !== -1) isGstExempt = true; } else if (Array.isArray(p.tags) && p.tags.indexOf('isgstexempt') !== -1) isGstExempt = true; }
+                  if (p.tags){ if (typeof p.tags === 'string'){ if (p.tags.indexOf('gst-exempt') !== -1) isGstExempt = true; } else if (Array.isArray(p.tags) && p.tags.indexOf('gst-exempt') !== -1) isGstExempt = true; }
                   var showExGst = {{ section.settings.show_ex_gst | json }};
                   glideHtml += '<li class="glide__slide px-2 h-full">';
                   glideHtml += '<div class="h-full">';

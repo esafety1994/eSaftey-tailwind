@@ -82,7 +82,7 @@
     },
     "taxes": {
       "include_tax_copy": "inc. GST",
-      "exclude_tax_copy": "Tax excluded."
+      "exclude_tax_copy": "GST Exempt"
     }
   },
   "sections": {
