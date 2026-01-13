@@ -1,0 +1,53 @@
+{% comment %}
+  FAQ Result Count Display
+  Shows "X Results" when filtering by category
+{% endcomment %}
+
+<div class="faq__result-count" data-faq-result-count>
+  <span class="faq__result-count-text">
+    {%- if section.blocks.size > 0 -%}
+      {{ section.blocks.size }} Results
+    {%- else -%}
+      0 Results
+    {%- endif -%}
+  </span>
+</div>
+
+<style>
+  .faq__result-count {
+    text-align: left;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .faq__result-count-text {
+    background: #f3f4f6;
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    display: inline-block;
+  }
+
+  @media (max-width: 680px) {
+    .faq__result-count {
+      text-align: center;
+    }
+  }
+  @media (max-width: 680px) {
+  .faq__result-count {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    margin-top: -0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .faq__result-count-text {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+    background: #F3F4F6; /* Slightly darker on mobile for better contrast */
+  }
+}
+</style>
