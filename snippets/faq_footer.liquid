@@ -1,0 +1,134 @@
+<div class="faq__footer">
+  <div class="faq__footer-content">
+    <div class="faq__footer-text-content">
+      <h3 class="faq__footer-title">Reach out to our friendly team today !</h3>
+      <p class="faq__footer-text">Ask our team or request a quote for bulk orders.</p>
+    </div>
+    <div class="faq__footer-buttons">
+      <a href="/pages/contact" class="faq__footer-btn faq__footer-btn--primary">Contact Support</a>
+      {% comment %} <a href="/pages/new-installation-page" class="faq__footer-btn faq__footer-btn--secondary">Installation Services</a> {% endcomment %}
+    </div>
+  </div>
+</div>
+
+<style>
+.element,
+.element * {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+
+.faq__footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+.faq__footer-text-content {
+  flex: 1;
+}
+
+
+.faq__footer {
+  margin: 3rem 0;
+  padding: 1rem;
+  background: linear-gradient(to bottom, 
+        rgba(254, 220, 19, 0.2) 15%, 
+    
+  
+    white 100%);
+  border-radius: 1.00rem;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.faq__footer-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  
+}
+
+.faq__footer-text {
+  margin: 0 0 1.5rem 0;
+  
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.faq__footer-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.faq__footer-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-block; /* Ensure buttons stay inline */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.faq__footer-btn--primary {
+  background: #FEDC13;
+  color: black;
+  
+}
+
+.faq__footer-btn--primary:hover {
+  background: #111;
+  color: #fff;
+}
+
+.faq__footer-btn--secondary {
+  background: transparent;
+  color: #111;
+  border: 1px solid #111;
+}
+
+.faq__footer-btn--secondary:hover {
+  background: #111;
+  color: #fff;
+}
+
+/* Mobile responsive */
+@media (max-width: 680px) {
+  .faq__footer-buttons {
+    flex-direction: row; /* Change from column to row */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    justify-content: center;
+  }
+  
+  .faq__footer-btn {
+    width: auto; /* Remove fixed width */
+    min-width: 150px; /* Set minimum width instead */
+  }
+}
+@media (max-width: 680px) {
+  .faq__footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .faq__footer-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    align-items: center;
+  }
+
+  .faq__footer-btn {
+    width: 80%;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .faq__footer-text-content {
+    flex: 1 1 100%;
+  }
+}
+</style>
