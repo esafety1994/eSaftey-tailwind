@@ -104,6 +104,58 @@
         "settings": {
           "enable_ajax_atc": true
         }
+      },
+      "2376911714703784909": {
+        "type": "shopify://apps/formful/blocks/app-embed/be9de36b-78a1-4ce9-8de3-f1044fb2ee2e",
+        "disabled": true,
+        "settings": {
+          "form_id": "",
+          "icon_size": 30,
+          "title": "Don't miss out!",
+          "background_color": "#ffffff",
+          "text_color": "#000000",
+          "button_padding": 12,
+          "border_radius": 0,
+          "horizontal_position": 5,
+          "vertical_position": 95
+        }
+      },
+      "8669066016853369741": {
+        "type": "shopify://apps/hotjar-install/blocks/global/2903e4ea-7615-463e-8b60-582f487dac4f",
+        "disabled": false,
+        "settings": {}
+      },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "10830403595879607806": {
+        "type": "shopify://apps/reviews-io/blocks/reviewsio-core/92a082e5-b297-4e88-b428-ac96cbc505f9",
+        "disabled": false,
+        "settings": {
+          "url_key": "REVIEWS.io",
+          "lang": "auto",
+          "enable_syndication": false
+        }
+      },
+      "7974659707553285070": {
+        "type": "shopify://apps/quotify/blocks/app-embed/e72a6125-4dd6-4154-a361-ca94e10e6d52",
+        "disabled": false,
+        "settings": {}
+      },
+      "15562191488504292397": {
+        "type": "shopify://apps/quotify/blocks/sticky-cart-button/e72a6125-4dd6-4154-a361-ca94e10e6d52",
+        "disabled": false,
+        "settings": {
+          "floating_quote_cart_button_text": "Show Quote Cart",
+          "floating_quote_cart_button_background_color": "#ffffff",
+          "floating_quote_cart_button_text_color": "#000000",
+          "floating_quote_cart_button_border_color": "#000000",
+          "floating_quote_cart_button_padding": 10,
+          "floating_quote_cart_button_border_radius": 4,
+          "floating_quote_cart_button_css": ""
+        }
       }
     }
   }
