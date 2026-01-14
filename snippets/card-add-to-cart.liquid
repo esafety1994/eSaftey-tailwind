@@ -1,0 +1,17 @@
+<esafety-custom-add-to-cart-button data-product="{{ product.first_available_variant.id }}">
+  <div class="z-30 absolute bottom-2 w-full">
+    <div class="relative w-full">
+      <div
+        class="bg-primary-yellow rounded-sm p-2 cursor-pointer hover:bg-bg-light-red transition-all duration-300 ease-in-out hover:text-white absolute right-2 bottom-0"
+        onclick="document.getElementById('add-to-cart-form-{{ product.id }}').submit();"
+        aria-label="Add to cart"
+        data-button-type="add-to-cart"
+      >
+        {% render 'icon-svg-cart', stroke_width: 1.75 %}
+      </div>
+      <div class="w-32 mx-auto h-10">
+        {% render 'qty-input-counter' %}
+      </div>
+    </div>
+  </div>
+</esafety-custom-add-to-cart-button>

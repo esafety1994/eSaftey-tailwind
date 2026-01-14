@@ -53,7 +53,11 @@
     <div class="block relative w-full z-10 group" style="padding-bottom: 100%;">
       {%- comment -%} image skeleton removed — skeleton no longer used {%- endcomment -%}
       {% render 'product-badges', product: prod %}
-      <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">{% render 'quotify-button', class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black ' %}</div>
+      <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">
+        {% render 'quotify-button',
+          class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black '
+        %}
+      </div>
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
@@ -66,7 +70,7 @@
               loading="lazy"
               width="600"
               height="600"
-            />
+            >
           {% endif %}
           {% if prod.featured_image %}
             {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-cover transition-all duration-300' %}
@@ -87,6 +91,7 @@
           </div>
         {% endif %}
       </a>
+      {% render 'card-add-to-cart', product: prod %}
     </div>
   </div>
   {% render 'product-tags', product: prod, max_tags: max_tags %}
@@ -113,7 +118,11 @@
       <span class="font-medium">{{ product.variants.size }}</span> options available
     </div>
   {% endif %}
-  <div class="flex justify-center my-2">
-    {% render 'quick-add-btn', product: prod, mobile_hide_qty: true %}
-  </div>
+  {% comment %}
+    <div class="flex justify-center my-2">
+
+         {% render 'quick-add-btn', product: prod, mobile_hide_qty: true %}
+
+    </div>
+  {% endcomment %}
 </article>

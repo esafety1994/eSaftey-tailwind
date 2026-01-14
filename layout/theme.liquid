@@ -34,6 +34,7 @@
     {% render 'rapid-search-settings' %}
   </head>
   <body class="font-normal">
+    {% render 'global-spinner' %}
     <div class="relative">
       {% sections 'header-group' %}
       <section class="top-bar hidden container mx-auto px-4 md:flex py-1.5 transition-all duration-500">
@@ -53,6 +54,7 @@
       <!-- spacer to prevent layout jump when header becomes fixed -->
       <div id="header-spacer" aria-hidden="true" style="display:none"></div>
     </div>
+    
     <main id="main" role="main">
       {{ content_for_layout }}
     </main>

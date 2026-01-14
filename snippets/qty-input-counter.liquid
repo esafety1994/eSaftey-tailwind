@@ -1,0 +1,25 @@
+<div class="relative overflow-hidden h-full" data-qty-input-counter>
+  <div
+    class="custom-number-input h-10 w-32 absolute opacity-0 right-1/2 inline-block -translate-x-1/2 transition-all duration-300 ease-in-out"
+  >
+    <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+      <button
+        class="h-full w-20 cursor-pointer outline-none bg-gray-100 hover:text-bg-light-red transition-all duration-300"
+      >
+        <span class="ml-2 text-2xl inline-flex">{% render 'icon-svg-circle-minus' %}</span>
+      </button>
+      <input
+        name="qty"
+        type="number"
+        value="1"
+        min="0"
+        class="text-center w-full font-semibold text-base flex items-center outline-none bg-gray-100 hover:text-black focus:bg-gray-200 focus:outline-none focus:text-black"
+      >
+      <button
+        class="h-full w-20 cursor-pointer outline-none bg-gray-100 hover:text-bg-light-red transition-all duration-300"
+      >
+        <span class="m-auto text-2xl inline-flex mr-2">{% render 'icon-svg-circle-plus' %}</span>
+      </button>
+    </div>
+  </div>
+</div>
