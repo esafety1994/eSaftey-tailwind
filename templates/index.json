@@ -12,10 +12,22 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
-        "slider_item_UjBni3": {
+        "slider_item_GK847N": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/banner3.webp",
+            "background": "shopify://shop_images/Install_Banner.png",
+            "single_image": false,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://pages/new-installation-page"
+          }
+        },
+        "slider_item_UjBni3": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
             "single_image": false,
             "content_position": "right",
             "title": "SUMMER 2025",
@@ -26,8 +38,8 @@
         },
         "slider_item_TAKEQ8": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/banner1.webp",
             "single_image": false,
             "content_position": "left",
             "title": "SUMMER 2025",
@@ -38,8 +50,8 @@
         },
         "slider_item_jwUMtr": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/banner2.webp",
             "single_image": false,
             "content_position": "left",
             "title": "SUMMER 2025",
@@ -62,6 +74,7 @@
         }
       },
       "block_order": [
+        "slider_item_GK847N",
         "slider_item_UjBni3",
         "slider_item_TAKEQ8",
         "slider_item_jwUMtr",
@@ -76,19 +89,15 @@
         "first_column_width": 50,
         "gap": 16,
         "bg_color_img_1": "#ffd438",
-        "image_1": "shopify://shop_images/wheel-stops-transparent.png",
         "button_text_1": "Wheel Stops",
         "collection_1": "rubber-wheel-stops",
         "bg_color_img_2": "#fee9a7",
-        "image_2": "shopify://shop_images/Rectangle_13.png",
         "button_text_2": "Height Bars",
         "collection_2": "height-bar",
         "bg_color_img_3": "#cf4949",
-        "image_3": "shopify://shop_images/signage-transparent.png",
         "button_text_3": "Signage",
         "collection_3": "abe-extinguishers",
         "bg_color_img_4": "#fee9a7",
-        "image_4": "shopify://shop_images/bollard-transparent.png",
         "button_text_4": "Bollards",
         "collection_4": "bollards"
       }
