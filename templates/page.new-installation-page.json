@@ -50,6 +50,23 @@
     },
     "17273034195fa05a76": {
       "type": "apps",
+      "blocks": {
+        "formful_app_block_form_Dph7U8": {
+          "type": "shopify://apps/formful/blocks/app-block-form/be9de36b-78a1-4ce9-8de3-f1044fb2ee2e",
+          "settings": {
+            "form_id": "form_ZfWib6YhOz",
+            "max_width": 75,
+            "column_gap": 2,
+            "row_gap": 1,
+            "padding_top": 36,
+            "padding_bottom": 36,
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "formful_app_block_form_Dph7U8"
+      ],
       "custom_css": [
         "label .formful__asterisk {color: #ff0000;}",
         ".formful__input {color: black; border-radius: 8px; background: #f8f8f8;}",
