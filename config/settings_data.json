@@ -156,6 +156,23 @@
           "floating_quote_cart_button_border_radius": 4,
           "floating_quote_cart_button_css": ""
         }
+      },
+      "15316669992541710076": {
+        "type": "shopify://apps/reviews-io/blocks/reviewsio-rating-snippet/92a082e5-b297-4e88-b428-ac96cbc505f9",
+        "disabled": false,
+        "settings": {
+          "star": "#000",
+          "text_color": "#333",
+          "snippet_mode": "default",
+          "text": "Reviews",
+          "line_break": false,
+          "listen_for_changes": false,
+          "rating_without_brackets": false,
+          "format_review_count": false,
+          "show_popup": true,
+          "anchor_to_reviews_widget": false,
+          "show_empty_stars": false
+        }
       }
     }
   }
