@@ -7,9 +7,14 @@
   <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
     <div>
       {% render 'product-media-gallery' %}
+      <script
+        src="https://widget.shopassistant-ai.com/preguide_ai.js"
+        data-tenantid="tnt_VIostKRn5lTpaXD"
+        data-app-type="pdp"
+        defer
+      ></script>
       {% render 'product-quotify-button', product: product %}
       {% render 'product-faq-preview', product: product %}
-
     </div>
     <!-- Product Info (Right) -->
     <div>
@@ -19,14 +24,14 @@
       {% assign current_variant = product.selected_or_first_available_variant %}
       <div class="flex gap-4 items-center">
         <div id="product-sku">
-        {% assign current_variant = product.selected_or_first_available_variant %}
-        {% if current_variant and current_variant.sku %}
-          <div class="text-sm text-gray-600 my-4">
-            SKU: <span class="sku-value">{{ current_variant.sku }}</span>
-          </div>
-        {% endif %}
-      </div>
-      {% render 'product-stock-badge', product: product %}
+          {% assign current_variant = product.selected_or_first_available_variant %}
+          {% if current_variant and current_variant.sku %}
+            <div class="text-sm text-gray-600 my-4">
+              SKU: <span class="sku-value">{{ current_variant.sku }}</span>
+            </div>
+          {% endif %}
+        </div>
+        {% render 'product-stock-badge', product: product %}
       </div>
       <div id="product-price" class="mb-4 text-xl font-semibold">
         {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
@@ -53,9 +58,8 @@
         {% render 'product-custom-field', block: custom_block, product: product %}
       {% endif %}
       {% render 'backorder-text', product: product %}
-      {% render 'act-button', product: product, showPlus:true %}
+      {% render 'act-button', product: product, showPlus: true %}
       {% render 'product-below-act-button', product: product %}
-      
     </div>
   </div>
 </div>

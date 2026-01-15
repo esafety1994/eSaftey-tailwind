@@ -1,10 +1,13 @@
 {% comment %} Allow overriding hover classes via `hover_class` variable passed into the snippet {% endcomment %}
 {% assign class = class | default: 'hover:text-bg-light' %}
 <button
-  data-quotify-cart
-  data-shop="{{ shop.metafields.quotify.shop_id }}"
-  type="button"
-  class="p-1 transition-all duration-200 ease-in-out {{class }}"
->
-  {% render 'icon-svg-clipboard', class: 'size-6 cursor-pointer' %}
-</button>
+    data-quotify
+    data-product="{{ product | json | escape }}"
+    data-checksum="{{ product | json | prepend: quotify_shop_secret | sha256 }}"
+    data-shop="{{ shop.metafields.quotify.shop_id }}"
+    data-variant="{{ product.selected_or_first_available_variant.id }}"
+    type="button"
+    class="p-1 transition-all duration-200 ease-in-out {{class }}"
+  >
+    {% render 'icon-svg-clipboard', class: 'size-6 cursor-pointer' %}
+  </button>

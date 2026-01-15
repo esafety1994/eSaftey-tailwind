@@ -1,13 +1,13 @@
 <section class="w-full flex flex-col space-y-4">
   <div class="flex items-center flex-wrap justify-between">
-    <div class="flex items-center w-32 md:w-auto py-2 md:py-0 flex-1 md:flex-none">
+    <div class="flex items-center w-32 md:w-auto py-2.5 md:py-0 flex-1 md:flex-none">
       {% if shop.brand.logo %}
         <a href="/">
           <img
-            src="{{ shop.brand.logo | image_url: width: 400 }}"
+            src="{{ shop.brand.logo | image_url: width: 600 }}"
             alt="{{ shop.name }}"
-            width="200"
-            height="100"
+            width="180"
+            height="150"
             class="h-auto md:h-32 object-contain"
           >
         </a>

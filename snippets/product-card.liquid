@@ -54,7 +54,7 @@
       {%- comment -%} image skeleton removed — skeleton no longer used {%- endcomment -%}
       {% render 'product-badges', product: prod %}
       <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">
-        {% render 'quotify-button',
+        {% render 'quotify-button', product: prod,
           class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black '
         %}
       </div>

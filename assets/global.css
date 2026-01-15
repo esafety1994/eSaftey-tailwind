@@ -2,6 +2,11 @@
   width: 96%;
   margin: auto;
 }
+/* Prevent page horizontal shift when modals disable scrolling
+   - Reserve scrollbar gutter where supported
+   - Force a visible vertical scrollbar as a fallback */
+html { overflow-y: scroll; }
+body { scrollbar-gutter: stable; }
 @media (width >= 96rem) {
   .container {
     max-width: 1440px;
