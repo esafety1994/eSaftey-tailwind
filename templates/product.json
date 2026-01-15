@@ -100,7 +100,7 @@
             "show_avatar": true,
             "enable_sentiment_analysis": false,
             "enable_replies": false,
-            "widget_spacing": 40,
+            "widget_spacing": 0,
             "capitalise_headers_and_buttons": false,
             "show_review_title": false,
             "default_sort": "date_desc"
