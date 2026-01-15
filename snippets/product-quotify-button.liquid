@@ -3,7 +3,7 @@
     data-quotify
     data-product="{{ product | json | escape }}"
     data-checksum="{{ product | json | prepend: quotify_shop_secret | sha256 }}"
-    data-shop="{{ quotify_shop_id }}"
+    data-shop="{{ shop.metafields.quotify.shop_id }}"
     data-variant="{{ product.selected_or_first_available_variant.id }}"
     type="button"
     class="btn primary-cart-button"
@@ -17,9 +17,7 @@
     data-quotify-cart
     data-shop="{{ shop.metafields.quotify.shop_id }}"
     type="button"
-    class="btn outline-button"
-    data-quotify-cart
-    data-shop="{{ shop.metafields.quotify.shop_id }}"
+    class="btn outline-button"    
   >
     View quote
   </button>
