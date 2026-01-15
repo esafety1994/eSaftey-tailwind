@@ -1,1 +1,16 @@
-<div class="ruk_rating_snippet" data-sku="{{ product.handle }};{{ product.variants | map: 'sku' | join: ';' }};{{ product.variants | map: 'id' | join: ';' }}"></div>
+<div
+  class="ruk_rating_snippet"
+  data-sku="{{ product.handle }};{{ product.variants | map: 'sku' | join: ';' }};{{ product.variants | map: 'id' | join: ';' }}"
+></div>
+<script src="https://widget.reviews.io/rating-snippet/dist.js" defer></script>
+<link rel="stylesheet" href="https://widget.reviews.io/rating-snippet/dist.css">
+<script>
+  ratingSnippet('ruk_rating_snippet', {
+    store: 'esafety-supplies',
+    color: '#0E1311',
+    linebreak: true,
+    usePolaris: true,
+    text: 'Reviews',
+  });
+</script>
+
