@@ -79,7 +79,7 @@
         "reviews_io_reviewsio_polaris_YeqVFw": {
           "type": "shopify://apps/reviews-io/blocks/reviewsio-polaris/92a082e5-b297-4e88-b428-ac96cbc505f9",
           "settings": {
-            "star": "#000",
+            "star": "#ffd438",
             "review_type": "product_review,questions",
             "per_page": 3,
             "primary_btn_bg_color": "#000",
@@ -100,7 +100,7 @@
             "show_avatar": true,
             "enable_sentiment_analysis": false,
             "enable_replies": false,
-            "widget_spacing": 0,
+            "widget_spacing": 40,
             "capitalise_headers_and_buttons": false,
             "show_review_title": false,
             "default_sort": "date_desc"
