@@ -73,6 +73,45 @@
         "show_ex_gst": false
       }
     },
+    "1768442681216c6726": {
+      "type": "apps",
+      "blocks": {
+        "reviews_io_reviewsio_polaris_YeqVFw": {
+          "type": "shopify://apps/reviews-io/blocks/reviewsio-polaris/92a082e5-b297-4e88-b428-ac96cbc505f9",
+          "settings": {
+            "star": "#000",
+            "review_type": "product_review,questions",
+            "per_page": 3,
+            "primary_btn_bg_color": "#000",
+            "primary_btn_border_color": "#000",
+            "primary_btn_text_color": "#fff",
+            "secondary_btn_border_color": "#000",
+            "secondary_btn_text_color": "#000",
+            "border_color": "#000000",
+            "heading_text_color": "#000",
+            "heading_font": "sans_serif_n4",
+            "body_text_color": "#000",
+            "badge_icon_color": "#000",
+            "badge_text_color": "#000",
+            "enable_rich_snippets": true,
+            "show_location": true,
+            "show_tab_selector": false,
+            "show_dates": true,
+            "show_avatar": true,
+            "enable_sentiment_analysis": false,
+            "enable_replies": false,
+            "widget_spacing": 0,
+            "capitalise_headers_and_buttons": false,
+            "show_review_title": false,
+            "default_sort": "date_desc"
+          }
+        }
+      },
+      "block_order": [
+        "reviews_io_reviewsio_polaris_YeqVFw"
+      ],
+      "settings": {}
+    },
     "shipping_calculator_f6crqN": {
       "type": "shipping-calculator",
       "name": "Shipping calculator",
@@ -84,6 +123,7 @@
     "main",
     "product_info_tabs",
     "product_recommendation_a4TCDB",
+    "1768442681216c6726",
     "shipping_calculator_f6crqN"
   ]
 }
