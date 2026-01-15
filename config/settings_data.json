@@ -166,7 +166,7 @@
           "snippet_mode": "default",
           "text": "",
           "line_break": false,
-          "listen_for_changes": false,
+          "listen_for_changes": true,
           "rating_without_brackets": false,
           "format_review_count": false,
           "show_popup": true,
