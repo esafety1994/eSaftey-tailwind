@@ -104,6 +104,7 @@
       {{ prod.title }}
     </a>
     {% render 'product-stock-badge', product: prod %}
+    {% render 'product-review', product: prod, layout: "card" %}
     {% render 'product-price',
       product: prod,
       show_compare_price: show_compare_price,
