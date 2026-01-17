@@ -78,9 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
     sheet.setAttribute("aria-hidden", "false");
     overlay.classList.remove("hidden");
     overlay.classList.add("visible");
+    // lock background scroll when navigation sheet opens
+    try { if (window && typeof window.lockScroll === 'function') window.lockScroll(); } catch(e) {}
     if (trigger && typeof trigger.setAttribute === "function")
       trigger.setAttribute("aria-expanded", "true");
-    document.body.classList.add("overflow-hidden");
     setTimeout(function () {
       focusFirst(sheet);
     }, 10);
@@ -117,8 +118,9 @@ document.addEventListener("DOMContentLoaded", function () {
           if (prevActive2 && prevActive2.length) prevActive2.forEach(function (n) { n.classList.remove('root-active'); });
         } catch (e) {}
         try { sheet.setAttribute("aria-hidden", "true"); } catch (e) {}
-        try { document.body.classList.remove("overflow-hidden"); } catch (e) {}
         try { if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus(); } catch (e) {}
+        // restore scroll when nav sheet closed
+        try { if (window && typeof window.unlockScroll === 'function') window.unlockScroll(); } catch(e) {}
         try { content.removeEventListener('transitionend', onTransEnd); } catch (e) {}
       };
       if (content) {
@@ -133,7 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // fallback immediate cleanup
       try { sheet.style.top = ''; sheet.style.height = ''; } catch (e) {}
       try { sheet.classList.remove("collapsed-root"); } catch (e) {}
-      try { document.body.classList.remove("overflow-hidden"); } catch (e) {}
       try { if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus(); } catch (e) {}
     }
   }
@@ -242,7 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
         panel.style.pointerEvents = "auto";
         panel.style.boxShadow = "0 6px 18px rgba(0,0,0,0.12)";
         panel.style.zIndex = 2000;
-        panel.style.overflow = "hidden";
         panel.style.boxSizing = "border-box";
 
         var header = document.createElement("div");

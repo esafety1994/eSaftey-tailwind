@@ -1,4 +1,4 @@
-<div class="shipping-calculator" x-data="{ shippingRates: [], isLoading: false, formData: {quantity: 1}, errors: {} }">
+<div class="shipping-calculator" data-shipping-widget data-product="{{ product | json }}">
   <div class="m-cart-addon__title m:font-large flex gap-2 items-center">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
       <path d="M19.9993 2.66699V16.0003C19.9993 17.467 18.7993 18.667 17.3327 18.667H2.66602V10.1603C3.63935 11.3203 5.13272 12.0403 6.78605 12.0003C8.13272 11.9737 9.34602 11.4537 10.2527 10.587C10.666 10.2403 11.0127 9.80031 11.2794 9.32031C11.7594 8.50698 12.026 7.54696 11.9993 6.54696C11.9593 4.98696 11.266 3.61366 10.186 2.66699H19.9993Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -89,7 +89,11 @@
         <input
           x-model="formData.quantity"
           class="form-field p-2 my-3"
-          type="text"
+          type="number"
+          inputmode="numeric"
+          pattern="\d*"
+          min="1"
+          step="1"
           id="QuantityShipping"
           name="quantity"
           value="1"
@@ -402,22 +406,4 @@
   }
 </style>
 
-<script>
-  function toggleSpans() {
-    const spinnerIcon = document.querySelector('.shipping-calculator button span.m-spinner-icon');
-    const span1 = document.querySelector('.shipping-calculator button span:nth-child(1)');
-    // const span2 = document.querySelector('.shipping-calculator button span.calculating');
-    const isSpinnerVisible = window.getComputedStyle(spinnerIcon).display === 'block';
-    // console.log(isSpinnerVisible)
-    if (isSpinnerVisible) {
-      span1.style.display = 'none';
-      // span2.style.display = 'block';
-    } else {
-      span1.style.display = 'block';
-      // span2.style.display = 'none';
-    }
-  }
-
-  // Check every second (1000ms)
-  setInterval(toggleSpans, 50);
-</script>
+<script src="{{ 'shipping-calculator.js' | asset_url }}" defer></script>
