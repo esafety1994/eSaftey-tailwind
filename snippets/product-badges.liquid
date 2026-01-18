@@ -29,8 +29,8 @@
 
 <div class="badges absolute top-3 left-3 z-40 flex flex-col items-end gap-2">
   {% if show_discount %}
-    <div class="discount-badge bg-primary-yellow text-black rounded-full text-sm font-semibold size-15 flex items-center justify-center leading-none">-{{ discount_pct }}%</div>
+    <div class="discount-badge bg-primary-yellow text-black rounded-full text-xs font-semibold size-12 flex items-center justify-center leading-none">-{{ discount_pct }}%</div>
   {% elsif is_new %}
-    <div class="new-badge bg-black text-primary-yellow rounded-full text-sm font-semibold size-15 flex items-center justify-center leading-none">NEW</div>
+    <div class="new-badge bg-black text-primary-yellow rounded-full text-xs font-semibold size-12 flex items-center justify-center leading-none">NEW</div>
   {% endif %}
 </div>

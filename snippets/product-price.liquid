@@ -62,7 +62,7 @@
           {% endif -%}
         </span>
       {% else %}
-        <span class="flex flex-wrap items-center justify-start gap-1.5">
+        <span class="flex flex-wrap items-center justify-start gap-1.5 text-base">
           <span>{{ product.price | money }}</span>
           {% if product.tags contains 'gst-exempt' %}
             <span>
