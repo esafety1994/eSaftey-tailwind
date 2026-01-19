@@ -53,7 +53,7 @@ variant-picker .m-product-option--label,
 }
 
 .accordion-wrapper span.step-title {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 15px;
 }
 .accordion-icon svg {
@@ -187,7 +187,7 @@ button.is-disabled {
 }
 
 .price-config-notice{
-    font-weight: 800;
+    font-weight: 600;
     padding: 10px 0 20px 0;
 }
 
@@ -198,118 +198,3 @@ button.is-disabled {
 .product-embedded-video{
   margin:20px auto;
 }
-
-/* App swatch container: make each option act like a flexible button */
-.avp-option.ap-options__swatch-container {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.avp-option.ap-options__swatch-container .m-product-option--node.apo-swatch-wrapper {
-  flex: 1 1 0;
-  min-width: 120px;
-}
-
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border: 1px solid rgb(var(--color-border, 217,217,217));
-  border-radius: 8px;
-  background: #fff;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: background 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
-}
-
-/* Hover: darken border */
-.avp-option.ap-options__swatch-container .m-product-option--node.apo-swatch-wrapper:hover .avp-productoptionswatchwrapper {
-  border-color: #000;
-  transform: translateY(-1px);
-}
-
-/* Selected/checked state: background black, text white */
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper.selected,
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper input:checked ~ .avp-productoptionswatch-box,
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper input:checked ~ .swatch-variant-title {
-  /* prefer .selected class applied by JS for full coverage */
-}
-
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper.selected {
-  background: #000;
-  color: #fff;
-  border-color: #000;
-}
-
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper.selected .swatch-variant-title {
-  color: #fff;
-}
-
-/* keep radio inputs accessible but visually hidden */
-.avp-option.ap-options__swatch-container input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ensure the small custom-circle stays visible on selected state */
-.avp-option.ap-options__swatch-container .custom-circle {
-  right: 10px;
-  top: 8px;
-}
-
-/* Hide the decorative circle; use background color on selected state instead */
-.avp-option.ap-options__swatch-container .custom-circle { display: none !important; }
-
-/* Selected state: black background, white text */
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper.selected {
-  background: #000 !important;
-  color: #fff !important;
-  border-color: #000 !important;
-}
-.avp-option.ap-options__swatch-container .avp-productoptionswatchwrapper.selected .swatch-variant-title {
-  color: #fff !important;
-}
-
-/* Material radio -> button appearance */
-[data-option-name="Choose Material"] .material-option,
-[data-option-name="Choose Material"] .m-product-option--node.material-option {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  margin: 6px 8px 6px 0;
-  border: 1px solid #e6e6e6;
-  border-radius: 8px;
-  background: #fff;
-  cursor: pointer;
-  transition: background-color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease;
-  vertical-align: middle;
-  min-width: 120px;
-}
-
-[data-option-name="Choose Material"] .material-option:hover {
-  background: #fafafa;
-  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
-  transform: translateY(-1px);
-}
-
-[data-option-name="Choose Material"] .material-option.selected {
-  border-color: #111;
-  background: #fff8dc;
-  box-shadow: 0 8px 20px rgba(16,24,40,0.06);
-}
-
-/* keep radio inputs accessible but visually hidden */
-[data-option-name="Choose Material"] .material-option input[type="radio"],
-[data-option-name="Choose Material"] input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* make sure any inner custom-circle remains positioned */
-[data-option-name="Choose Material"] .custom-circle { right: 10px; top: 8px; }

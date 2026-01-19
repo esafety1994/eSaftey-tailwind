@@ -219,6 +219,97 @@ document.addEventListener("DOMContentLoaded", function () {
     document.head.appendChild(style);
   }
 
+  /** Create an accordion DOM node factory
+   *  step: number
+   *  title: string
+   *  open: boolean
+   *  returns wrapper element with data-step attribute
+   */
+  function createAccordionDOM(step, title, open = false) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'accordion-wrapper';
+    if (step) wrapper.setAttribute('data-step', String(step));
+
+    const header = document.createElement('div');
+    header.className = 'accordion-header';
+    header.innerHTML = `
+      <span class="step-title">Step ${step}: ${title}</span>
+      <span class="accordion-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+        </svg>
+      </span>`;
+
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'accordion-content-wrapper';
+    const content = document.createElement('div');
+    content.className = 'accordion-content';
+    content.style.maxHeight = open ? (step === 5 ? '375px' : content.scrollHeight + 'px') : '0px';
+    if (open) content.classList.add('open');
+    if (open && header.querySelector('svg')) header.querySelector('svg').style.transform = 'rotate(180deg)';
+
+    contentWrapper.appendChild(content);
+    wrapper.appendChild(header);
+    wrapper.appendChild(contentWrapper);
+    return wrapper;
+  }
+
+  /** Open an accordion by step number (or wrapper element) and ensure max-height is correct */
+  function openAccordionByStep(stepOrWrapper) {
+    const wrapper =
+      typeof stepOrWrapper === 'number'
+        ? document.querySelector(`.accordion-wrapper[data-step="${stepOrWrapper}"]`)
+        : stepOrWrapper;
+    if (!wrapper) return;
+    const content = wrapper.querySelector('.accordion-content');
+    if (!content) return;
+    content.classList.add('open');
+    wrapper.classList.add('accordion-open');
+    const stepAttr = Number(wrapper.getAttribute('data-step')) || null;
+    if (stepAttr === 5) content.style.maxHeight = '375px';
+    else {
+      // Try to set to exact scrollHeight, fallback to a large value
+      const h = content.scrollHeight || 2000;
+      content.style.maxHeight = h + 'px';
+    }
+    const svg = wrapper.querySelector('.accordion-header svg');
+    if (svg) svg.style.transform = 'rotate(180deg)';
+
+    // Recalculate after images load or shortly after to account for late-rendered content
+    setTimeout(() => {
+      if (content.classList.contains('open')) content.style.maxHeight = (content.scrollHeight || 2000) + 'px';
+    }, 250);
+    // also listen for images inside
+    content.querySelectorAll('img').forEach((img) => {
+      if (!img.complete) {
+        img.addEventListener('load', () => {
+          if (content.classList.contains('open')) content.style.maxHeight = (content.scrollHeight || 2000) + 'px';
+        });
+      }
+    });
+  }
+
+  // Delegated click handler so server-rendered accordions work without per-node bindings
+  function attachAccordionDelegation() {
+    if (window.__accordionDelegationAttached) return;
+    document.body.addEventListener('click', (e) => {
+      const header = e.target.closest && e.target.closest('.accordion-header');
+      if (!header) return;
+      const wrapper = header.closest('.accordion-wrapper');
+      if (!wrapper) return;
+      const content = wrapper.querySelector('.accordion-content');
+      if (!content) return;
+      const isOpen = content.classList.toggle('open');
+      wrapper.classList.toggle('accordion-open', isOpen);
+      // cap step 5 height
+      const stepAttr = Number(wrapper.getAttribute('data-step')) || null;
+      if (isOpen && stepAttr === 5) content.style.maxHeight = '375px';
+      else content.style.maxHeight = isOpen ? content.scrollHeight + 'px' : '0px';
+      const svg = header.querySelector('svg'); if (svg) svg.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+    window.__accordionDelegationAttached = true;
+  }
+
   /** Add visual circles to radio buttons and manage state */
   function injectCirclesAndListeners() {
     document
@@ -276,38 +367,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const swatchContainer = document.querySelector(
       ".avp-option.ap-options__swatch-container",
     );
-    if (!swatchContainer || swatchContainer.closest(".accordion-wrapper"))
-      return;
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "accordion-wrapper";
-
-    const header = document.createElement("div");
-    header.className = "accordion-header";
-    header.innerHTML = `
-      <span class="step-title">Step 1: Choose Standard Template</span>
-      <span class="accordion-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-        </svg>
-      </span>`;
-
-    const content = document.createElement("div");
-    content.className = "accordion-content open";
-    content.style.maxHeight = "2000px";
-
+    if (!swatchContainer || swatchContainer.closest('.accordion-wrapper')) return;
+    const wrapper = createAccordionDOM(1, 'Choose Standard Template', true);
+    // insert wrapper before swatch and move swatch into content
     swatchContainer.parentNode.insertBefore(wrapper, swatchContainer);
-    wrapper.append(header, content);
+    const content = wrapper.querySelector('.accordion-content');
     content.appendChild(swatchContainer);
-    header.querySelector("svg").style.transform = "rotate(180deg)";
-
-    header.addEventListener("click", () => {
-      const isOpen = content.classList.toggle("open");
-      content.style.maxHeight = isOpen ? content.scrollHeight + "px" : "0px";
-      header.querySelector("svg").style.transform = isOpen
-        ? "rotate(180deg)"
-        : "rotate(0deg)";
-    });
+    // Open step 1 by default
+    openAccordionByStep(wrapper);
   }
 
   /** Insert Step 4 and 5 inside app container after .custom-sign-wrapper */
@@ -326,45 +393,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // create function to build wrapper
     const build = (stepNum, title) => {
-      // avoid duplicate anywhere under app
-      if (app.querySelector(`.accordion-wrapper[data-step="${stepNum}"]`) || Array.from(app.querySelectorAll('.accordion-wrapper .step-title')).some(t => /step\s*' + stepNum + '/i.test(t.textContent || ''))) return null;
-
-      const wrapper = document.createElement('div');
-      wrapper.className = 'accordion-wrapper';
-      wrapper.setAttribute('data-step', String(stepNum));
-
-      const header = document.createElement('div');
-      header.className = 'accordion-header';
-      header.innerHTML = `
-        <span class="step-title">Step ${stepNum}: ${title}</span>
-        <span class="accordion-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-          </svg>
-        </span>`;
-
-      const contentWrapper = document.createElement('div');
-      contentWrapper.className = 'accordion-content-wrapper';
-      const content = document.createElement('div');
-      content.className = 'accordion-content';
-      content.style.maxHeight = '0px';
-      contentWrapper.appendChild(content);
-
-      wrapper.appendChild(header);
-      wrapper.appendChild(contentWrapper);
-
-      header.addEventListener('click', () => {
-        const isOpen = content.classList.toggle('open');
-        wrapper.classList.toggle('accordion-open', isOpen);
-        if (isOpen && stepNum === 5) {
-          content.style.maxHeight = '375px';
-        } else {
-          content.style.maxHeight = isOpen ? content.scrollHeight + 'px' : '0px';
-        }
-        const svg = header.querySelector('svg'); if (svg) svg.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-      });
-
-      return wrapper;
+      if (app.querySelector(`.accordion-wrapper[data-step="${stepNum}"]`)) return null;
+      return createAccordionDOM(stepNum, title, false);
     };
 
     // Build step 4
@@ -372,7 +402,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (step4) {
       if (insertAfter && insertAfter.parentNode) insertAfter.parentNode.insertBefore(step4, insertAfter.nextSibling);
       else app.appendChild(step4);
-      // move select container into step 4
       const selectContainer = document.querySelector('.avp-option.ap-options__select-container') || document.querySelector('.ap-options__select-container');
       if (selectContainer && !selectContainer.closest('.accordion-wrapper')) {
         step4.querySelector('.accordion-content').appendChild(selectContainer);
@@ -385,7 +414,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (step5) {
       if (insertAfter && insertAfter.parentNode) insertAfter.parentNode.insertBefore(step5, insertAfter.nextSibling);
       else app.appendChild(step5);
-      // move textarea and file containers into step 5
       document.querySelectorAll('.ap-options__textarea-container, .ap-options__file-container').forEach(el => {
         if (el && !el.closest('.accordion-wrapper')) step5.querySelector('.accordion-content').appendChild(el);
       });
@@ -538,6 +566,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /** Wait for dynamic content if swatches not present yet */
+  // Ensure server-rendered accordions are interactive immediately
+  attachAccordionDelegation();
+
   if (document.querySelector(".avpoptions-container__v2")) {
     onSwatchReady();
   } else {
