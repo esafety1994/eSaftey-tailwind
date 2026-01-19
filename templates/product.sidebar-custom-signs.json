@@ -15,7 +15,7 @@
       "settings": {}
     },
     "main": {
-      "type": "main-product",
+      "type": "custom-sign-product",
       "blocks": {
         "title": {
           "type": "title",

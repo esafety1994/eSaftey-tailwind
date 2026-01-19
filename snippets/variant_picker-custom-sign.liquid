@@ -1,0 +1,46 @@
+<custom-sign-variant-picker>
+    <div class="custom-sign-wrapper">
+  {% unless product.has_only_default_variant %}
+    {% for option in product.options_with_values %}
+      {% assign option_name_down = option.name | downcase %}
+      {% case option_name_down %}
+        {% when 'choose material' %}
+          {% assign picker_step = 'step 2' %}
+        {% when 'choose size' %}
+          {% assign picker_step = 'step 3' %}
+      {% endcase %}
+
+      <div class="accordion-wrapper">
+        <div class="accordion-header">
+          <span class="step-title">{{ picker_step | capitalize }}: {{ option.name }}</span>
+          <span class="accordion-icon">
+            {% render 'icon-svg-chevron-right', class: 'size-6 rotate-90' %}
+          </span>
+        </div>
+        <div class="accordion-content variant-picker__values w-full ">
+          <div class="variant-picker__values w-full ">
+            {% assign option_name_down = option.name | downcase %}
+
+            <select
+              id="{{ option.name | handleize }}-select"
+              name="{{ option.name }}"
+              class="variant-picker__select border border-gray-300 rounded px-3 py-2 w-full "
+            >
+              {% for value in option.values %}
+                <option
+                  value="{{ value.variant.id }}"
+                  {% if option.selected_value == value %}
+                    selected
+                  {% endif %}
+                >
+                  {{ value.name }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% endunless -%}
+  </div>
+</custom-sign-variant-picker>
