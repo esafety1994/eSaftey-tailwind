@@ -1,18 +1,20 @@
 <custom-sign-variant-picker>
   <div class="custom-sign-wrapper">
+    <!-- hidden field to hold selected variant id for form submissions / JS -->
+    <input type="hidden" name="id" id="custom-sign-selected-variant" value="{{ product.selected_or_first_available_variant.id }}" />
     {% unless product.has_only_default_variant %}
       {% for option in product.options_with_values %}
         {% assign option_name_down = option.name | downcase %}
         {% case option_name_down %}
           {% when 'choose material' %}
-            {% assign picker_step = 'step 2' %}
+            {% assign picker_step = '2' %}
           {% when 'choose size' %}
-            {% assign picker_step = 'step 3' %}
+            {% assign picker_step = '3' %}
         {% endcase %}
 
-        <div class="accordion-wrapper">
+        <div class="accordion-wrapper" data-step="{{ picker_step }}" style="padding:12px 0 !important;">
           <div class="accordion-header">
-            <span class="step-title">{{ picker_step | capitalize }}: {{ option.name }}</span>
+            <span class="step-title">Step {{ picker_step }}: {{ option.name }}</span>
             <span class="accordion-icon">
               <span class="accordion-icon">
                 <svg
@@ -54,4 +56,5 @@
       {% endfor %}
     {% endunless -%}
   </div>
+
 </custom-sign-variant-picker>

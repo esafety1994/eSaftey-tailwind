@@ -80,10 +80,6 @@ variant-picker .m-product-option--label,
 .accordion-content-wrapper {
     padding: 15px 0 10px 0 !important;
 }
-.avpoptions-container__v2 div.avp-option,
-.avpoptions-container__v2 > div {
-  margin-bottom: 0px !important;
-}
 
 .product-swiper {
   width: 100%;

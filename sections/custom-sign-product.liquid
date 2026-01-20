@@ -22,20 +22,10 @@
       <h1 class="text-3xl font-semibold mb-4">{{ product.title }}</h1>
       {% render 'product-tags', product: product %}
       {% render 'product-review', product: product %}
-      {% assign current_variant = product.selected_or_first_available_variant %}
       <div class="flex gap-4 items-center">
-        <div id="product-sku">
-          {% assign current_variant = product.selected_or_first_available_variant %}
-          {% if current_variant and current_variant.sku %}
-            <div class="text-sm text-gray-600 my-4">
-              SKU: <span class="sku-value">{{ current_variant.sku }}</span>
-            </div>
-          {% endif %}
-        </div>
         {% render 'product-stock-badge', product: product %}
       </div>
       {% render 'custom-sign-section' %}
-      
 
       <div class="my-6 border-gray-300 border-y-1 py-6">
         {% render 'product-features', product: product %}
@@ -44,7 +34,16 @@
       {% render 'variant_picker-custom-sign' %}
       {% render 'act-button', product: product, showPlus: true %}
       <div id="product-price" class="mb-4 text-xl font-semibold hidden">
-        {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
+        <div class="grid gap-2 my-4 items-center">
+          <span class="font-semibold flex gap-x-4 ">
+            <span class="flex flex-wrap items-center justify-start gap-1.5 text-base">
+              <span id="custom-sign-price-inc">$26.95</span>
+              <span class="ml-2 text-sm">(inc. GST)</span>
+            </span>
+          </span>
+
+          <span class="text-base text-gray-600"><span id="custom-sign-price-ex">$24.50</span> (ex. GST)</span>
+        </div>
       </div>
       {% render 'product-below-act-button', product: product %}
     </div>
