@@ -85,10 +85,17 @@ function wireVariantPriceUpdates() {
     }
     const priceCents = v.price != null ? v.price : v.price_cents || v.price_in_cents || null;
     let compareCents = v.compare_at_price != null ? v.compare_at_price : v.compare_at_price_cents || null;
-    // If no compare_at_price provided, set compare to 90% of the price (10% less)
+    // If no compare_at_price provided, set compare to price excluding GST (inc / 1.1)
+    // priceCents is treated as integer cents; dividing by 1.1 yields ex-GST cents
     if ((compareCents === null || compareCents === undefined) && priceCents != null) {
       const pn = Number(priceCents);
-      if (!Number.isNaN(pn)) compareCents = Math.round(pn * 0.9);
+      if (!Number.isNaN(pn)) {
+        try {
+          compareCents = Math.round(pn / 1.1);
+        } catch (e) {
+          compareCents = Math.round(pn * 0.9);
+        }
+      }
     }
     if (incEl) incEl.textContent = format(priceCents);
     if (exEl) exEl.textContent = compareCents ? format(compareCents) : '';
