@@ -186,6 +186,80 @@ if (!customElements.get("esafety-cart-action-button")) {
         });
       }
 
+      // Fallback: if no `.m-product-custom-field` was present or produced no properties,
+      // collect values from selects, checked radios and text inputs within the product form
+      // and from common swatch containers. This ensures older themes' option names
+      // like "Choose Material" or "Choose Size" are captured as cart properties.
+      try {
+        const formEl = (event.target && event.target.closest && event.target.closest('form')) || document.querySelector('#product-act-button form') || document.querySelector('form[action*="/cart/add"]');
+        const collected = {};
+        if (formEl) {
+          // selects (use visible option text)
+          formEl.querySelectorAll('select[name]').forEach((s) => {
+            const key = s.name && s.name.trim();
+            if (!key) return;
+            const opt = s.options && s.options[s.selectedIndex];
+            const val = opt ? (opt.textContent || opt.value || '').trim() : (s.value || '').trim();
+            if (val) collected[key] = val;
+          });
+
+          // checked radios
+          formEl.querySelectorAll('input[type="radio"][name]').forEach((r) => {
+            if (!r.checked) return;
+            const key = r.name && r.name.trim();
+            if (!key) return;
+            let val = (r.value || '').trim();
+            // prefer nearby swatch label text if present
+            const wrap = r.closest && r.closest('.avp-productoptionswatchwrapper');
+            if (wrap) {
+              const txt = (wrap.textContent || '').trim();
+              if (txt) val = txt;
+            } else {
+              // try label[for=]
+              const id = r.id;
+              if (id) {
+                const lbl = document.querySelector('label[for="' + id + '"]');
+                if (lbl && (lbl.textContent || '').trim()) val = lbl.textContent.trim();
+              }
+            }
+            if (val) collected[key] = val;
+          });
+
+          // text inputs and textareas
+          formEl.querySelectorAll('input[type="text"][name], textarea[name]').forEach((t) => {
+            const key = t.name && t.name.trim();
+            if (!key) return;
+            const val = (t.value || '').trim();
+            if (val) collected[key] = val;
+          });
+        }
+
+        // also scan general swatch container outside the form
+        const swatchContainer = document.querySelector('.ap-options__swatch-container');
+        if (swatchContainer) {
+          swatchContainer.querySelectorAll('input[type="radio"][name]').forEach((r) => {
+            if (!r.checked) return;
+            const key = r.name && r.name.trim();
+            if (!key) return;
+            const wrap = r.closest && r.closest('.avp-productoptionswatchwrapper');
+            let val = '';
+            if (wrap) val = (wrap.textContent || '').trim();
+            if (!val) val = (r.value || '').trim();
+            if (val) collected[key] = val;
+          });
+        }
+
+        // merge collected into properties for submission if properties is empty
+        if (Object.keys(properties).length === 0 && Object.keys(collected).length > 0) {
+          properties = collected;
+        } else {
+          // merge but don't overwrite explicit properties
+          Object.keys(collected).forEach((k) => { if (!properties[k]) properties[k] = collected[k]; });
+        }
+      } catch (e) {
+        // fail silently
+      }
+
       // derive the active form (supports cases where variant scripts replace the form)
       const form =
         (event.target &&

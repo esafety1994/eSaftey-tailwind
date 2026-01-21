@@ -35,7 +35,9 @@ function onSwatchReady() {
   createAccordionForSwatchContainer();
   insertSteps4And5IntoApp();
   setupAccordionStepAutoAdvance();
-  // Wire material change -> repopulate sizes
+    // Wire material change -> repopulate sizes
+    // Populate product gallery from swatch images (if present)
+    try { updateProductGalleryWithSwatchImages(); } catch (e) {}
   document.querySelectorAll('select[name="Choose Material"], input[name="Choose Material"]').forEach((el) => {
     el.addEventListener('change', () => {
       try { updateSizeOptions(); } catch (e) {}
@@ -505,4 +507,84 @@ function updateSizeOptions() {
     if (enabled) { node.classList.remove('m-product-option--node__unavailable'); if (input) input.removeAttribute('disabled'); }
     else { node.classList.add('m-product-option--node__unavailable'); if (input) input.setAttribute('disabled','disabled'); }
   });
+}
+
+/**
+ * Build product gallery slides from the default product image + swatch images
+ * - collects `[data-src]` under `.ap-options__swatch-container`
+ * - replaces main slides and thumbnails and triggers gallery re-init
+ * - wires option click / radio change to navigate the gallery
+ */
+function updateProductGalleryWithSwatchImages() {
+  try {
+    const swatchContainer = document.querySelector('.ap-options__swatch-container');
+    if (!swatchContainer) return;
+
+    const dataEls = Array.from(swatchContainer.querySelectorAll('[data-src]'));
+    if (!dataEls.length) return;
+
+    const mainSlidesEl = document.querySelector('#product-glide .glide__slides');
+    const thumbsSlidesEl = document.querySelector('#product-thumbs .glide__slides');
+    if (!mainSlidesEl) return;
+
+    // default image (first existing slide image) then swatch images
+    const defaultImg = (mainSlidesEl.querySelector('li img') && mainSlidesEl.querySelector('li img').src) || null;
+    const srcs = [];
+    if (defaultImg) srcs.push(defaultImg);
+    dataEls.forEach((el) => {
+      const s = el.getAttribute('data-src') || '';
+      if (s && !srcs.includes(s)) srcs.push(s);
+    });
+    if (!srcs.length) return;
+
+    // Replace main slides
+    mainSlidesEl.innerHTML = srcs
+      .map((s) => `<li class="glide__slide"><img src="${s}" alt="" class="w-full rounded shadow"></li>`)
+      .join('');
+
+    // Replace thumbs if present
+    if (thumbsSlidesEl) {
+      thumbsSlidesEl.innerHTML = srcs
+        .map((s, i) => `<li class="glide__slide px-1 max-w-32"><button class="thumb-btn focus:outline-none" data-thumb-index="${i}"><img src="${s}" alt="" class="rounded"></button></li>`)
+        .join('');
+    }
+
+    // Notify product-media to re-init Glide
+    document.dispatchEvent(new Event('product:content:replaced'));
+
+    // Wire clicks on swatch items to navigate the main carousel
+    const mainEl = document.getElementById('product-glide');
+    dataEls.forEach((el) => {
+      const wrapper = el.closest('.avp-productoptionswatchwrapper') || el;
+      const src = el.getAttribute('data-src');
+      wrapper.addEventListener('click', (ev) => {
+        const idx = srcs.indexOf(src);
+        if (idx < 0) return;
+        if (mainEl && mainEl._glideInstance) {
+          try { mainEl._glideInstance.go('=' + idx); } catch (e) {}
+        } else if (mainEl) {
+          mainEl.setAttribute('data-start-index', String(idx));
+        }
+      });
+    });
+
+    // Wire radio/select changes to navigate to the matching swatch image (if any)
+    swatchContainer.querySelectorAll('input[type="radio"]').forEach((input) => {
+      input.addEventListener('change', (e) => {
+        if (!input.checked) return;
+        const parent = input.closest('.avp-productoptionswatchwrapper');
+        const imgEl = parent ? parent.querySelector('[data-src]') || parent.querySelector('img') : null;
+        const s = imgEl ? (imgEl.getAttribute('data-src') || imgEl.src) : null;
+        const idx = s ? srcs.indexOf(s) : -1;
+        if (idx < 0) return;
+        if (mainEl && mainEl._glideInstance) {
+          try { mainEl._glideInstance.go('=' + idx); } catch (e) {}
+        } else if (mainEl) {
+          mainEl.setAttribute('data-start-index', String(idx));
+        }
+      });
+    });
+  } catch (e) {
+    /* no-op on failure */
+  }
 }
