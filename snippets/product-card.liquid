@@ -94,11 +94,10 @@
       {% render 'card-add-to-cart', product: prod %}
     </div>
   </div>
-  {% render 'product-tags', product: prod, max_tags: max_tags %}
-  <div class="flex flex-col gap-2 flex-grow" style="padding: {{ card_padding }}px;">
+  <div class="flex flex-col gap-2 flex-grow justify-between" style="padding: {{ card_padding }};">
     <a
       href="{{ prod.url }}"
-      class="font-bold"
+      class="font-bold line-clamp-3 min-h-[81px]"
       style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
     >
       {{ prod.title }}
@@ -113,17 +112,4 @@
       layout: 'card'
     %}
   </div>
-
-  {% if product.variants.size > 1 %}
-    <div class="text-sm text-gray-500">
-      <span class="font-medium">{{ product.variants.size }}</span> options available
-    </div>
-  {% endif %}
-  {% comment %}
-    <div class="flex justify-center my-2">
-
-         {% render 'quick-add-btn', product: prod, mobile_hide_qty: true %}
-
-    </div>
-  {% endcomment %}
 </article>
