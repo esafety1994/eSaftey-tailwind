@@ -9,7 +9,7 @@
 {% endcomment %}
 {% liquid
   assign show_compare_price = show_compare_price | default: true
-  assign price_size = price_size | default: '16px'
+  assign price_size = price_size | default: '20px'
   assign price_color = price_color | default: '#000000'
   assign show_ex_gst = show_ex_gst | default: false
   assign req_from = req_from | default: 'normal'
@@ -51,6 +51,7 @@
     </div>
 
   {% else %}
+    {{ }}
     <span class="font-semibold flex gap-x-4 {% if layout == 'search' %}flex-col{% endif %}">
           {% if layout == 'search' %}
         <span class="flex flex-wrap items-center justify-start">
@@ -66,7 +67,7 @@
           {% endif %}
         </span>
       {% else %}
-        <span class="flex flex-wrap items-center justify-start gap-1.5 text-base">
+        <span class="flex flex-wrap items-center justify-start gap-1.5 {% if layout == 'card' %} text-base {% else%} text-xl {% endif %}">
           <span>{{ product.price | money }}</span>
           {% if layout != 'card' %}
             {% if product.tags contains 'gst-exempt' %}
@@ -119,7 +120,7 @@
       {% else %}
         {% comment %} Calculate price excluding 10% GST. product.price is in cents, so divide by 1.1 then round to nearest cent. {% endcomment %}
         {% assign ex_price = product.price | divided_by: 1.1 | round %}
-        <span class="text-base text-gray-600">{{ ex_price | money }} (ex. GST)</span>
+        <span class="text-lg text-grey-text">{{ ex_price | money }} (ex. GST)</span>
       {% endif %}
     {% endif %}
   {% endif %}
