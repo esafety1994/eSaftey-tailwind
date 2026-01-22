@@ -24,7 +24,17 @@
         <ul class="glide__slides">
           {% for image in product.images %}
             <li class="glide__slide">
-              <img src="{{ image | img_url: '600x600' }}" alt="{{ image.alt | escape }}" class="w-full ">
+              <div class="relative group">
+                <img src="{{ image | img_url: '900x900' }}" alt="{{ image.alt | escape }}" class="w-full">
+
+                <!-- Zoom overlay button (appears on hover) -->
+                <button type="button" class="slide-zoom-btn absolute top-3 right-3 opacity-0 group-hover:!opacity-100 group-focus:opacity-100 transition bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-9 h-9 flex items-center justify-center text-white z-40 m-tooltip--left" data-slide-index="{{ forloop.index0 }}" aria-label="Zoom image">
+                  {% render 'icon-svg-zoom-in', class: 'size-5 pointer-events-none text-white' %}
+                  <span class="m-tooltip__content hidden bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap shadow z-50">
+                    Zoom in
+                  </span>
+                </button>
+              </div>
             </li>
           {% endfor %}
         </ul>
@@ -53,7 +63,7 @@
             {% for image in product.images %}
               <li class="glide__slide px-1 max-w-32">
                 <button class="thumb-btn focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
-                  <img src="{{ image | img_url: '120x120' }}" alt="{{ image.alt | escape }}" class="rounded ">
+                  <img src="{{ image | img_url: '250x250' }}" alt="{{ image.alt | escape }}" class="rounded ">
                 </button>
               </li>
             {% endfor %}
@@ -64,10 +74,35 @@
   {% endif %}
 </div>
 
-<!-- Lightbox modal -->
-<div id="product-lightbox" class="hidden fixed inset-0 z-50 bg-black bg-opacity-75 items-center justify-center p-4">
-  <button id="product-lightbox-close" class="absolute top-4 right-4 text-white text-2xl">&times;</button>
-  <img id="product-lightbox-img" src="" alt="" class="max-w-full max-h-full rounded">
+<!-- Lightbox modal (Glide slider) -->
+<div id="product-lightbox" class="hidden fixed inset-0 z-50 bg-white bg-opacity-75 items-center justify-center p-4">
+  <div class="w-full max-w-4xl relative">
+    <div class="glide glide-lightbox" id="product-lightbox-glide">
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+          {% for image in product.images %}
+            <li class="glide__slide">
+              <img src="{{ image | img_url: '1200x1200' }}" alt="{{ image.alt | escape }}" class="w-full h-auto rounded">
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- lightbox close (positioned top-right of container) -->
+      <button id="product-lightbox-close" class="absolute top-2 right-2 text-white text-2xl bg-black bg-opacity-40 rounded-full w-8 h-8 flex items-center justify-center">&times;</button>
+      <!-- optional prev/next for lightbox -->
+      <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
 </div>
 
 <script src="{{ 'product-media.js' | asset_url }}" defer></script>

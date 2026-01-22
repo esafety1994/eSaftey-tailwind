@@ -87,27 +87,60 @@
           });
         }
 
-        // lightbox: open when clicking main image
+        // lightbox: open when clicking main image or zoom overlay — show a Glide slider in the modal and sync with main
         mainEl.querySelectorAll('.glide__slide img').forEach(function (img) {
           img.style.cursor = 'zoom-in';
-          img.addEventListener('click', function () {
+        });
+
+        // open lightbox when clicking image
+        mainEl.querySelectorAll('.glide__slide img, .slide-zoom-btn').forEach(function (el) {
+          el.addEventListener('click', function (e) {
+            var idx = parseInt((e.currentTarget.getAttribute('data-slide-index')) || main.index) || 0;
             var lb = document.getElementById('product-lightbox');
-            var lbImg = document.getElementById('product-lightbox-img');
-            if (lb && lbImg) {
-              lbImg.src = img.src;
+            var lbGlideEl = document.getElementById('product-lightbox-glide');
+            if (lb && lbGlideEl) {
               lb.classList.remove('hidden');
               lb.classList.add('flex');
+
+              // mount lightbox glide if not already
+              if (!lbGlideEl._glideInstance) {
+                try {
+                  lbGlideEl._glideInstance = new Glide('#product-lightbox-glide', {
+                    type: 'carousel',
+                    perView: 1,
+                    gap: 16,
+                    startAt: idx
+                  }).mount();
+
+                  // when lightbox changes, update main
+                  lbGlideEl._glideInstance.on('run.after', function () {
+                    try { main.go('=' + lbGlideEl._glideInstance.index); } catch (e) {}
+                  });
+
+                  // wire lightbox arrows to control lightbox instance
+                  var lbLeft = lb.querySelector('.product-gallery-arrow--left');
+                  var lbRight = lb.querySelector('.product-gallery-arrow--right');
+                  [lbLeft, lbRight].forEach(function (btn) {
+                    if (!btn) return;
+                    btn.addEventListener('click', function () {
+                      var dir = btn.getAttribute('data-glide-dir');
+                      try { lbGlideEl._glideInstance.go(dir); } catch (e) {}
+                    });
+                  });
+                } catch (e) { console.warn('product-media: lightbox glide mount failed', e); }
+              } else {
+                try { lbGlideEl._glideInstance.go('=' + idx); } catch (e) {}
+              }
             }
           });
         });
 
-        // Wire custom arrow buttons (our arrows use data-glide-dir)
-        document.querySelectorAll('.product-gallery-arrow').forEach(function (btn) {
+        // Wire custom arrow buttons for the main carousel only (our arrows inside mainEl)
+        mainEl.querySelectorAll('.product-gallery-arrow').forEach(function (btn) {
           btn.addEventListener('click', function (e) {
             var dir = btn.getAttribute('data-glide-dir');
             if (!dir) return;
             try {
-              // direct go commands like '=' + index or '>' '<' work
               if (dir.indexOf('=') === 0) main.go(dir);
               else if (dir === '>' || dir === '<') main.go(dir);
               else main.go(dir);
@@ -117,8 +150,13 @@
 
         var lbClose = document.getElementById('product-lightbox-close');
         var lb = document.getElementById('product-lightbox');
-        if (lbClose && lb) lbClose.addEventListener('click', function () { lb.classList.add('hidden'); lb.classList.remove('flex'); });
-        if (lb) lb.addEventListener('click', function (e) { if (e.target === lb) { lb.classList.add('hidden'); lb.classList.remove('flex'); } });
+        var lbGlideEl = document.getElementById('product-lightbox-glide');
+        if (lbClose && lb) lbClose.addEventListener('click', function () {
+          lb.classList.add('hidden'); lb.classList.remove('flex');
+          // destroy lightbox instance to reset state next open
+          try { if (lbGlideEl && lbGlideEl._glideInstance) { lbGlideEl._glideInstance.destroy(); lbGlideEl._glideInstance = null; } } catch (e) {}
+        });
+        if (lb) lb.addEventListener('click', function (e) { if (e.target === lb) { lb.classList.add('hidden'); lb.classList.remove('flex'); try { if (lbGlideEl && lbGlideEl._glideInstance) { lbGlideEl._glideInstance.destroy(); lbGlideEl._glideInstance = null; } } catch (e) {} } });
 
       } catch (e) {
         console.error('product-media: Glide init failed', e);

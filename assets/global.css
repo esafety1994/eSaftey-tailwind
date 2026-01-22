@@ -463,20 +463,20 @@ a.underline-animation:focus::after {
   bottom: 100%;
   pointer-events: none;
 }
-.m-tooltip--bottom .m-tooltip__content:after {
-  /* square rotated to form the arrow */
+.m-tooltip--top .m-tooltip__content:after {
+  /* triangle pointing up toward trigger */
   content: "";
   position: absolute;
-  width: 10px;
-  height: 10px;
-  left: calc(50% - 5px);
-  top: -3px;
-  transform: rotate(45deg);
-  background: #ffffff; /* match bubble background; Tailwind bg-white used */
-  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+  left: 50%;
+  transform: translateX(-50%);
+  top: -6px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #ffffff;
   pointer-events: none;
 }
-
 /* Tooltip placed below the trigger (chat-bubble under icon) */
 .m-tooltip--top {
   position: relative;
@@ -510,3 +510,52 @@ a.underline-animation:focus::after {
   box-shadow: 0 6px 18px rgba(2,6,23,0.12);
   pointer-events: none;
 }
+
+/* Tooltip placed to the left of the trigger (e.g., zoom icon) */
+.m-tooltip--left {
+  position: relative;
+}
+.m-tooltip--left .m-tooltip__content {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: calc(100% + 0.5rem);
+  pointer-events: none;
+}
+.m-tooltip--left .m-tooltip__content:before {
+  height: 100%;
+  width: 8px;
+  top: 0;
+  right: 100%;
+}
+.m-tooltip__content:before {
+  position: absolute;
+  content: "";
+  background: transparent;
+}
+.m-tooltip--left .m-tooltip__content:after {
+  right: -3px;
+  top: calc(50% - 5px);
+}
+.m-tooltip__content:after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: rgb(var(--color-tooltip, 17,24,39));
+  position: absolute;
+  transform: rotate(45deg);
+  z-index: -1;
+}
+
+/* Show black arrow-bubble when hovering the zoom button */
+.slide-zoom-btn:hover .m-tooltip__content,
+.slide-zoom-btn:focus .m-tooltip__content {
+  display: block !important;
+  color: #fff !important;
+}
+
+
+/* Only show tooltip when hovering or focusing the zoom button itself */
+.slide-zoom-btn .m-tooltip__content { display: none; }
+.slide-zoom-btn:hover .m-tooltip__content,
+.slide-zoom-btn:focus .m-tooltip__content { display: block !important; }
