@@ -20,14 +20,11 @@
           {% endfor %}
           <legend class="variant-picker__label font-semibold mb-2 min-w-32">
             {{ option.name }}
-            
           </legend>
-          
+
           <div class="variant-picker__values w-full ">
             {% assign option_name_down = option.name | downcase %}
-            {% if option_name_down contains 'color'
-              or option_name_down contains 'colour'
-            %}
+            {% if option_name_down contains 'color' or option_name_down contains 'colour' %}
               {% for value in option.values %}
                 {% assign input_id = option.name | handleize | append: '-' | append: value.name | handleize %}
                 <input

@@ -1,48 +1,60 @@
 [
-    {
-        "name": "Typography",
-        "settings": [
-            {
-                "type": "font_picker",
-                "id": "type_base_font",
-                "label": "Font",
-                "default": "helvetica_n4"
-              }
-        ]
-        
-    },
-    {
-        "name": "Cart",
-        "settings": [
-            {
-                "type": "image_picker",
-                "id": "cart_trust_badge",
-                "label": "Cart trust badge",
-                "info": "Image shown in the cart (trust badge)"
-            },
-            {
-                "type": "header",
-                "content": "Cart Drawer Settings"
-            },
-            {
-                "type": "product",
-                "id": "cart_drawer_upsell_product",
-                "label": "Select product for cart drawer upsell",
-            }
-
-        ]
-    }
-,
-    {
-        "name": "Performance",
-        "settings": [
-            {
-                "type": "checkbox",
-                "id": "use_minified_assets",
-                "label": "Use minified JS assets",
-                "default": false,
-                "info": "When enabled the theme will load *.min.js files if present. Useful for production builds."
-            }
-        ]
-    }
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_base_font",
+        "label": "Font",
+        "default": "helvetica_n4"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "cart_trust_badge",
+        "label": "Cart trust badge",
+        "info": "Image shown in the cart (trust badge)"
+      },
+      {
+        "type": "header",
+        "content": "Cart Drawer Settings"
+      },
+      {
+        "type": "product",
+        "id": "cart_drawer_upsell_product",
+        "label": "Select product for cart drawer upsell"
+      }
+    ]
+  },
+  {
+    "name": "General",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Bulky Shipping Note"
+      },
+      {
+        "type": "textarea",
+        "id": "bulky_shipping_note",
+        "label": "Bulky shipping note",
+        "default": "This item is excluded from our free shipping promotion due to its bulky nature. Adding it to your cart will result in the order not qualifying for free shipping."
+      }
+    ]
+  },
+  {
+    "name": "Performance",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_minified_assets",
+        "label": "Use minified JS assets",
+        "default": false,
+        "info": "When enabled the theme will load *.min.js files if present. Useful for production builds."
+      }
+    ]
+  }
 ]

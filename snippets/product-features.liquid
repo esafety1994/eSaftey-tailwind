@@ -4,17 +4,14 @@
   in `product.description` (handles HTML <li> lists and simple dash/• bullets).
   Usage: {% render 'product-features', product: product %}
 {% endcomment %}
-
 {% assign desc = product.description | default: '' %}
 {% assign desc_down = desc | downcase %}
 {% assign after = '' %}
 
 {% if desc_down contains 'features' %}
-  {% if desc contains 'Features' %}
-    {% assign after = desc | split: 'Features' | last %}
-  {% elsif desc contains 'features' %}
-    {% assign after = desc | split: 'features' | last %}
-  {% endif %}
+  {% assign after = desc_down | split: 'features' | last %}
+{% elsif desc_down contains 'benefits' %}
+  {% assign after = desc_down | split: 'benefits' | last %}
 {% endif %}
 
 {% if after != '' %}

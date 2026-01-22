@@ -1,9 +1,20 @@
 ;(function () {
-  function initGallery() {
+  function initGallery(e) {
+    var invokedByReplacement = e && e.type === 'product:content:replaced';
     var mainEl = document.querySelector('#product-glide');
     var thumbsEl = document.querySelector('#product-thumbs');
     if (!mainEl) return;
-    var startAt = parseInt(mainEl.getAttribute('data-start-index')) || 0;
+    // On the initial page load we want to keep the product's first image
+    // regardless of any `data-start-index` set by the server or URL.
+    // Subsequent `product:content:replaced` events (e.g. when a user
+    // actively selects a variant) will respect `data-start-index`.
+    var startAt;
+    if (!invokedByReplacement && !window._productMediaHasInit) {
+      startAt = 0;
+      window._productMediaHasInit = true;
+    } else {
+      startAt = parseInt(mainEl.getAttribute('data-start-index')) || 0;
+    }
 
     // destroy previous instances
     if (mainEl._glideInstance) { try { mainEl._glideInstance.destroy(); } catch (e) {} mainEl._glideInstance = null; }
