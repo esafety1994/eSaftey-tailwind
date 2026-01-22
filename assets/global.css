@@ -559,3 +559,9 @@ a.underline-animation:focus::after {
 .slide-zoom-btn .m-tooltip__content { display: none; }
 .slide-zoom-btn:hover .m-tooltip__content,
 .slide-zoom-btn:focus .m-tooltip__content { display: block !important; }
+
+/* Generic icon tooltip: show tooltip only when the icon/button is hovered or focused */
+.icon-tooltip-btn .m-tooltip__content { display: none; }
+.icon-tooltip-btn:hover .m-tooltip__content,
+.icon-tooltip-btn:focus .m-tooltip__content,
+.icon-tooltip-btn:focus-within .m-tooltip__content { display: block !important; }
