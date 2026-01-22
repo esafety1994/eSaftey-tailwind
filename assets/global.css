@@ -439,3 +439,74 @@ a.underline-animation:focus::after {
     transform: scale(1.2, 1);
   }
 }
+
+/* Chat-bubble tooltip support for small pseudo-element arrow
+   Uses `.m-tooltip--bottom .m-tooltip__content` for arrow and shadow.
+   Base styling is provided by Tailwind classes on the element. */
+.m-tooltip--bottom {
+  position: relative;
+}
+.m-tooltip--bottom .m-tooltip__content {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(100% + 0.5rem);
+  pointer-events: none;
+}
+.m-tooltip--bottom .m-tooltip__content:before {
+  /* optional spacer for smoother overlap/rounded effect */
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  left: 0;
+  bottom: 100%;
+  pointer-events: none;
+}
+.m-tooltip--bottom .m-tooltip__content:after {
+  /* square rotated to form the arrow */
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: calc(50% - 5px);
+  top: -3px;
+  transform: rotate(45deg);
+  background: #ffffff; /* match bubble background; Tailwind bg-white used */
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+  pointer-events: none;
+}
+
+/* Tooltip placed below the trigger (chat-bubble under icon) */
+.m-tooltip--top {
+  position: relative;
+}
+.m-tooltip--top .m-tooltip__content {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(100% + 0.5rem);
+  pointer-events: none;
+}
+.m-tooltip--top .m-tooltip__content:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  left: 0;
+  top: 100%;
+  pointer-events: none;
+}
+.m-tooltip--top .m-tooltip__content:after {
+  /* rotated square forming arrow pointing up */
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: calc(50% - 5px);
+  top: -5px;
+  transform: rotate(45deg);
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+  pointer-events: none;
+}

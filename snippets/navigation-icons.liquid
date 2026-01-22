@@ -1,7 +1,11 @@
-<div class="flex md:space-x-2 items-center text-white">
-  <!-- Profile/User Icon -->
-  <button id="profile-btn" class="p-1 rounded hover:text-bg-light transition">
-    {% render 'icon-svg-user', class: 'size-6 cursor-pointer' %}
-  </button>
+<div class="flex md:space-x-2 items-center text-white mr-2">
+  <!-- Profile/User Icon with Tailwind-only tooltip -->
+  <a href="/account" id="profile-btn" class="p-1 rounded hover:text-primary transition group m-tooltip--top" aria-label="Account">
+    <span class="inline-flex relative">{% render 'icon-svg-user', class: 'size-6 cursor-pointer' %}
+      <span aria-hidden="true" class="m-tooltip__content hidden group-hover:block group-focus:block absolute top-full mt-2 left-1/2 bg-white text-black text-xs rounded-md p-1.5 whitespace-no-wrap shadow z-50">
+        Account
+      </span>
+    </span>
+  </a>
   {% render 'quotify-button' %}
 </div>
