@@ -541,7 +541,7 @@ a.underline-animation:focus::after {
   content: "";
   width: 10px;
   height: 10px;
-  background: rgb(var(--color-tooltip, 17,24,39));
+  background: #000;
   position: absolute;
   transform: rotate(45deg);
   z-index: -1;

@@ -3,11 +3,17 @@
   assign class = class | default: 'hover:text-primary'
   assign layout = layout | default: 'base'
   assign label = 'Quotes'
+  assign tooltip_mod = 'm-tooltip--top'
+  assign tooltip_content_classes = 'm-tooltip__content hidden absolute top-full mt-2 left-1/2 bg-white text-black text-xs rounded-xl px-3 py-2 whitespace-nowrap shadow z-50'
+
   if layout == 'card'
-    assign class = 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black text-black bg-primary-yellow'
+    assign class = 'flex items-center justify-center rounded-full size-10 text-black bg-white hover:!text-white hover:!bg-black '
     assign label =  'Add to quote'
+    assign tooltip_mod = 'm-tooltip--left'
+    assign tooltip_content_classes = 'm-tooltip__content hidden absolute right-full top-1/2 transform mr-2 bg-black text-white text-xs rounded-xl px-3 py-2 whitespace-nowrap shadow z-50'
   endif
 %}
+
 <button
     data-quotify
     data-product="{{ product | json | escape }}"
@@ -15,11 +21,11 @@
     data-shop="{{ shop.metafields.quotify.shop_id }}"
     data-variant="{{ product.selected_or_first_available_variant.id }}"
     type="button"
-      class="p-1 transition-all duration-200 ease-in-out {{class }} group m-tooltip--top icon-tooltip-btn"
+        class="p-1 transition-all duration-200 ease-in-out {{class }} group {{ tooltip_mod }} icon-tooltip-btn"
   >
     
     <span class="inline-flex relative">{% render 'icon-svg-clipboard', class: 'size-6 cursor-pointer' %}
-        <span aria-hidden="true" class="m-tooltip__content hidden absolute top-full mt-2 left-1/2 bg-white text-black text-xs rounded-xl px-3 py-2 whitespace-nowrap shadow z-50">
+        <span aria-hidden="true" class="{{ tooltip_content_classes }}">
         {{ label }}
       </span>
     </span>
