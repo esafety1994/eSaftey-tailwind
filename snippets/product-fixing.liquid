@@ -17,9 +17,9 @@
   data shapes differ between stores or editors.
 {%- endcomment -%}
 
-{%- assign refs = product.metafields.fixing.products.value -%}
+{%- assign refs = product.metafields.custom.fixing_addon.value -%}
 {%- if refs == blank -%}
-  {%- assign refs = product.metafields.fixing.products -%}
+  {%- assign refs = product.metafields.custom.fixing_addon -%}
 {%- endif -%}
 
 {%- if refs and refs.size > 0 -%}
