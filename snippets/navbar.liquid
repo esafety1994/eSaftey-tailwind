@@ -1,8 +1,10 @@
 <nav class="bg-[#262626] text-black">
-  <div class="mx-auto w-full flex gap-4 max-w-[1440px] lg:min-h-12">
+  <!--  <div class="mx-auto w-full flex gap-4 max-w-[1440px] lg:min-h-12">  -->
+    <div class="w-full flex gap-4 px-2 sm:px-4 lg:min-h-12">
+
     <div id="shop-trigger" role="button" aria-expanded="false" aria-controls="site-sheet" tabindex="0" class="bg-primary flex items-center md:justify-center w-full md:w-32 lg:w-48 py-2 px-4 cursor-pointer">
       {% render 'icon-svg-menu', stroke_width: 2, classes: 'size-8' %}
-      <span class="ml-2 text-lg font-semibold hidden lg:block capitalize">products </span>
+      <span class="ml-2 text-lg font-semibold hidden lg:block capitalize">products </span>  <!-- Changed name from 'All Products' -->
     </div>
 
     {% render 'header-upsell-section' %}
