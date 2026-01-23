@@ -27,7 +27,7 @@
   {% if req_from == 'sticky' %}
     <div class="text-left">
       <span class="font-semibold">
-        <span>{{ product.price | money }}</span>
+        <span>{{ product.selected_or_first_available_variant.price | money }}</span>
         {% if layout != 'card' %}
           {% if product.tags contains 'gst-exempt' %}
             <span class="ml-2 {{ gst_text_size }}">(ex. GST)</span>
@@ -35,7 +35,7 @@
             <span class="ml-2 {{ gst_text_size }}">(inc GST)</span>
           {% endif %}
         {% endif %}
-        {% if product.compare_at_price > product.price and show_compare_price %}
+        {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
           <span>
             <span class="text-gray-500 line-through mr-2">
               {{ product.compare_at_price | money }}
@@ -44,8 +44,8 @@
         {% endif %}
       </span>
       {% if show_ex_gst %}
-        {% comment %} Calculate price excluding 10% GST. product.price is in cents, so divide by 1.1 then round to nearest cent. {% endcomment %}
-        {% assign ex_price = product.price | divided_by: 1.1 | round %}
+        {% comment %} Calculate price excluding 10% GST. product.selected_or_first_available_variant.price is in cents, so divide by 1.1 then round to nearest cent. {% endcomment %}
+        {% assign ex_price = product.selected_or_first_available_variant.price | divided_by: 1.1 | round %}
         <div class="text-base text-gray-600">{{ ex_price | money }} (ex. GST)</div>
       {% endif %}
     </div>
@@ -55,7 +55,7 @@
     <span class="font-semibold flex gap-x-4 {% if layout == 'search' %}flex-col{% endif %}">
           {% if layout == 'search' %}
         <span class="flex flex-wrap items-center justify-start">
-          <span>{{ product.price | money }}</span>
+          <span>{{ product.selected_or_first_available_variant.price | money }}</span>
           {% if layout != 'card' %}
             {% if product.tags contains 'gst-exempt' %}
               <span>
@@ -68,7 +68,7 @@
         </span>
       {% else %}
         <span class="flex flex-wrap items-center justify-start gap-1.5 {% if layout == 'card' %} text-base {% else%} text-xl {% endif %}">
-          <span>{{ product.price | money }}</span>
+          <span>{{ product.selected_or_first_available_variant.price | money }}</span>
           {% if layout != 'card' %}
             {% if product.tags contains 'gst-exempt' %}
               <span>
@@ -80,7 +80,7 @@
           {% endif %}
         </span>
       {% endif -%}
-      {% if product.compare_at_price > product.price and show_compare_price %}
+      {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
         {% if layout == 'search' %}
           <span>
             <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start items-center">
@@ -118,8 +118,8 @@
       {% if product.tags contains 'gst-exempt' %}
         
       {% else %}
-        {% comment %} Calculate price excluding 10% GST. product.price is in cents, so divide by 1.1 then round to nearest cent. {% endcomment %}
-        {% assign ex_price = product.price | divided_by: 1.1 | round %}
+        {% comment %} Calculate price excluding 10% GST. product.selected_or_first_available_variant.price is in cents, so divide by 1.1 then round to nearest cent. {% endcomment %}
+        {% assign ex_price = product.selected_or_first_available_variant.price | divided_by: 1.1 | round %}
         <span class="text-lg text-grey-text">{{ ex_price | money }} (ex. GST)</span>
       {% endif %}
     {% endif %}
