@@ -25,11 +25,11 @@ h2 {
 .wrapper {
   @apply max-w-screen-2xl m-auto w-full;
 }
-
-.btn {
+ 
+.btn, .m-button {
   @apply font-medium rounded-lg shadow-lg px-8 py-3 uppercase transition-all duration-300 ease-in-out cursor-pointer;
 }
-.primary-button {
+.primary-button, .m-button--primary {
   @apply bg-black text-white hover:bg-black/80 hover:scale-105;
 }
 
