@@ -4,6 +4,9 @@
 >
   <div class="m-section-my">
     <div class="m-app-section__content">
+         <h3 class="m-section__heading py-12 text-center text-4xl font-semibold">
+        {{ section.settings.heading }}
+      </h3>
       {% for block in section.blocks %}
         {% render block %}
       {% endfor %}
