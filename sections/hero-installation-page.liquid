@@ -491,6 +491,23 @@
     // Expose functions to global scope so inline handlers can call them
     window.howItWorksAnchor = howItWorksAnchor;
     window.form1Anchor = form1Anchor;
+
+    // Ensure inline onclicks that call these functions still receive the event
+    // by adding capture-phase listeners that forward the event to the functions.
+    function bindInlineAnchors() {
+      try {
+        document.querySelectorAll('a[onclick*="form1Anchor"]').forEach(el => {
+          el.addEventListener('click', function (e) { form1Anchor(e); }, true);
+        });
+        document.querySelectorAll('[onclick*="howItWorksAnchor"]').forEach(el => {
+          el.addEventListener('click', function (e) { howItWorksAnchor(e); }, true);
+        });
+      } catch (err) {
+        // ignore
+      }
+    }
+
+    bindInlineAnchors();
   });
 </script>
 
