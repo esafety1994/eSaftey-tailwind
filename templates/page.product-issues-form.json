@@ -11,22 +11,49 @@
   "sections": {
     "title": {
       "type": "page-tittle",
+      "disabled": true,
       "name": "Page Title",
-      "settings": {
-        "container": "container mx-auto py-4"
-      }
-    },
-    "main": {
-      "type": "page",
-      "settings": {
-        "container": "container mx-auto py-4"
-      }
+      "settings": {}
     },
     "breadcrumb_WrJrMP": {
       "type": "breadcrumb",
+      "disabled": true,
       "name": "Breadcrumb",
       "settings": {}
+    },
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "17692122855a84abdc": {
+      "type": "apps",
+      "blocks": {
+        "formful_app_block_form_pjqwDL": {
+          "type": "shopify://apps/formful/blocks/app-block-form/be9de36b-78a1-4ce9-8de3-f1044fb2ee2e",
+          "settings": {
+            "form_id": "form_rqNnc9BDEe",
+            "max_width": 75,
+            "column_gap": 2,
+            "row_gap": 1,
+            "padding_top": 36,
+            "padding_bottom": 36,
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "formful_app_block_form_pjqwDL"
+      ],
+      "settings": {
+        "heading": "",
+        "custom_class": ""
+      }
     }
   },
-  "order": ["title", "breadcrumb_WrJrMP", "main"]
+  "order": [
+    "title",
+    "breadcrumb_WrJrMP",
+    "main",
+    "17692122855a84abdc"
+  ]
 }
