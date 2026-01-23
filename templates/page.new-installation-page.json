@@ -73,7 +73,10 @@
         ".success-message h1,.success-message p {color: #131313 !important; text-align: center;}",
         "@media (max-width: 991px) {.m-section__header {margin-bottom: 20px; }}"
       ],
-      "settings": {}
+      "settings": {
+        "heading": "Get a Fast Quote Now",
+        "custom_class": "acc-form"
+      }
     },
     "custom_liquid_wfeTU9": {
       "type": "custom-liquid",
@@ -114,7 +117,10 @@
         ".formful__input {color: black; border-radius: 8px; background: #f8f8f8;}",
         ".success-message h1,.success-message p {color: white !important;}"
       ],
-      "settings": {}
+      "settings": {
+        "heading": "",
+        "custom_class": ""
+      }
     },
     "custom_liquid_MMCJBF": {
       "type": "custom-liquid",
