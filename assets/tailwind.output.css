@@ -892,6 +892,9 @@
   .animate-spin {
     animation: var(--animate-spin);
   }
+  .cursor-auto {
+    cursor: auto;
+  }
   .cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -1775,6 +1778,16 @@
         --tw-scale-x: 105%;
         --tw-scale-y: 105%;
         --tw-scale-z: 105%;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
+      }
+    }
+  }
+  .hover\:scale-110 {
+    &:hover {
+      @media (hover: hover) {
+        --tw-scale-x: 110%;
+        --tw-scale-y: 110%;
+        --tw-scale-z: 110%;
         scale: var(--tw-scale-x) var(--tw-scale-y);
       }
     }
