@@ -10,10 +10,14 @@
     {% assign _variant = product.selected_or_first_available_variant %}
   {% endif %}
 
-  {% if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status %}
-    {% assign status = _variant.metafields.custom.stock_status.value
-      | default: _variant.metafields.custom.stock_status
-    %}
+  {%- assign status = nil -%}
+  {%- if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status -%}
+    {%- assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status -%}
+  {%- elsif product and product.metafields and product.metafields.inventory and product.metafields.inventory.stock_status -%}
+    {%- assign status = product.metafields.inventory.stock_status.value | default: product.metafields.inventory.stock_status -%}
+  {%- endif -%}
+
+  {% if status %}
     <span class="flex py-1 text-sm gap-1 items-center ">
       {% if status == 'Back Order' or status == 'Out of Stock' or status == 'Low Stock' %}
         {% capture check_class %}{{ size_class }} text-yellow-700{% endcapture %}

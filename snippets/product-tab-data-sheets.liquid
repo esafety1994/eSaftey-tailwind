@@ -23,8 +23,8 @@
       </li>
     </ol>
   {% else %}
-    {% if product.metafields.custom.data_sheet %}
-      {% assign pdf_links = product.metafields.custom.data_sheet | split: '|' %}
+    {% if product.metafields.custom.product_tabs_product_data_sheet %}
+      {% assign pdf_links = product.metafields.custom.product_tabs_product_data_sheet | split: '|' %}
       <ol class="flex flex-wrap gap-4 p-0 m-0 list-none">
         {% for pdf in pdf_links %}
           <li>
