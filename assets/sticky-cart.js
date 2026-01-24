@@ -75,8 +75,7 @@
     }
   }
 
-  // content syncing removed — sticky should render its own content server-side
-
+  
   function getSelectedVariantId(){
     // Prefer sticky-specific hidden input (kept in sync with selection), then
     // the main form input, then radios/selects as fallback.
@@ -211,21 +210,20 @@
         var skuTarget = document.querySelector('.sticky-sku');
         if(skuSource && skuTarget) skuTarget.textContent = skuSource.textContent.trim();
 
-        // Price (copy innerHTML so formatting remains) but strip any "Save" green text
-        var priceSrc = root.querySelector('#product-price') || document.getElementById('product-price');
-        var priceTarget = document.getElementById('sticky-price');
-        if(priceSrc && priceTarget) {
-          try {
-            var tmp = document.createElement('div');
-            tmp.innerHTML = priceSrc.innerHTML || '';
-            // remove any green 'Save' text that shouldn't appear in sticky
-            var save = tmp.querySelectorAll('.text-green-600');
-            if(save && save.length) {
-              save.forEach(function(n){ if(n && n.parentNode) n.parentNode.removeChild(n); });
+        // Price: use the server-rendered main price element when available
+        var mainPriceEl = root.querySelector('#product-main-price') || document.getElementById('product-main-price');
+        var priceTarget = document.querySelector('[data-sticky-price]') || document.querySelector('.sticky-price') || document.getElementById('sticky-price');
+        if (priceTarget) {
+          if (mainPriceEl && mainPriceEl.textContent && mainPriceEl.textContent.trim()) {
+            priceTarget.textContent = mainPriceEl.textContent.trim();
+          } else {
+            // fallback: extract first currency from existing product price container
+            var priceSrc = root.querySelector('#product-price') || document.getElementById('product-price') || root.querySelector('[data-product-price]') || document.querySelector('[data-product-price]');
+            if (priceSrc) {
+              var txt = (priceSrc.textContent || '').trim();
+              var currencyMatch = txt.match(/[$£€]\s*\d[\d,]*(?:\.\d+)?/);
+              priceTarget.textContent = currencyMatch ? currencyMatch[0] : txt;
             }
-            priceTarget.innerHTML = tmp.innerHTML;
-          } catch(e) {
-            priceTarget.innerHTML = priceSrc.innerHTML;
           }
         }
 
@@ -274,8 +272,9 @@
     function updateStickyButton(root){
       try{
         root = root || document;
-        // Find the source submit button inside the main product area
-        var sourceBtn = root.querySelector('#product-act-button button[type="submit"], #product-act-button .primary-cart-button, .product-container button.primary-cart-button, form button.primary-cart-button');
+        // Prefer the button inside #product-act-button, otherwise fallback to other common buy-button selectors
+        var sourceBtn = root.querySelector('#product-act-button button[type="submit"], #product-act-button .primary-cart-button') ||
+            root.querySelector('.product-container button.primary-cart-button, form button.primary-cart-button, form button[type="submit"]');
         var stickyEl = document.querySelector('[data-sticky-cart]');
         if(!stickyEl || !sourceBtn) return;
         var stickyBtn = stickyEl.querySelector('button[type="submit"], input[type="submit"], .sticky-add-to-cart');

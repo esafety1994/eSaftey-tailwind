@@ -11,7 +11,7 @@
   aria-hidden="false"
 >
   <div class="bg-white">
-    <div class="container m-auto p-3 grid lg:grid-cols-2 gap-4">
+    <div class="max-w-4xl m-auto p-3 grid lg:grid-cols-2 gap-4">
       <div class="items-start gap-2 hidden lg:flex">
         <div class="size-16">
           {% assign img = product.selected_or_first_available_variant.featured_image | default: product.images.first %}
@@ -50,7 +50,7 @@
               product: product,
               show_compare_price: false,
               price_size: '14px',
-              req_from: 'sticky',
+              layout: 'sticky',
               show_ex_gst: true
             %}
           </div>
