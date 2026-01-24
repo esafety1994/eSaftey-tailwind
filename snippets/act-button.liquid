@@ -23,9 +23,18 @@
         {% if hide_qty != true and product.available and status != 'Out of Stock' %}
           {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
         {% endif %}
-        {% render 'add-to-cart-button', status: status, showPlus: showPlus, button_classes: button_classes, button_small: button_small %}
+        {% render 'add-to-cart-button',
+          status: status,
+          showPlus: showPlus,
+          button_classes: button_classes,
+          button_small: button_small
+        %}
       </div>
     {% endform %}
+    <div class="my-2.5">
+      {% form 'product', product %}
+        {{ form | payment_button }}
+      {% endform %}
+    </div>
   </div>
 </esafety-cart-action-button>
-
