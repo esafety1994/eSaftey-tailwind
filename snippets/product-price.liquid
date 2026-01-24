@@ -52,7 +52,7 @@
 
   {% else %}
     {{ }}
-    <span class="font-semibold flex gap-x-4 {% if layout == 'search' %}flex-col{% endif %}">
+    <span class="font-semibold flex gap-x-4 flex-col">
           {% if layout == 'search' %}
         <span class="flex flex-wrap items-center justify-start">
           <span>{{ product.selected_or_first_available_variant.price | money }}</span>
@@ -98,7 +98,7 @@
           </span>
         {% else %}
           <span>
-            <span class="text-bg-light-red line-through flex flex-wrap ml-4 justify-end items-center">
+            <span class="text-bg-light-red line-through flex flex-wrap justify-end items-center">
               <span>{{ product.compare_at_price | money }}</span>
               {% if layout != 'card' %}
                 {% if product.tags contains 'gst-exempt' %}

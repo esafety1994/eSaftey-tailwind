@@ -54,9 +54,7 @@
       {%- comment -%} image skeleton removed — skeleton no longer used {%- endcomment -%}
       {% render 'product-badges', product: prod %}
       <div class="badges absolute top-3 right-2 z-40 flex flex-col items-end gap-2">
-        {% render 'quotify-button', product: prod,
-          layout:'card',
-        %}
+        {% render 'quotify-button', product: prod, layout: 'card' %}
       </div>
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
@@ -94,22 +92,24 @@
       {% render 'card-add-to-cart', product: prod %}
     </div>
   </div>
-  <div class="flex flex-col gap-2 flex-grow justify-between" style="padding: {{ card_padding }};">
+  <div class="flex flex-col gap-2 flex-grow justify-between px-3">
     <a
       href="{{ prod.url }}"
-      class="font-bold line-clamp-3 min-h-[81px]"
+      class="font-bold line-clamp-3 md:min-h-[81px]"
       style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
     >
       {{ prod.title }}
     </a>
-    {% render 'product-stock-badge', product: prod %}
-    {% render 'product-review', product: prod, layout: "card" %}
-    {% render 'product-price',
-      product: prod,
-      show_compare_price: show_compare_price,
-      price_size: price_size,
-      price_color: price_color,
-      layout: 'card'
-    %}
+    <div class="flex items-center justify-between flex-wrap">
+      {% render 'product-price',
+        product: prod,
+        show_compare_price: show_compare_price,
+        price_size: price_size,
+        price_color: price_color,
+        layout: 'card'
+      %}
+      {% render 'product-review', product: prod, layout: 'card' %}
+      {% render 'product-stock-badge', product: prod %}
+    </div>
   </div>
 </article>

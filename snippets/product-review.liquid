@@ -1,7 +1,15 @@
 <div
   class="ruk_rating_snippet"
   data-sku="{{ product.handle }};{{ product.variants | map: 'sku' | join: ';' }};{{ product.variants | map: 'id' | join: ';' }}"
-></div>
+>
+  <i aria-hidden="true" class="ruk-icon-percentage-star--0"></i
+  ><i aria-hidden="true" class="ruk-icon-percentage-star--0"></i
+  ><i aria-hidden="true" class="ruk-icon-percentage-star--0"></i
+  ><i aria-hidden="true" class="ruk-icon-percentage-star--0"></i
+  ><i aria-hidden="true" class="ruk-icon-percentage-star--0"></i
+  ><span aria-hidden="true" class="ruk-rating-snippet-count" style="color: rgb(51, 51, 51);">(0)</span>
+</div>
+
 <script src="https://widget.reviews.io/rating-snippet/dist.js" defer></script>
 <link rel="stylesheet" href="https://widget.reviews.io/rating-snippet/dist.css">
 <script>
@@ -13,9 +21,3 @@
     text: 'Reviews',
   });
 </script>
-
-<style>
-  .ruk-rating-snippet-count {
-    display: none;
-  }
-</style>
