@@ -26,7 +26,7 @@ h2 {
   @apply max-w-screen-2xl m-auto w-full;
 }
  
-.btn, .m-button {
+.btn, .m-button{
   @apply font-medium rounded-lg shadow-lg px-8 py-3 uppercase transition-all duration-300 ease-in-out cursor-pointer;
 }
 .primary-button, .m-button--primary {
