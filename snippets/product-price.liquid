@@ -18,12 +18,11 @@
 %}
 
 {% case layout %}
-  {% when 'card' %}
+  {% when 'card', 'search' %}
     <div class="flex flex-col gap-1 text-lg">
       <span class="font-semibold flex gap-x-4 flex-col">
         <span>
           <span>{{- product.selected_or_first_available_variant.price | money }}</span>
-          
         </span>
         {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
           <span>

@@ -22,7 +22,9 @@
       {% render 'product-badges', product: prod %}
       <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">
         {% render 'quotify-button',
-          class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black '
+          class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black ',
+          product: prod,
+          layout: 'card'
         %}
       </div>
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block h-40">
@@ -37,7 +39,7 @@
               loading="lazy"
               width="400"
               height="400"
-            />
+            >
           {% endif %}
           {% if prod.featured_image %}
             {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-cover transition-all duration-300' %}
