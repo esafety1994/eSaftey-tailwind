@@ -15,7 +15,6 @@
       ></script>
       {% render 'product-quotify-button', product: product %}
       {% render 'product-faq-preview', product: product %}
-      
     </div>
     <!-- Product Info (Right) -->
     <div>
@@ -51,11 +50,16 @@
       {% endif %}
       {% render 'backorder-text', product: product %}
       {% render 'act-button', product: product, showPlus: true %}
+
+      <div class="my-2">
+        {% form 'product', product %}
+          {{ form | payment_button }}
+        {% endform %}
+      </div>
       {% render 'product-below-act-button', product: product %}
       {% if product.tags contains 'Bulky' %}
         {% render 'bulky-item-shipping-note' %}
       {% endif %}
-      
     </div>
   </div>
 </div>
