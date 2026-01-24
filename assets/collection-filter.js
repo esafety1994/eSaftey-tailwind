@@ -11,15 +11,7 @@ class CollectionFilters extends HTMLElement {
     this.handleClick = this.handleClick.bind(this);
     this.minRange = this.querySelector('input[type="range"][data-min-value]');
     this.maxRange = this.querySelector('input[type="range"][data-max-value]');
-    this.clearFilter = document.querySelector('span[data-clear-filters]');
-    this.clearFilter?.addEventListener("click", () => {
-      const u = new URL(window.location.href);
-      // preserve search query `q` when clearing filters on search results
-      const q = u.searchParams.get('q');
-      u.search = '';
-      if (q) u.searchParams.set('q', q);
-      window.location.href = u.toString();
-    });
+    // clearFilter handled via delegated listener to allow cloned drawer elements to work
     this.filterInputs.forEach((input) => {
       input.addEventListener("change", this.handleClick);
     });
@@ -397,6 +389,7 @@ function initSortDisplays(){
 function performSectionUpdate(url, openFilters = [], errorContext = 'section update'){
   // accept either URL object or string
   const urlStr = (typeof url === 'string') ? url : url.toString();
+  try { closeDrawerIfOpen(); } catch(e) { /* ignore */ }
   return fetch(urlStr)
     .then((resp) => resp.text())
     .then((html) => {
@@ -425,6 +418,8 @@ function performSectionUpdate(url, openFilters = [], errorContext = 'section upd
       }catch(e){ /* ignore */ }
 
       try { initSortDisplays(); } catch (e) { /* ignore */ }
+
+      // (no caching) aside content will be read from DOM when drawer opens
     })
     .catch((err) => {
       console.error('Error during ' + errorContext + ':', err);
@@ -432,4 +427,110 @@ function performSectionUpdate(url, openFilters = [], errorContext = 'section upd
     });
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSortDisplays); else initSortDisplays();
+// (removed: refreshDrawerIfOpen) - caching approach used instead
+
+function closeDrawerIfOpen(){
+  const overlay = document.getElementById('collection-filter-drawer');
+  if (!overlay) return;
+  const panel = overlay.querySelector('#collection-filter-drawer-panel');
+  if (panel) panel.classList.add('-translate-x-full');
+  setTimeout(() => {
+    document.body.classList.remove('overflow-hidden');
+    overlay.remove();
+  }, 260);
+}
+
+// Mobile filter drawer: show aside content in a left-side drawer when toggle is clicked
+function initFilterDrawer(){
+  document.addEventListener('click', function(e){
+    const toggle = e.target.closest('[data-action="toggle-filter"]');
+    if(!toggle) return;
+    e.preventDefault();
+
+    const section = toggle.closest('section[id^="collection-section-"]') || document.querySelector('section');
+    if(!section) return;
+    const sectionIdAttr = section.id ? (section.id.match(/(\d+)$/) || [null, null])[1] : null;
+
+    // build drawer overlay (initially with spinner while we fetch latest aside)
+    const overlay = document.createElement('div');
+    overlay.id = 'collection-filter-drawer';
+    overlay.className = 'fixed inset-0 z-50';
+    overlay.innerHTML = `
+      <div class="fixed inset-0 bg-black/40" id="collection-filter-backdrop"></div>
+      <div id="collection-filter-drawer-panel" class="fixed left-0 top-0 h-full w-full max-w-sm bg-white overflow-auto p-4 transform -translate-x-full transition-transform duration-300">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold">Filters</h3>
+          <button aria-label="Close filters" data-action="close-filter" class="p-2">&times;</button>
+        </div>
+        <div class="collection-filter-drawer-inner">Loading…</div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    // prevent background scroll
+    document.body.classList.add('overflow-hidden');
+
+    const panel = overlay.querySelector('#collection-filter-drawer-panel');
+    // animate panel in (slide from left)
+    requestAnimationFrame(() => { panel.classList.remove('-translate-x-full'); });
+
+    // close handler
+    function closeDrawer(){
+      panel.classList.add('-translate-x-full');
+      setTimeout(() => {
+        document.body.classList.remove('overflow-hidden');
+        overlay.remove();
+      }, 260);
+      document.removeEventListener('keydown', escHandler);
+    }
+
+    // close when clicking the backdrop or the close button, or clicking outside the panel
+    overlay.addEventListener('click', function(ev){
+      const clickedInsidePanel = !!ev.target.closest('#collection-filter-drawer-panel');
+      const clickedClose = !!ev.target.closest('[data-action="close-filter"]') || ev.target.id === 'collection-filter-backdrop';
+      if (!clickedInsidePanel || clickedClose) {
+        closeDrawer();
+      }
+    });
+
+    const escHandler = (ev) => { if (ev.key === 'Escape') closeDrawer(); };
+    document.addEventListener('keydown', escHandler);
+
+    // populate from current DOM aside (assumes performSectionUpdate has already replaced the DOM)
+    const inner = overlay.querySelector('.collection-filter-drawer-inner');
+    const currentAside = section.querySelector('aside') || document.querySelector('aside');
+    inner.innerHTML = currentAside ? currentAside.innerHTML : '';
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function(){ initSortDisplays(); initFilterDrawer(); });
+} else {
+  initSortDisplays();
+  initFilterDrawer();
+}
+
+// Delegated handler for clearing filters: fast AJAX replace of section content (preserve `q` param)
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('[data-clear-filters]');
+  if (!btn) return;
+  e.preventDefault();
+  try { closeDrawerIfOpen(); } catch(e) { /* ignore */ }
+
+  // find containing section id (numeric suffix)
+  const sectionEl = btn.closest('section[id^="collection-section-"]') || document.querySelector('section[id^="collection-section-"]');
+  let sectionId = null;
+  if (sectionEl && sectionEl.id) {
+    const m = sectionEl.id.match(/(\d+)$/);
+    if (m) sectionId = m[1];
+  }
+
+  const url = new URL(location.href);
+  const q = url.searchParams.get('q');
+  url.search = '';
+  if (q) url.searchParams.set('q', q);
+  if (sectionId) url.searchParams.set('section_id', sectionId);
+
+  // perform AJAX section update without showing spinner for speed
+  performSectionUpdate(url, [], 'clearing filters').catch(err => console.error('Clear filters failed', err));
+});

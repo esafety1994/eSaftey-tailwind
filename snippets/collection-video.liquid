@@ -23,18 +23,18 @@
 <div class="my-6">
   <h3 class="font-semibold text-xl my-4">Our Videos</h3>
   <p>Discover our product usage and instructional videos</p>
-  <div class="my-4 flex gap-4 [&>div]:bg-primary-yellow [&>div]:p-3 [&>div]:cursor-pointer [&>div]:rounded-md [&>div]:hover:scale-105 [&>div]:transition-all">
+  <div class="my-4 grid grid-cols-2 md:flex gap-4 [&>div]:bg-primary-yellow [&>div]:p-3 [&>div]:cursor-pointer [&>div]:rounded-md [&>div]:hover:scale-105 [&>div]:transition-all">
     <div class="video-thumbnail" data-video-id="WwXsExjTRtk">
-      <img src="https://img.youtube.com/vi/WwXsExjTRtk/hqdefault.jpg" alt="Video 1">
+      <img src="https://img.youtube.com/vi/WwXsExjTRtk/hqdefault.jpg" alt="Video 1" width="240" height="135">
     </div>
     <div class="video-thumbnail" data-video-id="6R8jp1Q37yE">
-      <img src="https://img.youtube.com/vi/6R8jp1Q37yE/hqdefault.jpg" alt="Video 2">
+      <img src="https://img.youtube.com/vi/6R8jp1Q37yE/hqdefault.jpg" alt="Video 2" width="240" height="135">
     </div>
     <div class="video-thumbnail" data-video-id="56jeopNt4JA">
-      <img src="https://img.youtube.com/vi/56jeopNt4JA/hqdefault.jpg" alt="Video 3">
+      <img src="https://img.youtube.com/vi/56jeopNt4JA/hqdefault.jpg" alt="Video 3" width="240" height="135">
     </div>
     <div class="video-thumbnail" data-video-id="bx0Q_Ylg6vs">
-      <img src="https://img.youtube.com/vi/bx0Q_Ylg6vs/hqdefault.jpg" alt="Video 4">
+      <img src="https://img.youtube.com/vi/bx0Q_Ylg6vs/hqdefault.jpg" alt="Video 4" width="240" height="135">
     </div>
   </div>
 </div>
@@ -49,3 +49,58 @@
       </div>
   </div>
 -->
+
+  <!-- Responsive Video Modal -->
+  <div id="video-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div id="video-modal-backdrop" class="absolute inset-0 bg-black/60" data-action="close-video"></div>
+    <div class="relative w-full max-w-4xl mx-4">
+      <button aria-label="Close video" data-action="close-video" class="absolute -right-5 -top-5 z-20 bg-white rounded-full p-2">{% render 'icon-svg-close' %}</button>
+      <div style="position:relative;padding-top:56.25%;background:#000;">
+        <iframe id="video-modal-iframe" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if (!window.collectionVideoModalInit) {
+      window.collectionVideoModalInit = true;
+      (function(){
+        const modal = document.getElementById('video-modal');
+        const iframe = document.getElementById('video-modal-iframe');
+        const closeElems = modal ? modal.querySelectorAll('[data-action="close-video"]') : [];
+
+        function openVideo(id){
+          if (!modal) return;
+          iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?rel=0&autoplay=1';
+          modal.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+          // focus for accessibility
+          setTimeout(() => { modal.focus && modal.focus(); }, 100);
+        }
+
+        function closeVideo(){
+          if (!modal) return;
+          modal.classList.add('hidden');
+          try { iframe.src = ''; } catch(e){}
+          document.body.classList.remove('overflow-hidden');
+        }
+
+        document.addEventListener('click', function(e){
+          const thumb = e.target.closest('.video-thumbnail');
+          if (thumb) {
+            const id = thumb.getAttribute('data-video-id');
+            if (id) openVideo(id);
+          }
+        });
+
+        closeElems.forEach(el => el.addEventListener('click', closeVideo));
+        // click on backdrop closes
+        document.addEventListener('click', function(e){
+          if (!modal) return;
+          if (e.target.id === 'video-modal-backdrop') closeVideo();
+        });
+        // Escape key
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeVideo(); });
+      })();
+    }
+  </script>
