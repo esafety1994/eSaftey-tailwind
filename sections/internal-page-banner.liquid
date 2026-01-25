@@ -1,15 +1,11 @@
-<section id="section-{{ section.id }}" class="min-h-[30vh] md:min-h-[40vh] internal-page-banner relative overflow-hidden">
+<section id="section-{{ section.id }}" class="internal-page-banner relative overflow-hidden">
 
   <div id="section-bg-{{ section.id }}" class="absolute inset-0 bg-cover bg-center z-0" aria-hidden="true"></div>
 
   <style>
     #section-bg-{{ section.id }}{ background-image: url('{{ section.settings.background | img_url: 'master' }}'); }
     @media (max-width: 749px) {
-      {% if section.settings.mobile_background != blank %}
-        #section-bg-{{ section.id }}{ background-image: url('{{ section.settings.mobile_background | img_url: 'master' }}'); }
-      {% else %}
-        #section-bg-{{ section.id }}{ background-image: url('{{ section.settings.background | img_url: 'master' }}'); }
-      {% endif %}
+      #section-bg-{{ section.id }}{ background-image: url('{{ section.settings.mobile_background | img_url: 'master' }}'); }
     }
   </style>
 
@@ -26,7 +22,7 @@
     <div class="flex items-center {{ justify_class }}">
       <div class="max-w-2xl">
         {% if section.settings.heading != blank %}
-          <h1 class="font-semibold text-2xl leading-tight" style="color: {{ section.settings.heading_color | default: '#FFDC06' }};">{{ section.settings.heading }}</h1>
+          <h1 class="font-bold leading-tight" style="color: {{ section.settings.heading_color | default: '#FFDC06' }};">{{ section.settings.heading }}</h1>
         {% endif %}
 
         {% if section.settings.subheading != blank %}
@@ -79,7 +75,7 @@
     },
     {
       "type": "richtext",
-      "id": "heading",
+      "id": "banner_heading",
       "label": "Heading",
     },
     {
@@ -155,9 +151,6 @@
   "presets": [
     {
       "name": "Single Banner",
-      "settings": {
-        "heading": "Single Banner"
-      }
     }
   ],
   "locales": {
