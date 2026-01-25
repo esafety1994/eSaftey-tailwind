@@ -17,6 +17,17 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "custom_field_3WpPfD": {
+          "type": "custom_field",
+          "settings": {
+            "title": "Custom Cut Length:",
+            "field_type": "text",
+            "field_options": "",
+            "field_placeholder": "Example: (10m/3  = 1 x 5m + 2 x 2.5m)                                           List Your Cut Sizes & Total Qtys Needed",
+            "field_required": true,
+            "show_at_checkout": true
+          }
+        },
         "title": {
           "type": "title",
           "settings": {}
@@ -48,6 +59,7 @@
         }
       },
       "block_order": [
+        "custom_field_3WpPfD",
         "title",
         "price",
         "variant_picker",
@@ -82,17 +94,17 @@
             "star": "#ffd438",
             "review_type": "product_review,questions",
             "per_page": 3,
-            "primary_btn_bg_color": "#000",
-            "primary_btn_border_color": "#000",
-            "primary_btn_text_color": "#fff",
-            "secondary_btn_border_color": "#000",
-            "secondary_btn_text_color": "#000",
+            "primary_btn_bg_color": "#000000",
+            "primary_btn_border_color": "#000000",
+            "primary_btn_text_color": "#ffffff",
+            "secondary_btn_border_color": "#000000",
+            "secondary_btn_text_color": "#000000",
             "border_color": "#000000",
-            "heading_text_color": "#000",
+            "heading_text_color": "#000000",
             "heading_font": "sans_serif_n4",
-            "body_text_color": "#000",
-            "badge_icon_color": "#000",
-            "badge_text_color": "#000",
+            "body_text_color": "#000000",
+            "badge_icon_color": "#000000",
+            "badge_text_color": "#000000",
             "enable_rich_snippets": true,
             "show_location": true,
             "show_tab_selector": false,
@@ -110,7 +122,10 @@
       "block_order": [
         "reviews_io_reviewsio_polaris_YeqVFw"
       ],
-      "settings": {}
+      "settings": {
+        "heading": "",
+        "custom_class": ""
+      }
     },
     "shipping_calculator_f6crqN": {
       "type": "shipping-calculator",
