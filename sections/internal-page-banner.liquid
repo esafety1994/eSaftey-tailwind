@@ -1,86 +1,47 @@
-<section id="section-{{ section.id }}" class="internal-page-banner" style="position:relative; overflow:hidden;">
-  <div id="section-bg-{{ section.id }}" class="internal-page-banner__bg" aria-hidden="true"></div>
+<section id="section-{{ section.id }}" class="internal-page-banner relative overflow-hidden">
+
+  <div id="section-bg-{{ section.id }}" class="absolute inset-0 bg-cover bg-center z-0" aria-hidden="true"></div>
 
   <style>
-    #section-bg-{{ section.id }} {
-      background-image: url('{{ section.settings.background | img_url: 'master' }}');
-      background-size: cover;
-      background-position: center;
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
+    #section-bg-{{ section.id }}{ background-image: url('{{ section.settings.background | img_url: 'master' }}'); }
     @media (max-width: 749px) {
-      #section-bg-{{ section.id }}{
-        background-image: url('{{ section.settings.mobile_background | img_url: 'master' }}');
-      }
+      #section-bg-{{ section.id }}{ background-image: url('{{ section.settings.mobile_background | img_url: 'master' }}'); }
     }
-    #section-{{ section.id }} .internal-page-banner__content{ position:relative; z-index:2; padding: 3rem 1rem; }
   </style>
 
-  <div class="internal-page-banner__content container">
-    {% comment %}Heading / subheading rendered via reusable text snippet{% endcomment %}
-    {% if section.settings.heading != blank %}
-      {% assign heading_id = 'heading-' | append: section.id %}
-      {% render 'reusable-text',
-        id: heading_id,
-        text: section.settings.heading,
-        font: section.settings.heading_font,
-        font_size: section.settings.heading_font_size,
-        font_weight: section.settings.heading_font_weight,
-        color: section.settings.heading_color
-      %}
-    {% endif %}
+  {% assign pos = section.settings.content_position | default: 'left' %}
+  {% if pos == 'left' %}
+    {% assign justify_class = 'justify-start text-left' %}
+  {% elsif pos == 'right' %}
+    {% assign justify_class = 'justify-end text-right' %}
+  {% else %}
+    {% assign justify_class = 'justify-center text-center' %}
+  {% endif %}
 
-    {% if section.settings.subheading != blank %}
-      {% assign sub_id = 'subheading-' | append: section.id %}
-      {% render 'reusable-text',
-        id: sub_id,
-        text: section.settings.subheading,
-        font: section.settings.subheading_font,
-        font_size: section.settings.subheading_font_size,
-        font_weight: section.settings.subheading_font_weight,
-        color: section.settings.subheading_color
-      %}
-    {% endif %}
+  <div class="container mx-auto relative z-10 py-20 px-4">
+    <div class="flex items-center {{ justify_class }}">
+      <div class="max-w-2xl">
+        {% if section.settings.heading != blank %}
+          <h1 class="font-bold leading-tight" style="color: {{ section.settings.heading_color | default: '#FFDC06' }};">{{ section.settings.heading }}</h1>
+        {% endif %}
 
-    <div class="internal-page-banner__buttons">
-      {% if section.settings.button1_text != blank %}
-        {% assign b1 = 'btn1-' | append: section.id %}
-        {% render 'reusable-button',
-          id: b1,
-          text: section.settings.button1_text,
-          url: section.settings.button1_link,
-          font: section.settings.button1_font,
-          font_size: section.settings.button1_font_size,
-          font_weight: section.settings.button1_font_weight,
-          text_color: section.settings.button1_text_color,
-          bg_color: section.settings.button1_bg_color,
-          border_radius: section.settings.button1_border_radius,
-          hover_bg: section.settings.button1_hover_bg,
-          hover_text_color: section.settings.button1_hover_text_color,
-          extra_class: 'button-1'
-        %}
-      {% endif %}
-      {% if section.settings.button2_text != blank %}
-        {% assign b2 = 'btn2-' | append: section.id %}
-        {% render 'reusable-button',
-          id: b2,
-          text: section.settings.button2_text,
-          url: section.settings.button2_link,
-          font: section.settings.button2_font,
-          font_size: section.settings.button2_font_size,
-          font_weight: section.settings.button2_font_weight,
-          text_color: section.settings.button2_text_color,
-          bg_color: section.settings.button2_bg_color,
-          border_radius: section.settings.button2_border_radius,
-          hover_bg: section.settings.button2_hover_bg,
-          hover_text_color: section.settings.button2_hover_text_color,
-          extra_class: 'button-2'
-        %}
-      {% endif %}
+        {% if section.settings.subheading != blank %}
+          <div class="mt-4 text-lg" style="color: {{ section.settings.subheading_color | default: '#000' }}">{{ section.settings.subheading }}</div>
+        {% endif %}
+
+        <div class="mt-6 flex flex-wrap gap-4">
+          {% if section.settings.button1_text != blank %}
+            <a href="{{ section.settings.button1_link }}" class="inline-block px-6 py-3 rounded" style="background: {{ section.settings.button1_bg_color | default: '#FDDC14' }}; color: {{ section.settings.button1_text_color | default: '#2C2C2C' }}; border-radius: {{ section.settings.button1_border_radius | default: 6 }}px;">{{ section.settings.button1_text }}</a>
+          {% endif %}
+
+          {% if section.settings.button2_text != blank %}
+            <a href="{{ section.settings.button2_link }}" class="inline-block px-6 py-3 rounded border" style="background: {{ section.settings.button2_bg_color | default: '#ffffff' }}; color: {{ section.settings.button2_text_color | default: '#2C2C2C' }}; border-radius: {{ section.settings.button2_border_radius | default: 6 }}px;">{{ section.settings.button2_text }}</a>
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
+
 </section>
 
 {% schema %}
