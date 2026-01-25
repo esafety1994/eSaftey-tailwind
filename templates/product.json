@@ -21,7 +21,7 @@
           "type": "custom_field",
           "settings": {
             "title": "Custom Cut Length:",
-            "field_type": "text",
+            "field_type": "textarea",
             "field_options": "",
             "field_placeholder": "Example: (10m/3  = 1 x 5m + 2 x 2.5m)                                           List Your Cut Sizes & Total Qtys Needed",
             "field_required": true,
