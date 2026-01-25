@@ -25,7 +25,7 @@
       "settings": {
         "background": "shopify://shop_images/click-collect.png",
         "content_position": "left",
-        "heading": "",
+        "banner_heading": "<p>CLICK</p><p>& COLLECT</p>",
         "heading_color": "#ffdc06",
         "subheading": "<p>Sydney Warehouse Pickup</p><p>Fast & Free to collect</p>",
         "subheading_color": "#ffffff",
