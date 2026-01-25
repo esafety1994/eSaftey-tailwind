@@ -1,3 +1,31 @@
+<div class="internal-page-banner" style="position:relative;">
+  {% if section.settings.background %}
+    <div class="internal-page-banner__bg" style="background-image: url('{{ section.settings.background | img_url: 'master' }}'); background-size: cover; background-position: center;">
+    </div>
+  {% endif %}
+
+  <div class="internal-page-banner__content" style="position:relative;">
+    {% if section.settings.title != blank %}
+      <h1 class="internal-page-banner__title" style="color: {{ section.settings.title_text }}">{{ section.settings.title }}</h1>
+    {% endif %}
+
+    {% if section.settings.description != blank %}
+      <div class="internal-page-banner__description" style="color: {{ section.settings.body_text }}">{{ section.settings.description }}</div>
+    {% endif %}
+
+    {% comment %}Render reusable text blocks added via this section's blocks{% endcomment %}
+    {% for block in section.blocks %}
+      <div id="reusable-text-block-{{ block.id }}" class="reusable-text__item" style="color: {{ block.settings.text_color }};">
+        {{ block.settings.text }}
+      </div>
+    {% endfor %}
+
+    {% if section.settings.button_text != blank %}
+      <a class="internal-page-banner__button" href="{{ section.settings.button_link1 }}">{{ section.settings.button_text }}</a>
+    {% endif %}
+  </div>
+</div>
+
 {% schema %}
 {
   "name": "Single Banner",
@@ -5,11 +33,6 @@
   "class": "internal-page-banner",
   "limit": 1,
   "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Internal Page Banner"
-    },
     {
       "type": "image_picker",
       "id": "background",
@@ -38,18 +61,29 @@
         }
       ]
     },
+
     {
-      "type": "textarea",
+      "type": "text",
       "id": "title",
-      "label": "Heading",
-      "default": "New Collection",
-      "info": "Allows custom HTML"
+      "label": "Internal Page Banner"
+    },
+    {
+      "type": "color",
+      "id": "title_text",
+      "label": "Title text",
+      "default": "#FFDC06"
     },
     {
       "type": "richtext",
       "id": "description",
       "label": "Description",
       "default": "<p>Tell your campaign through images</p>"
+    },
+    {
+      "type": "color",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "#000000"
     },
     {
       "type": "text",
@@ -68,6 +102,29 @@
       "label": "Button link2"
     }
   ],
+
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Enter text</p>"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        }
+      ]
+    }
+  ],
+
+  "max_blocks": 10,
 
   "presets": [
     {
