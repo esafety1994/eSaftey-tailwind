@@ -9,49 +9,35 @@
  */
 {
   "sections": {
-    "carousel_U7ean6": {
-      "type": "carousel",
-      "blocks": {
-        "slider_item_baniH9": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/click-collect.png",
-            "single_image": false,
-            "content_position": "left",
-            "title": "Click & Collect",
-            "description": "<p>Sydney Warehouse PickupFast & Free to collect</p>",
-            "button_text": "Shop now",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "slider_item_baniH9"
-      ],
-      "name": "Carousel",
-      "settings": {}
-    },
     "title": {
       "type": "page-tittle",
       "disabled": true,
       "name": "Page Title",
       "settings": {}
     },
-    "breadcrumb_WrJrMP": {
-      "type": "breadcrumb",
-      "disabled": true,
-      "name": "Breadcrumb",
-      "settings": {}
-    },
     "main": {
       "type": "page",
       "settings": {}
+    },
+    "internal_page_banner_7REhjN": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "background": "shopify://shop_images/click-collect.png",
+        "content_position": "left",
+        "title": "Single Banner",
+        "title_text": "#FFDC06",
+        "description": "<p>Tell your campaign through images</p>",
+        "body_text": "#000000",
+        "button_text": "Shop now",
+        "button_link1": "",
+        "button_link2": ""
+      }
     }
   },
   "order": [
-    "carousel_U7ean6",
     "title",
-    "breadcrumb_WrJrMP",
-    "main"
+    "main",
+    "internal_page_banner_7REhjN"
   ]
 }
