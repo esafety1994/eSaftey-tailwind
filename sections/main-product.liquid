@@ -13,7 +13,9 @@
         data-app-type="pdp"
         defer
       ></script>
-      {% render 'product-quotify-button', product: product %}
+      <div class="mt-6 border-t border-grey">
+        {% render 'product-faq-preview', product: product %}
+      </div>
     </div>
     <!-- Product Info (Right) -->
     <div>
@@ -43,7 +45,7 @@
       {% render 'variant_picker' %}
 
       {% render 'product-fixing', product: product %}
-       {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
+      {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
       {% if product.template_suffix == 'product-with-custom-field' and custom_block %}
         {% render 'product-custom-field', block: custom_block, product: product %}
       {% endif %}
@@ -56,7 +58,7 @@
         {% render 'bulky-item-shipping-note' %}
       {% endif %}
       <div class="mt-6 border-t border-grey">
-        {% render 'product-faq-preview', product: product %}
+        {% render 'product-quotify-button', product: product %}
       </div>
     </div>
   </div>
