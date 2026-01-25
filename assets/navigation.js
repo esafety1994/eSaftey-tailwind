@@ -42,9 +42,20 @@ document.addEventListener("DOMContentLoaded", function () {
       var gap = useGap ? PANEL_TOP_GAP : 0;
       // Prefer sticky header bottom when present
       var hdr = document.getElementById('site-header');
-      if (hdr && hdr.classList && hdr.classList.contains('is-sticky')) {
-        var hdrBottom = Math.round(hdr.getBoundingClientRect().bottom || 0);
-        return Math.max(0, hdrBottom + gap);
+        if (hdr) {
+          try {
+            var hdrRect = hdr.getBoundingClientRect();
+            var hdrBottom = Math.round(hdrRect.bottom || 0);
+            // If rect.bottom is 0 (sometimes happens if header is visually offscreen or CSS affects measurement),
+            // compute bottom from top + offsetHeight as a fallback.
+            if (!hdrBottom || hdrBottom <= 1) {
+              var hdrHeight = hdr.offsetHeight || hdrRect.height || 0;
+              hdrBottom = Math.round((hdrRect.top || 0) + hdrHeight);
+            }
+            return Math.max(0, hdrBottom + gap);
+          } catch (e) {
+            /* ignore */
+          }
       }
       // Fallback to #main top in viewport
       var mainEl = document.getElementById('main');
@@ -195,6 +206,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Subpanel handling: open a nested panel inside the sheet showing children
   function createSubpanel(title, url, innerHtml, trigger, sourceLink) {
     if (!sheet) return null;
+    // preserve prior collapsed state so deeper panel opens don't toggle it
+    var priorCollapsed = sheet && sheet.classList && sheet.classList.contains('collapsed-root');
     var isDesktop =
       sourceLink && window.matchMedia("(min-width:1024px)").matches;
 
@@ -308,11 +321,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // outside click
         var outsideHandler = function (ev) {
-          if (
-            !panel.contains(ev.target) &&
-            !(menuRoot && menuRoot.contains(ev.target))
-          )
+          try {
+            // If the click is inside this panel, ignore
+            if (panel.contains(ev.target)) return;
+            // If the click is inside the originating mega-menu (source markup), ignore
+            if (menuRoot && menuRoot.contains(ev.target)) return;
+            // If the click is inside any other desktop subpanel (e.g., level-2), treat it as inside
+            if (ev.target && ev.target.closest && ev.target.closest('.desktop-subpanel')) return;
+            // Otherwise, close this panel
             closeSubpanel(panel);
+          } catch (err) {
+            try { closeSubpanel(panel); } catch (e) {}
+          }
         };
         document.addEventListener("mousedown", outsideHandler);
         panel._outsideHandler = outsideHandler;
@@ -363,7 +383,10 @@ document.addEventListener("DOMContentLoaded", function () {
               if (active) active.classList.remove("root-active");
             }
           } catch (e) {}
-          if (sheet) sheet.classList.remove("collapsed-root");
+          // Only un-collapse the sheet when a level-1 panel is toggled.
+          try { if (sheet && level === 1) sheet.classList.remove("collapsed-root"); } catch (e) {}
+          // restore prior collapsed state for deeper panels
+          try { if (level === 2 && priorCollapsed) sheet.classList.add('collapsed-root'); } catch (e) {}
           return existingAtLevel;
         }
 
@@ -372,11 +395,15 @@ document.addEventListener("DOMContentLoaded", function () {
           buildPanel();
         };
         closeSubpanel(existingAtLevel, onClose);
+        // ensure prior collapsed state remains when replacing
+        try { if (level === 2 && priorCollapsed) sheet.classList.add('collapsed-root'); } catch (e) {}
         return null;
       }
 
       // no existing -> create immediately
-      return buildPanel();
+      var created = buildPanel();
+      try { if (level === 2 && priorCollapsed) sheet.classList.add('collapsed-root'); } catch (e) {}
+      return created;
     }
 
     // Mobile / sheet behavior (unchanged)
@@ -457,6 +484,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (panel._outsideHandler)
         document.removeEventListener("mousedown", panel._outsideHandler);
       try {
+        // Ensure only width/transform animate. Make opacity changes instant.
+        panel.style.transition = "width 180ms cubic-bezier(.2,.9,.2,1), transform 180ms cubic-bezier(.2,.9,.2,1), opacity 0ms linear 0ms";
+        panel.style.opacity = "0"; // set instantly
         panel.style.width = "0px";
         panel.style.transform = "translateX(-30px)";
       } catch (e) {}
@@ -486,7 +516,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Mobile sheet panel: slide out right then remove
-    try { panel.style.transform = "translateX(100%)"; } catch (e) {}
+    try {
+      // Keep mobile close transition only on transform; make opacity instant
+      panel.style.transition = "transform 180ms cubic-bezier(.2,.9,.2,1), opacity 0ms linear 0ms";
+      panel.style.opacity = "0";
+      panel.style.transform = "translateX(100%)";
+    } catch (e) {}
     var onEndMobile = function () {
       try { panel.removeEventListener("transitionend", onEndMobile); } catch (e) {}
       var container = panel.parentElement;
@@ -550,12 +585,18 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       e.stopPropagation();
       var title = link.getAttribute("data-title") || link.textContent.trim();
-      // Determine if this is a top-level root menu item (not inside a sub-panel)
-      var isTopLevelClick = !(
-        link &&
-        link.closest &&
-        link.closest(".mega-panel")
-      );
+      // Determine if this is a top-level root menu item (not inside a sub-panel).
+      // Only treat clicks that originate from the original `.mega-menu` markup
+      // as top-level; ignore clicks from any created `.desktop-subpanel`.
+      var insideMegaPanel = link && link.closest && link.closest('.mega-panel');
+      var insideAnySubpanel = false;
+      try { insideAnySubpanel = !!(link && link.closest && link.closest('.desktop-subpanel')); } catch (err) { insideAnySubpanel = false; }
+      // Only consider mega-menu instances that are not themselves inside a created
+      // desktop subpanel (dynamic panels append .mega-menu markup too). This
+      // ensures clicks from panel content don't toggle collapsed-root.
+      var menuAncestor = link && link.closest && link.closest('.mega-menu');
+      var originatesInMegaMenu = !!menuAncestor && !(menuAncestor.closest && menuAncestor.closest('.desktop-subpanel'));
+      var isTopLevelClick = originatesInMegaMenu && !(insideMegaPanel || insideAnySubpanel);
       if (isTopLevelClick && window.matchMedia("(min-width:1024px)").matches) {
         var srcIdx = link.getAttribute("data-index");
         var menuRootScope = link.closest && link.closest(".mega-menu");
