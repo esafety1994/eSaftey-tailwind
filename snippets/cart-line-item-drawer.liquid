@@ -52,7 +52,7 @@
     {%- elsif item.variant.title != 'Default Title' -%}
       <div class="text-sm text-gray-600">{{ item.variant.title }}</div>
     {%- endif -%}
-    <div class="text-sm text-gray-600">{% render 'cart-line-property',item:item %}</div>
+    <div class="text-sm text-gray-600">{% render 'cart-line-property', item: item %}</div>
     {% if has_addons %}
       <div class="mt-2">
         <button
@@ -86,13 +86,21 @@
     <!-- Price -->
     <div class="text-sm mt-2">
       {{ item.price | money }}
+      {% if item.discounts[0].title %}
+        <div class="text-xs text-bg-light-red flex mt-1">
+          <div class="flex gap-1 items-center">
+            {% render 'icon-svg-tag', class: 'size-3' -%}
+            <span class="uppercase">{{- item.discounts[0].title }}</span>
+          </div>
+        </div>
+      {% endif %}
     </div>
     <!-- Quantity -->
     <div class="mt-2 flex items-center space-x-2">
       {% if in_drawer and is_addon %}
         <div class="text-sm text-gray-700">Qty: {{ item.quantity }}</div>
       {% else %}
-        {% render 'cart-qty-control',key: item.key, qty: item.quantity, is_addon: has_addons %}
+        {% render 'cart-qty-control', key: item.key, qty: item.quantity, is_addon: has_addons %}
       {% endif %}
     </div>
   </div>

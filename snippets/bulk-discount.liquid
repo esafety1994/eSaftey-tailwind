@@ -1,0 +1,58 @@
+{% comment %}
+  snippets/bulk-discount.liquid
+  Parses a metafield string like:
+  "discount|20 - 49|5%, discount|50 -999 |10%"
+  and renders Tailwind-styled tier discount boxes (no Alpine.js).
+{% endcomment %}
+{% assign raw = product.metafields.custom.tiered_discounts_qty | default: '' | strip %}
+{% if raw != '' %}
+  <div class="tier-discounts flex gap-6 my-4 flex-wrap justify-center md:justify-normal">
+    {% assign entries = raw | split: ',' %}
+    {% for entry in entries %}
+      {% assign entry = entry | strip %}
+      {% assign parts = entry | split: '|' %}
+      {% if parts.size >= 3 %}
+        {% assign range_raw = parts[1] | strip %}
+        {% assign percent_raw = parts[2] | strip %}
+
+        {% assign range_parts = range_raw | split: '-' %}
+        {% assign min_qty = range_parts[0] | strip %}
+        {% assign max_qty = range_parts[1] | default: '' | strip %}
+
+        {% comment %} Determine display for quantity range. Use plus if max is missing, contains 999, or this is last entry. {% endcomment %}
+        {% assign plus_display = false %}
+        {% if max_qty == '' %}
+          {% assign plus_display = true %}
+        {% elsif max_qty contains '999' %}
+          {% assign plus_display = true %}
+        {% endif %}
+        {% if forloop.last %}
+          {% assign plus_display = true %}
+        {% endif %}
+
+        {% if plus_display %}
+          {% assign qty_display = min_qty | append: ' +' %}
+        {% else %}
+          {% assign qty_display = min_qty | append: ' - ' | append: max_qty %}
+        {% endif %}
+
+        {% comment %} Ensure percent ends with % and strip spaces {% endcomment %}
+        {% assign percent_clean = percent_raw | replace: ' ', '' %}
+        {% unless percent_clean contains '%' %}
+          {% assign percent_clean = percent_clean | append: '%' %}
+        {% endunless %}
+
+        <div class="tier-box gap-2 flex justify-between flex-wrap items-center p-3 bg-bg-light border rounded-md border-bg-light">
+          <span class="text-sm">
+            <span class="font-medium">BUY</span>
+            <span >{{ qty_display }}</span>
+          </span>
+          <span class="text-sm font-semibold">
+            <strong >GET</strong>
+            <strong >{{ percent_clean }} OFF</strong>
+          </span>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}

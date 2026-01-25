@@ -50,6 +50,7 @@
         {% render 'product-custom-field', block: custom_block, product: product %}
       {% endif %}
 
+      {% render 'bulk-discount', product: product %}
       {% render 'backorder-text', product: product %}
       {% render 'act-button', product: product, showPlus: true %}
       {% render 'dynamic-buy-button', product: product %}
