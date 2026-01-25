@@ -1,0 +1,86 @@
+{% schema %}
+{
+  "name": "Single Banner",
+  "tag": "section",
+  "class": "internal-page-banner",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Internal Page Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "background",
+      "label": "Image on desktop",
+      "info": "1920 x 900px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background",
+      "label": "Image on mobile",
+      "info": "800 x 600px recommended"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading",
+      "default": "New Collection",
+      "info": "Allows custom HTML"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Tell your campaign through images</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link1",
+      "label": "Button link1"
+    },
+    {
+      "type": "url",
+      "id": "button_link2",
+      "label": "Button link2"
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Single Banner",
+      "settings": {
+        "title": "Single Banner"
+      }
+    }
+  ],
+  "locales": {
+    "en": {
+      "title": "Single Banner"
+    }
+  }
+}
+{% endschema %}
