@@ -16,6 +16,8 @@
   assign gst_text_size = gst_text_size | default: 'text-sm'
   assign ex_price = product.selected_or_first_available_variant.price | divided_by: 1.1 | round
 %}
+{% comment %}Case-insensitive tag checks: join tags into a string and downcase it{% endcomment %}
+{% assign _tag_string = product.tags | join: ',' | downcase %}
 
 {% case layout %}
   {% when 'card', 'search' %}
@@ -53,7 +55,7 @@
         <span>
           <span id="product-main-price">{{- product.selected_or_first_available_variant.price | money }}</span>
           <span class="ml-0.5 text-grey-text {{ gst_text_size }}">
-            {% if product.tags contains 'gst-exempt' %}
+            {% if _tag_string contains 'gst-exempt' or _tag_string contains 'tactile' %}
               {{ 'general.taxes.exclude_tax_copy' | t }}
             {% else %}
               {{ 'general.taxes.include_tax_copy' | t }}
@@ -71,6 +73,9 @@
           </span>
         {% endif %}
       </span>
-      <span class="text-lg text-grey-text">{{ ex_price | money }} (ex. GST)</span>
+      {% unless _tag_string contains 'gst-exempt' or _tag_string contains 'tactile' %}
+        <span class="text-lg text-grey-text">{{ ex_price | money }} (ex. GST)</span>
+      {% endunless %}
+      
     </div>
 {% endcase %}
