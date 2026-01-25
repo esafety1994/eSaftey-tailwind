@@ -1,30 +1,87 @@
-<div class="internal-page-banner" style="position:relative;">
-  {% if section.settings.background %}
-    <div class="internal-page-banner__bg" style="background-image: url('{{ section.settings.background | img_url: 'master' }}'); background-size: cover; background-position: center;">
+<section id="section-{{ section.id }}" class="internal-page-banner" style="position:relative; overflow:hidden;">
+  <div id="section-bg-{{ section.id }}" class="internal-page-banner__bg" aria-hidden="true"></div>
+
+  <style>
+    #section-bg-{{ section.id }} {
+      background-image: url('{{ section.settings.background | img_url: 'master' }}');
+      background-size: cover;
+      background-position: center;
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    @media (max-width: 749px) {
+      #section-bg-{{ section.id }}{
+        background-image: url('{{ section.settings.mobile_background | img_url: 'master' }}');
+      }
+    }
+    #section-{{ section.id }} .internal-page-banner__content{ position:relative; z-index:2; padding: 3rem 1rem; }
+  </style>
+
+  <div class="internal-page-banner__content container">
+    {% comment %}Heading / subheading rendered via reusable text snippet{% endcomment %}
+    {% if section.settings.heading != blank %}
+      {% assign heading_id = 'heading-' | append: section.id %}
+      {% render 'reusable-text',
+        id: heading_id,
+        text: section.settings.heading,
+        font: section.settings.heading_font,
+        font_size: section.settings.heading_font_size,
+        font_weight: section.settings.heading_font_weight,
+        color: section.settings.heading_color
+      %}
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+      {% assign sub_id = 'subheading-' | append: section.id %}
+      {% render 'reusable-text',
+        id: sub_id,
+        text: section.settings.subheading,
+        font: section.settings.subheading_font,
+        font_size: section.settings.subheading_font_size,
+        font_weight: section.settings.subheading_font_weight,
+        color: section.settings.subheading_color
+      %}
+    {% endif %}
+
+    <div class="internal-page-banner__buttons">
+      {% if section.settings.button1_text != blank %}
+        {% assign b1 = 'btn1-' | append: section.id %}
+        {% render 'reusable-button',
+          id: b1,
+          text: section.settings.button1_text,
+          url: section.settings.button1_link,
+          font: section.settings.button1_font,
+          font_size: section.settings.button1_font_size,
+          font_weight: section.settings.button1_font_weight,
+          text_color: section.settings.button1_text_color,
+          bg_color: section.settings.button1_bg_color,
+          border_radius: section.settings.button1_border_radius,
+          hover_bg: section.settings.button1_hover_bg,
+          hover_text_color: section.settings.button1_hover_text_color,
+          extra_class: 'button-1'
+        %}
+      {% endif %}
+      {% if section.settings.button2_text != blank %}
+        {% assign b2 = 'btn2-' | append: section.id %}
+        {% render 'reusable-button',
+          id: b2,
+          text: section.settings.button2_text,
+          url: section.settings.button2_link,
+          font: section.settings.button2_font,
+          font_size: section.settings.button2_font_size,
+          font_weight: section.settings.button2_font_weight,
+          text_color: section.settings.button2_text_color,
+          bg_color: section.settings.button2_bg_color,
+          border_radius: section.settings.button2_border_radius,
+          hover_bg: section.settings.button2_hover_bg,
+          hover_text_color: section.settings.button2_hover_text_color,
+          extra_class: 'button-2'
+        %}
+      {% endif %}
     </div>
-  {% endif %}
-
-  <div class="internal-page-banner__content" style="position:relative;">
-    {% if section.settings.title != blank %}
-      <h1 class="internal-page-banner__title" style="color: {{ section.settings.title_text }}">{{ section.settings.title }}</h1>
-    {% endif %}
-
-    {% if section.settings.description != blank %}
-      <div class="internal-page-banner__description" style="color: {{ section.settings.body_text }}">{{ section.settings.description }}</div>
-    {% endif %}
-
-    {% comment %}Render reusable text blocks added via this section's blocks{% endcomment %}
-    {% for block in section.blocks %}
-      <div id="reusable-text-block-{{ block.id }}" class="reusable-text__item" style="color: {{ block.settings.text_color }};">
-        {{ block.settings.text }}
-      </div>
-    {% endfor %}
-
-    {% if section.settings.button_text != blank %}
-      <a class="internal-page-banner__button" href="{{ section.settings.button_link1 }}">{{ section.settings.button_text }}</a>
-    {% endif %}
   </div>
-</div>
+</section>
 
 {% schema %}
 {
@@ -51,86 +108,92 @@
       "label": "Content position",
       "default": "left",
       "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
       ]
     },
-
     {
       "type": "text",
-      "id": "title",
-      "label": "Internal Page Banner"
+      "id": "heading",
+      "label": "Heading",
+      "default": "Single Banner"
     },
     {
       "type": "color",
-      "id": "title_text",
-      "label": "Title text",
+      "id": "heading_color",
+      "label": "Heading color",
       "default": "#FFDC06"
     },
+
     {
       "type": "richtext",
-      "id": "description",
-      "label": "Description",
-      "default": "<p>Tell your campaign through images</p>"
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subheading text goes here."
     },
     {
       "type": "color",
-      "id": "body_text",
-      "label": "Body text",
+      "id": "subheading_color",
+      "label": "Subheading color",
       "default": "#000000"
+    },
+
+    {
+      "type": "text",
+      "id": "button1_text",
+      "label": "Button 1 text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button1_link",
+      "label": "Button 1 link",
+      "default": "/"
+    },
+    {
+      "type": "color",
+      "id": "button1_text_color",
+      "label": "Button 1 text color",
+      "default": "#2C2C2C"
+    },
+    {
+      "type": "color",
+      "id": "button1_bg_color",
+      "label": "Button 1 background",
+      "default": "#FDDC14"
     },
     {
       "type": "text",
-      "id": "button_text",
-      "label": "Button label",
-      "default": "Shop now"
+      "id": "button2_text",
+      "label": "Button 2 text",
+      "default": "Get Directions"
     },
     {
       "type": "url",
-      "id": "button_link1",
-      "label": "Button link1"
+      "id": "button2_link",
+      "label": "Button 2 link",
+      "default": "/"
+    },
+
+    {
+      "type": "color",
+      "id": "button2_text_color",
+      "label": "Button 2 text color",
+      "default": "#2C2C2C"
     },
     {
-      "type": "url",
-      "id": "button_link2",
-      "label": "Button link2"
+      "type": "color",
+      "id": "button2_bg_color",
+      "label": "Button 2 background",
+      "default": "#ffffff"
     }
   ],
-
-  "blocks": [
-    {
-      "type": "text_block",
-      "name": "Text block",
-      "settings": [
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Enter text</p>"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text color",
-          "default": "#000000"
-        }
-      ]
-    }
-  ],
-
-  "max_blocks": 10,
 
   "presets": [
     {
       "name": "Single Banner",
       "settings": {
-        "title": "Single Banner"
+        "heading": "Single Banner"
       }
     }
   ],
