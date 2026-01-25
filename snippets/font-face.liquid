@@ -1,5 +1,6 @@
 {% liquid
   assign font_normal = settings.type_base_font
+  assign font_light = settings.type_base_font | font_modify: 'weight', '300'
   assign font_medium = settings.type_base_font | font_modify: 'weight', '500'
   assign font_semibold = settings.type_base_font | font_modify: 'weight', '600'
   assign font_bold = settings.type_base_font | font_modify: 'weight', '700'
@@ -13,6 +14,7 @@
   {{ font_medium | font_face: font_display: 'swap' }}
   {{ font_semibold | font_face: font_display: 'swap' }}
   {{ font_bold | font_face: font_display: 'swap' }}
+  {{ font_light | font_face: font_display: 'swap' }}
 
   {% comment %}
     Extract the font-family name from the generated @font-face text

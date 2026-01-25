@@ -38,11 +38,18 @@
         "button2_text_color": "#2c2c2c",
         "button2_bg_color": "#ffffff"
       }
+    },
+    "content": {
+      "type": "click-collect-content",
+      "name": "Click & Collect Content",
+      "settings": {}
     }
+    
   },
   "order": [
     "title",
     "main",
-    "internal_page_banner_7REhjN"
+    "internal_page_banner_7REhjN",
+    "content"
   ]
 }
