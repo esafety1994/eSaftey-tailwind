@@ -1180,6 +1180,9 @@
   .border-grey {
     border-color: var(--color-grey);
   }
+  .border-grey-text {
+    border-color: var(--color-grey-text);
+  }
   .border-primary {
     border-color: var(--color-primary);
   }

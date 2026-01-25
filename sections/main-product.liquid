@@ -14,7 +14,6 @@
         defer
       ></script>
       {% render 'product-quotify-button', product: product %}
-      {% render 'product-faq-preview', product: product %}
     </div>
     <!-- Product Info (Right) -->
     <div>
@@ -45,9 +44,9 @@
 
       {% render 'product-fixing', product: product %}
       {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
-      {% if product.template_suffix == 'product-with-custom-field' and custom_block %}
-        {% render 'product-custom-field', block: custom_block, product: product %}
-      {% endif %}
+
+      {% render 'product-custom-field', block: custom_block, product: product %}
+
       {% render 'backorder-text', product: product %}
       {% render 'act-button', product: product, showPlus: true %}
       {% render 'dynamic-buy-button', product: product %}
@@ -55,6 +54,9 @@
       {% if product.tags contains 'Bulky' %}
         {% render 'bulky-item-shipping-note' %}
       {% endif %}
+      <div class="mt-6 border-t border-grey">
+        {% render 'product-faq-preview', product: product %}
+      </div>
     </div>
   </div>
 </div>
