@@ -29,6 +29,40 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (e) { /* ignore */ }
   }
 
+  // Small gap between header and panel to avoid touching header visually (panels)
+  var PANEL_TOP_GAP = 0;
+
+  // Compute the top offset (viewport pixels) for panels/sheet based on header/main/source
+  // useGap: when true add a small visual gap (for panels); when false return exact header bottom (for sheet)
+  function getTopOffset(sourceLink, useGap) {
+    if (typeof useGap === 'undefined') useGap = true;
+    try {
+      var isDesktop = window.matchMedia('(min-width:1024px)').matches;
+      if (!isDesktop) return 0;
+      var gap = useGap ? PANEL_TOP_GAP : 0;
+      // Prefer sticky header bottom when present
+      var hdr = document.getElementById('site-header');
+      if (hdr && hdr.classList && hdr.classList.contains('is-sticky')) {
+        var hdrBottom = Math.round(hdr.getBoundingClientRect().bottom || 0);
+        return Math.max(0, hdrBottom + gap);
+      }
+      // Fallback to #main top in viewport
+      var mainEl = document.getElementById('main');
+      if (mainEl) {
+        var mainRect = mainEl.getBoundingClientRect();
+        return Math.max(0, Math.floor(mainRect.top) + gap);
+      }
+      // Last resort: anchor to source link top
+      if (sourceLink && typeof sourceLink.getBoundingClientRect === 'function') {
+        var srcRect = sourceLink.getBoundingClientRect();
+        return Math.max(0, Math.floor(srcRect.top) + gap);
+      }
+    } catch (e) {
+      /* ignore */
+    }
+    return useGap ? PANEL_TOP_GAP : 0;
+  }
+
   function openNavSheet(trigger) {
     if (!sheet || !overlay) return;
     lastFocused = document.activeElement;
@@ -43,20 +77,15 @@ document.addEventListener("DOMContentLoaded", function () {
         sheet.style.top = '';
         sheet.style.height = '';
       } else if (trigger && typeof trigger.getBoundingClientRect === 'function') {
-        var rect = trigger.getBoundingClientRect();
-        var hdr = document.getElementById('site-header');
-        if (hdr && hdr.classList && hdr.classList.contains('is-sticky')) {
-          // Sticky header on large screens: pin sheet below header (use actual header height)
-          var headerHeight = hdr.offsetHeight || hdr.getBoundingClientRect().height || 0;
-          sheet.style.top = headerHeight + 'px';
-          sheet.style.height = 'calc(100vh - ' + headerHeight + 'px)';
+        try {
+          var topOffset = getTopOffset(trigger, false);
+          // Anchor the sheet itself to the computed top offset so sheet-content starts
+          // visually aligned with panels and header (and keep sheet-content margin reset).
+          sheet.style.top = topOffset + 'px';
+          sheet.style.height = 'calc(100vh - ' + topOffset + 'px)';
           content.style.marginTop = '';
-        } else {
-          // Large screens, header not sticky: position content under trigger (+49)
-          sheet.style.top = '';
-          sheet.style.height = '';
-          var base = rect.top; // viewport y
-          content.style.marginTop = (base + 49) + 'px';
+        } catch (e) {
+          /* ignore */
         }
       }
     } catch (e) {}
@@ -202,31 +231,9 @@ document.addEventListener("DOMContentLoaded", function () {
         panel.classList.add("panel-level-" + level);
         panel.setAttribute("role", "dialog");
         panel.style.position = "fixed";
-        // Position panel below sticky header on large screens when header is sticky
+        // Compute a consistent top offset for the panel (header / main / source fallback)
         try {
-          var _isDesktop = window.matchMedia('(min-width:1024px)').matches;
-          var _topOffset = 0;
-          if (_isDesktop) {
-            // If header is sticky prefer header height. Otherwise align with `#main` top
-            try {
-              var _hdr = document.getElementById('site-header');
-              if (_hdr && _hdr.classList && _hdr.classList.contains('is-sticky')) {
-                _topOffset = _hdr.offsetHeight || _hdr.getBoundingClientRect().height || 0;
-              } else {
-                var mainEl = document.getElementById('main');
-                if (mainEl) {
-                  var mainRect = mainEl.getBoundingClientRect();
-                  _topOffset = Math.max(0, Math.floor(mainRect.top));
-                } else if (sourceLink && typeof sourceLink.getBoundingClientRect === 'function') {
-                  var srcRect = sourceLink.getBoundingClientRect();
-                  _topOffset = Math.max(0, Math.floor(srcRect.top));
-                }
-              }
-            } catch (e) {
-              _topOffset = 0;
-            }
-          }
-          
+          var _topOffset = getTopOffset(sourceLink);
           panel.style.top = _topOffset + "px";
           panel.style.height = 'calc(100vh - ' + _topOffset + 'px)';
         } catch (err) {

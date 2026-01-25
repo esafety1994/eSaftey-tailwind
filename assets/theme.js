@@ -1,4 +1,6 @@
 
+
+//move this to PDP qty selector
 document.addEventListener("DOMContentLoaded", function () {
   // Quantity increment/decrement handlers for `.qty-selector`
   document.addEventListener("click", function (e) {
@@ -31,7 +33,7 @@ window.applyHoverImages = function(){
         if(!img.getAttribute('src')) img.setAttribute('src', img.getAttribute('data-hover-src'));
       });
     }
-  }catch(e){ /* ignore */ }
+  }catch(e){ /* ignore */}
 };
 
 document.addEventListener('DOMContentLoaded', function(){
