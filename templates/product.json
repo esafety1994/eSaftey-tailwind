@@ -64,15 +64,6 @@
         "buyer_guide_content": "<h3>Buyer's Guide</h3>\n<p><strong>Important information for custom cut to length products.</strong></p>"
       }
     },
-    "product_recommendation_a4TCDB": {
-      "type": "product-recommendation",
-      "name": "Product recommendation",
-      "settings": {
-        "title": "You may also like",
-        "product_count": 10,
-        "show_ex_gst": false
-      }
-    },
     "1768442681216c6726": {
       "type": "apps",
       "blocks": {
@@ -112,7 +103,16 @@
       ],
       "settings": {
         "heading": "",
-        "custom_class": ""
+        "custom_class": "container"
+      }
+    },
+    "product_recommendation_a4TCDB": {
+      "type": "product-recommendation",
+      "name": "Product recommendation",
+      "settings": {
+        "title": "You may also like",
+        "product_count": 10,
+        "show_ex_gst": false
       }
     },
     "shipping_calculator_f6crqN": {
@@ -125,8 +125,8 @@
     "breadcrumb_GHt96W",
     "main",
     "product_info_tabs",
-    "product_recommendation_a4TCDB",
     "1768442681216c6726",
+    "product_recommendation_a4TCDB",
     "shipping_calculator_f6crqN"
   ]
 }
