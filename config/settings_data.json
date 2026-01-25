@@ -12,7 +12,7 @@
     "type_base_font": "poppins_n4",
     "cart_trust_badge": "shopify://shop_images/trust-badge.webp",
     "cart_drawer_upsell_product": "the-air-duster-2000",
-    "use_minified_assets": false,
+    "use_minified_assets": true,
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
