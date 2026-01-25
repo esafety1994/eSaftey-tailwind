@@ -10,14 +10,53 @@
   ><span aria-hidden="true" class="ruk-rating-snippet-count" style="color: rgb(51, 51, 51);">(0)</span>
 </div>
 
-<script src="https://widget.reviews.io/rating-snippet/dist.js" defer></script>
 <link rel="stylesheet" href="https://widget.reviews.io/rating-snippet/dist.css">
 <script>
-  ratingSnippet('ruk_rating_snippet', {
-    store: 'esafety-supplies',
-    color: '#0E1311',
-    linebreak: true,
-    usePolaris: true,
-    text: 'Reviews',
-  });
+  (function () {
+    if (window.__ratingSnippetInit) return;
+    window.__ratingSnippetInit = true;
+    var opts = {
+      store: 'esafety-supplies',
+      color: '#0E1311',
+      linebreak: true,
+      usePolaris: true,
+      text: 'Reviews',
+    };
+
+    function run() {
+      if (window.ratingSnippet && typeof window.ratingSnippet === 'function') {
+        try {
+          window.ratingSnippet('ruk_rating_snippet', opts);
+        } catch (e) {
+          console.error('ratingSnippet call error', e);
+        }
+        return;
+      }
+
+      // If script tag already present, listen for its load event
+      var existing = document.querySelector('script[data-rating-snippet]');
+      if (existing) {
+        existing.addEventListener('load', function () {
+          if (window.ratingSnippet) window.ratingSnippet('ruk_rating_snippet', opts);
+        });
+        return;
+      }
+
+      // Insert script and call on load
+      var s = document.createElement('script');
+      s.src = 'https://widget.reviews.io/rating-snippet/dist.js';
+      s.defer = true;
+      s.setAttribute('data-rating-snippet', '1');
+      s.onload = function () {
+        if (window.ratingSnippet) window.ratingSnippet('ruk_rating_snippet', opts);
+      };
+      s.onerror = function (e) {
+        console.error('Failed to load rating-snippet', e);
+      };
+      document.head.appendChild(s);
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    else run();
+  })();
 </script>
