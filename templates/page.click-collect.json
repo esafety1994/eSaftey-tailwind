@@ -25,13 +25,18 @@
       "settings": {
         "background": "shopify://shop_images/click-collect.png",
         "content_position": "left",
-        "title": "Single Banner",
-        "title_text": "#FFDC06",
-        "description": "<p>Tell your campaign through images</p>",
-        "body_text": "#000000",
-        "button_text": "Shop now",
-        "button_link1": "",
-        "button_link2": ""
+        "heading": "Click& Collect",
+        "heading_color": "#ffdc06",
+        "subheading": "<p>Sydney Warehouse PickupFast & Free to collect</p>",
+        "subheading_color": "#ffffff",
+        "button1_text": "Shop Now",
+        "button1_link": "/",
+        "button1_text_color": "#2c2c2c",
+        "button1_bg_color": "#fddc14",
+        "button2_text": "Get Directions",
+        "button2_link": "shopify://pages/contact-us",
+        "button2_text_color": "#2c2c2c",
+        "button2_bg_color": "#ffffff"
       }
     }
   },
