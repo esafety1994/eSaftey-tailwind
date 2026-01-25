@@ -45,6 +45,17 @@
         "description": {
           "type": "description",
           "settings": {}
+        },
+        "custom_field_7hVWUD": {
+          "type": "custom_field",
+          "settings": {
+            "title": "Custom Cut Length:",
+            "field_type": "textarea",
+            "field_options": "",
+            "field_placeholder": "Example: (10m/3  = 1 x 5m + 2 x 2.5m)                                           List Your Cut Sizes & Total Qtys Needed",
+            "field_required": true,
+            "show_at_checkout": true
+          }
         }
       },
       "block_order": [
@@ -53,7 +64,8 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "description"
+        "description",
+        "custom_field_7hVWUD"
       ],
       "settings": {}
     },
