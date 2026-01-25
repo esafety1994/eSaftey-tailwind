@@ -43,9 +43,10 @@
       {% render 'variant_picker' %}
 
       {% render 'product-fixing', product: product %}
-      {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
-
-      {% render 'product-custom-field', block: custom_block, product: product %}
+       {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
+      {% if product.template_suffix == 'product-with-custom-field' and custom_block %}
+        {% render 'product-custom-field', block: custom_block, product: product %}
+      {% endif %}
 
       {% render 'backorder-text', product: product %}
       {% render 'act-button', product: product, showPlus: true %}
