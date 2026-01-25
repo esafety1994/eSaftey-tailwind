@@ -169,10 +169,10 @@
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
-    {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
-    {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
-    {{ 'esafety-drawer.css' | asset_url | stylesheet_tag }}
-    {{ 'global.css' | asset_url | stylesheet_tag }}
+    {{ 'glide.core.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'tailwind.output.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'esafety-drawer.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'global.css' | asset_url | stylesheet_tag: preload: true }}
     {%- if template == 'product' -%}
       {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
