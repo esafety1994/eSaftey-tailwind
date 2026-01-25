@@ -98,13 +98,6 @@
     },
     "content_for_index": [],
     "blocks": {
-      "6868439170666289573": {
-        "type": "shopify://apps/foxkit-aio-upsell/blocks/foxkit-theme-helper/13f41957-6b79-47c1-99a2-e52431f06fff",
-        "disabled": false,
-        "settings": {
-          "enable_ajax_atc": true
-        }
-      },
       "2376911714703784909": {
         "type": "shopify://apps/formful/blocks/app-embed/be9de36b-78a1-4ce9-8de3-f1044fb2ee2e",
         "disabled": true,
@@ -178,6 +171,13 @@
         "type": "shopify://apps/avis-product-options/blocks/avisplus-product-options/e076618e-4c9c-447f-ad6d-4f1577799c29",
         "disabled": true,
         "settings": {}
+      },
+      "6868439170666289573": {
+        "type": "shopify://apps/foxkit-sales-boost/blocks/foxkit-theme-helper/13f41957-6b79-47c1-99a2-e52431f06fff",
+        "disabled": true,
+        "settings": {
+          "enable_ajax_atc": true
+        }
       }
     }
   }
