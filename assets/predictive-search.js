@@ -1,45 +1,63 @@
 class PredictiveSearch extends HTMLElement {
   constructor() {
     super();
-
-    this.input = this.querySelector('input[type="search"]') || this.querySelector('#Search') || document.getElementById('Search');
-    this.predictiveSearchResults = this.querySelector('#predictive-search') || document.getElementById('predictive-search');
-    // If required DOM nodes aren't present yet, bail gracefully.
-    if (!this.input || !this.predictiveSearchResults) {
-      return;
-    }
+    // Keep lightweight constructor: bind handlers and prepare fields.
     this.container = null;
     this.mobileOverlay = null;
     this.mobileInput = null;
     this.mobileResults = null;
+    this.predictiveSearchResults = null;
+    this.input = null;
     this._mobileOpen = false;
 
-    this.input.addEventListener('input', this.debounce((event) => {
-      this.onChange(event);
-    }, 300).bind(this));
-    // Open mobile overlay on focus for small screens
-    this.input.addEventListener('focus', (e) => {
+    // placeholders for removable handlers
+    this._onInput = null;
+    this._onFocus = null;
+    this._toggleClickHandler = null;
+    this._onMobileInput = null;
+
+    // bind instance methods used as listeners
+    this._handleDocumentPointer = this._handleDocumentPointer.bind(this);
+  }
+
+  connectedCallback() {
+    // Avoid double initialization
+    if (this._connected) return;
+    this._connected = true;
+
+    // Query DOM nodes now that element is connected
+    this.input = this.querySelector('input[type="search"]') || this.querySelector('#Search') || document.getElementById('Search');
+    this.predictiveSearchResults = this.querySelector('#predictive-search') || document.getElementById('predictive-search');
+
+    if (!this.input || !this.predictiveSearchResults) {
+      // nothing to wire up yet; bail but remain connected so future calls won't re-init
+      return;
+    }
+
+    // wire input handlers
+    this._onInput = this.debounce((event) => { this.onChange(event); }, 300);
+    this.input.addEventListener('input', this._onInput);
+
+    this._onFocus = (e) => {
       try {
         if (window.matchMedia && window.matchMedia('(max-width: 767px)').matches) {
           this.openMobileOverlay();
         }
       } catch (err) {}
-    });
+    };
+    this.input.addEventListener('focus', this._onFocus);
 
     // Trigger predictive search when clicking the search icon/svg
     try {
-      // Try to find an element that represents the search toggle inside this component.
-      // Prefer an explicit submit button or a data attribute if present; fall back to a span/svg.
       let toggle = this.querySelector('button[type="submit"], [data-search-toggle], .search .search-toggle, span > svg, .search span');
       if (toggle) {
-        // If we got an SVG element, use its closest wrapper (span) as the clickable target
         try {
           if (toggle.tagName && toggle.tagName.toLowerCase() === 'svg') {
             toggle = toggle.closest('span') || toggle;
           }
         } catch (e) {}
 
-        toggle.addEventListener('click', (e) => {
+        this._toggleClickHandler = (e) => {
           e.preventDefault();
           try {
             this.input.focus();
@@ -47,14 +65,15 @@ class PredictiveSearch extends HTMLElement {
               this.onChange();
             }
           } catch (err) {}
-        });
+        };
+        toggle.addEventListener('click', this._toggleClickHandler);
       }
     } catch (err) {}
 
     // bind mobile input if present (overlay may be added server-side)
     this._bindMobileInputs();
-    // bind and register document pointerdown handler (capture) to close when clicking outside
-    this._handleDocumentPointer = this._handleDocumentPointer.bind(this);
+
+    // register document pointerdown handler (capture) to close when clicking outside
     document.addEventListener('pointerdown', this._handleDocumentPointer, true);
   }
 
@@ -175,11 +194,12 @@ class PredictiveSearch extends HTMLElement {
       this.mobileResults = document.getElementById('predictive-search-mobile-results');
       var closeBtn = document.getElementById('predictive-search-mobile-close');
       if (this.mobileInput) {
-        this.mobileInput.addEventListener('input', this.debounce((e) => {
-          // forward mobile input value to main input and trigger search
+        // store handler so it can be removed later
+        this._onMobileInput = this.debounce((e) => {
           try { this.input.value = e.target.value; } catch (err) {}
           this.onChange();
-        }, 300).bind(this));
+        }, 300);
+        this.mobileInput.addEventListener('input', this._onMobileInput);
         this.mobileInput.addEventListener('keydown', (e) => {
           // if mobile overlay open, show column layout handled by section template
         });
@@ -232,7 +252,33 @@ class PredictiveSearch extends HTMLElement {
   }
 
   disconnectedCallback() {
-    try { document.removeEventListener('pointerdown', this._handleDocumentPointer, true); } catch(e){}
+    try {
+      document.removeEventListener('pointerdown', this._handleDocumentPointer, true);
+    } catch (e) {}
+
+    try {
+      if (this.input) {
+        if (this._onInput) this.input.removeEventListener('input', this._onInput);
+        if (this._onFocus) this.input.removeEventListener('focus', this._onFocus);
+      }
+    } catch (e) {}
+
+    try {
+      // remove toggle click handler if present
+      let toggle = this.querySelector('button[type="submit"], [data-search-toggle], .search .search-toggle, span > svg, .search span');
+      if (toggle && this._toggleClickHandler) {
+        try {
+          if (toggle.tagName && toggle.tagName.toLowerCase() === 'svg') {
+            toggle = toggle.closest('span') || toggle;
+          }
+        } catch (e) {}
+        toggle.removeEventListener('click', this._toggleClickHandler);
+      }
+    } catch (e) {}
+
+    try {
+      if (this.mobileInput && this._onMobileInput) this.mobileInput.removeEventListener('input', this._onMobileInput);
+    } catch (e) {}
   }
 
   open() {
