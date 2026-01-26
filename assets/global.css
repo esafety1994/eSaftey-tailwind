@@ -567,5 +567,5 @@ a.underline-animation:focus::after {
 .icon-tooltip-btn:focus-within .m-tooltip__content { display: block !important; }
 
 #cart-drawer{
-  z-index: 999999999;
+  z-index: 99999999999;
 }
