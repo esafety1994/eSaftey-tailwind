@@ -62,6 +62,7 @@
         },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Giveaway-Web-Banner-Icy-Poles_1606f34c-4a65-43e5-9891-ebe066623b0b.jpg",
             "single_image": true,
