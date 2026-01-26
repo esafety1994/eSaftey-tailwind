@@ -10,6 +10,7 @@
             loading="lazy"
             width="150"
             height="150"
+
             src="{{ prod.featured_image | image_url: width: 350, height: 350 }}"
             alt="{{ alt | default: image.alt | escape }}"
             class="object-contain"
@@ -28,6 +29,6 @@
       </div>
     </div>
 
-    <div class="ml-2 w-52">{% render 'quick-add-btn', product: prod, mobile_hide_qty: true, hide_qty: true %}</div>
+    <div class="ml-2 w-52">{% render 'quick-add-btn', product: prod, mobile_hide_qty: true, hide_qty: true, layout: 'upsell' %}</div>
   </div>
 </div>
