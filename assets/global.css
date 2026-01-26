@@ -512,9 +512,7 @@ a.underline-animation:focus::after {
 }
 
 /* Tooltip placed to the left of the trigger (e.g., zoom icon) */
-.m-tooltip--left {
-  position: relative;
-}
+
 .m-tooltip--left .m-tooltip__content {
   position: absolute;
   top: 50%;
