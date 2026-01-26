@@ -60,7 +60,7 @@
                       srcset="{{ img | image_url: width:1024 }} 1024w, {{ img | image_url: width:1920 }} 1920w"
                       sizes="100vw"
                       alt="{{ block.settings.title | strip_html | escape }}"
-                      loading="lazy"
+                      {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
                       class="w-full h-full object-cover object-center block"
                       width="1920"
                       height="900"
