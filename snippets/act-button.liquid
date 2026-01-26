@@ -25,7 +25,13 @@
         {% endif %}
         {% render 'add-to-cart-button', status: status, showPlus: showPlus, button_classes: button_classes, button_small: button_small %}
       </div>
+      <div class="mt-4">
+        {{ form | payment_button }}
+      </div>
+          
     {% endform %}
+    
+    {% render 'dynamic-buy-button', product: product %}
   </div>
 </esafety-cart-action-button>
 
