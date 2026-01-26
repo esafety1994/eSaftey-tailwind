@@ -2,8 +2,12 @@ class PredictiveSearch extends HTMLElement {
   constructor() {
     super();
 
-    this.input = this.querySelector('input[type="search"]');
-    this.predictiveSearchResults = this.querySelector('#predictive-search');
+    this.input = this.querySelector('input[type="search"]') || this.querySelector('#Search') || document.getElementById('Search');
+    this.predictiveSearchResults = this.querySelector('#predictive-search') || document.getElementById('predictive-search');
+    // If required DOM nodes aren't present yet, bail gracefully.
+    if (!this.input || !this.predictiveSearchResults) {
+      return;
+    }
     this.container = null;
     this.mobileOverlay = null;
     this.mobileInput = null;

@@ -13,7 +13,14 @@
         aria-owns="predictive-search-results"
         aria-controls="predictive-search-results"
       >
-      <span class="absolute text-white md:text-black -right-10 md:right-3 top-2 w-5 h-5">
+      <span
+        class="absolute text-white md:text-black -right-10 md:right-3 top-2 w-5 h-5 cursor-pointer"
+        role="button"
+        tabindex="0"
+        aria-label="Focus search input"
+        onclick="document.getElementById('Search') && document.getElementById('Search').focus();"
+        onkeydown="if (event.key==='Enter' || event.key===' ') { event.preventDefault(); document.getElementById('Search') && document.getElementById('Search').focus(); }"
+      >
         {% render 'icons-svg-search', stroke_width: 2, %}
       </span>
     </div>
