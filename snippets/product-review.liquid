@@ -1,5 +1,5 @@
 <div
-  class="ruk_rating_snippet"
+  class="ruk_rating_snippet flex items-center justify-center"
   data-sku="{{ product.handle }};{{ product.variants | map: 'sku' | join: ';' }};{{ product.variants | map: 'id' | join: ';' }}"
 >
   <i aria-hidden="true" class="ruk-icon-percentage-star--0"></i
@@ -20,7 +20,7 @@
       color: '#0E1311',
       linebreak: true,
       usePolaris: true,
-      text: 'Reviews',
+      text: '',
     };
 
     function run() {
@@ -60,3 +60,8 @@
     else run();
   })();
 </script>
+<style>
+  .ruk_rating_snippet .ruk-rating-snippet-count {
+    bottom: 0 !important;
+  }
+</style>
