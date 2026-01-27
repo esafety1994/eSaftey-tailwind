@@ -36,6 +36,13 @@
         </div>
         {% render 'dynamic-buy-button', product: product %}
       {% endif %}
+      <!-- Begin Rendr-Shopify Cart Liquid Snippet (v1.0.0) -->
+  {% if product.tags contains 'Same Day Delivery' %}
+    <input type="hidden" name="properties[_parcel_dimension_cm@1]" value="20x30x5">
+    <input type="hidden" name="properties[_parcel_weight_kg@1]" value="{{ product.variants.first.weight | weight_with_unit }}">
+    <input type="hidden" name="properties[_store]" value="e_safety_supplies-wetherill_park">
+  {% endif %}
+<!-- End Rendr-Shopify Cart Liquid Snippet (v1.0.0) -->
     {% endform %}
   </div>
 </esafety-cart-action-button>
