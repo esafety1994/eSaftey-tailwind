@@ -16,8 +16,8 @@
 <article
   class="w-full product-card flex flex-col overflow-hidden transition-transform transform p-1.5 h-full max-w-sm m-auto 2xl:max-w-none border border-gray-400 rounded-none"
 >
-  <div class="relative overflow-hidden h-40">
-    <div class="block relative w-full z-10 group h-40">
+  <div class="relative overflow-hidden h-72 md:h-40">
+    <div class="block relative w-full z-10 group h-full">
       {%- comment -%} image skeleton removed — skeleton no longer used {%- endcomment -%}
       {% render 'product-badges', product: prod %}
       <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">
@@ -27,7 +27,7 @@
           layout: 'card'
         %}
       </div>
-      <a href="{{ prod.url }}" class="absolute inset-0 z-20 block h-40">
+      <a href="{{ prod.url }}" class="absolute inset-0 z-20 block h-full">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
             {% assign hover_url = prod.images[1] | image_url: width: 400 %}
@@ -42,7 +42,7 @@
             >
           {% endif %}
           {% if prod.featured_image %}
-            {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-cover transition-all duration-300' %}
+            {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-contain transition-all duration-300' %}
             {% if prod.images[1] %}
               {% assign featured_class = featured_class | append: '  h-40group-hover:opacity-0' %}
             {% else %}
@@ -51,7 +51,7 @@
             {% render 'responsive-image',
               image: prod.featured_image,
               image_class: featured_class,
-              wrapper_class: 'absolute inset-0 z-10'
+              wrapper_class: 'absolute inset-0 z-10 artest'
             %}
           {% endif %}
         {% else %}
