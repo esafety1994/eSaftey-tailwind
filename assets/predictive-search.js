@@ -109,7 +109,7 @@ class PredictiveSearch extends HTMLElement {
     const params = new URLSearchParams({
       q: searchTerm,
       section_id: "predictive-search",
-      "resources[limit]": "9",
+      "resources[limit]": "3",
       "resources[type]": "product",
       "resources[fields]": "title,product_type,variants.title,variants.sku",
     });

@@ -44,10 +44,15 @@ h2 {
   @apply bg-transparent border;
 }
 
+.outline-button-rounded {
+  @apply bg-transparent border rounded-4xl;
+} 
 .primary-cart-button {
   @apply cursor-pointer bg-black text-btn-text-yellow hover:bg-black/80 hover:scale-105 flex gap-2 normal-case items-center py-4 px-4 sm:px-8 text-center font-semibold text-lg rounded-lg;
 }
-
+.primary-checkout-button {
+  @apply w-full bg-black text-btn-text-yellow flex gap-2 items-center py-4 px-4 sm:px-8 justify-center font-semibold text-lg rounded-4xl;
+}
 .quick-add-btn {
   @apply font-normal text-base;
 }

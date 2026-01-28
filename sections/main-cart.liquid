@@ -127,8 +127,8 @@
             </div>
             <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
           </div>
-          <a id="cart-checkout-btn" href="/checkout" class="block w-full text-center bg-black text-white py-3 rounded"
-            >Checkout</a
+          <a id="cart-checkout-btn" href="/checkout" class="btn primary-checkout-button"
+            >{%render 'icon-svg-lock-keyhole' %}Secure Checkout</a
           >
           {% if settings.cart_trust_badge %}
             <div class="my-4 flex justify-center w-4/5 m-auto">

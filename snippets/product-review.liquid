@@ -1,5 +1,6 @@
+{% assign layout = layout | default: "base" %}
 <div
-  class="ruk_rating_snippet flex items-center justify-center"
+  class="ruk_rating_snippet flex items-center {% if layout == 'PDP' %}justify-start{% else %}justify-center{% endif %}"
   data-sku="{{ product.handle }};{{ product.variants | map: 'sku' | join: ';' }};{{ product.variants | map: 'id' | join: ';' }}"
 >
   <i aria-hidden="true" class="ruk-icon-percentage-star--0"></i
@@ -63,5 +64,6 @@
 <style>
   .ruk_rating_snippet .ruk-rating-snippet-count {
     bottom: 0 !important;
+    line-height: 0 !important;
   }
 </style>

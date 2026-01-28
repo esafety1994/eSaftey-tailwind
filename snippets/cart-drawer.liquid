@@ -134,18 +134,20 @@
       </form>
 
       <div class="flex items-center justify-between mb-3">
-        <span id="cart-subtotal-label" class="font-medium">Subtotal (<span data-item-count-drawer>0</span> items)</span>
-        <span id="cart-subtotal" data-cart-total-drawer class="font-semibold">$0.00</span>
+        <span id="cart-subtotal-label" class="font-medium">Subtotal (<span data-item-count-drawer>{{ cart.item_count }}</span> items)</span>
+        <span id="cart-subtotal" data-cart-total-drawer class="font-semibold">{{ cart.total_price | money }}</span>
       </div>
       <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
       <div class="py-4 flex gap-3">
-        <a href="/cart" class="w-full text-center border py-2 rounded">View cart</a>
+        <a href="/cart" class="w-3xs btn outline-button-rounded flex items-center
+">View cart</a>
         <a
           id="cart-drawer-checkout-btn"
           href="/checkout"
-          class="block w-full text-center bg-black text-primary-light py-3 rounded uppercase"
-          >Checkout</a
+          class="btn primary-checkout-button !text-sm"
+          >{%render 'icon-svg-lock-keyhole' %}Secure Checkout</a
         >
+          
       </div>
     </div>
   </aside>

@@ -20,13 +20,6 @@
     <div class="block relative w-full z-10 group h-full">
       {%- comment -%} image skeleton removed — skeleton no longer used {%- endcomment -%}
       {% render 'product-badges', product: prod %}
-      <div class="badges absolute top-3 right-3 z-40 flex flex-col items-end gap-2">
-        {% render 'quotify-button',
-          class: 'flex items-center justify-center rounded-full size-10 hover:text-white hover:bg-black ',
-          product: prod,
-          layout: 'card'
-        %}
-      </div>
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block h-full">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
@@ -80,7 +73,7 @@
     %}
   </div>
 
-  <div class="flex justify-center my-2">
+  <div class="my-2 w-full">
     {% render 'quick-add-btn', product: prod, hide_qty: true, button_small: true, layout: 'search' %}
   </div>
 </article>

@@ -104,16 +104,16 @@
         {% if section.settings.collection_4 %}
           <a
             href="{{ section.settings.collection_4.url }}"
-            class="block w-full overflow-hidden relative"
+            class="block w-full overflow-hidden relative group"
             style="background-color: {{ section.settings.bg_color_img_4 }};"
           >
         {% else %}
           <div
-            class="block w-full overflow-hidden relative"
+            class="block w-full overflow-hidden relative group"
             style="background-color: {{ section.settings.bg_color_img_4 }};"
           >
         {% endif %}
-        {% render 'responsive-image', image: section.settings.image_4, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full sm:h-80 md:h-[420px] object-center object-contain hover:scale-105 transition-transform duration-300',max_width:80 %}
+        {% render 'responsive-image', image: section.settings.image_4, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full sm:h-80 md:h-[420px] object-center object-contain group-hover:scale-105 transition-transform duration-300',max_width:80 %}
         {% if section.settings.button_text_4 != blank %}
           <span class="absolute  w-full text-center bottom-4">
             <span class="inline-block btn primary-button transition">

@@ -21,7 +21,7 @@
     <div>
       <h1 class="text-3xl font-semibold mb-4">{{ product.title }}</h1>
       {% render 'product-tags', product: product %}
-      {% render 'product-review', product: product %}
+      {% render 'product-review', product: product, layout:"PDP" %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <div class="flex gap-4 items-center">
         <div id="product-sku">
