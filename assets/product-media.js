@@ -32,6 +32,32 @@
 
         mainEl._glideInstance = main;
 
+        // helpers to lock/unlock page scrolling when lightbox is open
+        function lockScroll() {
+          try {
+            var scrollY = window.scrollY || window.pageYOffset || 0;
+            document.body.setAttribute('data-product-scroll', String(scrollY));
+            document.body.style.position = 'fixed';
+            document.body.style.top = '-' + scrollY + 'px';
+            document.body.style.left = '0';
+            document.body.style.right = '0';
+            document.body.style.width = '100%';
+          } catch (e) {}
+        }
+
+        function unlockScroll() {
+          try {
+            var stored = parseInt(document.body.getAttribute('data-product-scroll') || '0', 10) || 0;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.width = '';
+            document.body.removeAttribute('data-product-scroll');
+            window.scrollTo(0, stored);
+          } catch (e) {}
+        }
+
         // Thumbnails as a Glide carousel; initialize and sync with main carousel
         if (thumbsEl) {
           var thumbsPerView = Math.min(5, thumbsEl.querySelectorAll('.glide__slides > li').length || 5);
@@ -101,6 +127,7 @@
             if (lb && lbGlideEl) {
               lb.classList.remove('hidden');
               lb.classList.add('flex');
+              try { lockScroll(); } catch (e) {}
 
               // mount lightbox glide if not already
               if (!lbGlideEl._glideInstance) {
@@ -152,11 +179,12 @@
         var lb = document.getElementById('product-lightbox');
         var lbGlideEl = document.getElementById('product-lightbox-glide');
         if (lbClose && lb) lbClose.addEventListener('click', function () {
+          try { unlockScroll(); } catch (e) {}
           lb.classList.add('hidden'); lb.classList.remove('flex');
           // destroy lightbox instance to reset state next open
           try { if (lbGlideEl && lbGlideEl._glideInstance) { lbGlideEl._glideInstance.destroy(); lbGlideEl._glideInstance = null; } } catch (e) {}
         });
-        if (lb) lb.addEventListener('click', function (e) { if (e.target === lb) { lb.classList.add('hidden'); lb.classList.remove('flex'); try { if (lbGlideEl && lbGlideEl._glideInstance) { lbGlideEl._glideInstance.destroy(); lbGlideEl._glideInstance = null; } } catch (e) {} } });
+        if (lb) lb.addEventListener('click', function (e) { if (e.target === lb) { try { unlockScroll(); } catch (err) {} lb.classList.add('hidden'); lb.classList.remove('flex'); try { if (lbGlideEl && lbGlideEl._glideInstance) { lbGlideEl._glideInstance.destroy(); lbGlideEl._glideInstance = null; } } catch (e) {} } });
 
       } catch (e) {
         console.error('product-media: Glide init failed', e);

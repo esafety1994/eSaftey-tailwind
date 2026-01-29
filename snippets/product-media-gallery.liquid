@@ -82,7 +82,7 @@
         <ul class="glide__slides">
           {% for image in product.images %}
             <li class="glide__slide">
-              <img src="{{ image | img_url: '1200x1200' }}" alt="{{ image.alt | escape }}" class="w-full h-auto rounded" height="900" width="900" >
+              <img src="{{ image | img_url: '1200x1200' }}" alt="{{ image.alt | escape }}" class="w-full h-auto rounded" height="900" width="900" style="max-height: 90vh; width:auto;margin:auto;" >
             </li>
           {% endfor %}
         </ul>
