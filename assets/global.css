@@ -5,8 +5,12 @@
 /* Prevent page horizontal shift when modals disable scrolling
    - Reserve scrollbar gutter where supported
    - Force a visible vertical scrollbar as a fallback */
-html { overflow-y: scroll; }
-body { scrollbar-gutter: stable; }
+html {
+  overflow-y: scroll;
+}
+body {
+  scrollbar-gutter: stable;
+}
 @media (width >= 96rem) {
   .container {
     max-width: 1440px;
@@ -108,7 +112,9 @@ a.underline-animation:focus::after {
   overflow: hidden;
   transform: translateY(-6px);
   opacity: 0;
-  transition: height 260ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 220ms ease,
+  transition:
+    height 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 220ms ease,
     opacity 200ms ease;
 }
 .mega-panel.open {
@@ -178,15 +184,16 @@ a.underline-animation:focus::after {
   background: #ffe61f;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
 }
+.product-gallery-arrow.glide__arrow--disabled {
+  background-color: #e2e2e2;
+}
+
 
 .gradient-bg {
   position: relative;
   width: 100%;
-  background-image: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(92, 92, 92, 0.8) 100%
-    ),
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(92, 92, 92, 0.8) 100%),
     url(https://cdn.shopify.com/s/files/1/0638/5175/7736/files/cart-cta-bg.png?v=1748820020);
   background-size: cover;
   background-position: center;
@@ -372,7 +379,6 @@ a.underline-animation:focus::after {
   content: "";
 }
 
-
 /********* Loading *************/
 .loader {
   width: 48px;
@@ -382,7 +388,7 @@ a.underline-animation:focus::after {
 }
 
 .loader:before {
-  content: '';
+  content: "";
   width: 48px;
   height: 5px;
   background: #f9dd31;
@@ -394,7 +400,7 @@ a.underline-animation:focus::after {
 }
 
 .loader:after {
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   background: #f9dd31;
@@ -415,7 +421,7 @@ a.underline-animation:focus::after {
   }
 
   50% {
-    transform: translateY(18px) scale(1, .9) rotate(45deg);
+    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
     border-bottom-right-radius: 40px;
   }
 
@@ -429,9 +435,8 @@ a.underline-animation:focus::after {
 }
 
 @keyframes shadow324 {
-
   0%,
-    100% {
+  100% {
     transform: scale(1, 1);
   }
 
@@ -507,7 +512,7 @@ a.underline-animation:focus::after {
   top: -5px;
   transform: rotate(45deg);
   background: #ffffff;
-  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.12);
   pointer-events: none;
 }
 
@@ -552,18 +557,25 @@ a.underline-animation:focus::after {
   color: #fff !important;
 }
 
-
 /* Only show tooltip when hovering or focusing the zoom button itself */
-.slide-zoom-btn .m-tooltip__content { display: none; }
+.slide-zoom-btn .m-tooltip__content {
+  display: none;
+}
 .slide-zoom-btn:hover .m-tooltip__content,
-.slide-zoom-btn:focus .m-tooltip__content { display: block !important; }
+.slide-zoom-btn:focus .m-tooltip__content {
+  display: block !important;
+}
 
 /* Generic icon tooltip: show tooltip only when the icon/button is hovered or focused */
-.icon-tooltip-btn .m-tooltip__content { display: none; }
+.icon-tooltip-btn .m-tooltip__content {
+  display: none;
+}
 .icon-tooltip-btn:hover .m-tooltip__content,
 .icon-tooltip-btn:focus .m-tooltip__content,
-.icon-tooltip-btn:focus-within .m-tooltip__content { display: block !important; }
+.icon-tooltip-btn:focus-within .m-tooltip__content {
+  display: block !important;
+}
 
-#cart-drawer{
+#cart-drawer {
   z-index: 99999999999;
 }
