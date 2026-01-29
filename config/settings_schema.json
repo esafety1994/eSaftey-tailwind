@@ -42,6 +42,16 @@
         "id": "bulky_shipping_note",
         "label": "Bulky shipping note",
         "default": "This item is excluded from our free shipping promotion due to its bulky nature. Adding it to your cart will result in the order not qualifying for free shipping."
+      },
+      {
+        "type": "header",
+        "content": "Header Contact Details"
+      },
+      {
+        "type": "text",
+        "id": "header_contact_email",
+        "label": "Header contact email",
+        "default": "email@esafetysupplies.com.au"
       }
     ]
   },
