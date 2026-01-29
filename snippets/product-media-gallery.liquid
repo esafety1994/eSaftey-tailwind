@@ -75,14 +75,14 @@
 </div>
 
 <!-- Lightbox modal (Glide slider) -->
-<div id="product-lightbox" class="hidden fixed inset-0 z-50 bg-white bg-opacity-75 items-center justify-center p-4">
+<div id="product-lightbox" class="hidden fixed inset-0 z-55 bg-white bg-opacity-75 items-center justify-center p-4">
   <div class="w-full max-w-4xl relative">
     <div class="glide glide-lightbox" id="product-lightbox-glide">
       <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
           {% for image in product.images %}
             <li class="glide__slide">
-              <img src="{{ image | img_url: '1200x1200' }}" alt="{{ image.alt | escape }}" class="w-full h-auto rounded" height="900" width="900" >
+              <img src="{{ image | img_url: '1200x1200' }}" alt="{{ image.alt | escape }}" class="w-auto h-auto max-h-[90vh] m-auto" height="900" width="900" >
             </li>
           {% endfor %}
         </ul>
