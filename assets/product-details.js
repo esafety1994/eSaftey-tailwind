@@ -2,10 +2,8 @@
   // Minimal module: attach direct click handlers to any .show-full-desc button
   function onClickScroll(e) {
     var btn = e.currentTarget;
-    console.log('show-full-desc clicked', btn);
     var controls = btn.getAttribute('aria-controls');
     var target = controls ? document.getElementById(controls) : document.getElementById('product-details-target');
-    console.log('scroll target:', target);
     if (!target) return;
 
     // toggle aria-expanded and arrow rotation for this button
@@ -13,8 +11,8 @@
     btn.setAttribute('aria-expanded', String(!expanded));
     // keep icon static: do not toggle rotation for show-full-desc / See full FAQ
 
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(function(){ try { target.focus({preventScroll:true}); } catch (e) {} }, 300);
+    // use scroll helper that accounts for sticky headers and offsets
+    scrollToElement(target);
     // After scrolling, activate the Description tab if present inside the target's root
     try {
       var root = target.closest && target.closest('.product-details-expandable');
@@ -73,42 +71,6 @@
         if (panel) panel.classList.add('hidden');
       }
     });
-  }
-
-  function setupDescPreview(root) {
-    if (!root) return;
-    var preview = root.querySelector('.desc-preview');
-    var btn = root.querySelector('.desc-toggle');
-    if (!preview || !btn) return;
-
-    // remove previous listener to avoid duplicates
-    btn.removeEventListener('click', toggleDesc);
-    btn.addEventListener('click', toggleDesc);
-
-    // reset to measure full height
-    preview.style.maxHeight = '';
-    var fullH = preview.scrollHeight;
-    var collapsedH = 360;
-    var fade = preview.querySelector('.fade');
-
-    if (fullH <= collapsedH) {
-      // content small enough — hide toggle and fade
-      btn.style.display = 'none';
-      if (fade) fade.style.display = 'none';
-      preview.style.maxHeight = '';
-      btn.setAttribute('aria-expanded','false');
-    } else {
-      btn.style.display = '';
-      if (btn.getAttribute('aria-expanded') === 'true') {
-        preview.style.maxHeight = fullH + 'px';
-        if (fade) fade.style.display = 'none';
-        btn.textContent = 'Read less';
-      } else {
-        preview.style.maxHeight = collapsedH + 'px';
-        if (fade) fade.style.display = '';
-        btn.textContent = 'Read more';
-      }
-    }
   }
 
   function setupDescPreviewForPanel(root, panelName) {
@@ -326,7 +288,8 @@
     if (!target) return;
     var headerOffset = (typeof extraOffset === 'number') ? extraOffset : getHeaderOffset();
     var rect = target.getBoundingClientRect();
-    var top = window.pageYOffset + rect.top - headerOffset - 8; // small breathing room
+    var breathing = 50; // small breathing room in pixels
+    var top = window.pageYOffset + rect.top - headerOffset - breathing;
     window.scrollTo({ top: top, behavior: 'smooth' });
     setTimeout(function(){ try { target.focus({preventScroll:true}); } catch (err){} }, 300);
   }
