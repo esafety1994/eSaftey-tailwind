@@ -5,7 +5,7 @@
   data-color-map="{{ 'color-map.json' | asset_url }}"
 ></script>
 {% unless product.has_only_default_variant %}
-  <variant-picker data-section-id="{{ section.id }}">
+  <variant-picker data-section-id="{{ section.id }}" data-variants='{{ product.variants | json | escape }}'>
     {% for option in product.options_with_values %}
       {% assign option_name_down = option.name | downcase %}
       <fieldset class="variant-picker__option mb-4">

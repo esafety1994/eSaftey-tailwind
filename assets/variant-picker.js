@@ -11,6 +11,13 @@ class VariantPicker extends HTMLElement {
     this.variantSelector = this.querySelectorAll('input[type="radio"], select');
     this.handleChange = this.onVariantChange.bind(this);
 
+    // parse variants JSON if provided on the element
+    try {
+      this.variants = this.dataset.variants ? JSON.parse(this.dataset.variants) : [];
+    } catch (e) {
+      this.variants = [];
+    }
+
     this.variantSelector.forEach((selector) => {
       selector.addEventListener("change", this.handleChange);
     });
@@ -41,18 +48,55 @@ class VariantPicker extends HTMLElement {
   }
   onVariantChange(event) {
     const input = event.currentTarget;
+    // Compute the full selected option values and try to resolve the correct
+    // variant id for the current combination. Fall back to the input value
+    // if we can't resolve a match.
+    let resolvedVariantId = input.value;
+    try {
+      // collect selected option display values per option fieldset
+      const optionFieldsets = this.querySelectorAll('.variant-picker__option');
+      const selectedValues = Array.from(optionFieldsets).map((fs) => {
+        const sel = fs.querySelector('select');
+        if (sel) return (sel.options[sel.selectedIndex]?.text || '').trim();
+        const checked = fs.querySelector('input[type="radio"]:checked');
+        const candidate = checked || fs.querySelector('input[type="radio"]');
+        if (candidate) {
+          const lbl = document.querySelector('label[for="' + candidate.id + '"]');
+          return lbl ? lbl.textContent.trim() : (candidate.value || '').trim();
+        }
+        return '';
+      });
+
+      if (this.variants && this.variants.length && selectedValues.length) {
+        const match = this.variants.find((v) => {
+          const vopts = v.options || [v.option1, v.option2, v.option3].filter(Boolean);
+          if (!vopts || !vopts.length) return false;
+          for (let i = 0; i < selectedValues.length; i++) {
+            const sel = (selectedValues[i] || '').toString().trim().toLowerCase();
+            const vo = (vopts[i] || '').toString().trim().toLowerCase();
+            if (sel !== vo) return false;
+          }
+          return true;
+        });
+        if (match && match.id) resolvedVariantId = String(match.id);
+      }
+    } catch (e) {
+      // fallback to input.value
+    }
+
     // Notify other modules immediately about the selected variant so they
     // can update UI optimistically before the AJAX replacement completes.
     try {
       document.dispatchEvent(
         new CustomEvent("product:variant:changing", {
-          detail: { variantId: input.value },
+          detail: { variantId: resolvedVariantId },
         }),
       );
     } catch (e) {
       /* ignore */
     }
-    const url = `${window.location.pathname}?variant=${input.value}&section_id=${this.sectionId}`;
+
+    const url = `${window.location.pathname}?variant=${resolvedVariantId}&section_id=${this.sectionId}`;
     const target = document.querySelector(".product-container");
     // show loading overlay + fade
     if (target) {
@@ -75,8 +119,8 @@ class VariantPicker extends HTMLElement {
         // Selective updates: gallery, price, sku, and the product form's variant id
         try {
           // Update gallery if present
-          const newGallery = tempDiv.querySelector("#product-glide");
-          const galleryTarget = document.getElementById("product-glide");
+          const newGallery = tempDiv.querySelector("#esProductGlide");
+          const galleryTarget = document.getElementById("esProductGlide");
           if (newGallery && galleryTarget) {
             // preserve and update start index attribute if provided
             var newStart = newGallery.getAttribute("data-start-index");
@@ -84,8 +128,8 @@ class VariantPicker extends HTMLElement {
               galleryTarget.setAttribute("data-start-index", newStart);
             galleryTarget.innerHTML = newGallery.innerHTML;
             // update thumbnails if present in response
-            var newThumbs = tempDiv.querySelector("#product-thumbs");
-            var thumbsTarget = document.getElementById("product-thumbs");
+            var newThumbs = tempDiv.querySelector("#esProductThumbs");
+            var thumbsTarget = document.getElementById("esProductThumbs");
             if (newThumbs && thumbsTarget)
               thumbsTarget.innerHTML = newThumbs.innerHTML;
             try {
@@ -98,8 +142,8 @@ class VariantPicker extends HTMLElement {
           }
 
           // Update price
-          const newPrice = tempDiv.querySelector("#product-price");
-          const priceTarget = document.getElementById("product-price");
+          const newPrice = tempDiv.querySelector("#esProductPrice");
+          const priceTarget = document.getElementById("esProductPrice");
           if (newPrice && priceTarget) {
             priceTarget.innerHTML = newPrice.innerHTML;
           }

@@ -244,7 +244,7 @@
           }
 
           // fallback: if gallery exists, use its data-start-index to pick the correct image
-          var gallery = root.querySelector('#product-glide') || document.querySelector('#product-glide');
+          var gallery = root.querySelector('#esProductGlide') || document.querySelector('#esProductGlide');
           if (gallery) {
             var imgs = gallery.querySelectorAll('img');
             var startIndex = parseInt(gallery.getAttribute('data-start-index') || gallery.dataset.startIndex || 0, 10) || 0;
@@ -254,9 +254,9 @@
           // fallback: featured image marker
           if (!candidate) candidate = root.querySelector('[data-featured-image] img, img[data-featured-image]');
           // fallback: gallery first image within the root
-          if (!candidate) candidate = root.querySelector('#product-glide img, .product-media-gallery img');
+          if (!candidate) candidate = root.querySelector('#esProductGlide img, .product-media-gallery img');
           // final fallback: any gallery image on document
-          if (!candidate) candidate = document.querySelector('#product-glide img, .product-media-gallery img');
+          if (!candidate) candidate = document.querySelector('#esProductGlide img, .product-media-gallery img');
 
           if (candidate) {
             if (candidate.src) stickyImg.src = candidate.src;

@@ -1,187 +1,255 @@
-;(function () {
-  function initGallery(e) {
-    var invokedByReplacement = e && e.type === 'product:content:replaced';
-    var mainEl = document.querySelector('#product-glide');
-    var thumbsEl = document.querySelector('#product-thumbs');
-    if (!mainEl) return;
-    // On the initial page load we want to keep the product's first image
-    // regardless of any `data-start-index` set by the server or URL.
-    // Subsequent `product:content:replaced` events (e.g. when a user
-    // actively selects a variant) will respect `data-start-index`.
-    var startAt;
-    if (!invokedByReplacement && !window._productMediaHasInit) {
-      startAt = 0;
-      window._productMediaHasInit = true;
-    } else {
-      startAt = parseInt(mainEl.getAttribute('data-start-index')) || 0;
+document.addEventListener("DOMContentLoaded", function () {
+  let main = null;
+  let thumbs = null;
+  const totalSlidesEl = document.querySelector("[data-esProductGlideCount]");
+  const totalSlides = totalSlidesEl
+    ? parseInt(totalSlidesEl.getAttribute("data-esProductGlideCount"), 10)
+    : null;
+  // helper to sync thumbnails positioning and active class
+  function syncThumbs(idx) {
+    if (!thumbs) return;
+    const total = document.querySelectorAll(
+      "#esProductThumbs > .glide__track .glide__slide",
+    ).length;
+
+    // Prefer the Glide instance's resolved perView (breakpoints applied),
+    // otherwise fall back to the configured breakpoints.
+    let perView;
+    try {
+      perView = thumbs && thumbs.settings && thumbs.settings.perView
+        ? Math.floor(thumbs.settings.perView)
+        : undefined;
+    } catch (e) {
+      perView = undefined;
     }
 
-    // destroy previous instances
-    if (mainEl._glideInstance) { try { mainEl._glideInstance.destroy(); } catch (e) {} mainEl._glideInstance = null; }
-    if (thumbsEl && thumbsEl._glideInstance) { try { thumbsEl._glideInstance.destroy(); } catch (e) {} thumbsEl._glideInstance = null; }
+    if (!perView) {
+      if (window.innerWidth >= 1200) perView = 5;
+      else if (window.innerWidth >= 1024) perView = 4;
+      else if (window.innerWidth >= 767) perView = 4;
+      else if (window.innerWidth >= 510) perView = 3;
+      else perView = 3;
+    }
+    perView = Math.max(1, Math.min(perView, total || perView));
 
-    function mount() {
+    if (total <= perView) {
       try {
-        // Main carousel
-        var main = new Glide('#product-glide', {
-          type: 'carousel',
-          perView: 1,
-          gap: 16,
-          startAt: startAt
-        }).mount();
-
-        mainEl._glideInstance = main;
-
-        // Thumbnails as a Glide carousel; initialize and sync with main carousel
-        if (thumbsEl) {
-          var thumbsPerView = Math.min(5, thumbsEl.querySelectorAll('.glide__slides > li').length || 5);
-          var thumbs = new Glide('#product-thumbs', {
-            type: 'slider',
-            perView: thumbsPerView,
-            gap: 8,
-          }).mount();
-          thumbsEl._glideInstance = thumbs;
-
-          // click on thumb buttons
-          thumbsEl.querySelectorAll('.thumb-btn').forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
-              var idx = parseInt(btn.getAttribute('data-thumb-index')) || 0;
-              try { main.go('=' + idx); } catch (err) {}
-            });
-          });
-
-          // helper to toggle active class on thumbnail items
-          function setActiveThumb(index) {
-            thumbsEl.querySelectorAll('.glide__slides > li').forEach(function (li, i) {
-              if (i === index) li.classList.add('thumb-active'); else li.classList.remove('thumb-active');
-            });
-          }
-
-          // initialize active thumb and sync both ways
-          setActiveThumb(startAt || 0);
-          thumbs.on('run.after', function () { try { main.go('=' + thumbs.index); setActiveThumb(thumbs.index); } catch (e) {} });
-          // Only move the thumbs carousel when the active thumbnail would be outside
-          // the currently visible thumbnails. This prevents the thumbnail strip from
-          // scrolling on every main slide change — it will only shift when the
-          // new active thumb is not visible, or when it becomes the last visible
-          // thumbnail after clicking next.
-          main.on('run.after', function () {
-            try {
-              var idx = main.index;
-              var totalThumbs = (thumbsEl.querySelectorAll('.glide__slides > li').length) || 0;
-              var currentThumbStart = typeof thumbs.index === 'number' ? thumbs.index : 0;
-              var perViewCount = thumbsPerView || 1;
-              var visibleEnd = currentThumbStart + perViewCount - 1;
-
-              if (idx < currentThumbStart) {
-                // active thumb moved to the left outside visible range -> show it as first
-                thumbs.go('=' + idx);
-              } else if (idx > visibleEnd) {
-                // active thumb moved to the right outside visible range -> shift so
-                // the active thumb becomes the last visible item
-                var newStart = Math.min(Math.max(idx - perViewCount + 1, 0), Math.max(totalThumbs - perViewCount, 0));
-                thumbs.go('=' + newStart);
-              }
-              setActiveThumb(idx);
-            } catch (e) {}
-          });
+        thumbs.go("=0");
+      } catch (e) {}
+      // ensure the slides container transform is reset so thumbnails stay left-aligned
+      try {
+        const slidesEl = document.querySelector("#esProductThumbs .glide__slides");
+        if (slidesEl) {
+          slidesEl.style.transition = "none";
+          slidesEl.style.transform = "translate3d(0px, 0px, 0px)";
+          setTimeout(() => {
+            slidesEl.style.transition = "";
+          }, 40);
         }
+      } catch (e) {}
+    } else {
+      const maxStart = Math.max(0, total - perView);
+      const desired = idx - (perView - 1);
+      const start = Math.max(0, Math.min(desired, maxStart));
+      try {
+        const current = typeof thumbs.index === "number" ? thumbs.index : null;
+        if (current !== start) thumbs.go("=" + start);
+      } catch (e) {
+        try {
+          thumbs.go("=" + start);
+        } catch (e) {}
+      }
+    }
+    setActiveThumb(idx);
+  }
 
-        // lightbox: open when clicking main image or zoom overlay — show a Glide slider in the modal and sync with main
-        mainEl.querySelectorAll('.glide__slide img').forEach(function (img) {
-          img.style.cursor = 'zoom-in';
-        });
+  function destroyGlides() {
+    try {
+      if (main && typeof main.destroy === "function") main.destroy();
+    } catch (e) {}
+    try {
+      if (thumbs && typeof thumbs.destroy === "function") thumbs.destroy();
+    } catch (e) {}
+    main = null;
+    thumbs = null;
+  }
 
-        // open lightbox when clicking image
-        mainEl.querySelectorAll('.glide__slide img, .slide-zoom-btn').forEach(function (el) {
-          el.addEventListener('click', function (e) {
-            var idx = parseInt((e.currentTarget.getAttribute('data-slide-index')) || main.index) || 0;
-            var lb = document.getElementById('product-lightbox');
-            var lbGlideEl = document.getElementById('product-lightbox-glide');
+  function initGlides() {
+    destroyGlides();
+    const mainElNow = document.getElementById("esProductGlide");
+    const thumbElNow = document.getElementById("esProductThumbs");
+    const startAt =
+      parseInt(
+        (mainElNow && mainElNow.dataset.startIndex) ||
+          (thumbElNow && thumbElNow.dataset.startIndex) ||
+          0,
+        10,
+      ) || 0;
+
+    main = new Glide("#esProductGlide", {
+      type: "slider",
+      startAt: startAt,
+      perView: 1,
+      keyboard: false,
+    });
+
+    if (thumbElNow) {
+      const totalThumbs = document.querySelectorAll(
+        "#esProductThumbs > .glide__track .glide__slide",
+      ).length;
+      let initPerView;
+      if (window.innerWidth >= 1200) initPerView = 5;
+      else if (window.innerWidth >= 1024) initPerView = 4;
+      else if (window.innerWidth >= 767) initPerView = 4;
+      else if (window.innerWidth >= 510) initPerView = 3;
+      else initPerView = 3;
+      initPerView = Math.max(1, Math.min(initPerView, totalThumbs || 1));
+
+      thumbs = new Glide("#esProductThumbs", {
+        type: "slider",
+        startAt: startAt,
+        perView: initPerView,
+        gap: 8,
+        bound: true,
+        keyboard: false,
+        breakpoints: {
+          1200: { perView: 5 },
+          1024: { perView: 4 },
+          767: { perView: 4 },
+          510: { perView: 3 },
+        },
+      });
+    }
+
+    // helper removed from here (now in module scope)
+
+    main.on("run.after", () => {
+      const idx = main.index;
+      syncThumbs(idx);
+    });
+
+    if (thumbs) {
+      thumbs.on("mount.after", () => {
+        const idx = main.index;
+        syncThumbs(idx);
+      });
+    }
+
+    // mount in order
+    if (thumbs) thumbs.mount();
+    main.mount();
+
+    // attach lightbox handlers for current DOM
+    try {
+      const root = document.getElementById("esProductGlide");
+      if (root) {
+        root.querySelectorAll(".slide-zoom-btn").forEach(function (el) {
+          el.addEventListener("click", function (e) {
+            var slideEl = e.currentTarget.closest(".glide__slide");
+            var slides = Array.from(
+              document.querySelectorAll("#esProductGlide .glide__slide"),
+            );
+            var idx = slideEl ? slides.indexOf(slideEl) : main.index || 0;
+            var lb = document.getElementById("product-lightbox");
+            var lbGlideEl = document.getElementById("product-lightbox-glide");
             if (lb && lbGlideEl) {
-              lb.classList.remove('hidden');
-              lb.classList.add('flex');
+              lb.classList.remove("hidden");
+              lb.classList.add("flex");
 
-              // mount lightbox glide if not already
               if (!lbGlideEl._glideInstance) {
                 try {
-                  lbGlideEl._glideInstance = new Glide('#product-lightbox-glide', {
-                    type: 'carousel',
-                    perView: 1,
-                    gap: 16,
-                    startAt: idx
-                  }).mount();
+                  lbGlideEl._glideInstance = new Glide(
+                    "#product-lightbox-glide",
+                    {
+                      type: "carousel",
+                      perView: 1,
+                      gap: 16,
+                      startAt: idx,
+                      keyboard: false,
+                    },
+                  ).mount();
 
-                  // when lightbox changes, update main
-                  lbGlideEl._glideInstance.on('run.after', function () {
-                    try { main.go('=' + lbGlideEl._glideInstance.index); } catch (e) {}
+                  lbGlideEl._glideInstance.on("run.after", function () {
+                    try {
+                      main.go("=" + lbGlideEl._glideInstance.index);
+                    } catch (e) {}
                   });
-
-                  // wire lightbox arrows to control lightbox instance
-                  var lbLeft = lb.querySelector('.product-gallery-arrow--left');
-                  var lbRight = lb.querySelector('.product-gallery-arrow--right');
-                  [lbLeft, lbRight].forEach(function (btn) {
-                    if (!btn) return;
-                    btn.addEventListener('click', function () {
-                      var dir = btn.getAttribute('data-glide-dir');
-                      try { lbGlideEl._glideInstance.go(dir); } catch (e) {}
-                    });
-                  });
-                } catch (e) { console.warn('product-media: lightbox glide mount failed', e); }
+                } catch (e) {
+                  console.warn("product-media: lightbox glide mount failed", e);
+                }
               } else {
-                try { lbGlideEl._glideInstance.go('=' + idx); } catch (e) {}
+                try {
+                  lbGlideEl._glideInstance.go("=" + idx);
+                } catch (e) {}
               }
             }
           });
         });
-
-        // Wire custom arrow buttons for the main carousel only (our arrows inside mainEl)
-        mainEl.querySelectorAll('.product-gallery-arrow').forEach(function (btn) {
-          btn.addEventListener('click', function (e) {
-            var dir = btn.getAttribute('data-glide-dir');
-            if (!dir) return;
-            try {
-              if (dir.indexOf('=') === 0) main.go(dir);
-              else if (dir === '>' || dir === '<') main.go(dir);
-              else main.go(dir);
-            } catch (err) { /* ignore */ }
-          });
-        });
-
-        var lbClose = document.getElementById('product-lightbox-close');
-        var lb = document.getElementById('product-lightbox');
-        var lbGlideEl = document.getElementById('product-lightbox-glide');
-        if (lbClose && lb) lbClose.addEventListener('click', function () {
-          lb.classList.add('hidden'); lb.classList.remove('flex');
-          // destroy lightbox instance to reset state next open
-          try { if (lbGlideEl && lbGlideEl._glideInstance) { lbGlideEl._glideInstance.destroy(); lbGlideEl._glideInstance = null; } } catch (e) {}
-        });
-        if (lb) lb.addEventListener('click', function (e) { if (e.target === lb) { lb.classList.add('hidden'); lb.classList.remove('flex'); try { if (lbGlideEl && lbGlideEl._glideInstance) { lbGlideEl._glideInstance.destroy(); lbGlideEl._glideInstance = null; } } catch (e) {} } });
-
-      } catch (e) {
-        console.error('product-media: Glide init failed', e);
       }
-    }
-
-    if (window.Glide) {
-      mount();
-    } else {
-      var src = 'https://cdn.jsdelivr.net/npm/@glidejs/glide';
-      if (!document.querySelector('script[src="' + src + '"]')) {
-        var s = document.createElement('script');
-        s.src = src;
-        s.onload = mount;
-        s.onerror = function () { console.warn('product-media: failed to load Glide'); };
-        document.head.appendChild(s);
-      } else {
-        var t = setInterval(function () {
-          if (window.Glide) { clearInterval(t); mount(); }
-        }, 100);
-        setTimeout(function () { clearInterval(t); }, 5000);
-      }
-    }
+    } catch (e) {}
   }
 
-  document.addEventListener('DOMContentLoaded', initGallery);
-  document.addEventListener('product:content:replaced', initGallery);
-})();
+  function setActiveThumb(index) {
+    const slides = document.querySelectorAll("#esProductThumbs .glide__slide");
+    slides.forEach((el, i) => el.classList.toggle("thumb-active", i === index));
+  }
+
+  // click thumbnails to navigate main
+  document.addEventListener("click", function (e) {
+    const btn =
+      e.target.closest && e.target.closest("#esProductThumbs .thumb-btn");
+    if (btn) {
+      const slides = Array.from(
+        document.querySelectorAll("#esProductThumbs .glide__slide"),
+      );
+      const li = btn.closest(".glide__slide");
+      const idx = slides.indexOf(li);
+      if (idx >= 0) main.go("=" + idx);
+      // ensure thumbs reposition so active is on right after navigation
+      try {
+        setTimeout(function () {
+          if (typeof syncThumbs === "function") syncThumbs(idx);
+        }, 40);
+      } catch (e) {}
+    }
+  });
+
+  // initialize on load
+  initGlides();
+
+  // reinitialize when variant picker or other modules replace product content
+  document.addEventListener("product:content:replaced", function (e) {
+    setTimeout(function () {
+      initGlides();
+    }, 20);
+  });
+
+  var lbClose = document.getElementById("product-lightbox-close");
+  var lb = document.getElementById("product-lightbox");
+  var lbGlideEl = document.getElementById("product-lightbox-glide");
+  if (lbClose && lb)
+    lbClose.addEventListener("click", function () {
+      lb.classList.add("hidden");
+      lb.classList.remove("flex");
+      // destroy lightbox instance to reset state next open
+      try {
+        if (lbGlideEl && lbGlideEl._glideInstance) {
+          lbGlideEl._glideInstance.destroy();
+          lbGlideEl._glideInstance = null;
+        }
+      } catch (e) {}
+    });
+  if (lb)
+    lb.addEventListener("click", function (e) {
+      if (e.target === lb) {
+        lb.classList.add("hidden");
+        lb.classList.remove("flex");
+        try {
+          if (lbGlideEl && lbGlideEl._glideInstance) {
+            lbGlideEl._glideInstance.destroy();
+            lbGlideEl._glideInstance = null;
+          }
+        } catch (e) {}
+      }
+    });
+});
