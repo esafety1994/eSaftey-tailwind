@@ -35,6 +35,22 @@
     "settings": [
       {
         "type": "header",
+        "content": "Favicon"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_favicon",
+        "label": "Use favicon icon (32px x 32px)",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Image favicon",
+        "info": "Will be scaled down to 32 x 32px"
+      },
+      {
+        "type": "header",
         "content": "Bulky Shipping Note"
       },
       {
