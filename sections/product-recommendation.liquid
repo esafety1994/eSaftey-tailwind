@@ -16,7 +16,7 @@
               <ul class="glide__slides">
                 {%- for product in recommendations.products -%}
                   <li>
-                    {% render 'search-product-card', product: product, max_tags: 2 %}
+                    {% render 'product-card', product: product, max_tags: 2, layout: 'recommendation' %}
                   </li>
                 {%- endfor -%}
               </ul>

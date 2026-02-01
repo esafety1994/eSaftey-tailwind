@@ -38,6 +38,7 @@
   assign price_size = price_size | default: '16px'
   assign price_color = price_color | default: '#000000'
   assign max_tags = max_tags | default: 0
+  assign layout = layout | default: 'card'
 %}
 
 {% comment %} Try to resolve a full product object from `all_products` if `product` appears to be a shallow drop (handles may be present) {% endcomment %}
@@ -59,19 +60,27 @@
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
-            {% assign hover_url = prod.images[1] | image_url: width: 600 %}
+            {% if layout == 'recommendation' %}
+              {% assign hover_url = prod.images[1] | image_url: width: 400 %}
+            {% else %}
+              {% assign hover_url = prod.images[1] | image_url: width: 600 %}
+            {% endif %}
             <img
               src="{{ hover_url }}"
               data-hover-src="{{ hover_url }}"
               alt="{{ prod.images[1].alt | default: prod.title | escape }}"
               class="absolute inset-0 w-full h-full object-contain transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20 hover-image"
               loading="lazy"
-              width="600"
-              height="600"
+              width="450"
+              height="450"
             >
           {% endif %}
           {% if prod.featured_image %}
-            {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-contain transition-all duration-300' %}
+            {% if layout == 'recommendation' %}
+              {% assign featured_class = 'absolute inset-0 w-full h-[320px] object-contain transition-all duration-300' %}
+            {% else %}
+              {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-contain transition-all duration-300' %}
+            {% endif %}
             {% if prod.images[1] %}
               {% assign featured_class = featured_class | append: ' group-hover:opacity-0' %}
             {% else %}
@@ -93,22 +102,32 @@
     </div>
   </div>
   <div class="flex flex-col gap-2 flex-grow justify-between px-3">
-    <a
-      href="{{ prod.url }}"
-      class="font-bold line-clamp-3 md:min-h-[81px]"
-      style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
-    >
-      {{ prod.title }}
-    </a>
+    {% if layout == 'recommendation' %}
+      <a
+        href="{{ prod.url }}"
+        class="font-bold block whitespace-normal break-words md:min-h-[20px] my-6"
+        style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
+      >
+        {{ prod.title }}
+      </a>
+    {% else %}
+      <a
+        href="{{ prod.url }}"
+        class="font-bold block line-clamp-3 md:min-h-[81px]"
+        style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
+      >
+        {{ prod.title }}
+      </a>
+    {% endif %}
     <div class="flex items-center justify-between flex-wrap">
       {% render 'product-price',
         product: prod,
         show_compare_price: show_compare_price,
         price_size: price_size,
         price_color: price_color,
-        layout: 'card'
+        layout: card
       %}
-      {% render 'product-review', product: prod, layout: 'card' %}
+      {% render 'product-review', product: prod, layout: card %}
       {% render 'product-stock-badge', product: prod %}
     </div>
   </div>
