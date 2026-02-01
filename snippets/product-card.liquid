@@ -60,7 +60,7 @@
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
-            {% if layout == 'recommendation' %}
+            {% if layout == 'search' %}
               {% assign hover_url = prod.images[1] | image_url: width: 400 %}
             {% else %}
               {% assign hover_url = prod.images[1] | image_url: width: 600 %}
@@ -76,7 +76,7 @@
             >
           {% endif %}
           {% if prod.featured_image %}
-            {% if layout == 'recommendation' %}
+            {% if layout == 'search' %}
               {% assign featured_class = 'absolute inset-0 w-full h-[320px] object-contain transition-all duration-300' %}
             {% else %}
               {% assign featured_class = 'absolute inset-0 w-full h-[280px] md:h-full object-contain transition-all duration-300' %}
@@ -101,11 +101,11 @@
       {% render 'card-add-to-cart', product: prod %}
     </div>
   </div>
-  <div class="flex flex-col gap-2 flex-grow justify-between px-3">
-    {% if layout == 'recommendation' %}
+  <div class="flex flex-col {% if layout == 'search'  %} gap-0.5 {% else %} gap-2 {% endif  %} flex-grow justify-between px-3">
+    {% if layout == 'search' %}
       <a
         href="{{ prod.url }}"
-        class="font-bold block whitespace-normal break-words md:min-h-[20px] my-6"
+        class="font-bold block whitespace-normal break-words md:min-h-[20px] my-4"
         style="font-size: {{ title_size }}; color: {{ title_color }}; font-weight: 500;"
       >
         {{ prod.title }}
@@ -125,9 +125,9 @@
         show_compare_price: show_compare_price,
         price_size: price_size,
         price_color: price_color,
-        layout: card
+        layout: layout
       %}
-      {% render 'product-review', product: prod, layout: card %}
+      {% render 'product-review', product: prod, layout: layout %}
       {% render 'product-stock-badge', product: prod %}
     </div>
   </div>

@@ -48,7 +48,7 @@ class ProductRecommendation extends HTMLElement {
           startAt: 0,
           perView: 4,
           rewind: false,
-          gap: 10,
+          gap: 4,
           bound: true,
           breakpoints: {
             1024: { perView: 3 },
