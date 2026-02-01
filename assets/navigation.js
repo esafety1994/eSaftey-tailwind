@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function getTopOffset(sourceLink, useGap) {
     if (typeof useGap === 'undefined') useGap = true;
     try {
-      var isDesktop = window.matchMedia('(min-width:1024px)').matches;
+      var isDesktop = window.matchMedia('(min-width:768px)').matches;
       if (!isDesktop) return 0;
       var gap = useGap ? PANEL_TOP_GAP : 0;
       // Prefer sticky header bottom when present
@@ -75,11 +75,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openNavSheet(trigger) {
-    if (!sheet || !overlay) return;
+    try { console.log && console.log('[nav] openNavSheet called', { sheet: !!sheet, overlay: !!overlay, trigger: !!trigger }); } catch (e) {}
+    // If multiple drawers exist, switch active sheet to the nearest one for this trigger
+    setActiveSheetFor(trigger);
+    if (!sheet || !overlay) {
+      try { console.log && console.log('[nav] openNavSheet missing sheet/overlay', { sheet: sheet, overlay: overlay }); } catch (e) {}
+      return;
+    }
     lastFocused = document.activeElement;
     try {
       var content = sheet.querySelector('.sheet-content');
-      var isDesktop = window.matchMedia('(min-width:1024px)').matches;
+      var isDesktop = window.matchMedia('(min-width:768px)').matches;
       if (!content) {
         // nothing to do
       } else if (!isDesktop) {
@@ -101,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (e) {}
     sheet.classList.add("open");
+    try { console.log && console.log('[nav] sheet open class added'); } catch (e) {}
     // Ensure any previous 'collapsed-root' state is cleared when opening
     sheet.classList.remove("collapsed-root");
     // clear any previously highlighted root menu items when opening
@@ -128,7 +135,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function closeNavSheet(trigger) {
-    if (!sheet || !overlay) return;
+    try { console.log && console.log('[nav] closeNavSheet called', { sheet: !!sheet, overlay: !!overlay, trigger: !!trigger }); } catch (e) {}
+    if (!sheet || !overlay) {
+      try { console.log && console.log('[nav] closeNavSheet missing sheet/overlay', { sheet: sheet, overlay: overlay }); } catch (e) {}
+      return;
+    }
+    try {
+      if (trigger && typeof trigger.setAttribute === 'function') {
+        try { trigger.setAttribute('aria-expanded', 'false'); } catch (e) {}
+      }
+    } catch (e) {}
     // start close animation
     sheet.classList.remove("open");
     // hide overlay immediately so clicks don't get intercepted
@@ -179,29 +195,132 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Direct binding if trigger exists at load
-  var trigger = document.getElementById("shop-trigger");
-  if (trigger) {
-    trigger.addEventListener("click", function (e) {
-      e.preventDefault();
-      openNavSheet(trigger);
-    });
-    trigger.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
-        e.preventDefault();
-        openNavSheet(trigger);
+  // Direct binding for all triggers if present at load
+  var triggers = document.querySelectorAll && document.querySelectorAll('.shop-trigger');
+  // do not assume the first trigger is correct; resolve at runtime
+  var trigger = null;
+
+  function isVisible(el) {
+    try {
+      if (!el) return false;
+      if (el.offsetParent === null) return false;
+      if (el.getClientRects && el.getClientRects().length === 0) return false;
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function findVisibleTrigger() {
+    try {
+      var nodes = document.querySelectorAll('.shop-trigger');
+      if (!nodes || !nodes.length) return null;
+      for (var i = 0; i < nodes.length; i++) {
+        if (isVisible(nodes[i])) return nodes[i];
+      }
+      return nodes[0];
+    } catch (e) { var all = document.querySelectorAll && document.querySelectorAll('.shop-trigger'); return all && all.length ? all[0] : null; }
+  }
+
+  function findExpandedTrigger() {
+    try {
+      var exp = document.querySelector('.shop-trigger[aria-expanded="true"]');
+      if (exp) return exp;
+      return findVisibleTrigger();
+    } catch (e) { return findVisibleTrigger(); }
+  }
+
+  // If the theme renders multiple drawers/sheets (duplicate ids), choose the
+  // nearest sheet/overlay/close button relative to a trigger by searching up
+  // the DOM for an ancestor that contains its own #site-sheet.
+  function findNearestSheetFor(trigger) {
+    try {
+      if (!trigger) return {
+        sheet: document.getElementById('site-sheet'),
+        overlay: document.getElementById('sheet-overlay'),
+        closeBtn: document.getElementById('sheet-close')
+      };
+      var node = trigger;
+      while (node) {
+        try {
+          if (node.querySelector) {
+            var s = node.querySelector('#site-sheet');
+            if (s) {
+              var o = node.querySelector('#sheet-overlay');
+              var c = node.querySelector('#sheet-close');
+              return { sheet: s, overlay: o, closeBtn: c };
+            }
+          }
+        } catch (e) {}
+        node = node.parentElement;
+      }
+      // fallback to global ids
+      return {
+        sheet: document.getElementById('site-sheet'),
+        overlay: document.getElementById('sheet-overlay'),
+        closeBtn: document.getElementById('sheet-close')
+      };
+    } catch (e) {
+      return {
+        sheet: document.getElementById('site-sheet'),
+        overlay: document.getElementById('sheet-overlay'),
+        closeBtn: document.getElementById('sheet-close')
+      };
+    }
+  }
+
+  function setActiveSheetFor(trigger) {
+    try {
+      var found = findNearestSheetFor(trigger) || {};
+      sheet = found.sheet || document.getElementById('site-sheet');
+      overlay = found.overlay || document.getElementById('sheet-overlay');
+      closeBtn = found.closeBtn || document.getElementById('sheet-close');
+    } catch (e) {}
+  }
+  if (triggers && triggers.length) {
+    triggers.forEach(function (trigger) {
+      try {
+        trigger.addEventListener("click", function (e) {
+          try { console.log && console.log('[nav] trigger clicked', trigger); } catch (err) {}
+          e.preventDefault();
+          setActiveSheetFor(trigger);
+          openNavSheet(trigger);
+        });
+        trigger.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+            e.preventDefault();
+            openNavSheet(trigger);
+          }
+        });
+      } catch (err) {
+        /* ignore individual trigger errors */
       }
     });
+    try { console.log && console.log('[nav] triggers attached', triggers.length, 'visible->', findVisibleTrigger()); } catch (err) {}
   }
 
   // Delegated click - works if trigger is rendered later
   document.addEventListener("click", function (e) {
-    var trg = e.target.closest ? e.target.closest("#shop-trigger") : null;
+    var trg = e.target.closest ? e.target.closest(".shop-trigger") : null;
     if (trg) {
       e.preventDefault();
+      setActiveSheetFor(trg);
       openNavSheet(trg);
     }
   });
+
+  // When sheet is in collapsed-root state, clicking elsewhere in the sheet
+  // (but not on a root menu link or an open desktop subpanel) should expand it
+  document.addEventListener('click', function (e) {
+    try {
+      if (!sheet || !sheet.classList || !sheet.classList.contains('collapsed-root')) return;
+      var target = e.target;
+      if (target && target.closest && target.closest('.mega-item-link')) return;
+      if (target && target.closest && target.closest('.desktop-subpanel')) return;
+      if (sheet.contains(target)) {
+        try { sheet.classList.remove('collapsed-root'); } catch (err) {}
+        try { setRootActive(null); } catch (err) {}
+      }
+    } catch (err) {}
+  }, true);
 
   // Subpanel handling: open a nested panel inside the sheet showing children
   function createSubpanel(title, url, innerHtml, trigger, sourceLink) {
@@ -209,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // preserve prior collapsed state so deeper panel opens don't toggle it
     var priorCollapsed = sheet && sheet.classList && sheet.classList.contains('collapsed-root');
     var isDesktop =
-      sourceLink && window.matchMedia("(min-width:1024px)").matches;
+      sourceLink && window.matchMedia("(min-width:768px)").matches;
 
     if (isDesktop) {
       // Desktop: only two levels supported (1 = root panel, 2 = child panel).
@@ -252,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (err) {
           panel.style.top = "0";
         }
-        var finalLeft = level === 1 ? 160 : anchorRect ? anchorRect.right : 160;
+        var finalLeft = level === 1 ? 102 : anchorRect ? anchorRect.right : 160;
         panel.style.left = finalLeft + "px";
         // start collapsed and grow on open so it appears to expand to the right
         panel.style.width = "0px";
@@ -597,7 +716,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var menuAncestor = link && link.closest && link.closest('.mega-menu');
       var originatesInMegaMenu = !!menuAncestor && !(menuAncestor.closest && menuAncestor.closest('.desktop-subpanel'));
       var isTopLevelClick = originatesInMegaMenu && !(insideMegaPanel || insideAnySubpanel);
-      if (isTopLevelClick && window.matchMedia("(min-width:1024px)").matches) {
+      if (isTopLevelClick && window.matchMedia("(min-width:768px)").matches) {
         var srcIdx = link.getAttribute("data-index");
         var menuRootScope = link.closest && link.closest(".mega-menu");
         var prevActive = menuRootScope
@@ -657,12 +776,16 @@ document.addEventListener("DOMContentLoaded", function () {
         // no source panel found for this index
       }
       var inner = panelEl ? panelEl.innerHTML : "";
-      var shopTrig = document.getElementById("shop-trigger");
+      var shopTrig = null;
+      try {
+        shopTrig = menuRoot && menuRoot.querySelector ? menuRoot.querySelector('.shop-trigger') : null;
+      } catch (e) { shopTrig = null; }
+      if (!shopTrig) shopTrig = document.querySelector('.shop-trigger');
       // prefer the non-navigating data-href if present (we moved real URLs into data-href for parents)
       var linkHref =
         link.getAttribute("data-href") || link.getAttribute("href");
       // On large screens open next to parent, otherwise open sheet (mobile)
-      if (window.matchMedia("(min-width:1024px)").matches) {
+      if (window.matchMedia("(min-width:768px)").matches) {
         createSubpanel(title, linkHref, inner, null, link);
       } else {
         openNavSheet(shopTrig);
@@ -676,21 +799,23 @@ document.addEventListener("DOMContentLoaded", function () {
   if (closeBtn)
     closeBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      closeNavSheet(trigger);
+      closeNavSheet(findExpandedTrigger());
     });
   if (overlay)
     overlay.addEventListener("click", function () {
-      closeNavSheet(trigger);
+      closeNavSheet(findExpandedTrigger());
     });
 
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeNavSheet(trigger);
+    if (e.key === "Escape") closeNavSheet(findExpandedTrigger());
   });
 });
 
 // Expose for debugging or other scripts
 window.navigation = window.navigation || {};
 window.navigation.open = function () {
-  var t = document.getElementById("shop-trigger");
+  try { console.log && console.log('[nav] window.navigation.open called'); } catch (err) {}
+  var t = findVisibleTrigger && findVisibleTrigger();
+  try { if (t) { console.log && console.log('[nav] window.navigation.open -> clicking', t); } } catch (err) {}
   return t && t.click();
 };
