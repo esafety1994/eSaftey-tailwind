@@ -147,16 +147,23 @@
 
     var paragraphs = Array.from(faqContent.querySelectorAll('p'));
     var pairs = [];
+
+    // helper: return true if node contains a non-empty <b> or <strong>
+    function hasNonEmptyBold(node){
+      if (!node) return false;
+      var b = node.querySelector('b, strong');
+      return !!(b && b.textContent && b.textContent.trim());
+    }
     for (var i=0;i<paragraphs.length;i++){
       var p = paragraphs[i];
       var bold = p.querySelector('b, strong');
-      if (bold) {
+      if (bold && bold.textContent && bold.textContent.trim()) {
         var q = bold.textContent.trim();
         // answer is the remainder of this paragraph plus following non-question paragraphs
         var pText = p.textContent.trim();
         var answer = pText.replace(bold.textContent,'').trim();
         var j = i+1;
-        while (j<paragraphs.length && !paragraphs[j].querySelector('b, strong')){
+        while (j<paragraphs.length && !hasNonEmptyBold(paragraphs[j])){
           answer += (answer ? '\n' : '') + paragraphs[j].textContent.trim();
           j++;
         }
@@ -168,7 +175,7 @@
 
     // fallback: try bold elements globally
     if (pairs.length===0){
-      var bolds = Array.from(faqContent.querySelectorAll('b, strong'));
+      var bolds = Array.from(faqContent.querySelectorAll('b, strong')).filter(function(b){ return b && b.textContent && b.textContent.trim(); });
       for (var k=0;k<bolds.length;k++){
         var b = bolds[k];
         var q = b.textContent.trim();
