@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var overlay = document.getElementById("sheet-overlay");
   var closeBtn = document.getElementById("sheet-close");
   var lastFocused = null;
+  var suppressCloseUntil = 0;
 
   function focusFirst(container) {
     if (!container) return;
@@ -75,13 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openNavSheet(trigger) {
-    try { console.log && console.log('[nav] openNavSheet called', { sheet: !!sheet, overlay: !!overlay, trigger: !!trigger }); } catch (e) {}
     // If multiple drawers exist, switch active sheet to the nearest one for this trigger
     setActiveSheetFor(trigger);
-    if (!sheet || !overlay) {
-      try { console.log && console.log('[nav] openNavSheet missing sheet/overlay', { sheet: sheet, overlay: overlay }); } catch (e) {}
-      return;
-    }
     lastFocused = document.activeElement;
     try {
       var content = sheet.querySelector('.sheet-content');
@@ -107,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (e) {}
     sheet.classList.add("open");
-    try { console.log && console.log('[nav] sheet open class added'); } catch (e) {}
+    try { suppressCloseUntil = Date.now() + 160; } catch (e) { suppressCloseUntil = 0; }
     // Ensure any previous 'collapsed-root' state is cleared when opening
     sheet.classList.remove("collapsed-root");
     // clear any previously highlighted root menu items when opening
@@ -135,9 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function closeNavSheet(trigger) {
-    try { console.log && console.log('[nav] closeNavSheet called', { sheet: !!sheet, overlay: !!overlay, trigger: !!trigger }); } catch (e) {}
+    try { /* debug removed */ } catch (e) {}
     if (!sheet || !overlay) {
-      try { console.log && console.log('[nav] closeNavSheet missing sheet/overlay', { sheet: sheet, overlay: overlay }); } catch (e) {}
+      try { /* debug removed */ } catch (e) {}
       return;
     }
     try {
@@ -192,6 +188,22 @@ document.addEventListener("DOMContentLoaded", function () {
       try { sheet.style.top = ''; sheet.style.height = ''; } catch (e) {}
       try { sheet.classList.remove("collapsed-root"); } catch (e) {}
       try { if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus(); } catch (e) {}
+    }
+  }
+
+  // Close a specific sheet element (used when multiple sheet instances exist)
+  function closeSpecificSheet(sh, ov, cb, trg) {
+    if (!sh) return;
+    var prevSheet = sheet, prevOverlay = overlay, prevClose = closeBtn;
+    try {
+      sheet = sh;
+      overlay = ov || document.getElementById('sheet-overlay');
+      closeBtn = cb || document.getElementById('sheet-close');
+      closeNavSheet(trg);
+    } catch (e) {
+      /* ignore */
+    } finally {
+      try { sheet = prevSheet; overlay = prevOverlay; closeBtn = prevClose; } catch (e) {}
     }
   }
 
@@ -279,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
     triggers.forEach(function (trigger) {
       try {
         trigger.addEventListener("click", function (e) {
-          try { console.log && console.log('[nav] trigger clicked', trigger); } catch (err) {}
+          try { /* debug removed */ } catch (err) {}
           e.preventDefault();
           setActiveSheetFor(trigger);
           openNavSheet(trigger);
@@ -294,7 +306,6 @@ document.addEventListener("DOMContentLoaded", function () {
         /* ignore individual trigger errors */
       }
     });
-    try { console.log && console.log('[nav] triggers attached', triggers.length, 'visible->', findVisibleTrigger()); } catch (err) {}
   }
 
   // Delegated click - works if trigger is rendered later
@@ -406,6 +417,7 @@ document.addEventListener("DOMContentLoaded", function () {
         panel.appendChild(header);
         panel.appendChild(body);
         document.body.appendChild(panel);
+        try { panel._parentSheet = sheet; } catch (e) {}
 
         // store identifiers
         try {
@@ -574,6 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
     panel.appendChild(header);
     panel.appendChild(body);
     container.appendChild(panel);
+    try { panel._parentSheet = sheet; } catch (e) {}
 
     // animate in
     requestAnimationFrame(function () {
@@ -806,16 +819,39 @@ document.addEventListener("DOMContentLoaded", function () {
       closeNavSheet(findExpandedTrigger());
     });
 
+  // Close any open sheet when clicking outside its `.sheet-content` (capture phase)
+  document.addEventListener('click', function (e) {
+    try {
+      if (suppressCloseUntil && Date.now() < suppressCloseUntil) return;
+      var tgt = e.target;
+      if (!tgt) return;
+      var openSheets = document.querySelectorAll && document.querySelectorAll('.sheet.open');
+      if (!openSheets || !openSheets.length) return;
+      for (var si = 0; si < openSheets.length; si++) {
+        try {
+          var sh = openSheets[si];
+          var content = sh.querySelector && sh.querySelector('.sheet-content');
+          if (!content) continue;
+          // If click was inside the sheet content, ignore
+          if (content.contains && content.contains(tgt)) continue;
+          // If click was on a trigger, ignore
+          if (tgt.closest && tgt.closest('.shop-trigger')) continue;
+          // If click was inside a subpanel that belongs to this sheet, ignore
+          var clickedSub = tgt && tgt.closest ? tgt.closest('.sheet-subpanel') : null;
+          try { if (clickedSub && clickedSub._parentSheet === sh) continue; } catch (e) {}
+          // close this sheet
+          var parent = sh.parentElement || document.body;
+          var o = parent.querySelector ? parent.querySelector('#sheet-overlay') : null;
+          var cBtn = parent.querySelector ? parent.querySelector('#sheet-close') : null;
+          closeSpecificSheet(sh, o || document.getElementById('sheet-overlay'), cBtn || document.getElementById('sheet-close'));
+        } catch (err) { /* ignore per-sheet */ }
+      }
+    } catch (err) { /* ignore */ }
+  }, true);
+
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeNavSheet(findExpandedTrigger());
   });
 });
 
-// Expose for debugging or other scripts
-window.navigation = window.navigation || {};
-window.navigation.open = function () {
-  try { console.log && console.log('[nav] window.navigation.open called'); } catch (err) {}
-  var t = findVisibleTrigger && findVisibleTrigger();
-  try { if (t) { console.log && console.log('[nav] window.navigation.open -> clicking', t); } } catch (err) {}
-  return t && t.click();
-};
+
