@@ -194,7 +194,8 @@
             <div class="w-8">{% section 'cart-count' %}</div>
           </div>
         </div>
-        {% render 'navbar' %}
+        <div class="hidden md:block">{% render 'navbar' %}</div>
+        <div class="bg-primary md:hidden">{% render 'searchbox' %} </div>
       </header>
 
       <!-- spacer to prevent layout jump when header becomes fixed -->

@@ -1,8 +1,12 @@
 <section class="w-full flex flex-col space-y-4">
   <div class="flex items-center flex-wrap justify-between">
+    <div class="md:hidden">
+      {% render 'navbar' %}
+    </div>
+
     <div class="flex items-center w-30 md:w-auto py-2.5 md:py-0 flex-1 md:flex-none">
       {% if shop.brand.logo %}
-        <a href="/">
+        <a href="/" class="block m-auto">
           <img
             src="{{ shop.brand.logo | img_url: '300x300' }}"
             alt="{{ shop.name }}"
@@ -16,7 +20,7 @@
       {% endif %}
     </div>
 
-    <div class="w-12 md:flex-1 md:mx-12 z-10 max-w-3xl">
+    <div class="hidden w-12 md:flex-1 md:mx-12 z-10 max-w-3xl md:block">
       {% render 'searchbox' %}
     </div>
 

@@ -1,20 +1,18 @@
 class PredictiveSearch extends HTMLElement {
   constructor() {
     super();
+    // assign a simple instance id for debug tracing
+    if (typeof PredictiveSearch._nextId === 'undefined') PredictiveSearch._nextId = 1;
+    this._id = PredictiveSearch._nextId++;
     // Keep lightweight constructor: bind handlers and prepare fields.
     this.container = null;
-    this.mobileOverlay = null;
-    this.mobileInput = null;
-    this.mobileResults = null;
     this.predictiveSearchResults = null;
     this.input = null;
-    this._mobileOpen = false;
 
     // placeholders for removable handlers
     this._onInput = null;
     this._onFocus = null;
     this._toggleClickHandler = null;
-    this._onMobileInput = null;
 
     // bind instance methods used as listeners
     this._handleDocumentPointer = this._handleDocumentPointer.bind(this);
@@ -28,38 +26,64 @@ class PredictiveSearch extends HTMLElement {
     // Avoid double initialization
     if (this._connected) return;
     this._connected = true;
+    try { console.debug && console.debug(`[predictive-search #${this._id}] connected`); } catch(e){}
 
-    // Query DOM nodes now that element is connected
+    // Query DOM nodes now that element is connected (scope to this instance)
     this.input =
       this.querySelector('input[type="search"]') ||
-      this.querySelector("#Search") ||
-      document.getElementById("Search");
-    this.predictiveSearchResults =
-      this.querySelector("#predictive-search") ||
-      document.getElementById("predictive-search");
+      this.querySelector('input[name="q"]') ||
+      this.querySelector("#Search");
+    this.predictiveSearchResults = this.querySelector("#predictive-search");
 
+    // If input/results aren't present yet (e.g., rendered later), install delegated
+    // listeners so this instance initializes lazily when its children appear.
     if (!this.input || !this.predictiveSearchResults) {
-      // nothing to wire up yet; bail but remain connected so future calls won't re-init
-      return;
+      this._delegatedInit = (event) => {
+        try {
+          const t = event.target;
+          if (!t) return;
+          const isSearchInput =
+            (t.matches && (t.matches('input[type="search"]') || t.matches('input[name="q"]'))) ||
+            t.id === 'Search' || t.getAttribute && t.getAttribute('name') === 'q';
+          if (isSearchInput) {
+            if (!this.input) {
+              this.input = t;
+              try { console.debug && console.debug(`[predictive-search #${this._id}] delegated bound input`); } catch(e){}
+              // wire input handlers now that input exists
+              if (!this._onInput) this._onInput = this.debounce((e) => this.onChange(e), 300);
+              this.input.addEventListener('input', this._onInput);
+              this._onFocus = (e) => {};
+              this.input.addEventListener('focus', this._onFocus);
+            }
+            if (!this.predictiveSearchResults) {
+              this.predictiveSearchResults = this.querySelector('#predictive-search');
+              try { console.debug && console.debug(`[predictive-search #${this._id}] delegated found results container`); } catch(e){}
+            }
+            // If both present, remove delegated init handler
+            if (this.input && this.predictiveSearchResults) {
+              this.removeEventListener('input', this._delegatedInit);
+              this.removeEventListener('focusin', this._delegatedInit);
+            }
+          }
+        } catch (e) {}
+      };
+      this.addEventListener('input', this._delegatedInit);
+      this.addEventListener('focusin', this._delegatedInit);
+      // continue — other wiring will occur when delegated init fires
     }
 
-    // wire input handlers
-    this._onInput = this.debounce((event) => {
-      this.onChange(event);
-    }, 300);
-    this.input.addEventListener("input", this._onInput);
+    // wire input handlers if input exists (delegatedInit may handle late bind)
+    if (this.input) {
+      try { console.debug && console.debug(`[predictive-search #${this._id}] wiring input handlers`); } catch(e){}
+      this._onInput = this.debounce((event) => {
+        this.onChange(event);
+      }, 300);
+      this.input.addEventListener("input", this._onInput);
 
-    this._onFocus = (e) => {
-      try {
-        if (
-          window.matchMedia &&
-          window.matchMedia("(max-width: 767px)").matches
-        ) {
-          this.openMobileOverlay();
-        }
-      } catch (err) {}
-    };
-    this.input.addEventListener("focus", this._onFocus);
+      // Do not open mobile overlay on focus; keep consistent inline behavior
+      this._onFocus = (e) => {};
+      this.input.addEventListener("focus", this._onFocus);
+    }
 
     // Trigger predictive search when clicking the search icon/svg
     try {
@@ -86,8 +110,7 @@ class PredictiveSearch extends HTMLElement {
       }
     } catch (err) {}
 
-    // bind mobile input if present (overlay may be added server-side)
-    this._bindMobileInputs();
+    // mobile overlay removed — no mobile bindings
 
     // register document pointerdown handler (capture) to close when clicking outside
     document.addEventListener("pointerdown", this._handleDocumentPointer, true);
@@ -95,6 +118,7 @@ class PredictiveSearch extends HTMLElement {
 
   onChange() {
     const searchTerm = this.input.value.trim();
+    try { console.debug && console.debug(`[predictive-search #${this._id}] onChange: "${searchTerm}"`); } catch(e){}
 
     if (!searchTerm.length) {
       this.close();
@@ -105,6 +129,7 @@ class PredictiveSearch extends HTMLElement {
   }
 
   getSearchResults(searchTerm) {
+    try { console.debug && console.debug(`[predictive-search #${this._id}] getSearchResults: "${searchTerm}"`); } catch(e){}
     // Request up to 6 product resources from the suggest endpoint and include collections
     const params = new URLSearchParams({
       q: searchTerm,
@@ -120,7 +145,7 @@ class PredictiveSearch extends HTMLElement {
           this.close();
           throw error;
         }
-        console.log(response);
+        try { console.debug && console.debug(`[predictive-search #${this._id}] suggest response ok`); } catch(e){}
         return response.text();
       })
       .then((text) => {
@@ -128,29 +153,14 @@ class PredictiveSearch extends HTMLElement {
         const doc = parser.parseFromString(text, "text/html");
         const section = doc.querySelector("#shopify-section-predictive-search");
         if (section) {
-          // If mobile overlay is open, render into the mobile results container
-          if (this._mobileOpen) {
-            this.mobileResults = document.getElementById(
-              "predictive-search-mobile-results",
-            );
-            if (this.mobileResults) {
-              this.mobileResults.innerHTML = section.innerHTML;
-              this.container = this.mobileResults;
-            } else {
-              this.predictiveSearchResults.innerHTML = section.innerHTML;
-              this.container =
-                this.predictiveSearchResults.querySelector(
-                  "#predictive-search-results",
-                ) || this.predictiveSearchResults;
-            }
-          } else {
-            this.predictiveSearchResults.innerHTML = section.innerHTML;
-            // Prefer the outer wrapper with padding if present
-            this.container =
-              this.predictiveSearchResults.querySelector(
-                "#predictive-search-results",
-              ) || this.predictiveSearchResults;
-          }
+          // Render into the inline predictive results container
+          this.predictiveSearchResults.innerHTML = section.innerHTML;
+          try { console.debug && console.debug(`[predictive-search #${this._id}] rendered results into container`); } catch(e){}
+          // Prefer the outer wrapper with padding if present
+          this.container =
+            this.predictiveSearchResults.querySelector(
+              "#predictive-search-results",
+            ) || this.predictiveSearchResults;
 
           this.open();
 
@@ -200,9 +210,9 @@ class PredictiveSearch extends HTMLElement {
     try {
       var container =
         this.container ||
-        document.getElementById("predictive-search-results") ||
+        (this.predictiveSearchResults && this.predictiveSearchResults.querySelector("#predictive-search-results")) ||
         this.predictiveSearchResults;
-      var inputEl = document.getElementById("Search") || this.input;
+      var inputEl = this.input || this.querySelector('input[type="search"]') || this.querySelector('#Search');
 
       // If click is inside the results container or the search input, do nothing
       var clickedInsideResults = false;
@@ -224,88 +234,6 @@ class PredictiveSearch extends HTMLElement {
     } catch (err) {
       // ignore
     }
-  }
-
-  _bindMobileInputs() {
-    try {
-      this.mobileOverlay = document.getElementById("predictive-search-mobile");
-      this.mobileInput = document.getElementById("SearchMobile");
-      this.mobileResults = document.getElementById(
-        "predictive-search-mobile-results",
-      );
-      var closeBtn = document.getElementById("predictive-search-mobile-close");
-      if (this.mobileInput) {
-        // store handler so it can be removed later
-        this._onMobileInput = this.debounce((e) => {
-          try {
-            this.input.value = e.target.value;
-          } catch (err) {}
-          this.onChange();
-        }, 300);
-        this.mobileInput.addEventListener("input", this._onMobileInput);
-        this.mobileInput.addEventListener("keydown", (e) => {
-          // if mobile overlay open, show column layout handled by section template
-        });
-      }
-      if (closeBtn) {
-        closeBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          this.closeMobileOverlay();
-        });
-      }
-    } catch (err) {}
-  }
-
-  openMobileOverlay() {
-    try {
-      this._mobileOpen = true;
-      this.mobileOverlay = document.getElementById("predictive-search-mobile");
-      this.mobileResults = document.getElementById(
-        "predictive-search-mobile-results",
-      );
-      if (this.mobileOverlay) {
-        this.mobileOverlay.classList.remove("hidden");
-        this.mobileOverlay.setAttribute("aria-hidden", "false");
-      }
-      if (this.mobileInput) this.mobileInput.focus();
-      // route container to mobile results while open
-      if (this.mobileResults) this.container = this.mobileResults;
-      // lock body scrolling so only mobile results scroll
-      try {
-        this._prevBodyOverflow = document.body.style.overflow || "";
-        document.body.style.overflow = "hidden";
-        // also prevent overscroll on html element
-        this._prevHtmlOverflow = document.documentElement.style.overflow || "";
-        document.documentElement.style.overflow = "hidden";
-        this._scrollLockOwner = "mobile";
-      } catch (err) {}
-    } catch (err) {}
-  }
-
-  closeMobileOverlay() {
-    try {
-      this._mobileOpen = false;
-      if (this.mobileOverlay) {
-        this.mobileOverlay.classList.add("hidden");
-        this.mobileOverlay.setAttribute("aria-hidden", "true");
-      }
-      // restore container to default
-      this.container =
-        this.predictiveSearchResults.querySelector(
-          "#predictive-search-results",
-        ) || this.predictiveSearchResults;
-      this.close();
-      // restore body overflow
-      try {
-        if (typeof this._prevBodyOverflow !== "undefined")
-          document.body.style.overflow = this._prevBodyOverflow;
-        if (typeof this._prevHtmlOverflow !== "undefined")
-          document.documentElement.style.overflow = this._prevHtmlOverflow;
-        this._scrollLockOwner = null;
-        this._prevBodyOverflow = undefined;
-        this._prevHtmlOverflow = undefined;
-      } catch (err) {}
-    } catch (err) {}
   }
 
   disconnectedCallback() {
@@ -340,44 +268,26 @@ class PredictiveSearch extends HTMLElement {
         toggle.removeEventListener("click", this._toggleClickHandler);
       }
     } catch (e) {}
-
     try {
-      if (this.mobileInput && this._onMobileInput)
-        this.mobileInput.removeEventListener("input", this._onMobileInput);
+      if (this._delegatedInit) {
+        this.removeEventListener('input', this._delegatedInit);
+        this.removeEventListener('focusin', this._delegatedInit);
+        this._delegatedInit = null;
+      }
     } catch (e) {}
   }
 
   open() {
     var el = this.container || this.predictiveSearchResults;
-    el.style.display = "block";
-    // lock background scrolling when predictive search opens (desktop)
     try {
-      if (!this._mobileOpen && this._scrollLockOwner !== "mobile") {
-        if (!this._scrollLockOwner) {
-          this._scrollLockOwner = "desktop";
-          this._prevBodyOverflow = document.body.style.overflow || "";
-          document.body.style.overflow = "hidden";
-          this._prevHtmlOverflow = document.documentElement.style.overflow || "";
-          document.documentElement.style.overflow = "hidden";
-        }
-      }
+      if (el) el.style.display = "block";
     } catch (err) {}
   }
 
   close() {
     var el = this.container || this.predictiveSearchResults;
-    el.style.display = "none";
-    // restore scrolling only if desktop opened it
     try {
-      if (this._scrollLockOwner === "desktop") {
-        if (typeof this._prevBodyOverflow !== "undefined")
-          document.body.style.overflow = this._prevBodyOverflow;
-        if (typeof this._prevHtmlOverflow !== "undefined")
-          document.documentElement.style.overflow = this._prevHtmlOverflow;
-        this._scrollLockOwner = null;
-        this._prevBodyOverflow = undefined;
-        this._prevHtmlOverflow = undefined;
-      }
+      if (el) el.style.display = "none";
     } catch (err) {}
   }
 

@@ -1,14 +1,13 @@
 
 <predictive-search>
   <form class="search" action="{{ routes.search_url }}" method="get" role="search">
-    <div class="relative w-0 md:w-full text-gray-600">
+    <div class="relative py-2 px-6 w-full text-gray-600 ">
       <input
-        id="Search"
         type="search"
         placeholder="Search Products"
         name="q"
         value="{{ search.terms | escape }}"
-        class="bg-white opacity-0 md:!opacity-100 w-1 md:w-full rounded-sm py-2 pl-5 pr-4 focus:outline-none focus:ring-1 focus:ring-none placeholder:text-gray-600"
+        class="bg-white w-full rounded-full py-2 pl-5 pr-4 focus:outline-none focus:ring-1 focus:ring-none placeholder:text-gray-600"
         onfocus="(function(el){try{var t=el.closest('form')&&el.closest('form').querySelector('.search-toggle'); if(t){t.classList.add('hidden');}}catch(e){}})(this);"
         onblur="(function(el){try{var t=el.closest('form')&&el.closest('form').querySelector('.search-toggle'); if(t){t.classList.remove('hidden');}}catch(e){}})(this);"
         aria-expanded="false"
@@ -16,35 +15,23 @@
         aria-controls="predictive-search-results"
       >
       <span
-        class="absolute text-white md:text-black -right-10 md:right-3 top-2 w-5 h-5 cursor-pointer search-toggle"
+        class="absolute text-black right-8 top-4 cursor-pointer search-toggle"
         role="button"
         tabindex="0"
         aria-label="Focus search input"
-        onclick="document.getElementById('Search') && document.getElementById('Search').focus();"
-        onkeydown="if (event.key==='Enter' || event.key===' ') { event.preventDefault(); document.getElementById('Search') && document.getElementById('Search').focus(); }"
+        onclick="(function(el){try{var input = el.closest('predictive-search') && el.closest('predictive-search').querySelector('input[type=search]'); if(input){input.focus();}}catch(e){} })(this);"
+        onkeydown="if (event.key==='Enter' || event.key===' ') { event.preventDefault(); (function(el){try{var input = el.closest('predictive-search') && el.closest('predictive-search').querySelector('input[type=search]'); if(input){input.focus();}}catch(e){} })(this); }"
       >
-        {% render 'icons-svg-search', stroke_width: 2, %}
+        {% render 'icons-svg-search', stroke_width: 2, class: 'size-6' %}
       </span>
+      <div
+        id="predictive-search"
+        tabindex="-1"
+        class="absolute left-0 right-0 top-full w-full z-50 max-h-[90vh] overflow-y-auto"
+        style="-webkit-overflow-scrolling: touch;"
+      ></div>
     </div>
-    <div id="predictive-search" tabindex="-1" class="absolute left-0 right-0 w-full"></div>
   </form>
 </predictive-search>
 
-<!-- Mobile full-screen search overlay (hidden on md+) -->
-<div id="predictive-search-mobile" class="fixed inset-0 z-50 bg-white p-4 md:hidden hidden" aria-hidden="true">
-  <div class="flex items-center gap-3">
-    <input
-      id="SearchMobile"
-      type="search"
-      placeholder="Search products"
-      name="q"
-      class="flex-1 bg-gray-100 rounded-sm py-2 pl-4 pr-3 focus:outline-none"
-      aria-label="Search products"
-    />
-    <button id="predictive-search-mobile-close" class="ml-2 text-black p-2" aria-label="Close search">
-      {% render 'icon-svg-close' %}
-    </button>
-  </div>
-
-  <div id="predictive-search-mobile-results" class="mt-4 overflow-auto h-[calc(100vh-80px)]"></div>
-</div>
+<!-- Mobile full-screen overlay removed so mobile uses inline predictive search like desktop -->
