@@ -28,7 +28,7 @@
         </span>
         {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
           <span>
-            <span class="text-grey-text line-through flex flex-wrap ml-0.5 justify-start items-center">
+            <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start items-center text-sm">
               {{ product.compare_at_price | money }}
             </span>
           </span>
@@ -51,7 +51,7 @@
     </div>
   {% else %}
     <div class="flex flex-col gap-1 text-xl">
-      <span class="font-semibold flex gap-x-4">
+      <span class="font-semibold flex gap-x-4 items-center">
         <span>
           <span id="product-main-price">{{- product.selected_or_first_available_variant.price | money }}</span>
           <span class="ml-0.5 text-grey-text {{ gst_text_size }}">
@@ -64,7 +64,7 @@
         </span>
         {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
           <span>
-            <span class="text-grey-text line-through flex flex-wrap ml-0.5 justify-start items-center">
+            <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start items-center text-sm">
               {{ product.compare_at_price | money }}
             </span>
           </span>
