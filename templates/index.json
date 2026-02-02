@@ -16,7 +16,7 @@
           "type": "slider_item",
           "settings": {
             "background": "shopify://shop_images/Install_Banner_1.webp",
-            "single_image": false,
+            "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
