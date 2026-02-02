@@ -142,8 +142,8 @@ class VariantPicker extends HTMLElement {
           }
 
           // Update price
-          const newPrice = tempDiv.querySelector("#esProductPrice");
-          const priceTarget = document.getElementById("esProductPrice");
+          const newPrice = tempDiv.querySelector("#product-price");
+          const priceTarget = document.getElementById("product-price");
           if (newPrice && priceTarget) {
             priceTarget.innerHTML = newPrice.innerHTML;
           }
