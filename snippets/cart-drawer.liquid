@@ -112,15 +112,61 @@
     </div>
 
     <div class="p-4">
-      <form action="{{ routes.cart_url }}" method="post" class="mb-3">
-        <label for="drawer-note" class="block text-sm font-medium mb-1">Order note</label>
-        <textarea id="drawer-note" name="note" class="w-full border rounded p-2 mb-3" rows="2"></textarea>
-        <div class="flex items-center mb-3">
-          <input id="drawer-authority" type="checkbox" name="attributes[Authority to leave]" value="Yes" class="mr-2">
-          <label for="drawer-authority" class="text-sm">Authority to leave</label>
-        </div>
-        <!-- Save button removed: attributes are saved on checkout click -->
-      </form>
+      <!-- Note toggle button and sliding panel -->
+      <button id="drawer-note-toggle" type="button" class="flex items-center gap-2 btn outline-button-rounded mb-3 !px-4 !py-2">
+        {% render 'icon-svg-pen', class: 'size-4' %}
+        <span>Note</span>
+      </button>
+
+      <div id="drawer-note-panel" class="overflow-hidden max-h-0 transition-all duration-300 mb-3">
+        <form id="drawer-note-form" action="{{ routes.cart_url }}" method="post">
+          <label for="drawer-note" class="block text-sm font-medium mb-1">Add note for seller</label>
+          <textarea id="drawer-note" name="note" placeholder="Special instruction for seller" class="w-full border rounded p-2 mb-3" rows="3"></textarea>
+          <div class="flex gap-2">
+            <button type="submit" class="btn primary-checkout-button !px-4 !py-2">Save</button>
+            <button type="button" id="drawer-note-cancel" class="btn outline-button-rounded !px-4 !py-2">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <script>
+        (function () {
+          var toggle = document.getElementById('drawer-note-toggle');
+          var panel = document.getElementById('drawer-note-panel');
+          var cancel = document.getElementById('drawer-note-cancel');
+          var form = document.getElementById('drawer-note-form');
+
+          function openPanel() {
+            try {
+              panel.style.maxHeight = panel.scrollHeight + 'px';
+              panel.classList.add('open');
+            } catch (e) {}
+          }
+
+          function closePanel() {
+            try {
+              panel.style.maxHeight = '0';
+              panel.classList.remove('open');
+            } catch (e) {}
+          }
+
+          if (toggle) toggle.addEventListener('click', function () {
+            if (panel.classList.contains('open')) closePanel();
+            else openPanel();
+          });
+
+          if (cancel) cancel.addEventListener('click', function () {
+            closePanel();
+          });
+
+          if (form) form.addEventListener('submit', function () {
+            // Let the form submit normally; close the panel for UX
+            setTimeout(function () {
+              closePanel();
+            }, 200);
+          });
+        })();
+      </script>
 
       <div class="flex items-center justify-between mb-3">
         <span id="cart-subtotal-label" class="font-medium">Subtotal (<span data-item-count-drawer>{{ cart.item_count }}</span> items)</span>
