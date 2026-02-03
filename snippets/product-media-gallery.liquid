@@ -17,7 +17,12 @@
   {%- endif -%}
 {%- endif -%}
 <div class="max-w-xl m-auto">
-  <div class="glide" id="esProductGlide" data-start-index="{{ start_index }}" data-esProductGlideCount="{{ product.images.size }}">
+  <div
+    class="glide"
+    id="esProductGlide"
+    data-start-index="{{ start_index }}"
+    data-esProductGlideCount="{{ product.images.size }}"
+  >
     <div class="glide__track" data-glide-el="track">
       <ul class="glide__slides">
         {% for image in product.images %}
@@ -26,14 +31,14 @@
               <img
                 src="{{ image | img_url: '900x900' }}"
                 alt="{{ image.alt | escape }}"
-                class="w-full max-h-[576px] object-contain m-auto"
+                class="w-full max-h-[576px] object-contain m-auto hover:cursor-pointer"
                 width="576"
                 height="576"
               >
               <!-- Zoom overlay button (appears on hover) -->
               <button
                 type="button"
-                class="slide-zoom-btn absolute top-3 right-3 opacity-0 group-hover:!opacity-100 group-focus:opacity-100 transition bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-9 h-9 flex items-center justify-center text-white z-40 m-tooltip--left"
+                class="slide-zoom-btn absolute top-3 right-3 opacity-0 group-hover:!opacity-100 group-focus:opacity-100 transition bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-9 h-9 flex items-center justify-center text-white z-40 m-tooltip--left hover:cursor-pointer"
                 data-slide-index="{{ forloop.index0 }}"
                 aria-label="Zoom image"
               >
@@ -50,12 +55,20 @@
 
     <!-- prev/next arrows (absolute, vertically centered) -->
     <div data-glide-el="controls">
-      <button class="product-gallery-arrow product-gallery-arrow--left focus-visible:outline-none" data-glide-dir="<" aria-label="Previous">
+      <button
+        class="product-gallery-arrow product-gallery-arrow--left focus-visible:outline-none"
+        data-glide-dir="<"
+        aria-label="Previous"
+      >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button class="product-gallery-arrow product-gallery-arrow--right focus-visible:outline-none" data-glide-dir=">" aria-label="Next">
+      <button
+        class="product-gallery-arrow product-gallery-arrow--right focus-visible:outline-none"
+        data-glide-dir=">"
+        aria-label="Next"
+      >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -111,21 +124,23 @@
       <!-- lightbox close (positioned top-right of container) -->
       <button
         id="product-lightbox-close"
-        class="absolute top-2 right-2 text-white text-2xl bg-black bg-opacity-40 rounded-full w-8 h-8 flex items-center justify-center"
+        class="absolute top-2 right-2 text-white text-2xl bg-black bg-opacity-40 rounded-full w-8 h-8 flex items-center justify-center hover:cursor-pointer"
       >
         &times;
       </button>
-      <!-- optional prev/next for lightbox -->
-      <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <div data-glide-el="controls">
+        <!-- optional prev/next for lightbox -->
+        <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </div>
