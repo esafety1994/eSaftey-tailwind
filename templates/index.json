@@ -12,6 +12,18 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
+        "slider_item_wmYUEQ": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/Giveaway-Web-Banner-Drink-Bottle.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://products/003-padlock-and-key-with-long-shackle-25mm-32x29x13mm"
+          }
+        },
         "slider_item_GK847N": {
           "type": "slider_item",
           "settings": {
@@ -22,19 +34,6 @@
             "description": "",
             "button_text": "",
             "button_link": "shopify://pages/new-installation-page"
-          }
-        },
-        "slider_item_wmYUEQ": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/Giveaway-Web-Banner-Drink-Bottle.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://products/003-padlock-and-key-with-long-shackle-25mm-32x29x13mm"
           }
         },
         "slider_item_UjBni3": {
@@ -75,8 +74,8 @@
         }
       },
       "block_order": [
-        "slider_item_GK847N",
         "slider_item_wmYUEQ",
+        "slider_item_GK847N",
         "slider_item_UjBni3",
         "slider_item_TAKEQ8",
         "slider_item_jwUMtr"
