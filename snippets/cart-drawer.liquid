@@ -26,18 +26,7 @@
 
     <div id="cart-drawer-content" class="p-4 overflow-y-auto flex-1">
       {% render 'shipping-goals', cart: cart %}
-      <div class="gradient-bg">
-        <div class="content">
-          <div>
-            {% render 'icon-svg-marker' %}
-            <span>Free Shipping for orders over $499</span>
-          </div>
-          <div>
-            {% render 'icon-svg-package' %}
-            <span>Click & Collect From our Wetherill Park Warehouse</span>
-          </div>
-        </div>
-      </div>
+     
       {% assign upsell = settings.cart_drawer_upsell_product %}
       {% assign upsell_in_cart = false %}
       {% for item_check in cart.items %}
