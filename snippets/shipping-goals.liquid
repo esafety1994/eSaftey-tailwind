@@ -5,7 +5,7 @@
 {%- endcomment -%}
 
 {%- assign current = cart.checkout_charge_amount | default: 0 | plus: 0 -%}
-{%- assign threshold = free_shipping_threshold | default: 50000 | plus: 0 -%}
+{%- assign threshold = free_shipping_threshold | default: 49900 | plus: 0 -%}
 {%- assign pct = 0 -%}
 {%- if threshold > 0 -%}
   {%- assign pct = current | times: 100 | divided_by: threshold | round -%}
