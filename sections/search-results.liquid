@@ -94,7 +94,7 @@
             {% assign col_class = 'md:grid-cols-4' %}
           {% endif %}
 
-          <div class="grid grid-cols-2 {{ col_class }} gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 {{ col_class }} gap-6">
             {% for result in search.results %}
               {% if result.object_type == 'product' %}
                 {% assign prod = result %}
