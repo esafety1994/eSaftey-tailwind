@@ -71,7 +71,7 @@
           "type": "shopify://apps/reviews-io/blocks/reviewsio-polaris/92a082e5-b297-4e88-b428-ac96cbc505f9",
           "settings": {
             "star": "#ffd438",
-            "review_type": "product_review,questions",
+            "review_type": "product_review",
             "per_page": 3,
             "primary_btn_bg_color": "#000000",
             "primary_btn_border_color": "#000000",
