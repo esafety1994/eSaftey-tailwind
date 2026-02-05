@@ -68,9 +68,10 @@
         "formful_app_block_form_Dph7U8"
       ],
       "custom_css": [
+        ".acc-form > div{margin:auto;}",
         "label .formful__asterisk {color: #ff0000;}",
         ".formful__input {color: black; border-radius: 8px; background: #f8f8f8;}",
-        ".success-message h1,.success-message p {color: #131313 !important; text-align: center;}",
+        "acc-form.success-message h1,.success-message p {color: #131313 !important; text-align: center;}",
         "@media (max-width: 991px) {.m-section__header {margin-bottom: 20px; }}"
       ],
       "settings": {
