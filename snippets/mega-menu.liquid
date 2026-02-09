@@ -20,7 +20,7 @@
               <a
                 href="#"
                 data-href="{{ item.url }}"
-                class="mega-item-link bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold normal-case flex gap-2 items-center h-14"
+                class="mega-item-link bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold capitalize flex gap-2 items-center h-14"
                 data-has-children="true"
                 data-index="{{ ns_outer }}"
                 data-title="{{ item.title }}"
@@ -34,14 +34,14 @@
                     height="32"
                   >
                 {% endif %}
-                <span class="root-menu-title">{{- item.title -}}</span>
+                <span class="root-menu-title">{{- item.title | downcase -}}</span>
               </a>
             {% else %}
               <a
                 href="{{ item.url }}"
-                class="bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold normal-case"
+                class="bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold capitalize"
               >
-                {{- item.title -}}
+                {{- item.title | downcase -}}
               </a>
             {% endif %}
           </div>
@@ -64,13 +64,13 @@
                         <a
                           href="#"
                           data-href="{{ child.url }}"
-                          class="mega-item-link block text-black flex-1 font-normal hover:bg-[#FDDC14] hover:text-black normal-case "
+                          class="mega-item-link block text-black flex-1 font-normal hover:bg-[#FDDC14] hover:text-black capitalize "
                           data-has-children="true"
                           data-index="{{ ns_child }}"
                           data-title="{{ child.title }}"
                         >
                           <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">
-                            {{- child.title -}}
+                            {{- child.title | downcase -}}
                           </span>
                         </a>
                       </div>
@@ -81,9 +81,9 @@
                             <li>
                               <a
                                 href="{{ grand.url }}"
-                                class="block text-black hover:bg-[#FDDC14] hover:text-black normal-case test"
+                                class="block text-black hover:bg-[#FDDC14] hover:text-black capitalize test"
                               >
-                                <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">{{- grand.title -}}</span>
+                                <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">{{- grand.title | downcase -}}</span>
                               </a>
                             </li>
                           {% endfor %}
@@ -92,9 +92,9 @@
                     {% else %}
                       <a
                         href="{{ child.url }}"
-                        class="block text-black hover:bg-[#FDDC14] hover:text-black normal-case test"
+                        class="block text-black hover:bg-[#FDDC14] hover:text-black capitalize test"
                       >
-                       <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block"> {{- child.title -}}</span>
+                       <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block"> {{- child.title | downcase -}}</span>
                       </a>
                     {% endif %}
                   </li>
