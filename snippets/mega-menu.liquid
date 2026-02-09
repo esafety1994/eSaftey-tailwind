@@ -34,14 +34,16 @@
                     height="32"
                   >
                 {% endif %}
-                <span class="root-menu-title">{{- item.title | downcase -}}</span>
+                <span class="root-menu-title">{{item_link.title}}</span>
+                 <!-- <span class="root-menu-title">{{- item.title | downcase -}}</span> -->
               </a>
             {% else %}
               <a
                 href="{{ item.url }}"
                 class="bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold normal-case"
               >
-                {{- item.title | downcase -}}
+                {{item_link.title}}
+                 <!-- {{- item.title | downcase -}} -->
               </a>
             {% endif %}
           </div>
@@ -70,7 +72,8 @@
                           data-title="{{ child.title }}"
                         >
                           <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">
-                            {{- child.title | downcase -}}
+                            {{child_link.title}}
+                             <!-- {{- child.title | downcase -}} -->
                           </span>
                         </a>
                       </div>
@@ -83,7 +86,8 @@
                                 href="{{ grand.url }}"
                                 class="block text-black hover:bg-[#FDDC14] hover:text-black normal-case test"
                               >
-                                <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">{{- grand.title | downcase -}}</span>
+                                <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">{{grand_link.title}}</span>
+                                 <!-- <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">{{- grand.title | downcase -}}</span> -->
                               </a>
                             </li>
                           {% endfor %}
@@ -94,7 +98,8 @@
                         href="{{ child.url }}"
                         class="block text-black hover:bg-[#FDDC14] hover:text-black normal-case test"
                       >
-                       <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block"> {{- child.title | downcase -}}</span>
+                       <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block"> {{child_link.title}}</span>
+                       <!-- <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block"> {{- child.title | downcase -}}</span> -->
                       </a>
                     {% endif %}
                   </li>
