@@ -20,7 +20,7 @@
               <a
                 href="#"
                 data-href="{{ item.url }}"
-                class="mega-item-link bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold capitalize flex gap-2 items-center h-14"
+                class="mega-item-link bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold normal-case flex gap-2 items-center h-14"
                 data-has-children="true"
                 data-index="{{ ns_outer }}"
                 data-title="{{ item.title }}"
@@ -39,7 +39,7 @@
             {% else %}
               <a
                 href="{{ item.url }}"
-                class="bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold capitalize"
+                class="bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold normal-case"
               >
                 {{- item.title | downcase -}}
               </a>
@@ -64,7 +64,7 @@
                         <a
                           href="#"
                           data-href="{{ child.url }}"
-                          class="mega-item-link block text-black flex-1 font-normal hover:bg-[#FDDC14] hover:text-black capitalize "
+                          class="mega-item-link block text-black flex-1 font-normal hover:bg-[#FDDC14] hover:text-black normal-case "
                           data-has-children="true"
                           data-index="{{ ns_child }}"
                           data-title="{{ child.title }}"
@@ -81,7 +81,7 @@
                             <li>
                               <a
                                 href="{{ grand.url }}"
-                                class="block text-black hover:bg-[#FDDC14] hover:text-black capitalize test"
+                                class="block text-black hover:bg-[#FDDC14] hover:text-black normal-case test"
                               >
                                 <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block">{{- grand.title | downcase -}}</span>
                               </a>
@@ -92,7 +92,7 @@
                     {% else %}
                       <a
                         href="{{ child.url }}"
-                        class="block text-black hover:bg-[#FDDC14] hover:text-black capitalize test"
+                        class="block text-black hover:bg-[#FDDC14] hover:text-black normal-case test"
                       >
                        <span class="border-b border-b-gray-300  ml-10 mr-10 py-4 block"> {{- child.title | downcase -}}</span>
                       </a>
