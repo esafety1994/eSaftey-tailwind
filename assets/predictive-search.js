@@ -1,6 +1,7 @@
 class PredictiveSearch extends HTMLElement {
   constructor() {
     super();
+    console.log("PredictiveSearch constructor");
     // assign a simple instance id for debug tracing
     if (typeof PredictiveSearch._nextId === 'undefined') PredictiveSearch._nextId = 1;
     this._id = PredictiveSearch._nextId++;
