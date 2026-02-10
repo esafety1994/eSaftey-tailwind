@@ -11,7 +11,6 @@
   }
 </style>
 <div class="datasheet-section py-4">
-  {% comment %}
   {% if product.tags contains 'Modular Handrails' %}
     <ol class="list-none p-0 m-0">
       <li>
@@ -24,8 +23,7 @@
       </li>
     </ol>
   {% else %}
-   {% endcomment %}
-    {% if product.metafields.custom.product_tabs_product_data_sheet %} 
+    {% if product.metafields.custom.product_tabs_product_data_sheet %}
       {% assign pdf_links = product.metafields.custom.product_tabs_product_data_sheet | split: '|' %}
       <ol class="flex flex-wrap gap-4 p-0 m-0 list-none">
         {% for pdf in pdf_links %}
@@ -37,5 +35,5 @@
     {% else %}
       <p class="text-sm text-gray-600">Data Sheet coming soon!</p>
     {% endif %}
- {% comment %}{% endif %} {% endcomment %}
+  {% endif %}
 </div>
