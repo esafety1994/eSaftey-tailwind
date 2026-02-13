@@ -74,7 +74,7 @@
       </div>
       <div class="tab-panel hidden" data-panel="specs">
         {% if product.template_suffix == 'product-with-custom-field' %}
-          {% if buyer_guide_content == blank %}
+          {% if buyer_guide_content != blank %}
           {% render 'product-tab-buyer-guide', product: product, buyer_guide_content: buyer_guide_content %}
           {% endif %}
         {% else %}
