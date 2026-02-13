@@ -581,6 +581,6 @@ a.underline-animation:focus::after {
 }
 
 .footer-block .text-sm p:not(:last-child) {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
