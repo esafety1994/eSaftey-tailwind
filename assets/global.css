@@ -580,10 +580,7 @@ a.underline-animation:focus::after {
   z-index: 99999999999;
 }
 
-.footer-block .text-sm p {
+.footer-block .text-sm p:not(:last-child) {
   margin-bottom: 8px;
 }
 
-.footer-block .text-sm p:last-child {
-  margin-bottom: 0;
-}
