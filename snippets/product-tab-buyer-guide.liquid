@@ -1,6 +1,23 @@
+{% comment %}
+ 
 {% if product.metafields.custom.buyer_guide and product.metafields.custom.buyer_guide != blank %}
   {{ product.metafields.custom.buyer_guide }}
 {% elsif buyer_guide_content and buyer_guide_content != blank %}
+  {{ buyer_guide_content }}
+{% else %}
+  <p>
+    <strong>Prices are based on <em>PER METRE</em> and cut to size <em>FREE OF CHARGE</em>.</strong>
+  </p>
+{% endif %}
+
+{% endcomment %}
+
+
+{% assign buying_guide_mf = product.metafields.custom.product_tabs_buying_guide %}
+
+{% if buying_guide_mf != blank %}
+  {{ buying_guide_mf | metafield_tag }}
+{% elsif buyer_guide_content != blank %}
   {{ buyer_guide_content }}
 {% else %}
   <p>
