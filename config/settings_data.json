@@ -169,11 +169,6 @@
           "show_empty_stars": false
         }
       },
-      "7916451724185839711": {
-        "type": "shopify://apps/avis-product-options/blocks/avisplus-product-options/e076618e-4c9c-447f-ad6d-4f1577799c29",
-        "disabled": true,
-        "settings": {}
-      },
       "6868439170666289573": {
         "type": "shopify://apps/foxkit-sales-boost/blocks/foxkit-theme-helper/13f41957-6b79-47c1-99a2-e52431f06fff",
         "disabled": true,
@@ -190,6 +185,11 @@
       },
       "2567389343055140935": {
         "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "7916451724185839711": {
+        "type": "shopify://apps/avis-product-options/blocks/avisplus-product-options/e076618e-4c9c-447f-ad6d-4f1577799c29",
         "disabled": false,
         "settings": {}
       }
