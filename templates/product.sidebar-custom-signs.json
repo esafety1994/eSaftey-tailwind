@@ -112,7 +112,7 @@
       ],
       "settings": {
         "heading": "",
-        "custom_class": ""
+        "custom_class": "container"
       }
     },
     "shipping_calculator_f6crqN": {
@@ -125,8 +125,8 @@
     "breadcrumb_GHt96W",
     "main",
     "product_info_tabs",
-    "product_recommendation_a4TCDB",
     "1768442681216c6726",
+    "product_recommendation_a4TCDB",
     "shipping_calculator_f6crqN"
   ]
 }
