@@ -70,6 +70,16 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       if (thumbs && typeof thumbs.destroy === "function") thumbs.destroy();
     } catch (e) {}
+    // clear any attached instance references on the DOM so external modules
+    // that call element._glideInstance can detect that the instance no longer exists
+    try {
+      const mainElNow = document.getElementById("esProductGlide");
+      if (mainElNow && mainElNow._glideInstance) mainElNow._glideInstance = null;
+    } catch (e) {}
+    try {
+      const thumbElNow = document.getElementById("esProductThumbs");
+      if (thumbElNow && thumbElNow._glideInstance) thumbElNow._glideInstance = null;
+    } catch (e) {}
     main = null;
     thumbs = null;
   }
@@ -138,6 +148,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // mount in order
     if (thumbs) thumbs.mount();
     main.mount();
+
+    // expose instances on DOM elements so other scripts can call go() directly
+    try {
+      const mainElNow = document.getElementById("esProductGlide");
+      if (mainElNow) mainElNow._glideInstance = main;
+    } catch (e) {}
+    try {
+      const thumbElNow = document.getElementById("esProductThumbs");
+      if (thumbElNow) thumbElNow._glideInstance = thumbs;
+    } catch (e) {}
 
     // attach lightbox handlers for current DOM
     try {

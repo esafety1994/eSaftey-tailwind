@@ -530,8 +530,8 @@ function updateProductGalleryWithSwatchImages() {
     const dataEls = Array.from(swatchContainer.querySelectorAll('[data-src]'));
     if (!dataEls.length) return;
 
-    const mainSlidesEl = document.querySelector('#product-glide .glide__slides');
-    const thumbsSlidesEl = document.querySelector('#product-thumbs .glide__slides');
+    const mainSlidesEl = document.querySelector('#esProductGlide .glide__slides');
+    const thumbsSlidesEl = document.querySelector('#esProductThumbs .glide__slides');
     if (!mainSlidesEl) return;
 
     // default image (first existing slide image) then swatch images
@@ -559,8 +559,27 @@ function updateProductGalleryWithSwatchImages() {
     // Notify product-media to re-init Glide
     document.dispatchEvent(new Event('product:content:replaced'));
 
+    // If product-media rebuilds the glide, we may need to request navigation
+    // after the rebuild. Listen for that event and attempt to call glide.go.
+    const tryGoAfterRebuild = (requestedIdx) => {
+      try {
+        const mainNow = document.getElementById('esProductGlide');
+        if (!mainNow) return;
+        const idx = Number(requestedIdx);
+        if (Number.isNaN(idx)) return;
+        // give product-media time to init; try multiple strategies
+        setTimeout(() => {
+          if (mainNow._glideInstance && typeof mainNow._glideInstance.go === 'function') {
+            try { mainNow._glideInstance.go('=' + idx); return; } catch (e) {}
+          }
+          // fallback: set dataset.startIndex so initGlides will pick it up
+          try { mainNow.setAttribute('data-start-index', String(idx)); } catch (e) {}
+        }, 40);
+      } catch (e) {}
+    };
+
     // Wire clicks on swatch items to navigate the main carousel
-    const mainEl = document.getElementById('product-glide');
+    const mainEl = document.getElementById('esProductGlide');
     dataEls.forEach((el) => {
       const wrapper = el.closest('.avp-productoptionswatchwrapper') || el;
       const src = el.getAttribute('data-src');
@@ -568,9 +587,9 @@ function updateProductGalleryWithSwatchImages() {
         const idx = srcs.indexOf(src);
         if (idx < 0) return;
         if (mainEl && mainEl._glideInstance) {
-          try { mainEl._glideInstance.go('=' + idx); } catch (e) {}
+          try { mainEl._glideInstance.go('=' + idx); } catch (e) { /* swallow */ }
         } else if (mainEl) {
-          mainEl.setAttribute('data-start-index', String(idx));
+          try { mainEl.setAttribute('data-start-index', String(idx)); } catch (e) {}
         }
       });
     });
@@ -585,12 +604,57 @@ function updateProductGalleryWithSwatchImages() {
         const idx = s ? srcs.indexOf(s) : -1;
         if (idx < 0) return;
         if (mainEl && mainEl._glideInstance) {
-          try { mainEl._glideInstance.go('=' + idx); } catch (e) {}
+          try { mainEl._glideInstance.go('=' + idx); } catch (e) { /* swallow */ }
         } else if (mainEl) {
-          mainEl.setAttribute('data-start-index', String(idx));
+          try { mainEl.setAttribute('data-start-index', String(idx)); } catch (e) {}
+          tryGoAfterRebuild(idx);
         }
       });
     });
+
+    // Delegated: listen for any select changes inside the swatch container (template selects)
+    swatchContainer.addEventListener('change', (e) => {
+      if (!e.isTrusted) return;
+      const target = e.target;
+      if (!target) return;
+      // try to find a matching data-src by value or data-value
+      const val = (target.value || '').trim();
+      if (!val) return;
+      // try match a radio with same value
+      const radios = Array.from(swatchContainer.querySelectorAll('input[type="radio"]'));
+      const matched = radios.find(r => String(r.value).trim() === String(val).trim());
+      let s = null;
+      if (matched) {
+        const parent = matched.closest('.avp-productoptionswatchwrapper');
+        const imgEl = parent ? parent.querySelector('[data-src]') || parent.querySelector('img') : null;
+        s = imgEl ? (imgEl.getAttribute('data-src') || imgEl.src) : null;
+      } else {
+        const matchEl = dataEls.find(el => String((el.getAttribute('data-value') || el.value || '')).trim() === String(val).trim());
+        s = matchEl ? (matchEl.getAttribute('data-src') || matchEl.src) : null;
+      }
+      const idx = s ? srcs.indexOf(s) : -1;
+      if (idx < 0) return;
+      if (mainEl && mainEl._glideInstance) {
+        try { mainEl._glideInstance.go('=' + idx); } catch (e) { /* swallow */ }
+      } else if (mainEl) {
+        try { mainEl.setAttribute('data-start-index', String(idx)); } catch (e) {}
+        tryGoAfterRebuild(idx);
+      }
+    });
+
+    // When product-media rebuilds the carousel it dispatches 'product:content:replaced'.
+    // Listen once and try to honour any requested start index stored on the main element.
+    const onReplaced = () => {
+      try {
+        const now = document.getElementById('esProductGlide');
+        if (!now) return;
+        const req = now.getAttribute('data-start-index') || now.dataset.startIndex || now.getAttribute('data-request-index');
+        if (req != null) tryGoAfterRebuild(Number(req));
+      } catch (e) {}
+      // do not keep this listener around
+      document.removeEventListener('product:content:replaced', onReplaced);
+    };
+    document.addEventListener('product:content:replaced', onReplaced);
   } catch (e) {
     /* no-op on failure */
   }

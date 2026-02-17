@@ -42,7 +42,9 @@
         {%- endif -%}
       {%- endfor -%}
     {%- endif -%}
-
+ {%- if item.product.type == 'Custom Signs' -%}
+        {%- assign show_options = false -%}
+      {%- endif -%}
     {%- if show_options -%}
       <div class="text-sm text-gray-600">
         {%- for opt in item.options_with_values -%}
