@@ -116,6 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const idx = main.index;
       syncThumbs(idx);
 
+      // Skip autoplay on first load
+      if (!hasInteracted) {
+        hasInteracted = true;
+        return;
+      }
+
       // Autoplay video on active slide (if any)
       try {
         const activeSlide = document.querySelector(
@@ -128,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } catch (e) {}
     });
 
+    let hasInteracted = false;
     main.on("run.before", () => {
       try {
         document.querySelectorAll("#esProductGlide video").forEach((v) => {
