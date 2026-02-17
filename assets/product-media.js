@@ -112,55 +112,16 @@ document.addEventListener("DOMContentLoaded", function () {
       return imageIdx || 0;
     }
 
-    function pauseAllVideos() {
+    main.on("run.after", () => {
+      syncThumbs(main.index);
+    });
+
+    main.on("run.before", () => {
       try {
         document.querySelectorAll("#esProductGlide video").forEach((v) => {
           try { if (!v.paused) v.pause(); } catch (e) {}
         });
       } catch (e) {}
-    }
-
-    function tryPlayVideoAtIndex(targetIndex) {
-      try {
-        const slides = Array.from(document.querySelectorAll("#esProductGlide .glide__slide"));
-        const slide = slides[targetIndex];
-        if (!slide) return;
-
-        const v = slide.querySelector("video");
-        if (!v) return;
-
-        // Autoplay is most reliable muted; remove next line if you insist on sound.
-        v.muted = true;
-        v.playsInline = true;
-
-        v.play().catch(() => {});
-      } catch (e) {}
-    }
-
-    let isInitialMount = true;
-
-    main.on("run.after", () => {
-      syncThumbs(main.index);
-
-      // Skip autoplay only on initial mount
-      if (isInitialMount) {
-        isInitialMount = false;
-        return;
-      }
-
-      // Fallback autoplay attempt (may be blocked on first interaction by some browsers)
-      try {
-        const activeVideo = document.querySelector("#esProductGlide .glide__slide--active video");
-        if (activeVideo) {
-          activeVideo.muted = true;
-          activeVideo.playsInline = true;
-          activeVideo.play().catch(() => {});
-        }
-      } catch (e) {}
-    });
-
-    main.on("run.before", () => {
-      pauseAllVideos();
     });
 
     if (thumbs) {
@@ -171,28 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     main.mount();
-
-    // Ensure autoplay works on first arrow click (user gesture)
-    document
-      .querySelectorAll('#esProductGlide [data-glide-el="controls"] [data-glide-dir]')
-      .forEach((btn) => {
-        btn.addEventListener("click", () => {
-          try {
-            const dir = btn.getAttribute("data-glide-dir");
-            const slides = Array.from(document.querySelectorAll("#esProductGlide .glide__slide"));
-            const count = slides.length;
-            if (!count) return;
-
-            // compute target index
-            let target = main.index || 0;
-            if (dir === ">") target = (target + 1) % count;
-            else if (dir === "<") target = (target - 1 + count) % count;
-
-            pauseAllVideos();
-            tryPlayVideoAtIndex(target);
-          } catch (e) {}
-        });
-      });
 
     try {
       const root = document.getElementById("esProductGlide");
@@ -294,8 +233,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const idx = slides.indexOf(li);
 
     if (idx >= 0) main.go("=" + idx);
-    pauseAllVideos();
-    tryPlayVideoAtIndex(idx);
   });
 
   initGlides();
