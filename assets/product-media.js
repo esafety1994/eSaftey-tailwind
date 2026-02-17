@@ -73,9 +73,90 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function pauseAllVideos() {
-    // pause videos both in main slider and lightbox
     pauseVideosIn("#esProductGlide");
     pauseVideosIn("#product-lightbox");
+  }
+
+  // ==========================
+  // ✅ VIDEO TIME SYNC HELPERS
+  // ==========================
+  function getSlides(selector) {
+    return Array.from(document.querySelectorAll(selector + " .glide__slide"));
+  }
+
+  function getVideoInSlide(slideEl) {
+    return slideEl ? slideEl.querySelector("video") : null;
+  }
+
+  function syncVideoTimeAndState(srcVideo, dstVideo) {
+    if (!srcVideo || !dstVideo) return;
+
+    // time
+    try {
+      const t = Number.isFinite(srcVideo.currentTime) ? srcVideo.currentTime : 0;
+
+      // If dst metadata not ready, wait once
+      if (dstVideo.readyState < 1) {
+        const once = () => {
+          try {
+            if (Math.abs((dstVideo.currentTime || 0) - t) > 0.25) dstVideo.currentTime = t;
+          } catch (e) {}
+          dstVideo.removeEventListener("loadedmetadata", once);
+        };
+        dstVideo.addEventListener("loadedmetadata", once);
+      } else {
+        if (Math.abs((dstVideo.currentTime || 0) - t) > 0.25) dstVideo.currentTime = t;
+      }
+    } catch (e) {}
+
+    // play/pause state
+    try {
+      if (srcVideo.paused) dstVideo.pause();
+      else dstVideo.play().catch(() => {});
+    } catch (e) {}
+  }
+
+  // Throttled live sync while lightbox open (scrub/play in fullscreen updates main)
+  let syncLock = false;
+  let lastSyncAt = 0;
+
+  function throttle(fn) {
+    const now = Date.now();
+    if (syncLock) return;
+    if (now - lastSyncAt < 250) return;
+    lastSyncAt = now;
+    syncLock = true;
+    try { fn(); } finally { syncLock = false; }
+  }
+
+  function syncActiveLightboxToMain() {
+    const lbGlideEl = document.getElementById("product-lightbox-glide");
+    const inst = lbGlideEl && lbGlideEl._glideInstance;
+    if (!inst) return;
+
+    const idx = inst.index;
+
+    const mainSlides = getSlides("#esProductGlide");
+    const lbSlides = getSlides("#product-lightbox-glide");
+
+    const mainV = getVideoInSlide(mainSlides[idx]);
+    const lbV = getVideoInSlide(lbSlides[idx]);
+
+    if (!mainV || !lbV) return;
+
+    throttle(() => syncVideoTimeAndState(lbV, mainV));
+  }
+
+  function syncMainToLightboxAtIndex(idx) {
+    const mainSlides = getSlides("#esProductGlide");
+    const lbSlides = getSlides("#product-lightbox-glide");
+
+    const mainV = getVideoInSlide(mainSlides[idx]);
+    const lbV = getVideoInSlide(lbSlides[idx]);
+
+    if (!mainV || !lbV) return;
+
+    syncVideoTimeAndState(mainV, lbV);
   }
 
   function initGlides() {
@@ -122,8 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "#esProductGlide .glide__slide--active video"
         );
         if (activeVideo) {
-          // If you need autoplay to be reliable across browsers, uncomment the next line:
-          // activeVideo.muted = true;
+          // activeVideo.muted = true; // optional for stricter autoplay compatibility
           activeVideo.play().catch(() => {});
         }
       } catch (e) {}
@@ -188,10 +268,17 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             lbGlideEl._glideInstance.on("run.after", function () {
+              const i = lbGlideEl._glideInstance.index;
+
               try {
                 // keep main carousel synced to same media index
-                main.go("=" + lbGlideEl._glideInstance.index);
+                main.go("=" + i);
               } catch (e) {}
+
+              // ✅ Sync time main -> lightbox for this slide
+              setTimeout(() => {
+                try { syncMainToLightboxAtIndex(i); } catch (e) {}
+              }, 0);
 
               // autoplay the fullscreen active slide video (if any)
               try {
@@ -199,17 +286,19 @@ document.addEventListener("DOMContentLoaded", function () {
                   "#product-lightbox .glide__slide--active video"
                 );
                 if (activeLbVideo) {
-                  // If you need autoplay to be reliable across browsers, uncomment:
-                  // activeLbVideo.muted = true;
+                  // activeLbVideo.muted = true; // optional
                   activeLbVideo.play().catch(() => {});
                 }
               } catch (e) {}
             });
+
           } else {
             lbGlideEl._glideInstance.go("=" + idx);
 
-            // When re-opening, try autoplay if current slide is a video
+            // When re-opening, sync time and try autoplay if current slide is a video
             setTimeout(() => {
+              try { syncMainToLightboxAtIndex(idx); } catch (e) {}
+
               try {
                 const activeLbVideo = document.querySelector(
                   "#product-lightbox .glide__slide--active video"
@@ -219,8 +308,13 @@ document.addEventListener("DOMContentLoaded", function () {
                   activeLbVideo.play().catch(() => {});
                 }
               } catch (e) {}
-            }, 0);
+            }, 50);
           }
+
+          // ✅ On open, immediately sync time for the opened index
+          setTimeout(() => {
+            try { syncMainToLightboxAtIndex(idx); } catch (e) {}
+          }, 0);
         };
 
         // Zoom button click -> open lightbox at that media index
@@ -280,38 +374,60 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(initGlides, 20);
   });
 
+  // ✅ Live sync while lightbox open (scrub/play updates main)
+  try {
+    const lb = document.getElementById("product-lightbox");
+    if (lb) {
+      ["timeupdate", "seeked", "play", "pause"].forEach((evt) => {
+        lb.addEventListener(
+          evt,
+          function (e) {
+            if (!isLightboxOpen()) return;
+            if (e.target && e.target.tagName === "VIDEO") syncActiveLightboxToMain();
+          },
+          true
+        );
+      });
+    }
+  } catch (e) {}
+
   const lbClose = document.getElementById("product-lightbox-close");
   const lb = document.getElementById("product-lightbox");
   const lbGlideEl = document.getElementById("product-lightbox-glide");
 
-  if (lbClose && lb)
-    lbClose.addEventListener("click", function () {
-      // pause fullscreen videos when closing
-      pauseVideosIn("#product-lightbox");
+  function closeLightbox() {
+    // ✅ push time from lightbox -> main before closing
+    try {
+      if (lbGlideEl && lbGlideEl._glideInstance) {
+        const idx = lbGlideEl._glideInstance.index;
 
-      lb.classList.add("hidden");
-      lb.classList.remove("flex");
-      try {
-        if (lbGlideEl?._glideInstance) {
-          lbGlideEl._glideInstance.destroy();
-          lbGlideEl._glideInstance = null;
-        }
-      } catch (e) {}
-    });
+        const mainSlides = getSlides("#esProductGlide");
+        const lbSlides = getSlides("#product-lightbox-glide");
+
+        const mainV = getVideoInSlide(mainSlides[idx]);
+        const lbV = getVideoInSlide(lbSlides[idx]);
+
+        syncVideoTimeAndState(lbV, mainV);
+      }
+    } catch (e) {}
+
+    // pause fullscreen videos when closing
+    pauseVideosIn("#product-lightbox");
+
+    lb.classList.add("hidden");
+    lb.classList.remove("flex");
+    try {
+      if (lbGlideEl?._glideInstance) {
+        lbGlideEl._glideInstance.destroy();
+        lbGlideEl._glideInstance = null;
+      }
+    } catch (e) {}
+  }
+
+  if (lbClose && lb) lbClose.addEventListener("click", closeLightbox);
 
   if (lb)
     lb.addEventListener("click", function (e) {
-      if (e.target === lb) {
-        pauseVideosIn("#product-lightbox");
-
-        lb.classList.add("hidden");
-        lb.classList.remove("flex");
-        try {
-          if (lbGlideEl?._glideInstance) {
-            lbGlideEl._glideInstance.destroy();
-            lbGlideEl._glideInstance = null;
-          }
-        } catch (e) {}
-      }
+      if (e.target === lb) closeLightbox();
     });
 });
