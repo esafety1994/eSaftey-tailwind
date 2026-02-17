@@ -11,18 +11,7 @@
   }
 </style>
 <div class="datasheet-section py-4">
-  {% if product.tags contains 'Modular Handrails' %}
-    <ol class="list-none p-0 m-0">
-      <li>
-        <a
-          class="datasheet-link"
-          href="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Cope_Modular_Brochure_eSafetySupplies2025.pdf"
-          target="_blank"
-          >Download Brochure</a
-        >
-      </li>
-    </ol>
-  {% else %}
+ 
     {% if product.metafields.custom.product_tabs_product_data_sheet %}
       {% assign pdf_links = product.metafields.custom.product_tabs_product_data_sheet | split: '|' %}
       <ol class="flex flex-wrap gap-4 p-0 m-0 list-none">
@@ -35,5 +24,5 @@
     {% else %}
       <p class="text-sm text-gray-600">Data Sheet coming soon!</p>
     {% endif %}
-  {% endif %}
+
 </div>
