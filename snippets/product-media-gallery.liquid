@@ -42,9 +42,32 @@
                     width="576"
                     height="576"
                   >
+
+                {% when 'video' %}
+                  <div class="media-wrap">
+                    {%- assign poster = media.preview_image | image_url: width: 1600 -%}
+                    {%- assign mp4 = media.sources | where: 'format', 'mp4' | sort: 'height' | last -%}
+                    <video
+                      controls
+                      preload="metadata"
+                      playsinline
+                      poster="{{ poster }}"
+                    >
+                      {% if mp4 and mp4.url %}
+                        <source src="{{ mp4.url }}" type="video/mp4">
+                      {% endif %}
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+
+                {% when 'external_video' %}
+                  <div class="media-wrap">
+                    {{ media | media_tag }}
+                  </div>
+
                 {% else %}
-                  <div class="w-full max-h-[576px] flex items-center justify-center">
-                    {{ media | media_tag: controls: true, class: 'product-media-el' }}
+                  <div class="media-wrap">
+                    {{ media | media_tag }}
                   </div>
               {% endcase %}
 
