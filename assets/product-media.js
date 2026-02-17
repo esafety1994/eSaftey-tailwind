@@ -73,72 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function pauseAllVideos() {
+    // pause videos both in main slider and lightbox
     pauseVideosIn("#esProductGlide");
     pauseVideosIn("#product-lightbox");
-  }
-
-  // ============
-  // VIDEO SYNC
-  // ============
-  function getSlides(selector) {
-    return Array.from(document.querySelectorAll(selector + " .glide__slide"));
-  }
-
-  function getVideoInSlide(slideEl) {
-    return slideEl ? slideEl.querySelector("video") : null;
-  }
-
-  function setVideoTimeSafe(video, t) {
-    if (!video || !Number.isFinite(t)) return;
-    try {
-      if (video.readyState >= 1) {
-        if (Math.abs((video.currentTime || 0) - t) > 0.2) video.currentTime = t;
-      } else {
-        const once = () => {
-          try {
-            if (Math.abs((video.currentTime || 0) - t) > 0.2) video.currentTime = t;
-          } catch (e) {}
-          video.removeEventListener("loadedmetadata", once);
-        };
-        video.addEventListener("loadedmetadata", once);
-      }
-    } catch (e) {}
-  }
-
-  function syncMainToLightboxAtIndex(idx, shouldPlay) {
-    const mainSlides = getSlides("#esProductGlide");
-    const lbSlides = getSlides("#product-lightbox-glide");
-
-    const mainV = getVideoInSlide(mainSlides[idx]);
-    const lbV = getVideoInSlide(lbSlides[idx]);
-
-    if (!mainV || !lbV) return;
-
-    // time
-    setVideoTimeSafe(lbV, mainV.currentTime || 0);
-
-    // play state
-    try {
-      if (shouldPlay) lbV.play().catch(() => {});
-      else lbV.pause();
-    } catch (e) {}
-  }
-
-  function syncLightboxToMainAtIndex(idx, shouldPlay) {
-    const mainSlides = getSlides("#esProductGlide");
-    const lbSlides = getSlides("#product-lightbox-glide");
-
-    const mainV = getVideoInSlide(mainSlides[idx]);
-    const lbV = getVideoInSlide(lbSlides[idx]);
-
-    if (!mainV || !lbV) return;
-
-    setVideoTimeSafe(mainV, lbV.currentTime || 0);
-
-    try {
-      if (shouldPlay) mainV.play().catch(() => {});
-      else mainV.pause();
-    } catch (e) {}
   }
 
   function initGlides() {
@@ -147,7 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const mainElNow = document.getElementById("esProductGlide");
     const thumbElNow = document.getElementById("esProductThumbs");
 
-    const startAt = parseInt(mainElNow?.dataset.startIndex || 0, 10) || 0;
+    const startAt =
+      parseInt(mainElNow?.dataset.startIndex || 0, 10) || 0;
 
     main = new Glide("#esProductGlide", {
       type: "slider",
@@ -176,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const idx = main.index;
       syncThumbs(idx);
 
+      // If the lightbox is open, do not autoplay the small/background video
       if (isLightboxOpen()) return;
 
       try {
@@ -183,18 +122,22 @@ document.addEventListener("DOMContentLoaded", function () {
           "#esProductGlide .glide__slide--active video"
         );
         if (activeVideo) {
+          // If you need autoplay to be reliable across browsers, uncomment the next line:
+          // activeVideo.muted = true;
           activeVideo.play().catch(() => {});
         }
       } catch (e) {}
     });
 
-    // MAIN: pause when leaving slide
+    // MAIN: pause when leaving slide (and also pause any lightbox videos just in case)
     main.on("run.before", () => {
       pauseAllVideos();
     });
 
     if (thumbs) {
-      thumbs.on("mount.after", () => syncThumbs(main.index));
+      thumbs.on("mount.after", () => {
+        syncThumbs(main.index);
+      });
       thumbs.mount();
     }
 
@@ -221,64 +164,63 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (!lb || !lbGlideEl) return;
 
-          // Capture the MAIN video state BEFORE pausing everything
-          let mainShouldPlay = false;
-          let mainTime = 0;
-          try {
-            const mainSlide = slides[idx];
-            const mainV = getVideoInSlide(mainSlide);
-            if (mainV) {
-              mainShouldPlay = !mainV.paused;
-              mainTime = mainV.currentTime || 0;
-            }
-          } catch (e) {}
-
-          // Now pause everything
+          // Pause any playing videos before opening fullscreen
           pauseAllVideos();
 
           lb.classList.remove("hidden");
           lb.classList.add("flex");
 
           if (!lbGlideEl._glideInstance) {
-            lbGlideEl._glideInstance = new Glide("#product-lightbox-glide", {
-              type: "carousel",
-              perView: 1,
-              gap: 16,
-              startAt: idx,
-              keyboard: false,
-            }).mount();
+            lbGlideEl._glideInstance = new Glide(
+              "#product-lightbox-glide",
+              {
+                type: "carousel",
+                perView: 1,
+                gap: 16,
+                startAt: idx,
+                keyboard: false,
+              }
+            ).mount();
 
+            // LIGHTBOX: keep main in sync + autoplay fullscreen video (not the small one)
             lbGlideEl._glideInstance.on("run.before", function () {
               pauseAllVideos();
             });
 
             lbGlideEl._glideInstance.on("run.after", function () {
-              const i = lbGlideEl._glideInstance.index;
+              try {
+                // keep main carousel synced to same media index
+                main.go("=" + lbGlideEl._glideInstance.index);
+              } catch (e) {}
 
-              // keep main carousel synced to same media index
-              try { main.go("=" + i); } catch (e) {}
-
-              // Sync time MAIN->LB for this slide
-              setTimeout(() => {
-                try { syncMainToLightboxAtIndex(i, true); } catch (e) {}
-              }, 0);
+              // autoplay the fullscreen active slide video (if any)
+              try {
+                const activeLbVideo = document.querySelector(
+                  "#product-lightbox .glide__slide--active video"
+                );
+                if (activeLbVideo) {
+                  // If you need autoplay to be reliable across browsers, uncomment:
+                  // activeLbVideo.muted = true;
+                  activeLbVideo.play().catch(() => {});
+                }
+              } catch (e) {}
             });
           } else {
             lbGlideEl._glideInstance.go("=" + idx);
-          }
 
-          // After open/go, set LB video time to what MAIN had (and resume play if it was playing)
-          setTimeout(() => {
-            try {
-              const lbSlides = getSlides("#product-lightbox-glide");
-              const lbV = getVideoInSlide(lbSlides[idx]);
-              if (lbV) {
-                setVideoTimeSafe(lbV, mainTime);
-                if (mainShouldPlay) lbV.play().catch(() => {});
-                else lbV.pause();
-              }
-            } catch (e) {}
-          }, 50);
+            // When re-opening, try autoplay if current slide is a video
+            setTimeout(() => {
+              try {
+                const activeLbVideo = document.querySelector(
+                  "#product-lightbox .glide__slide--active video"
+                );
+                if (activeLbVideo) {
+                  // activeLbVideo.muted = true;
+                  activeLbVideo.play().catch(() => {});
+                }
+              } catch (e) {}
+            }, 0);
+          }
         };
 
         // Zoom button click -> open lightbox at that media index
@@ -293,12 +235,14 @@ document.addEventListener("DOMContentLoaded", function () {
         root.addEventListener("click", function (e) {
           const clicked = e.target;
           if (!clicked) return;
+
           if (clicked.closest(".slide-zoom-btn")) return;
 
           const slideEl = clicked.closest(".glide__slide");
           if (!slideEl) return;
           if (slideEl.closest("#esProductThumbs")) return;
 
+          // Only open on images (so clicking a playing video doesn't pop fullscreen unexpectedly)
           if (!clicked.closest("img")) return;
           if (clicked.closest("a")) return;
 
@@ -310,7 +254,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setActiveThumb(index) {
     const slides = document.querySelectorAll("#esProductThumbs .glide__slide");
-    slides.forEach((el, i) => el.classList.toggle("thumb-active", i === index));
+    slides.forEach((el, i) =>
+      el.classList.toggle("thumb-active", i === index)
+    );
   }
 
   // click thumbnails to navigate main
@@ -338,42 +284,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const lb = document.getElementById("product-lightbox");
   const lbGlideEl = document.getElementById("product-lightbox-glide");
 
-  function closeLightbox() {
-    // Push lightbox time back into main (same index)
-    try {
-      if (lbGlideEl && lbGlideEl._glideInstance) {
-        const idx = lbGlideEl._glideInstance.index;
+  if (lbClose && lb)
+    lbClose.addEventListener("click", function () {
+      // pause fullscreen videos when closing
+      pauseVideosIn("#product-lightbox");
 
-        const lbSlides = getSlides("#product-lightbox-glide");
-        const lbV = getVideoInSlide(lbSlides[idx]);
-
-        const mainSlides = getSlides("#esProductGlide");
-        const mainV = getVideoInSlide(mainSlides[idx]);
-
-        if (lbV && mainV) {
-          // Keep main paused when you return (feel free to change this)
-          setVideoTimeSafe(mainV, lbV.currentTime || 0);
-          try { mainV.pause(); } catch (e) {}
+      lb.classList.add("hidden");
+      lb.classList.remove("flex");
+      try {
+        if (lbGlideEl?._glideInstance) {
+          lbGlideEl._glideInstance.destroy();
+          lbGlideEl._glideInstance = null;
         }
-      }
-    } catch (e) {}
-
-    pauseVideosIn("#product-lightbox");
-
-    lb.classList.add("hidden");
-    lb.classList.remove("flex");
-    try {
-      if (lbGlideEl?._glideInstance) {
-        lbGlideEl._glideInstance.destroy();
-        lbGlideEl._glideInstance = null;
-      }
-    } catch (e) {}
-  }
-
-  if (lbClose && lb) lbClose.addEventListener("click", closeLightbox);
+      } catch (e) {}
+    });
 
   if (lb)
     lb.addEventListener("click", function (e) {
-      if (e.target === lb) closeLightbox();
+      if (e.target === lb) {
+        pauseVideosIn("#product-lightbox");
+
+        lb.classList.add("hidden");
+        lb.classList.remove("flex");
+        try {
+          if (lbGlideEl?._glideInstance) {
+            lbGlideEl._glideInstance.destroy();
+            lbGlideEl._glideInstance = null;
+          }
+        } catch (e) {}
+      }
     });
 });
