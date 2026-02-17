@@ -126,9 +126,9 @@
                   <button class="thumb-btn focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
                     {% if media.preview_image %}
                       <img
-                        src="{{ media.preview_image | img_url: '250x250' }}"
+                        src="{{ media.preview_image | image_url: width: 250, height: 250, crop: 'center' }}"
                         alt="{{ media.alt | escape }}"
-                        class="rounded max-h-[110px] object-contain m-auto"
+                        class="rounded w-[110px] h-[110px] object-cover m-auto"
                         width="110"
                         height="110"
                       >
