@@ -659,3 +659,22 @@ a.underline-animation:focus::after {
 .thumb-btn:hover .thumb-play-icon {
   background: rgba(0,0,0,0.5);
 }
+
+/* Lightbox media sizing */
+#product-lightbox .lb-media-wrap {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#product-lightbox .lb-video,
+#product-lightbox iframe,
+#product-lightbox video,
+#product-lightbox model-viewer {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 90vh !important;
+  object-fit: contain;
+}
