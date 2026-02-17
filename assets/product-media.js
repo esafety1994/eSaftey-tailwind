@@ -113,18 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     main.on("run.after", () => {
-      const idx = main.index;
-      syncThumbs(idx);
-
-      // Pause any playing videos when leaving a slide (keep currentTime)
-      try {
-        const videos = document.querySelectorAll("#esProductGlide video");
-        videos.forEach((v) => {
-          try {
-            if (!v.paused) v.pause();
-          } catch (e) {}
-        });
-      } catch (e) {}
+      syncThumbs(main.index);
     });
 
     main.on("run.before", () => {
@@ -134,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } catch (e) {}
     });
-
 
     if (thumbs) {
       thumbs.on("mount.after", () => {
