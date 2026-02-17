@@ -4,14 +4,15 @@
 {%- if current_variant -%}
   {%- if current_variant.featured_image -%}
     {%- for m in product.media  -%}
-      {%- if image.src == current_variant.featured_image.src -%}
+      {%- if m.preview_image and m.preview_image.src == current_variant.featured_image.src -%}
         {%- assign start_index = forloop.index0 -%}
       {%- endif -%}
     {%- endfor -%}
   {%- elsif current_variant.image -%}
     {%- for m in product.media  -%}
-      {%- if image.src == current_variant.image.src -%}
+      {%- if m.preview_image and m.preview_image.src == current_variant.image.src -%}
         {%- assign start_index = forloop.index0 -%}
+        {% break %}
       {%- endif -%}
     {%- endfor -%}
   {%- endif -%}
@@ -41,19 +42,22 @@
                 {% else %}
                   {{ media | media_tag: controls: true }}
               {% endcase %}
-              <!-- Zoom overlay button (appears on hover) -->
-              <button
-                type="button"
-                class="slide-zoom-btn absolute top-3 right-3 opacity-0 group-hover:!opacity-100 group-focus:opacity-100 transition bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-9 h-9 flex items-center justify-center text-white z-40 m-tooltip--left hover:cursor-pointer"
-                data-slide-index="{{ image_index }}"
-                aria-label="Zoom image"
-              >
-                {% render 'icon-svg-zoom-in', class: 'size-5 pointer-events-none text-white' %}
-                <span class="m-tooltip__content hidden bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap shadow z-50">
-                  Zoom in
-                </span>
-              </button>
-              {% assign image_index = image_index | plus: 1 %}
+              {% if media.media_type == 'image' %}
+                <!-- Zoom overlay button (appears on hover) -->
+                <button
+                  type="button"
+                  class="slide-zoom-btn absolute top-3 right-3 opacity-0 group-hover:!opacity-100 group-focus:opacity-100 transition bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-9 h-9 flex items-center justify-center text-white z-40 m-tooltip--left hover:cursor-pointer"
+                  data-slide-index="{{ image_index }}"
+                  aria-label="Zoom image"
+                >
+                  {% render 'icon-svg-zoom-in', class: 'size-5 pointer-events-none text-white' %}
+                  <span class="m-tooltip__content hidden bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap shadow z-50">
+                    Zoom in
+                  </span>
+                </button>
+
+                {% assign image_index = image_index | plus: 1 %}
+              {% endif %}
             </div>
           </li>
         {% endfor %}
@@ -114,7 +118,7 @@
     <div class="glide glide-lightbox" id="product-lightbox-glide">
       <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
-          {% for media in product.media %}
+          {% for image  in product.images %}
             <li class="glide__slide">
               <img
                 src="{{ image | img_url: '1200x1200' }}"
