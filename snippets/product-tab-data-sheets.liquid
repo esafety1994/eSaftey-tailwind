@@ -40,25 +40,15 @@
       {%- endif -%}
 
       {%- if has_metafield -%}
-        {%- for item in pdf_links -%}
-          {%- assign clean_item = item | strip -%}
-          {%- if clean_item != blank -%}
-
-            {%- assign parts = clean_item | split: '~' -%}
-            {%- assign pdf_url = parts[0] | strip -%}
-
-            {%- if parts.size > 1 and parts[1] != blank -%}
-              {%- assign pdf_label = parts[1] | strip -%}
-            {%- else -%}
-              {%- assign pdf_label = 'View Data Sheet (PDF)' -%}
-            {%- endif -%}
-
+        {%- assign pdf_links = metafield_raw | split: '|' -%}
+        {%- for pdf in pdf_links -%}
+          {%- assign pdf_url = pdf | strip -%}
+          {%- if pdf_url != blank -%}
             <li>
               <a class="datasheet-link" href="{{ pdf_url }}" target="_blank" rel="noopener">
-                {{ pdf_label }}
+                View Data Sheet (PDF)
               </a>
             </li>
-
           {%- endif -%}
         {%- endfor -%}
       {%- endif -%}
