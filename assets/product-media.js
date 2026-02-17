@@ -113,8 +113,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     main.on("run.after", () => {
-      syncThumbs(main.index);
+      const idx = main.index;
+      syncThumbs(idx);
+
+      // Pause any playing videos when leaving a slide (keep currentTime)
+      try {
+        const videos = document.querySelectorAll("#esProductGlide video");
+        videos.forEach((v) => {
+          try {
+            if (!v.paused) v.pause();
+          } catch (e) {}
+        });
+      } catch (e) {}
     });
+
+    main.on("run.before", () => {
+      try {
+        document.querySelectorAll("#esProductGlide video").forEach((v) => {
+          try { if (!v.paused) v.pause(); } catch (e) {}
+        });
+      } catch (e) {}
+    });
+
 
     if (thumbs) {
       thumbs.on("mount.after", () => {
