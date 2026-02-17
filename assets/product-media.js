@@ -147,7 +147,10 @@ document.addEventListener("DOMContentLoaded", function () {
           var slides = Array.from(
             document.querySelectorAll("#esProductGlide .glide__slide"),
           );
-          var idx = slideEl ? slides.indexOf(slideEl) : main.index || 0;
+          var idx =
+            typeof arguments[1] === "number"
+              ? arguments[1]
+              : (slideEl ? slides.indexOf(slideEl) : main.index || 0);
           var lb = document.getElementById("product-lightbox");
           var lbGlideEl = document.getElementById("product-lightbox-glide");
           if (lb && lbGlideEl) {
@@ -187,7 +190,9 @@ document.addEventListener("DOMContentLoaded", function () {
         root.querySelectorAll(".slide-zoom-btn").forEach(function (el) {
           el.addEventListener("click", function (e) {
             var slideEl = e.currentTarget.closest(".glide__slide");
-            openLightboxForSlide(slideEl);
+            var btn = e.currentTarget;
+            var imgIdx = parseInt(btn.getAttribute("data-slide-index") || "0", 10);
+            openLightboxForSlide(slideEl, isNaN(imgIdx) ? 0 : imgIdx);
           });
         });
 
