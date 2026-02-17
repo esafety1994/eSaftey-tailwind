@@ -123,16 +123,22 @@
             <ul class="glide__slides">
               {% for media in product.media %}
                 <li class="glide__slide px-1 max-w-32">
-                  <button class="thumb-btn focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
-                    {% if media.preview_image %}
-                      <img
-                        src="{{ media.preview_image | image_url: width: 250, height: 250, crop: 'center' }}"
-                        alt="{{ media.alt | escape }}"
-                        class="rounded w-[110px] h-[110px] object-cover m-auto"
-                        width="110"
-                        height="110"
-                      >
+                  <button class="thumb-btn relative focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
+
+                    <img
+                      src="{{ media.preview_image | image_url: width: 250, height: 250, crop: 'center' }}"
+                      alt="{{ media.alt | escape }}"
+                      class="rounded w-[110px] h-[110px] object-cover m-auto"
+                      width="110"
+                      height="110"
+                    >
+
+                    {% if media.media_type == 'video' or media.media_type == 'external_video' %}
+                      <span class="thumb-play-icon">
+                        ▶
+                      </span>
                     {% endif %}
+
                   </button>
                 </li>
               {% endfor %}

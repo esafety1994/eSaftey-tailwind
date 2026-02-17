@@ -639,3 +639,23 @@ a.underline-animation:focus::after {
 #esProductGlide video {
   background: #000;
 }
+
+/* Video thumbnail play icon */
+.thumb-play-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: white;
+  background: rgba(0,0,0,0.35);
+  border-radius: 0.5rem;
+  pointer-events: none;
+  transition: background 0.2s ease;
+}
+
+/* Slight hover effect */
+.thumb-btn:hover .thumb-play-icon {
+  background: rgba(0,0,0,0.5);
+}
