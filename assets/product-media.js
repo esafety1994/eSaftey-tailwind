@@ -116,25 +116,25 @@ document.addEventListener("DOMContentLoaded", function () {
       const idx = main.index;
       syncThumbs(idx);
 
-      // Skip autoplay on first load
-      if (!hasInteracted) {
-        hasInteracted = true;
+      // Skip autoplay only on the initial Glide mount
+      if (isInitialMount) {
+        isInitialMount = false;
         return;
       }
 
       // Autoplay video on active slide (if any)
       try {
-        const activeSlide = document.querySelector(
+        const activeVideo = document.querySelector(
           "#esProductGlide .glide__slide--active video"
         );
-
-        if (activeSlide) {
-          activeSlide.play().catch(() => {});
+        if (activeVideo) {
+          activeVideo.play().catch(() => {});
         }
       } catch (e) {}
     });
 
-    let hasInteracted = false;
+    let isInitialMount = true;
+
     main.on("run.before", () => {
       try {
         document.querySelectorAll("#esProductGlide video").forEach((v) => {
