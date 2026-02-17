@@ -600,7 +600,7 @@ a.underline-animation:focus::after {
 #esProductGlide .product-media-el video,
 #esProductGlide .product-media-el iframe,
 #esProductGlide .product-media-el model-viewer {
-  height: auto;
+  height: 576px;
   object-fit: contain;
   display: block;
   margin: 0 auto;
