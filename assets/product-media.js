@@ -113,7 +113,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     main.on("run.after", () => {
-      syncThumbs(main.index);
+      const idx = main.index;
+      syncThumbs(idx);
+
+      // Autoplay video on active slide (if any)
+      try {
+        const activeSlide = document.querySelector(
+          "#esProductGlide .glide__slide--active video"
+        );
+
+        if (activeSlide) {
+          activeSlide.play().catch(() => {});
+        }
+      } catch (e) {}
     });
 
     main.on("run.before", () => {
