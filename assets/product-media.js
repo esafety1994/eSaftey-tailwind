@@ -183,10 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             lbGlideEl._glideInstance.on("run.after", function () {
               try {
-                const mapped = mediaIndexFromImageIndex(
-                  lbGlideEl._glideInstance.index
-                );
-                main.go("=" + mapped);
+                main.go("=" + lbGlideEl._glideInstance.index);
               } catch (e) {}
             });
           } else {
@@ -202,7 +199,8 @@ document.addEventListener("DOMContentLoaded", function () {
               btn.getAttribute("data-slide-index") || "0",
               10
             );
-            openLightboxForSlide(null, isNaN(imgIdx) ? 0 : imgIdx);
+            const slideEl = e.currentTarget.closest(".glide__slide");
+            openLightboxForSlide(slideEl);
           });
         });
 
