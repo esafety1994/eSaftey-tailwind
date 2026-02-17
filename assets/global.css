@@ -626,7 +626,7 @@ a.underline-animation:focus::after {
   max-height: 100% !important;
   display: block;
   margin: 0 auto;
-  object-fit: cover;           /* change to cover if you want it to fill/crop */
+  object-fit: contain;           /* change to cover if you want it to fill/crop */
 }
 
 /* Make embedded iframes behave */
