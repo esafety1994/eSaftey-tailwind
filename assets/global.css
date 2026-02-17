@@ -584,3 +584,24 @@ a.underline-animation:focus::after {
   margin-bottom: 8px;
 }
 
+/* Make non-image product media behave like images in the Glide slide */
+#esProductGlide .product-media-el,
+#esProductGlide .product-media-el video,
+#esProductGlide .product-media-el iframe,
+#esProductGlide .product-media-el model-viewer,
+#esProductGlide .product-media-el .shopify-model-viewer-ui,
+#esProductGlide .product-media-el .plyr,
+#esProductGlide .product-media-el .plyr__video-wrapper {
+  width: 100% !important;
+  max-height: 576px;
+}
+
+/* Keep it contained like your images */
+#esProductGlide .product-media-el video,
+#esProductGlide .product-media-el iframe,
+#esProductGlide .product-media-el model-viewer {
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}

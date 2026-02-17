@@ -43,7 +43,9 @@
                     height="576"
                   >
                 {% else %}
-                  {{ media | media_tag: controls: true }}
+                  <div class="w-full max-h-[576px] flex items-center justify-center">
+                    {{ media | media_tag: controls: true, class: 'product-media-el' }}
+                  </div>
               {% endcase %}
 
               {% if media.media_type == 'image' %}
