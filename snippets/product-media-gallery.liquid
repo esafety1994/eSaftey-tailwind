@@ -1,84 +1,45 @@
 <!-- Product media gallery snippet -->
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 {%- assign start_index = 0 -%}
-
 {%- if current_variant -%}
   {%- if current_variant.featured_image -%}
-    {%- for m in product.media -%}
-      {%- if m.preview_image and m.preview_image.src == current_variant.featured_image.src -%}
+    {%- for image in product.images -%}
+      {%- if image.src == current_variant.featured_image.src -%}
         {%- assign start_index = forloop.index0 -%}
-        {%- break -%}
       {%- endif -%}
     {%- endfor -%}
   {%- elsif current_variant.image -%}
-    {%- for m in product.media -%}
-      {%- if m.preview_image and m.preview_image.src == current_variant.image.src -%}
+    {%- for image in product.images -%}
+      {%- if image.src == current_variant.image.src -%}
         {%- assign start_index = forloop.index0 -%}
-        {%- break -%}
       {%- endif -%}
     {%- endfor -%}
   {%- endif -%}
 {%- endif -%}
-
 <div class="max-w-xl m-auto">
-  <div
-    class="glide"
-    id="esProductGlide"
-    data-start-index="{{ start_index }}"
-    data-esProductGlideCount="{{ product.media.size }}"
-  >
+  <div class="glide" id="esProductGlide" data-start-index="{{ start_index }}" data-esProductGlideCount="{{ product.images.size }}">
     <div class="glide__track" data-glide-el="track">
       <ul class="glide__slides">
-        {% for media in product.media %}
+        {% for image in product.images %}
           <li class="glide__slide">
             <div class="relative group">
-              {% case media.media_type %}
-                {% when 'image' %}
-                  <img
-                    src="{{ media | img_url: '900x900' }}"
-                    alt="{{ media.alt | escape }}"
-                    class="w-full max-h-[576px] object-contain m-auto hover:cursor-pointer"
-                    width="576"
-                    height="576"
-                  >
-
-                {% when 'video' %}
-                  <div class="media-wrap">
-                    {%- assign poster = media.preview_image | image_url: width: 1600 -%}
-                    {%- assign mp4 = media.sources | where: 'format', 'mp4' | sort: 'height' | last -%}
-                    <video
-                      controls
-                      preload="metadata"
-                      playsinline
-                      poster="{{ poster }}"
-                    >
-                      {% if mp4 and mp4.url %}
-                        <source src="{{ mp4.url }}" type="video/mp4">
-                      {% endif %}
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-
-                {% when 'external_video' %}
-                  <div class="media-wrap">
-                    {{ media | media_tag }}
-                  </div>
-
-                {% else %}
-                  <div class="media-wrap">
-                    {{ media | media_tag }}
-                  </div>
-              {% endcase %}
-
+              <img
+                src="{{ image | img_url: '900x900' }}"
+                alt="{{ image.alt | escape }}"
+                class="w-full max-h-[576px] object-contain m-auto"
+                width="576"
+                height="576"
+              >
               <!-- Zoom overlay button (appears on hover) -->
               <button
                 type="button"
-                class="slide-zoom-btn absolute top-3 right-3 opacity-0 group-hover:!opacity-100 group-focus:opacity-100 transition bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-9 h-9 flex items-center justify-center text-white z-40 m-tooltip--left hover:cursor-pointer"
-                aria-label="Open fullscreen"
+                class="slide-zoom-btn absolute top-3 right-3 opacity-0 group-hover:!opacity-100 group-focus:opacity-100 transition bg-black bg-opacity-60 hover:bg-opacity-80 rounded-full w-9 h-9 flex items-center justify-center text-white z-40 m-tooltip--left"
+                data-slide-index="{{ forloop.index0 }}"
+                aria-label="Zoom image"
               >
                 {% render 'icon-svg-zoom-in', class: 'size-5 pointer-events-none text-white' %}
                 <span class="m-tooltip__content hidden bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap shadow z-50">
-                  View fullscreen
+                  Zoom in
                 </span>
               </button>
             </div>
@@ -89,50 +50,33 @@
 
     <!-- prev/next arrows (absolute, vertically centered) -->
     <div data-glide-el="controls">
-      <button
-        class="product-gallery-arrow product-gallery-arrow--left focus-visible:outline-none"
-        data-glide-dir="<"
-        aria-label="Previous"
-      >
+      <button class="product-gallery-arrow product-gallery-arrow--left focus-visible:outline-none" data-glide-dir="<" aria-label="Previous">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button
-        class="product-gallery-arrow product-gallery-arrow--right focus-visible:outline-none"
-        data-glide-dir=">"
-        aria-label="Next"
-      >
+      <button class="product-gallery-arrow product-gallery-arrow--right focus-visible:outline-none" data-glide-dir=">" aria-label="Next">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
     </div>
-
     <!-- Thumbnails carousel -->
     {% if show_thumbs != false %}
       <div class="mt-3" data-glide-el="controls[nav]">
         <div class="glide product-thumbs" id="esProductThumbs">
           <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
-              {% for media in product.media %}
+              {% for image in product.images %}
                 <li class="glide__slide px-1 max-w-32">
-                  <button class="thumb-btn relative focus:outline-none" data-thumb-index="{{ forloop.index0 }}">
+                  <button class="thumb-btn focus:outline-none" data-thumb-index="={{ forloop.index0 }}">
                     <img
-                      src="{{ media.preview_image | image_url: width: 250, height: 250, crop: 'center' }}"
-                      alt="{{ media.alt | escape }}"
-                      class="rounded w-[110px] h-[110px] object-cover m-auto"
+                      src="{{ image | img_url: '250x250' }}"
+                      alt="{{ image.alt | escape }}"
+                      class="rounded max-h-[110px] object-contain m-auto"
                       width="110"
                       height="110"
                     >
-
-                    {% if media.media_type == 'video' or media.media_type == 'external_video' %}
-                      <span class="thumb-play-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-                          <polygon points="5,3 19,12 5,21" />
-                        </svg>
-                      </span>
-                    {% endif %}
                   </button>
                 </li>
               {% endfor %}
@@ -150,46 +94,15 @@
     <div class="glide glide-lightbox" id="product-lightbox-glide">
       <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
-          {% for media in product.media %}
+          {% for image in product.images %}
             <li class="glide__slide">
-              {% case media.media_type %}
-                {% when 'image' %}
-                  <img
-                    src="{{ media | img_url: '1600x1600' }}"
-                    alt="{{ media.alt | escape }}"
-                    class="w-auto h-auto max-h-[90vh] m-auto"
-                    width="1600"
-                    height="1600"
-                  >
-
-                {% when 'video' %}
-                  <div class="lb-media-wrap">
-                    {%- assign poster = media.preview_image | image_url: width: 1600 -%}
-                    {%- assign mp4 = media.sources | where: 'format', 'mp4' | sort: 'height' | last -%}
-                    <video
-                      class="lb-video"
-                      controls
-                      playsinline
-                      preload="metadata"
-                      poster="{{ poster }}"
-                    >
-                      {% if mp4 and mp4.url %}
-                        <source src="{{ mp4.url }}" type="video/mp4">
-                      {% endif %}
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-
-                {% when 'external_video' %}
-                  <div class="lb-media-wrap">
-                    {{ media | media_tag }}
-                  </div>
-
-                {% else %}
-                  <div class="lb-media-wrap">
-                    {{ media | media_tag }}
-                  </div>
-              {% endcase %}
+              <img
+                src="{{ image | img_url: '1200x1200' }}"
+                alt="{{ image.alt | escape }}"
+                class="w-auto h-auto max-h-[90vh] m-auto"
+                height="900"
+                width="900"
+              >
             </li>
           {% endfor %}
         </ul>
@@ -198,24 +111,21 @@
       <!-- lightbox close (positioned top-right of container) -->
       <button
         id="product-lightbox-close"
-        class="absolute top-2 right-2 text-white text-2xl bg-black bg-opacity-40 rounded-full w-8 h-8 flex items-center justify-center hover:cursor-pointer"
-        aria-label="Close"
+        class="absolute top-2 right-2 text-white text-2xl bg-black bg-opacity-40 rounded-full w-8 h-8 flex items-center justify-center"
       >
         &times;
       </button>
-
-      <div data-glide-el="controls">
-        <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
+      <!-- optional prev/next for lightbox -->
+      <button class="product-gallery-arrow product-gallery-arrow--left" data-glide-dir="<" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="product-gallery-arrow product-gallery-arrow--right" data-glide-dir=">" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
   </div>
 </div>
