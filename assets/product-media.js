@@ -7,6 +7,132 @@ document.addEventListener("DOMContentLoaded", function () {
     ? parseInt(totalSlidesEl.getAttribute("data-esProductGlideCount"), 10)
     : null;
 
+  // =========================
+  // ✅ YOUTUBE IFRAME SUPPORT
+  // =========================
+  let ytApiReady = false;
+  const ytPlayers = new Map(); // iframe -> YT.Player
+
+  function loadYouTubeAPIOnce() {
+    if (window.YT && window.YT.Player) {
+      ytApiReady = true;
+      return;
+    }
+    if (document.querySelector('script[data-yt-iframe-api="1"]')) return;
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    tag.async = true;
+    tag.setAttribute("data-yt-iframe-api", "1");
+    document.head.appendChild(tag);
+
+    // If another script sets this, we chain it safely.
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function () {
+      ytApiReady = true;
+      try { if (typeof prev === "function") prev(); } catch (e) {}
+    };
+  }
+
+  function isYouTubeIframe(iframe) {
+    if (!iframe) return false;
+    const src = (iframe.getAttribute("src") || "").toLowerCase();
+    return src.includes("youtube.com/embed") || src.includes("youtube-nocookie.com/embed");
+  }
+
+  function getActiveYouTubeIframe(rootSelector) {
+    try {
+      const active = document.querySelector(rootSelector + " .glide__slide--active");
+      if (!active) return null;
+      const iframe = active.querySelector("iframe");
+      if (iframe && isYouTubeIframe(iframe)) return iframe;
+    } catch (e) {}
+    return null;
+  }
+
+  function getOrCreateYTPlayer(iframe) {
+    if (!iframe) return null;
+    if (ytPlayers.has(iframe)) return ytPlayers.get(iframe);
+
+    if (!ytApiReady || !(window.YT && window.YT.Player)) return null;
+
+    // Ensure enablejsapi=1 so postMessage API works reliably
+    try {
+      const src = iframe.getAttribute("src") || "";
+      if (src && !src.includes("enablejsapi=1")) {
+        const glue = src.includes("?") ? "&" : "?";
+        iframe.setAttribute("src", src + glue + "enablejsapi=1");
+      }
+    } catch (e) {}
+
+    try {
+      const player = new window.YT.Player(iframe, {
+        events: {
+          onReady: function () {
+            // no-op
+          }
+        }
+      });
+      ytPlayers.set(iframe, player);
+      return player;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function playYouTubeIn(rootSelector) {
+    const iframe = getActiveYouTubeIframe(rootSelector);
+    if (!iframe) return;
+
+    loadYouTubeAPIOnce();
+
+    // If API not ready yet, retry shortly (first time only)
+    if (!ytApiReady) {
+      setTimeout(() => playYouTubeIn(rootSelector), 250);
+      return;
+    }
+
+    const p = getOrCreateYTPlayer(iframe);
+    if (!p) {
+      // fallback: send postMessage directly (works if enablejsapi=1)
+      try {
+        iframe.contentWindow.postMessage(
+          JSON.stringify({ event: "command", func: "playVideo", args: [] }),
+          "*"
+        );
+      } catch (e) {}
+      return;
+    }
+
+    try { p.playVideo(); } catch (e) {}
+  }
+
+  function pauseAllYouTubeIn(selector) {
+    try {
+      document.querySelectorAll(selector + " iframe").forEach((iframe) => {
+        if (!isYouTubeIframe(iframe)) return;
+
+        // Try player API
+        const p = ytPlayers.get(iframe);
+        if (p) {
+          try { p.pauseVideo(); } catch (e) {}
+          return;
+        }
+
+        // Fallback postMessage
+        try {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+            "*"
+          );
+        } catch (e) {}
+      });
+    } catch (e) {}
+  }
+
+  // =========================
+  // EXISTING FUNCTIONS
+  // =========================
   function syncThumbs(idx) {
     if (!thumbs) return;
 
@@ -59,8 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       if (thumbs && typeof thumbs.destroy === "function") thumbs.destroy();
     } catch (e) {}
-    // clear any attached instance references on the DOM so external modules
-    // that call element._glideInstance can detect that the instance no longer exists
+
     try {
       const mainElNow = document.getElementById("esProductGlide");
       if (mainElNow && mainElNow._glideInstance) mainElNow._glideInstance = null;
@@ -69,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const thumbElNow = document.getElementById("esProductThumbs");
       if (thumbElNow && thumbElNow._glideInstance) thumbElNow._glideInstance = null;
     } catch (e) {}
+
     try { if (main) main.destroy(); } catch (e) {}
     try { if (thumbs) thumbs.destroy(); } catch (e) {}
     main = null;
@@ -89,9 +215,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function pauseAllVideos() {
-    // pause videos both in main slider and lightbox
     pauseVideosIn("#esProductGlide");
     pauseVideosIn("#product-lightbox");
+
+    // ✅ also pause all youtube iframes
+    pauseAllYouTubeIn("#esProductGlide");
+    pauseAllYouTubeIn("#product-lightbox");
   }
 
   function initGlides() {
@@ -130,19 +259,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const idx = main.index;
       syncThumbs(idx);
 
-      // If the lightbox is open, do not autoplay the small/background video
       if (isLightboxOpen()) return;
 
+      // ✅ autoplay MP4 video
       try {
         const activeVideo = document.querySelector(
           "#esProductGlide .glide__slide--active video"
         );
         if (activeVideo) {
-          // If you need autoplay to be reliable across browsers, uncomment the next line:
-          // activeVideo.muted = true;
           activeVideo.play().catch(() => {});
+          return; // if mp4 exists, prefer it
         }
       } catch (e) {}
+
+      // ✅ autoplay YouTube embed if present
+      playYouTubeIn("#esProductGlide");
     });
 
     // MAIN: pause when leaving slide (and also pause any lightbox videos just in case)
@@ -161,22 +292,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // expose instances on DOM elements so other scripts can call go() directly
     try {
-      const mainElNow = document.getElementById("esProductGlide");
-      if (mainElNow) mainElNow._glideInstance = main;
+      const mainElNow2 = document.getElementById("esProductGlide");
+      if (mainElNow2) mainElNow2._glideInstance = main;
     } catch (e) {}
     try {
-      const thumbElNow = document.getElementById("esProductThumbs");
-      if (thumbElNow) thumbElNow._glideInstance = thumbs;
-    } catch (e) {}
-
-    // expose instances on DOM elements so other scripts can call go() directly
-    try {
-      const mainElNow = document.getElementById("esProductGlide");
-      if (mainElNow) mainElNow._glideInstance = main;
-    } catch (e) {}
-    try {
-      const thumbElNow = document.getElementById("esProductThumbs");
-      if (thumbElNow) thumbElNow._glideInstance = thumbs;
+      const thumbElNow2 = document.getElementById("esProductThumbs");
+      if (thumbElNow2) thumbElNow2._glideInstance = thumbs;
     } catch (e) {}
 
     try {
@@ -200,7 +321,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (!lb || !lbGlideEl) return;
 
-          // Pause any playing videos before opening fullscreen
           pauseAllVideos();
 
           lb.classList.remove("hidden");
@@ -218,43 +338,46 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             ).mount();
 
-            // LIGHTBOX: keep main in sync + autoplay fullscreen video (not the small one)
             lbGlideEl._glideInstance.on("run.before", function () {
               pauseAllVideos();
             });
 
             lbGlideEl._glideInstance.on("run.after", function () {
               try {
-                // keep main carousel synced to same media index
                 main.go("=" + lbGlideEl._glideInstance.index);
               } catch (e) {}
 
-              // autoplay the fullscreen active slide video (if any)
+              // ✅ autoplay MP4 video in lightbox
               try {
                 const activeLbVideo = document.querySelector(
                   "#product-lightbox .glide__slide--active video"
                 );
                 if (activeLbVideo) {
-                  // If you need autoplay to be reliable across browsers, uncomment:
-                  // activeLbVideo.muted = true;
                   activeLbVideo.play().catch(() => {});
+                  return;
                 }
               } catch (e) {}
+
+              // ✅ autoplay YouTube embed in lightbox
+              playYouTubeIn("#product-lightbox");
             });
           } else {
             lbGlideEl._glideInstance.go("=" + idx);
 
-            // When re-opening, try autoplay if current slide is a video
             setTimeout(() => {
+              // ✅ try MP4 first
               try {
                 const activeLbVideo = document.querySelector(
                   "#product-lightbox .glide__slide--active video"
                 );
                 if (activeLbVideo) {
-                  // activeLbVideo.muted = true;
                   activeLbVideo.play().catch(() => {});
+                  return;
                 }
               } catch (e) {}
+
+              // ✅ then YouTube
+              playYouTubeIn("#product-lightbox");
             }, 0);
           }
         };
@@ -278,7 +401,6 @@ document.addEventListener("DOMContentLoaded", function () {
           if (!slideEl) return;
           if (slideEl.closest("#esProductThumbs")) return;
 
-          // Only open on images (so clicking a playing video doesn't pop fullscreen unexpectedly)
           if (!clicked.closest("img")) return;
           if (clicked.closest("a")) return;
 
@@ -295,7 +417,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  // click thumbnails to navigate main
   document.addEventListener("click", function (e) {
     const btn = e.target.closest("#esProductThumbs .thumb-btn");
     if (!btn) return;
@@ -322,8 +443,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (lbClose && lb)
     lbClose.addEventListener("click", function () {
-      // pause fullscreen videos when closing
       pauseVideosIn("#product-lightbox");
+      pauseAllYouTubeIn("#product-lightbox");
 
       lb.classList.add("hidden");
       lb.classList.remove("flex");
@@ -339,6 +460,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lb.addEventListener("click", function (e) {
       if (e.target === lb) {
         pauseVideosIn("#product-lightbox");
+        pauseAllYouTubeIn("#product-lightbox");
 
         lb.classList.add("hidden");
         lb.classList.remove("flex");
