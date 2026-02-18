@@ -61,7 +61,23 @@
 
                 {% when 'external_video' %}
                   <div class="media-wrap">
-                    {{ media | media_tag }}
+                    {%- comment -%}
+                      IMPORTANT:
+                      - enablejsapi=1 lets JS pause/play reliably
+                      - mute=1 allows autoplay on more browsers
+                      - autoplay=0 here; your JS will trigger play when slide becomes active
+                    {%- endcomment -%}
+                    {%- assign ext_url = media
+                      | external_video_url:
+                        autoplay: 0,
+                        mute: 1,
+                        playsinline: 1,
+                        controls: 1,
+                        rel: 0,
+                        modestbranding: 1,
+                        enablejsapi: 1
+                    -%}
+                    {{ ext_url | external_video_tag: class: 'product-external-video' }}
                   </div>
 
                 {% else %}
@@ -182,7 +198,17 @@
 
                 {% when 'external_video' %}
                   <div class="lb-media-wrap">
-                    {{ media | media_tag }}
+                    {%- assign ext_url_lb = media
+                      | external_video_url:
+                        autoplay: 0,
+                        mute: 1,
+                        playsinline: 1,
+                        controls: 1,
+                        rel: 0,
+                        modestbranding: 1,
+                        enablejsapi: 1
+                    -%}
+                    {{ ext_url_lb | external_video_tag: class: 'lb-external-video' }}
                   </div>
 
                 {% else %}
