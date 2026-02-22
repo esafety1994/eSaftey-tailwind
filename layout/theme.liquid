@@ -166,7 +166,7 @@
       <link rel="shortcut icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
-    {{ content_for_header }}
+    {%- if tinyscript -%}{{ content_for_header }}{%- else -%}{% render 'tiny-script-control' %}{%- endif -%}
 
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
