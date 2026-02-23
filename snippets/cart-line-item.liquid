@@ -19,9 +19,9 @@
   data-has-addons="{{ has_addons }}"
 >
   <!-- Product column -->
-  <div class="flex items-start space-x-4">
+  <div class="flex items-start space-x-4 flex-wrap w-full">
     {% if item.image %}
-      <a href="{{ item.url }}" class="inline-block">
+      <a href="{{ item.url }}" class="size-28 flex-shrink-0">
         <img
           src="{{ item.image | img_url: '300x' }}"
           alt="{{ item.title }}"
@@ -31,10 +31,10 @@
         >
       </a>
     {% else %}
-      <div class="size-28 bg-gray-100 rounded"></div>
+      <div class="size-28 bg-gray-100 rounded flex-shrink-0"></div>
     {% endif %}
 
-    <div class="flex-1">
+    <div class="max-w-3xs">
       <div class="text-sm font-semibold">
         <a href="{{ item.url }}" class="hover:underline">{{ item.title }}</a>
       </div>

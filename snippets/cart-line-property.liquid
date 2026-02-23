@@ -10,22 +10,18 @@
     {%- if p.first contains 'fixing' or p.first == 'fixing_id' or p.first == 'fixing id' -%}
       {%- continue -%}
     {%- endif -%}
-      {%- assign property_first_char = p.first | slice: 0 -%}
+    {%- assign property_first_char = p.first | slice: 0 -%}
     <li
-      class="m-cart-item__property m:text-sm{% if property_size == 0 or p.last == blank or property_first_char == '_' %} m:hidden{% endif %}"
+      class="flex flex-col min-w-0 m-cart-item__property m:text-sm{% if property_size == 0 or p.last == blank or property_first_char == '_' %} m:hidden{% endif %}"
       data-cart-item-property
     >
-      <span data-cart-item-property-name>{{ p.first }} </span>
+      <span data-cart-item-property-name>{{ p.first }} : </span>
 
       {%- comment -%}
         Check if there was an uploaded file associated
       {%- endcomment -%}
-      <span data-cart-item-property-value>
-        {%- if p.last contains '/uploads/' -%}
-          <a href="{{ p.last }}" data-role="product-upload" target="_blank">{{ p.last | split: '/' | last }}</a>
-        {%- else -%}
-          {{ p.last }}
-        {%- endif -%}
+      <span data-cart-item-property-value class="truncate block">
+        {{ p.last }}
       </span>
     </li>
     {%- if p.first contains 'optionSetId' -%}
