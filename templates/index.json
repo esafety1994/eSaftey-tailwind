@@ -12,6 +12,18 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
+        "slider_item_KbcYQL": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/relocation-web-banner_220a442e-2e1e-421f-9991-bf0bdc0b641c.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://pages/new-installation-page"
+          }
+        },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
@@ -35,50 +47,12 @@
             "button_text": "",
             "button_link": "shopify://pages/new-installation-page"
           }
-        },
-        "slider_item_UjBni3": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "single_image": false,
-            "content_position": "right",
-            "title": "SUMMER 2025",
-            "description": "<p>New Arrival Collection</p>",
-            "button_text": "Explore Now",
-            "button_link": "shopify://collections/bike-storage-racks"
-          }
-        },
-        "slider_item_TAKEQ8": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "single_image": false,
-            "content_position": "left",
-            "title": "SUMMER 2025",
-            "description": "",
-            "button_text": "Explore Now",
-            "button_link": "shopify://collections/bike-storage-racks"
-          }
-        },
-        "slider_item_jwUMtr": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "single_image": false,
-            "content_position": "left",
-            "title": "SUMMER 2025",
-            "description": "<p>New Arrival Collection</p>",
-            "button_text": "Explore Now",
-            "button_link": "shopify://collections/bike-storage-racks"
-          }
         }
       },
       "block_order": [
+        "slider_item_KbcYQL",
         "slider_item_wmYUEQ",
-        "slider_item_GK847N",
-        "slider_item_UjBni3",
-        "slider_item_TAKEQ8",
-        "slider_item_jwUMtr"
+        "slider_item_GK847N"
       ],
       "settings": {}
     },
