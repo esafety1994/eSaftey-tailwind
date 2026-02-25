@@ -169,13 +169,6 @@
           "show_empty_stars": false
         }
       },
-      "6868439170666289573": {
-        "type": "shopify://apps/foxkit-sales-boost/blocks/foxkit-theme-helper/13f41957-6b79-47c1-99a2-e52431f06fff",
-        "disabled": true,
-        "settings": {
-          "enable_ajax_atc": true
-        }
-      },
       "10605408327587305396": {
         "type": "shopify://apps/eg-auto-add-to-cart/blocks/app-embed/0f7d4f74-1e89-4820-aec4-6564d7e535d2",
         "disabled": false,
@@ -190,6 +183,11 @@
       },
       "7916451724185839711": {
         "type": "shopify://apps/avis-product-options/blocks/avisplus-product-options/e076618e-4c9c-447f-ad6d-4f1577799c29",
+        "disabled": false,
+        "settings": {}
+      },
+      "6279071938380501511": {
+        "type": "shopify://apps/powerful-form-builder/blocks/app-embed/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
         "disabled": false,
         "settings": {}
       }
