@@ -14,19 +14,38 @@
       "name": "Page Title",
       "settings": {}
     },
-    "main": {
-      "type": "page",
-      "settings": {}
-    },
     "breadcrumb_WrJrMP": {
       "type": "breadcrumb",
       "name": "Breadcrumb",
       "settings": {}
+    },
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "1771978652b97dcae3": {
+      "type": "apps",
+      "blocks": {
+        "powerful_form_builder_app_block_hR8abK": {
+          "type": "shopify://apps/powerful-form-builder/blocks/app-block/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
+          "settings": {
+            "shortcode": ""
+          }
+        }
+      },
+      "block_order": [
+        "powerful_form_builder_app_block_hR8abK"
+      ],
+      "settings": {
+        "heading": "",
+        "custom_class": ""
+      }
     }
   },
   "order": [
     "title",
     "breadcrumb_WrJrMP",
-    "main"
+    "main",
+    "1771978652b97dcae3"
   ]
 }
