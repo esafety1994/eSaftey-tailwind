@@ -1,25 +1,33 @@
+{%- liquid
+  assign property_size = item.properties | size
+  assign properties =
+  if property_size > 0
+    assign properties = item.properties
+  endif
+-%}
 <ul>
   {%- for p in properties -%}
-
     {%- if p.first contains 'fixing' or p.first == 'fixing_id' or p.first == 'fixing id' -%}
       {%- continue -%}
     {%- endif -%}
+      {%- assign property_first_char = p.first | slice: 0 -%}
+    <li
+      class="m-cart-item__property m:text-sm{% if property_size == 0 or p.last == blank or property_first_char == '_' %} m:hidden{% endif %}"
+      data-cart-item-property
+    >
+      <span data-cart-item-property-name>{{ p.first }} </span>
 
-    {%- assign property_first_char = p.first | slice: 0 -%}
-
-    {%- if p.last != blank and property_first_char != '_' -%}
-      <li
-        class="flex flex-col min-w-0 m-cart-item__property m:text-sm"
-        data-cart-item-property
-      >
-        <span data-cart-item-property-name>{{ p.first }} : </span>
-
-        <span data-cart-item-property-value class="truncate block">
+      {%- comment -%}
+        Check if there was an uploaded file associated
+      {%- endcomment -%}
+      <span data-cart-item-property-value>
+        {%- if p.last contains '/uploads/' -%}
+          <a href="{{ p.last }}" data-role="product-upload" target="_blank">{{ p.last | split: '/' | last }}</a>
+        {%- else -%}
           {{ p.last }}
-        </span>
-      </li>
-    {%- endif -%}
-
+        {%- endif -%}
+      </span>
+    </li>
     {%- if p.first contains 'optionSetId' -%}
       <li class="m-cart-item__property tpo-product-option">
         <div
@@ -32,6 +40,5 @@
         ></div>
       </li>
     {%- endif -%}
-
   {%- endfor -%}
 </ul>
