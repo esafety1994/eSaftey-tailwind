@@ -32,7 +32,7 @@
         "announcement_content_AdfwYt"
       ],
       "settings": {
-        "show-announcement": false
+        "show-announcement": true
       }
     }
   },
