@@ -17,7 +17,17 @@
           {% render 'icon-trash-svg', class: 'size-4' %}
         {% endif %}
       </button>
-      <span class="qty w-12 text-center border-0" aria-label="Quantity">{{ qty }}</span>
+      <input
+        type="number"
+        min="0"
+        class="qty w-12 text-center border-0 bg-transparent"
+        aria-label="Quantity"
+        value="{{ qty }}"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        data-quantity="{{ qty }}"
+        data-esinput
+      />
       <button
         type="button"
         class="inc w-8 h-8 flex items-center justify-center text-gray-700 hover:text-bg-light-red cursor-pointer"

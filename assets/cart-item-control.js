@@ -4,89 +4,108 @@ class CartQtyControl extends HTMLElement {
     this.plusButton = this.querySelector("[data-plus]");
     this.minusButton = this.querySelector("[data-minus]");
     this.removeBtn = this.querySelector("[data-remove]");
+    this.qtyInput = this.querySelector('[data-esinput]');
     this.isAddon = this.dataset.isAddon || false;
+
+    // bound handlers for attach/detach
+    this._onPlus = this._onPlus || this.handleClick.bind(this);
+    this._onMinus = this._onMinus || this.handleClick.bind(this);
+    this._onRemove = this._onRemove || this.handleClick.bind(this);
+    this._onQtyChange = this._onQtyChange || this.handleInputChange.bind(this);
+    console.log('cart item loaded');
+    
   }
 
   connectedCallback() {
-    this.plusButton.addEventListener("click", this.handleClick.bind(this));
-    this.minusButton.addEventListener("click", this.handleClick.bind(this));
-    if (this.removeBtn)
-      this.removeBtn.addEventListener("click", this.handleClick.bind(this));
+    if (this.plusButton) this.plusButton.addEventListener("click", this._onPlus);
+    if (this.minusButton) this.minusButton.addEventListener("click", this._onMinus);
+    if (this.qtyInput) this.qtyInput.addEventListener('change', this._onQtyChange);
+    if (this.removeBtn) this.removeBtn.addEventListener("click", this._onRemove);
+  }
+
+  // Shared cart update helper
+  updateCart(updates) {
+    try {
+      const formData = { updates: updates, sections: "esaftey-cart-drawer,cart-count" };
+      this.setLoading(true);
+      return fetch(window.Shopify.routes.root + "cart/update.js", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (window.location && window.location.pathname && window.location.pathname.startsWith("/cart")) {
+            try { window.location.reload(); return; } catch (e) {}
+          }
+          document.documentElement.dispatchEvent(new CustomEvent('cart:render', { detail: data, bubbles: true }));
+          this.setLoading(false);
+          return data;
+        })
+        .catch((err) => {
+          console.error('Error updating cart', err);
+          this.setLoading(false);
+          throw err;
+        });
+    } catch (e) {
+      this.setLoading(false);
+      return Promise.reject(e);
+    }
   }
 
   handleClick(event) {
-    // go up one level and find a child `.fixings-panel`, then read its data-addon-line-key
-    let addonLineKey = null;
-    let itemKey = this.dataset.key;
+    try {
+      let itemKey = this.dataset.key;
+      let qty = 0;
+      const src = event.currentTarget || event.target;
+      qty = parseInt((src && src.dataset && src.dataset.quantity) || 0, 10) || 0;
 
-    if (this.isAddon) {
-      const addonLineKeyElement = document.querySelector(
-        `[data-addon-parent_key="${itemKey}"]`
-      );
-      if (addonLineKeyElement) {
-        addonLineKey = addonLineKeyElement.getAttribute("data-addon-line-key");
+      // update numeric input UI so the control stays in sync
+      if (this.qtyInput) {
+        try { this.qtyInput.value = qty; } catch (e) {}
       }
-    }
 
-    let updates = {
-      [itemKey]: event.target.dataset.quantity | 0,
-    };
+      let updates = {};
+      updates[itemKey] = qty;
 
-    if (addonLineKey) {
-      updates[addonLineKey] = event.target.dataset.quantity; // remove the addon item
-    }
-
-    const formData = {
-      updates: updates,
-      sections: "esaftey-cart-drawer,cart-count",
-    };
-
-    this.setLoading(true);
-    console.log("Sending cart update:", formData);
-    fetch(window.Shopify.routes.root + "cart/update.js", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        console.log("Response received:", response);
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Item quantity updated:", data);
-        // if we're currently on the cart page, reload so the canonical cart view is updated
-        if (
-          window.location &&
-          window.location.pathname &&
-          window.location.pathname.startsWith("/cart")
-        ) {
-          try {
-            window.location.reload();
-            return;
-          } catch (e) {
-            /* ignore */
-          }
+      if (this.isAddon) {
+        const addonLineKeyElement = document.querySelector(`[data-addon-parent_key="${itemKey}"]`);
+        if (addonLineKeyElement) {
+          const addonLineKey = addonLineKeyElement.getAttribute('data-addon-line-key');
+          if (addonLineKey) updates[addonLineKey] = qty;
         }
-        // otherwise dispatch render event for drawer/mini-cart updates
-        document.documentElement.dispatchEvent(
-          new CustomEvent("cart:render", { detail: data, bubbles: true })
-        );
-        this.setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      }
+
+      this.updateCart(updates).catch(() => {});
+    } catch (e) { console.error(e); }
+  }
+
+  handleInputChange(event) {
+    try {
+      const raw = (this.qtyInput && this.qtyInput.value) || '';
+      const value = parseInt(String(raw).replace(/[^0-9]/g, ''), 10);
+      const qty = isNaN(value) ? 0 : value;
+      let itemKey = this.dataset.key;
+      let updates = {};
+      updates[itemKey] = qty;
+      if (this.isAddon) {
+        const addonLineKeyElement = document.querySelector(`[data-addon-parent_key="${itemKey}"]`);
+        if (addonLineKeyElement) {
+          const addonLineKey = addonLineKeyElement.getAttribute('data-addon-line-key');
+          if (addonLineKey) updates[addonLineKey] = qty;
+        }
+      }
+      this.updateCart(updates).catch(() => {});
+    } catch (e) { console.error(e); }
   }
 
   disconnectedCallback() {
-    this.removeEventListener("click", this.onClick);
-    if (this.removeBtn)
-      this.removeBtn.removeEventListener(
-        "click",
-        this.removeItemLine.bind(this)
-      );
+    try {
+      if (this.plusButton && this._onPlus) this.plusButton.removeEventListener('click', this._onPlus);
+      if (this.minusButton && this._onMinus) this.minusButton.removeEventListener('click', this._onMinus);
+      if (this.removeBtn && this._onRemove) this.removeBtn.removeEventListener('click', this._onRemove);
+      if (this.qtyInput && this._onQtyChange) this.qtyInput.removeEventListener('change', this._onQtyChange);
+    } catch (e) {}
   }
 
   setLoading(loading) {
