@@ -27,17 +27,30 @@
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/Giveaway-Web-Banner-Drink-Bottle.jpg",
+            "background": "shopify://shop_images/monthly-sale_web-banner.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": "shopify://products/esafetys-bottle"
+            "button_link": "shopify://blogs/uncategorized/march-blowout"
+          }
+        },
+        "slider_item_Y9N7BV": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/Giveaway-Web-Banner-T-Shirt.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://blogs/esafety-blogs/monthly-giveaway-esafety-branded-t-shirts"
           }
         },
         "slider_item_GK847N": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Install_Banner_1.webp",
             "single_image": true,
@@ -52,6 +65,7 @@
       "block_order": [
         "slider_item_KbcYQL",
         "slider_item_wmYUEQ",
+        "slider_item_Y9N7BV",
         "slider_item_GK847N"
       ],
       "settings": {}
