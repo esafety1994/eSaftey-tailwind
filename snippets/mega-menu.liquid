@@ -24,6 +24,7 @@
                 data-has-children="true"
                 data-index="{{ ns_outer }}"
                 data-title="{{ item.title }}"
+                id="mega-link-{{ item.id }}"
               >
                 {% if obj and obj.metafields.menu.icon %}
                   <img
@@ -99,7 +100,22 @@
                     {% endif %}
                   </li>
                 {% endfor %}
-              </ul>
+              </ul>             
+
+              {% comment %} Example of adding a custom image for a specific menu item. In this case, we check if the root item is "Traffic, Road & Safety Signs" and show an image linking to a specific product. You can customize this logic as needed. {% endcomment %}
+
+              {% if item.handle == 'traffic-road-safety-signs' %}
+
+              <div class="p-4">
+                <a href="/products/custom-safety-signage" class="block max-w-xs">
+                  <img
+                    src="https://esafetysupplies.com.au/cdn/shop/files/CUSTOMSWINGSTAND_900x900.jpg?v=1761092513"
+                    alt="Custom Safety Signage"
+                    class="w-40 object-cover"
+                  >
+                </a>
+              </div>
+              {% endif %}
             </div>
           {% endif %}
         </li>
