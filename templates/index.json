@@ -15,6 +15,18 @@
         "slider_item_KbcYQL": {
           "type": "slider_item",
           "settings": {
+            "background": "shopify://shop_images/web-banner-closure-yellow.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "slider_item_G4KkCk": {
+          "type": "slider_item",
+          "settings": {
             "background": "shopify://shop_images/relocation-web-banner_220a442e-2e1e-421f-9991-bf0bdc0b641c.jpg",
             "single_image": true,
             "content_position": "left",
@@ -64,6 +76,7 @@
       },
       "block_order": [
         "slider_item_KbcYQL",
+        "slider_item_G4KkCk",
         "slider_item_wmYUEQ",
         "slider_item_Y9N7BV",
         "slider_item_GK847N"
