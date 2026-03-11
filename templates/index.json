@@ -14,6 +14,7 @@
       "blocks": {
         "slider_item_KbcYQL": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/relocation-closed-details.jpg",
             "single_image": true,
