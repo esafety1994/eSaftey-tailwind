@@ -119,14 +119,6 @@
       "type": "shipping-calculator",
       "name": "Shipping calculator",
       "settings": {}
-    },
-    "custom_liquid_cPtJym": {
-      "type": "custom-liquid",
-      "name": "Custom liquid",
-      "settings": {
-        "custom_liquid": "<script>\n    document.addEventListener(\"DOMContentLoaded\", function() {\n        //update avis options\n       // Function to move the element when it appears\nfunction moveAVPOptions() {\n  const avpElement = document.querySelector('.avpoptions-container__v2');\n  const targetElement = document.querySelector('.main-product__block.main-product__block-variant_picker');\n\n  if (avpElement && targetElement) {\n    targetElement.parentNode.insertBefore(avpElement, targetElement);\n    return true;\n  }\n  return false;\n}\n\n// Use MutationObserver to detect DOM changes\nconst observer = new MutationObserver(() => {\n  if (moveAVPOptions()) {\n    observer.disconnect(); // Stop observing once the element is moved\n  }\n});\n\n// Start observing the body for subtree changes\nobserver.observe(document.body, {\n  childList: true,\n  subtree: true\n});\n\n// Also try immediately in case it's already there\nmoveAVPOptions();\n\n    }); \n</script>",
-        "custom_class": ""
-      }
     }
   },
   "order": [
@@ -135,7 +127,6 @@
     "product_info_tabs",
     "1768442681216c6726",
     "product_recommendation_a4TCDB",
-    "shipping_calculator_f6crqN",
-    "custom_liquid_cPtJym"
+    "shipping_calculator_f6crqN"
   ]
 }
