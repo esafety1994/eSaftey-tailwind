@@ -16,13 +16,13 @@
           "type": "slider_item",
           "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/relocation-closed-details.jpg",
+            "background": "shopify://shop_images/April-product-Web-Banner.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": ""
+            "button_link": "shopify://collections/all"
           }
         },
         "slider_item_G4KkCk": {
