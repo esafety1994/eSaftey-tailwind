@@ -8,7 +8,7 @@ class VariantPicker extends HTMLElement {
   }
 
   connectedCallback() {
-    this.variantSelector = this.querySelectorAll('input[type="radio"], select');
+    this.variantSelector = this.querySelectorAll('.variant-picker__option input[type="radio"], .variant-picker__option select');
     this.handleChange = this.onVariantChange.bind(this);
 
     // parse variants JSON if provided on the element
@@ -47,6 +47,9 @@ class VariantPicker extends HTMLElement {
     });
   }
   onVariantChange(event) {
+    if (!event.currentTarget.closest('.variant-picker__option')) {
+        return; // Ignore APO and other custom options
+    }
     const input = event.currentTarget;
     // Compute the full selected option values and try to resolve the correct
     // variant id for the current combination. Fall back to the input value
