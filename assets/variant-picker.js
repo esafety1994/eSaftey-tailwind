@@ -47,14 +47,19 @@ class VariantPicker extends HTMLElement {
     });
   }
   onVariantChange(event) {
-    if (!event.currentTarget.closest('.variant-picker__option')) {
-        return; // Ignore APO and other custom options
-    }
+    
     const input = event.currentTarget;
-    // Compute the full selected option values and try to resolve the correct
-    // variant id for the current combination. Fall back to the input value
-    // if we can't resolve a match.
+
+    // Ignore non-variant inputs (defensive)
+    if (!input.closest('.variant-picker__option')) {
+      return;
+    }
+
+    const currentVariantInput = document.querySelector('form input[name="id"]');
+    const currentVariantId = currentVariantInput?.value;
+
     let resolvedVariantId = input.value;
+
     try {
       // collect selected option display values per option fieldset
       const optionFieldsets = this.querySelectorAll('.variant-picker__option');
@@ -85,6 +90,16 @@ class VariantPicker extends HTMLElement {
       }
     } catch (e) {
       // fallback to input.value
+    }
+    
+    if (
+      currentVariantId &&
+      String(resolvedVariantId) === String(currentVariantId)
+    ) {
+      console.debug(
+        'VariantPicker: variant unchanged, skipping AJAX refresh'
+      );
+      return;
     }
 
     // Notify other modules immediately about the selected variant so they
