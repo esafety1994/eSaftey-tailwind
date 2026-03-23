@@ -191,9 +191,9 @@
         "disabled": false,
         "settings": {}
       },
-      "13070091535480640111": {
-        "type": "shopify://apps/attrac/blocks/app-embed/b783956d-47a9-4434-91ad-4ec960bd74b0",
-        "disabled": true,
+      "16178409538858199964": {
+        "type": "shopify://apps/powr-popup/blocks/app-embed/c42eddd7-7bc0-47cc-aa8a-df388049f012",
+        "disabled": false,
         "settings": {}
       }
     }
