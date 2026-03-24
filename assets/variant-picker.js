@@ -47,19 +47,17 @@ class VariantPicker extends HTMLElement {
     });
   }
   onVariantChange(event) {
-    
     const input = event.currentTarget;
 
     // Ignore non-variant inputs (defensive)
-    if (!input.closest('.variant-picker__option')) {
-      return;
-    }
+    if (!input.closest('.variant-picker__option')) return;
 
     const currentVariantInput = document.querySelector('form input[name="id"]');
     const currentVariantId = currentVariantInput?.value;
 
     let resolvedVariantId = input.value;
 
+    // resolve actual variant ID
     try {
       // collect selected option display values per option fieldset
       const optionFieldsets = this.querySelectorAll('.variant-picker__option');
@@ -92,6 +90,7 @@ class VariantPicker extends HTMLElement {
       // fallback to input.value
     }
     
+    // if same variant, do nothing (prevents unnecessary navigation)
     if (
       currentVariantId &&
       String(resolvedVariantId) === String(currentVariantId)
@@ -101,7 +100,14 @@ class VariantPicker extends HTMLElement {
       );
       return;
     }
+    
+    
+    // Full page-navigation replaces AJAX entirely
+    window.location.href =
+      `${window.location.pathname}?variant=${resolvedVariantId}`;
+    return;
 
+    /*
     // Notify other modules immediately about the selected variant so they
     // can update UI optimistically before the AJAX replacement completes.
     try {
@@ -111,11 +117,12 @@ class VariantPicker extends HTMLElement {
         }),
       );
     } catch (e) {
-      /* ignore */
+      // ignore
     }
 
     const url = `${window.location.pathname}?variant=${resolvedVariantId}&section_id=${this.sectionId}`;
     const target = document.querySelector(".product-container");
+
     // show loading overlay + fade
     if (target) {
       target.classList.add("is-loading");
@@ -228,7 +235,7 @@ class VariantPicker extends HTMLElement {
             }),
           );
         } catch (e) {
-          /* ignore */
+          // ignore 
         }
 
         // Remove loading overlay after a short delay to allow re-init
@@ -253,6 +260,7 @@ class VariantPicker extends HTMLElement {
         }
       });
     console.log("Selected Variant ID:", url);
+    */
   }
 }
 
