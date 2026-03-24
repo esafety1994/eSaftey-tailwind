@@ -7,3 +7,39 @@
 {% else %}
   <div class="text-sm text-gray-600 py-4">FAQ coming soon!</div>
 {% endif %}
+{% if faq and faq != blank %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% assign content = faq.value | strip_html %}
+    {% assign faqs = content | split: '?' %}
+    {% assign first = true %}
+
+    {% for item in faqs %}
+      {% assign item = item | strip %}
+      
+      {% if item != blank %}
+        {% assign parts = item | split: '.' %}
+        {% assign question = parts[0] | append: '?' | strip %}
+        {% assign answer = item | remove: parts[0] | strip %}
+
+        {% if question != blank and answer != blank %}
+          {% unless first %},{% endunless %}
+          {
+            "@type": "Question",
+            "name": {{ question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | json }}
+            }
+          }
+          {% assign first = false %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
