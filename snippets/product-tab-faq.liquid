@@ -7,7 +7,7 @@
 {% else %}
   <div class="text-sm text-gray-600 py-4">FAQ coming soon!</div>
 {% endif %}
-{% if faq and faq != blank and faq_schema_rendered != true %}
+{% if faq and faq != blank and section.id contains 'main' %}
 
   {% capture faq_html %}
     {{ faq | metafield_tag }}
