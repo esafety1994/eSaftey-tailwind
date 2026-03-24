@@ -68,6 +68,8 @@
 {% comment %} Sticky product cart (fixed under header) {% endcomment %}
 {% render 'sticky-product-cart', product: product %}
 {% render 'shipping-calculator', product: product %}
+
+
 {% assign faq = product.metafields.custom.rich_text %}
 
 {% if faq and faq != blank %}
