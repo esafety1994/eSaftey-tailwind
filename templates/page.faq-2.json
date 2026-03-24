@@ -301,7 +301,7 @@
           "settings": {
             "category": "Ordering Online",
             "question": "Do I need to register before I place an order?",
-            "answer": "<p>No, you can checkout as a guest. However, creating an account makes repeat orders and tracking easier.</p>",
+            "answer": "<p>No, you can as a guest. However, creating an account makes repeat orders and tracking easier.</p>",
             "tags": "Register, Track Orders, Create Account"
           }
         },
