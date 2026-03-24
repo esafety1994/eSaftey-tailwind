@@ -68,6 +68,64 @@
 {% comment %} Sticky product cart (fixed under header) {% endcomment %}
 {% render 'sticky-product-cart', product: product %}
 {% render 'shipping-calculator', product: product %}
+{% assign faq = product.metafields.custom.rich_text %}
+
+{% if faq and faq != blank %}
+
+  {% capture faq_html %}
+    {{ faq | metafield_tag }}
+  {% endcapture %}
+
+  {% assign parts = faq_html | split: '<p>' %}
+  {% assign first = true %}
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {% for part in parts %}
+        
+        {% if part contains '<strong>' %}
+          
+          {% assign question = part 
+            | split: '<strong>' 
+            | last 
+            | split: '</strong>' 
+            | first 
+            | strip 
+          %}
+
+          {% assign next_index = forloop.index %}
+          {% assign answer_part = parts[next_index] | strip %}
+
+          {% assign answer = answer_part 
+            | remove: '</p>' 
+            | strip_html 
+            | strip 
+          %}
+
+          {% if question != blank and answer != blank %}
+            {% unless first %},{% endunless %}
+            {
+              "@type": "Question",
+              "name": {{ question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ answer | json }}
+              }
+            }
+            {% assign first = false %}
+          {% endif %}
+
+        {% endif %}
+
+      {% endfor %}
+    ]
+  }
+  </script>
+
+{% endif %}
 {% schema %}
 {
   "name": "Main Product",
