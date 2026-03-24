@@ -7,43 +7,55 @@
 {% else %}
   <div class="text-sm text-gray-600 py-4">FAQ coming soon!</div>
 {% endif %}
-{% if faq != blank %}
+{% if faq and faq != blank and faq_schema_rendered != true %}
+
   {% capture faq_html %}
     {{ faq | metafield_tag }}
   {% endcapture %}
 
   {% assign clean_text = faq_html | strip_html %}
+  {% assign lines = clean_text | split: '\n' %}
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {% assign questions = clean_text | split: '?' %}
       {% assign first = true %}
 
-      {% for item in questions %}
-        {% assign item = item | strip %}
+      {% for line in lines %}
+        {% assign current = line | strip %}
 
-        {% if item != blank %}
-          {% assign question = item | append: '?' %}
-          {% assign answer = item | remove: question | strip %}
+        {% if current != blank %}
+          
+          {% assign index = forloop.index0 | modulo: 2 %}
 
-          {% if question != blank and answer != blank %}
-            {% unless first %},{% endunless %}
-            {
-              "@type": "Question",
-              "name": {{ question | json }},
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": {{ answer | json }}
+          {% if index == 0 %}
+            {% assign question = current %}
+          {% else %}
+            {% assign answer = current %}
+
+            {% if question != blank and answer != blank %}
+              {% unless first %},{% endunless %}
+              {
+                "@type": "Question",
+                "name": {{ question | json }},
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": {{ answer | json }}
+                }
               }
-            }
-            {% assign first = false %}
+              {% assign first = false %}
+            {% endif %}
+
           {% endif %}
+
         {% endif %}
       {% endfor %}
     ]
   }
   </script>
+
+  {% assign faq_schema_rendered = true %}
+
 {% endif %}
