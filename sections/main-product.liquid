@@ -75,7 +75,32 @@
   {% capture faq_html %}
     {{ faq | metafield_tag }}
   {% endcapture %}
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ shop.url }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ collection.title }}",
+      "item": "{{ shop.url }}{{ collection.url }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ product.title }}",
+      "item": "{{ shop.url }}{{ product.url }}"
+    }
+  ]
+}
+</script>
   {% assign parts = faq_html | split: '<p>' %}
   {% assign first = true %}
 
