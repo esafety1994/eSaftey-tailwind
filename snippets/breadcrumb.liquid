@@ -80,12 +80,7 @@
 
     {% if template.name == 'product' %}
       
-      {% assign current_collection = null %}
-      {% if collection %}
-        {% assign current_collection = collection %}
-      {% elsif product and product.collections.size > 0 %}
-        {% assign current_collection = product.collections.first %}
-      {% endif %}
+      {% assign current_collection = collection | default: product.collections.first %}
 
       {% if current_collection %}
       ,{
@@ -110,36 +105,6 @@
         "position": {{ position }},
         "name": {{ collection.title | json }},
         "item": "{{ shop.url }}{{ collection.url }}"
-      }
-
-    {% elsif template contains 'blog' and template != 'article' %}
-      ,{
-        "@type": "ListItem",
-        "position": {{ position }},
-        "name": {{ blog.title | json }},
-        "item": "{{ shop.url }}{{ blog.url }}"
-      }
-
-    {% elsif template contains 'article' %}
-      ,{
-        "@type": "ListItem",
-        "position": {{ position }},
-        "name": {{ blog.title | json }},
-        "item": "{{ shop.url }}{{ blog.url }}"
-      }
-      ,{
-        "@type": "ListItem",
-        "position": {{ position | plus: 1 }},
-        "name": {{ article.title | json }},
-        "item": "{{ shop.url }}{{ article.url }}"
-      }
-
-    {% elsif template contains 'page' %}
-      ,{
-        "@type": "ListItem",
-        "position": {{ position }},
-        "name": {{ page.title | json }},
-        "item": "{{ shop.url }}{{ page.url }}"
       }
 
     {% endif %}
