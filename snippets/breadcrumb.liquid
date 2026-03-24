@@ -112,7 +112,7 @@
         "item": "{{ shop.url }}{{ collection.url }}"
       }
 
-    {% elsif template.name == 'blog' %}
+    {% elsif template contains 'blog' and template != 'article' %}
       ,{
         "@type": "ListItem",
         "position": {{ position }},
@@ -120,7 +120,7 @@
         "item": "{{ shop.url }}{{ blog.url }}"
       }
 
-    {% elsif template == 'article' %}
+    {% elsif template contains 'article' %}
       ,{
         "@type": "ListItem",
         "position": {{ position }},
