@@ -64,3 +64,85 @@
     </div>
   </nav>
 {% endunless %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ shop.url }}"
+    }
+
+    {% assign position = 2 %}
+
+    {% if template.name == 'product' %}
+      
+      {% assign current_collection = null %}
+      {% if collection %}
+        {% assign current_collection = collection %}
+      {% elsif product and product.collections.size > 0 %}
+        {% assign current_collection = product.collections.first %}
+      {% endif %}
+
+      {% if current_collection %}
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ current_collection.title | json }},
+        "item": "{{ shop.url }}/collections/{{ current_collection.handle }}"
+      }
+      {% assign position = position | plus: 1 %}
+      {% endif %}
+
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ product.title | json }},
+        "item": "{{ shop.url }}{{ product.url }}"
+      }
+
+    {% elsif template.name == 'collection' and collection.handle %}
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ collection.title | json }},
+        "item": "{{ shop.url }}{{ collection.url }}"
+      }
+
+    {% elsif template.name == 'blog' %}
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ blog.title | json }},
+        "item": "{{ shop.url }}{{ blog.url }}"
+      }
+
+    {% elsif template == 'article' %}
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ blog.title | json }},
+        "item": "{{ shop.url }}{{ blog.url }}"
+      }
+      ,{
+        "@type": "ListItem",
+        "position": {{ position | plus: 1 }},
+        "name": {{ article.title | json }},
+        "item": "{{ shop.url }}{{ article.url }}"
+      }
+
+    {% elsif template contains 'page' %}
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ page.title | json }},
+        "item": "{{ shop.url }}{{ page.url }}"
+      }
+
+    {% endif %}
+  ]
+}
+</script>
