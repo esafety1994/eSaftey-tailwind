@@ -13,14 +13,9 @@
       {%- endif -%}
     </title>
 
-    {% if page_description %}
-    <meta name="description" content="
-    {{ page_description | escape }}
-    {% if paginate.current_page > 1 %}
-      - Page {{ paginate.current_page }}
-    {% endif %}
-    ">
-    {% endif %}
+{% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}{% if current_page > 1 %} - Page {{ current_page }}{% endif %}">
+{% endif %}
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
