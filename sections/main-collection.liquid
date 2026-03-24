@@ -2,7 +2,12 @@
 
 <section id="collection-section-{{ section.id }}" class="container mx-auto px-4 py-8 max-w-7xl">
   <div class="mb-6">
-    <h1 class="text-4xl font-semibold text-center">{{ collection.title }}</h1>
+    <h1 class="text-4xl font-semibold text-center">
+  {{ collection.title }}
+  {% if current_page > 1 %}
+    <span style="display:none;">Page {{ current_page }}</span>
+  {% endif %}
+</h1>
     {% if collection.metafields.custom.description_below_the_title != blank %}
       <p class="text-center my-4 text-base leading-loose">
         {{ collection.metafields.custom.description_below_the_title | newline_to_br }}
