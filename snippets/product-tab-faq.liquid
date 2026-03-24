@@ -7,23 +7,26 @@
 {% else %}
   <div class="text-sm text-gray-600 py-4">FAQ coming soon!</div>
 {% endif %}
-{% if faq and faq != blank %}
-  {% assign clean_text = faq | strip_html %}
+{% if faq != blank %}
+  {% capture faq_html %}
+    {{ faq | metafield_tag }}
+  {% endcapture %}
+
+  {% assign clean_text = faq_html | strip_html %}
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {% assign items = clean_text | split: '?' %}
+      {% assign questions = clean_text | split: '?' %}
       {% assign first = true %}
 
-      {% for item in items %}
+      {% for item in questions %}
         {% assign item = item | strip %}
-        
+
         {% if item != blank %}
           {% assign question = item | append: '?' %}
-          
           {% assign answer = item | remove: question | strip %}
 
           {% if question != blank and answer != blank %}
