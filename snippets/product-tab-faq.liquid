@@ -13,44 +13,50 @@
     {{ faq | metafield_tag }}
   {% endcapture %}
 
-  {% assign clean_text = faq_html | strip_html %}
-  {% assign lines = clean_text | split: '\n' %}
+  {% assign parts = faq_html | split: '<p>' %}
+  {% assign first = true %}
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {% assign first = true %}
-
-      {% for line in lines %}
-        {% assign current = line | strip %}
-
-        {% if current != blank %}
+      {% for part in parts %}
+        
+        {% if part contains '<strong>' %}
           
-          {% assign index = forloop.index0 | modulo: 2 %}
+          {% assign question = part 
+            | split: '<strong>' 
+            | last 
+            | split: '</strong>' 
+            | first 
+            | strip 
+          %}
 
-          {% if index == 0 %}
-            {% assign question = current %}
-          {% else %}
-            {% assign answer = current %}
+          {% assign next_index = forloop.index %}
+          {% assign answer_part = parts[next_index] | strip %}
 
-            {% if question != blank and answer != blank %}
-              {% unless first %},{% endunless %}
-              {
-                "@type": "Question",
-                "name": {{ question | json }},
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": {{ answer | json }}
-                }
+          {% assign answer = answer_part 
+            | remove: '</p>' 
+            | strip_html 
+            | strip 
+          %}
+
+          {% if question != blank and answer != blank %}
+            {% unless first %},{% endunless %}
+            {
+              "@type": "Question",
+              "name": {{ question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ answer | json }}
               }
-              {% assign first = false %}
-            {% endif %}
-
+            }
+            {% assign first = false %}
           {% endif %}
 
         {% endif %}
+
       {% endfor %}
     ]
   }
