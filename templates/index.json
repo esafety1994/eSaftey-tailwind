@@ -14,7 +14,6 @@
       "blocks": {
         "slider_item_KbcYQL": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/April-product-Web-Banner.jpg",
             "single_image": true,
@@ -39,6 +38,7 @@
         },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/monthly-sale_web-banner.jpg",
             "single_image": true,
@@ -51,7 +51,6 @@
         },
         "slider_item_Y9N7BV": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Giveaway-Ratchet-Straps-Web-Banner.jpg",
             "single_image": true,
@@ -64,6 +63,7 @@
         },
         "slider_item_nVybjd": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Giveaway-Web-Banner-T-Shirt.jpg",
             "single_image": true,
@@ -76,6 +76,7 @@
         },
         "slider_item_GK847N": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Install_Banner_1.webp",
             "single_image": true,
