@@ -1,12 +1,10 @@
-<article class="h-full flex flex-col max-w-[280px] md:max-w-sm lg:max-w-md m-auto">
+<article class="h-full flex flex-col w-full max-w-[280px] md:max-w-sm lg:max-w-md mx-auto">
   {% if article.image %}
-    <a href="{{ article.url }}" class="w-full h-48 lg:h-62 relative overflow-hidden">
+    <a href="{{ article.url }}" class="block w-full">
       {% render 'responsive-image',
         image: article.image,
         width: 720,
-        aspect_ratio: 1.777,
-        wrapper_class: 'absolute inset-0',
-        image_class: 'w-full h-full object-cover object-center'
+        image_class: 'block w-full h-auto object-contain'
       %}
     </a>
   {% endif %}
