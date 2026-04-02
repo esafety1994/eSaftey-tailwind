@@ -1,15 +1,16 @@
 <article class="h-full flex flex-col max-w-[280px] md:max-w-sm lg:max-w-md m-auto">
   {% if article.image %}
-    <a href="{{ article.url }}" class="w-full h-48 lg:h-62 relative overflow-hidden">
-      {% render 'responsive-image',
-        image: article.image,
-        width: 720,
-        aspect_ratio: 1.777,
-        wrapper_class: 'absolute inset-0',
-        image_class: 'w-full h-full object-cover object-center'
-      %}
+    <a href="{{ article.url }}" class="block w-full">
+      <div class="relative w-full h-48 bg-neutral-100 flex items-center justify-center">
+        {% render 'responsive-image',
+          image: article.image,
+          width: 720,
+          image_class: 'w-full h-full object-contain'
+        %}
+      </div>
     </a>
   {% endif %}
+
 
   <div class="mt-4 flex flex-col justify-between flex-grow">
     <div>
