@@ -81,7 +81,7 @@
   {% assign parts = faq_html | split: '<p>' %}
   {% assign first = true %}
 
-  <script type="application/ld+json">
+  {% comment %}<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -125,7 +125,7 @@
       {% endfor %}
     ]
   }
-  </script>
+  </script>{% endcomment %}
 
 {% endif %}
 {% schema %}
