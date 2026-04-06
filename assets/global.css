@@ -583,3 +583,14 @@ a.underline-animation:focus::after {
 .footer-block .text-sm p:not(:last-child) {
   margin-bottom: 8px;
 }
+
+.circle-bg {
+  background-color: #f8e7ad; /* light yellow */
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
