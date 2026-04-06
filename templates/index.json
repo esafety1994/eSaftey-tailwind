@@ -26,6 +26,7 @@
         },
         "slider_item_G4KkCk": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Easter-Web-Banner_9477435f-c917-4840-9931-13e746ea8e9a.jpg",
             "single_image": true,
