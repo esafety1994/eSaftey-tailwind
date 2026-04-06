@@ -12,32 +12,31 @@
         {% assign product = all_products[block.settings.product] %}
         {% assign coll = collections[block.settings.collection] %}
 
-        {% if product %}
-          <a href="{{ product.url }}" class="group block">
-            {% if product.featured_image %}
+        {% if product or coll %}
+          <a
+            href="{% if product %}{{ product.url }}{% else %}{{ coll.url }}{% endif %}"
+            class="group block"
+          >
+
+            {% if product and product.featured_image %}
               {% render 'responsive-image',
                 image: product.featured_image,
                 alt: product.title,
                 image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
               %}
-            {% endif %}
-            <p class="mt-2 text-center text-sm md:text-base">
-              {{ product.title }}
-            </p>
-          </a>
 
-        {% elsif coll %}
-          <a href="{{ coll.url }}" class="group block">
-            {% if coll.image %}
+            {% elsif coll and coll.image %}
               {% render 'responsive-image',
                 image: coll.image,
                 alt: coll.title,
                 image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
               %}
             {% endif %}
+
             <p class="mt-2 text-center text-sm md:text-base">
-              {{ coll.title }}
+              {% if product %}{{ product.title }}{% else %}{{ coll.title }}{% endif %}
             </p>
+
           </a>
         {% endif %}
 
