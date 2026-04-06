@@ -7,40 +7,49 @@
     {% endif %}
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
+
       {% for block in section.blocks %}
 
-        {% assign product = all_products[block.settings.product] %}
-        {% assign coll = collections[block.settings.collection] %}
+        {% case block.type %}
 
-        {% if product or coll %}
-          <a
-            href="{% if product %}{{ product.url }}{% else %}{{ coll.url }}{% endif %}"
-            class="group block"
-          >
+        {% when 'collection' %}
+          {% assign coll = collections[block.settings.collection] %}
+          {% if coll %}
+            <a href="{{ coll.url }}" class="group block">
+              {% if coll.image %}
+                {% render 'responsive-image',
+                  image: coll.image,
+                  alt: coll.title,
+                  image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
+                %}
+              {% endif %}
+              <p class="mt-2 text-center text-sm md:text-base">
+                {{ coll.title }}
+              </p>
+            </a>
+          {% endif %}
 
-            {% if product and product.featured_image %}
-              {% render 'responsive-image',
-                image: product.featured_image,
-                alt: product.title,
-                image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
-              %}
+        {% when 'product' %}
+          {% assign product = all_products[block.settings.product] %}
+          {% if product %}
+            <a href="{{ product.url }}" class="group block">
+              {% if product.featured_image %}
+                {% render 'responsive-image',
+                  image: product.featured_image,
+                  alt: product.title,
+                  image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
+                %}
+              {% endif %}
+              <p class="mt-2 text-center text-sm md:text-base">
+                {{ product.title }}
+              </p>
+            </a>
+          {% endif %}
 
-            {% elsif coll and coll.image %}
-              {% render 'responsive-image',
-                image: coll.image,
-                alt: coll.title,
-                image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
-              %}
-            {% endif %}
-
-            <p class="mt-2 text-center text-sm md:text-base">
-              {% if product %}{{ product.title }}{% else %}{{ coll.title }}{% endif %}
-            </p>
-
-          </a>
-        {% endif %}
+        {% endcase %}
 
       {% endfor %}
+
     </div>
   </div>
 </section>
@@ -58,18 +67,24 @@
   ],
   "blocks": [
     {
-      "type": "item",
-      "name": "Collection or Product",
+      "type": "collection",
+      "name": "Collection",
       "settings": [
         {
           "type": "collection",
           "id": "collection",
           "label": "Collection"
-        },
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "Product (overrides collection)"
+          "label": "Product"
         }
       ]
     }
