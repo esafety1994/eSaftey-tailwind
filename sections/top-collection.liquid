@@ -9,7 +9,6 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
 
       {% for block in section.blocks %}
-
         {% case block.type %}
 
         {% when 'collection' %}
@@ -17,7 +16,13 @@
           {% if coll %}
             <a href="{{ coll.url }}" class="group block text-center">
               <div class="circle-bg">
-                {% if coll.image %}
+                {% if block.settings.icon %}
+                  {% render 'responsive-image',
+                    image: block.settings.icon,
+                    alt: coll.title,
+                    image_class: 'circle-image transition-transform group-hover:scale-105'
+                  %}
+                {% elsif coll.image %}
                   {% render 'responsive-image',
                     image: coll.image,
                     alt: coll.title,
@@ -51,7 +56,6 @@
           {% endif %}
 
         {% endcase %}
-
       {% endfor %}
 
     </div>
@@ -78,6 +82,12 @@
           "type": "collection",
           "id": "collection",
           "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon override (recommended)",
+          "info": "Upload a transparent PNG or SVG icon to avoid backgrounds"
         }
       ]
     },
@@ -93,7 +103,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image (icon)"
+          "label": "Image (icon)",
+          "info": "Uploaded icon image (transparent PNG or SVG)"
         }
       ]
     }
