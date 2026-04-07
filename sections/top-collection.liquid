@@ -31,20 +31,21 @@
         {%- when 'product' -%}
           {% assign product = all_products[block.settings.product] %}
           {% if product %}
-            <a href="{{ product.url }}" class="group block">
-              {% if block.settings.image %}
-                {% render 'responsive-image',
-                  image: block.settings.image,
-                  alt: product.title,
-                  image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
-                %}
-              {% endif %}
+            {{ product.url }}
+              <div class="w-32 h-32 rounded-full overflow-hidden mx-auto">
+                {% if block.settings.image %}
+                  {% render 'responsive-image',
+                    image: block.settings.image,
+                    alt: product.title,
+                    image_class: 'w-full h-full object-cover transition-transform group-hover:scale-105'
+                  %}
+                {% endif %}
+              </div>
               <p class="mt-2 text-center text-sm md:text-base">
                 {{ product.title }}
               </p>
             </a>
           {% endif %}
-
         {% endcase %}
       {% endfor %}
 
