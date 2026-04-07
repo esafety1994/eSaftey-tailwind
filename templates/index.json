@@ -126,16 +126,50 @@
     "top_collection_qjTiyL": {
       "type": "top-collection",
       "blocks": {
-        "item_hW3jLQ": {
-          "type": "item",
+        "collection_h7acea": {
+          "type": "collection",
           "settings": {
-            "collection": "a-i-coatings",
-            "product": ""
+            "collection": "street-furniture"
+          }
+        },
+        "collection_zzUxqV": {
+          "type": "collection",
+          "settings": {
+            "collection": "crowd-control-barrier"
+          }
+        },
+        "collection_EtMCN9": {
+          "type": "collection",
+          "settings": {
+            "collection": "floor-warning-safety-stickers"
+          }
+        },
+        "collection_DapdmE": {
+          "type": "collection",
+          "settings": {
+            "collection": "custom-signs"
+          }
+        },
+        "collection_FJHiVH": {
+          "type": "collection",
+          "settings": {
+            "collection": "kerb-ramps"
+          }
+        },
+        "collection_gPcdbR": {
+          "type": "collection",
+          "settings": {
+            "collection": "flexible-bollards"
           }
         }
       },
       "block_order": [
-        "item_hW3jLQ"
+        "collection_h7acea",
+        "collection_zzUxqV",
+        "collection_EtMCN9",
+        "collection_DapdmE",
+        "collection_FJHiVH",
+        "collection_gPcdbR"
       ],
       "name": "Top Collections",
       "settings": {
