@@ -31,7 +31,7 @@
         {%- when 'product' -%}
           {% assign product = all_products[block.settings.product] %}
           {% if product %}
-            {{ product.url }}
+            <a href="{{ product.url }}" class="group block text-center">
               <div class="w-32 h-32 rounded-full overflow-hidden mx-auto">
                 {% if block.settings.image %}
                   {% render 'responsive-image',
@@ -41,7 +41,7 @@
                   %}
                 {% endif %}
               </div>
-              <p class="mt-2 text-center text-sm md:text-base">
+              <p class="mt-2 text-sm md:text-base">
                 {{ product.title }}
               </p>
             </a>
