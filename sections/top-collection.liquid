@@ -1,27 +1,55 @@
 <section class="top-collections py-8">
   <div class="container mx-auto px-4">
     {% if section.settings.heading != blank %}
-      <h3 class="text-2xl md:text-4xl font-semibold mb-6 text-center uppercase md:mb-12">{{ section.settings.heading }}</h3>
+      <h3 class="text-2xl md:text-4xl font-semibold mb-6 text-center uppercase md:mb-12">
+        {{ section.settings.heading }}
+      </h3>
     {% endif %}
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
+
       {% for block in section.blocks %}
-        {% assign coll = collections[block.settings.collection] %}
-        {% if coll %}
-          <a href="{{ coll.url }}" class="group block">
-            {% if coll.image %}
-              {% render 'responsive-image',
-                image: coll.image,
-                alt: coll.title,
-                image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto',
-              %}
-            {% else %}
-              <div class="flex items-center justify-center h-full text-gray-500">{{ 'No image' }}</div>
-            {% endif %}
-            <p class="mt-2 text-center text-sm md:text-base">{{ coll.title }}</p>
-          </a>
-        {% endif %}
+        {% case block.type %}
+
+        {%- when 'collection' -%}
+          {% assign coll = collections[block.settings.collection] %}
+          {% if coll %}
+            <a href="{{ coll.url }}" class="group block">
+              {% if coll.image %}
+                {%- render 'responsive-image',
+                  image: coll.image,
+                  alt: coll.title,
+                  image_class: 'w-auto h-32 md:h-22 lg:h-32 object-cover transition-transform group-hover:scale-105 rounded-full mx-auto'
+                -%}
+              {% endif %}
+              <p class="mt-2 text-center text-sm md:text-base">
+                {{ coll.title }}
+              </p>
+            </a>
+          {% endif %}
+
+        {%- when 'product' -%}
+          {% assign product = all_products[block.settings.product] %}
+          {% if product %}
+            <a href="{{ product.url }}" class="group block">
+              <div class="circle-bg">
+                {% if block.settings.image %}
+                  {%- render 'responsive-image',
+                    image: block.settings.image,
+                    alt: product.title,
+                    image_class: 'circle-image transition-transform group-hover:scale-105'
+                  -%}
+                {% endif %}
+              </div>
+              <p class="mt-2 text-center text-sm md:text-base">
+                {{ product.title }}
+              </p>
+            </a>
+          {% endif %}
+
+        {% endcase %}
       {% endfor %}
+
     </div>
   </div>
 </section>
@@ -46,6 +74,22 @@
           "type": "collection",
           "id": "collection",
           "label": "Collection"
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product icon image"
         }
       ]
     }
