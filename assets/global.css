@@ -593,4 +593,17 @@ a.underline-animation:focus::after {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  overflow: hidden;
+}
+
+.circle-image {
+  width: auto;
+  height: 6rem; /* matches h-24 */
+  object-fit: contain;
+  background: transparent;
+}
+
+.circle-bg img,
+.circle-bg > div {
+  background: transparent !important;
 }
