@@ -584,7 +584,6 @@ a.underline-animation:focus::after {
   margin-bottom: 8px;
 }
 
-/* Match collection image size (h-32 = 128px) */
 .circle-bg {
   background-color: #f8e7ad;
   width: 128px;
@@ -596,10 +595,10 @@ a.underline-animation:focus::after {
   margin: 0 auto;
 }
 
-/* Match visual density of collection images */
 .circle-image {
+  height: 72px;
   width: auto;
-  height: 90px; /* visually matches object-cover h-32 */
   object-fit: contain;
   background: transparent;
 }
+``
