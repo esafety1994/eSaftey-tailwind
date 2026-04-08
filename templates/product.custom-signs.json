@@ -52,7 +52,7 @@
             "title": "For Custom Signs",
             "field_type": "textarea",
             "field_options": "",
-            "field_placeholder": "Example:",
+            "field_placeholder": "Type in your message for custom signs",
             "field_required": true,
             "show_at_checkout": true
           }
