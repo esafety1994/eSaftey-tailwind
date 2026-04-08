@@ -3,7 +3,12 @@
   Two-column product page: left (info), right (image carousel with Glide.js)
 {% endcomment %}
 
-<div class="container mx-auto px-4 pt-8 max-w-7xl">
+
+<div
+  class="container mx-auto px-4 pt-8 max-w-7xl"
+  data-has-custom-variant="{% if product.tags contains 'requires-custom-variant' %}true{% else %}false{% endif %}"
+>
+
   <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
     <div>
       {% render 'product-media-gallery' %}
@@ -231,57 +236,59 @@
 
 {% comment %} Custom variant / custom field logic {% endcomment %}
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const customField = document.querySelector('[data-custom-field]');
-    if (!customField) return;
+document.addEventListener('DOMContentLoaded', () => {
+  const customField = document.querySelector('[data-custom-field]');
+  if (!customField) return;
 
-    const productHasVariantGate =
-      document.body.innerText.toLowerCase().includes('requires-custom-variant');
+  const hasVariantGate =
+    document.querySelector('[data-has-custom-variant="true"]') !== null;
 
-    const inputs = customField.querySelectorAll('input, textarea, select');
-    const variantSelects = document.querySelectorAll('select[name^="options"]');
+  const inputs = customField.querySelectorAll('input, textarea, select');
 
-    // Products WITHOUT a custom variant → always show field
-    if (!productHasVariantGate) {
+  // ✅ No variant gating → always show field
+  if (!hasVariantGate) {
+    customField.style.display = '';
+    inputs.forEach(el => {
+      el.disabled = false;
+    });
+    return;
+  }
+
+  // ✅ Variant‑based control (button or dropdown picker)
+  function toggleCustomFieldByVariant(variant) {
+    if (!variant) return;
+
+    const isCustom =
+      variant.title &&
+      variant.title.toLowerCase().includes('custom');
+
+    if (isCustom) {
       customField.style.display = '';
       inputs.forEach(el => {
         el.disabled = false;
+        el.required = true;
       });
-      return;
-    }
-
-    // Products WITH a custom variant → conditional logic
-    function toggleCustomField() {
-      let isCustom = false;
-
-      variantSelects.forEach(select => {
-        const selectedText =
-          select.options[select.selectedIndex]?.text?.toLowerCase() || '';
-        if (selectedText.includes('custom')) {
-          isCustom = true;
-        }
+    } else {
+      customField.style.display = 'none';
+      inputs.forEach(el => {
+        el.disabled = true;
+        el.required = false;
+        el.value = '';
       });
-
-      if (isCustom) {
-        customField.style.display = '';
-        inputs.forEach(el => {
-          el.disabled = false;
-          el.required = true;
-        });
-      } else {
-        customField.style.display = 'none';
-        inputs.forEach(el => {
-          el.disabled = true;
-          el.required = false;
-          el.value = '';
-        });
-      }
     }
+  }
 
-    variantSelects.forEach(select =>
-      select.addEventListener('change', toggleCustomField)
-    );
+  // ✅ Run on initial load
+  if (window.Shopify && Shopify?.analytics?.meta?.selectedVariantId) {
+    const variantId = Shopify.analytics.meta.selectedVariantId;
+    const variant = Shopify.analytics.meta.product.variants
+      ?.find(v => v.id === variantId);
+    toggleCustomFieldByVariant(variant);
+  }
 
-    toggleCustomField();
+  // ✅ Listen for variant changes (THIS is the key)
+  document.addEventListener('variant:change', event => {
+    toggleCustomFieldByVariant(event.detail.variant);
   });
+});
 </script>
