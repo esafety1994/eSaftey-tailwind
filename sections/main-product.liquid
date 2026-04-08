@@ -4,11 +4,7 @@
 {% endcomment %}
 
 
-<div
-  class="container mx-auto px-4 pt-8 max-w-7xl"
-  data-has-custom-variant="{% if product.tags contains 'requires-custom-variant' %}true{% else %}false{% endif %}"
->
-
+<div class="container mx-auto px-4 pt-8 max-w-7xl" data-has-custom-variant="{% if product.tags contains 'requires-custom-variant' %}true{% else %}false{% endif %}">
   <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
     <div>
       {% render 'product-media-gallery' %}
