@@ -46,7 +46,8 @@
 
       {% render 'product-fixing', product: product %}
       {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
-      {% if custom_block %}   
+      {% comment %} {% if product.template_suffix == 'product-with-custom-field' and custom_block %} {% endcomment %}
+      {% if custom_block %}
         {% render 'product-custom-field', block: custom_block, product: product %}
       {% endif %}
 
