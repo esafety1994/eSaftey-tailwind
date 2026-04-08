@@ -63,6 +63,10 @@
       <div class="mt-6 border-t border-grey">
         {% render 'product-quotify-button', product: product %}
       </div>
+      
+      <script>
+        window.productVariants = {{ product.variants | json }};
+      </script>
     </div>
   </div>
 </div>
@@ -241,7 +245,7 @@
 
     const inputs = customField.querySelectorAll('input, textarea, select');
 
-    // Products WITHOUT a custom variant → always visible
+    // ✅ Products WITHOUT custom variant → always show
     if (!hasVariantGate) {
       customField.style.display = '';
       inputs.forEach(el => {
@@ -250,33 +254,18 @@
       return;
     }
 
-    // Function to check selected variant via DOM
-    function isCustomVariantSelected() {
-      // Button / radio variants
-      const checkedRadio = document.querySelector(
-        'input[type="radio"][name^="options"]:checked'
-      );
-      if (checkedRadio) {
-        const label = document.querySelector(`label[for="${checkedRadio.id}"]`);
-        if (label && label.textContent.toLowerCase().includes('custom')) {
-          return true;
-        }
-      }
+    function toggleCustomFieldByVariantId() {
+      const variantIdInput = document.querySelector('input[name="id"]');
+      if (!variantIdInput || !window.productVariants) return;
 
-      // Dropdown variants
-      const selects = document.querySelectorAll('select[name^="options"]');
-      for (const select of selects) {
-        const text = select.options[select.selectedIndex]?.text?.toLowerCase();
-        if (text && text.includes('custom')) {
-          return true;
-        }
-      }
+      const variantId = Number(variantIdInput.value);
+      const variant = window.productVariants.find(v => v.id === variantId);
 
-      return false;
-    }
+      if (!variant) return;
 
-    function toggleCustomField() {
-      if (isCustomVariantSelected()) {
+      const isCustom = variant.title.toLowerCase().includes('custom');
+
+      if (isCustom) {
         customField.style.display = '';
         inputs.forEach(el => {
           el.disabled = false;
@@ -292,17 +281,14 @@
       }
     }
 
-    // Listen to ANY variant interaction
+    // ✅ Run on load
+    toggleCustomFieldByVariantId();
+
+    // ✅ Watch variant changes (hidden input updates)
     document.addEventListener('change', event => {
-      if (
-        event.target.matches('input[type="radio"][name^="options"]') ||
-        event.target.matches('select[name^="options"]')
-      ) {
-        toggleCustomField();
+      if (event.target.name === 'id') {
+        toggleCustomFieldByVariantId();
       }
     });
-
-    // Run once on page load
-    toggleCustomField();
   });
 </script>
