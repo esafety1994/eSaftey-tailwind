@@ -49,10 +49,10 @@
         "custom_field_7hVWUD": {
           "type": "custom_field",
           "settings": {
-            "title": "For Custom Signs",
+            "title": "Custom Message:",
             "field_type": "textarea",
             "field_options": "",
-            "field_placeholder": "Type in your message for custom signs",
+            "field_placeholder": "Enter your message for the custom sign",
             "field_required": true,
             "show_at_checkout": true
           }
