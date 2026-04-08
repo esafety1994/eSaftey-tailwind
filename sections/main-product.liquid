@@ -228,3 +228,60 @@
   "presets": [{ "name": "Main product", "category": "Products" }]
 }
 {% endschema %}
+
+{% comment %} Custom variant / custom field logic {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const customField = document.querySelector('[data-custom-field]');
+    if (!customField) return;
+
+    const productHasVariantGate =
+      document.body.innerText.toLowerCase().includes('requires-custom-variant');
+
+    const inputs = customField.querySelectorAll('input, textarea, select');
+    const variantSelects = document.querySelectorAll('select[name^="options"]');
+
+    // Products WITHOUT a custom variant → always show field
+    if (!productHasVariantGate) {
+      customField.style.display = '';
+      inputs.forEach(el => {
+        el.disabled = false;
+      });
+      return;
+    }
+
+    // Products WITH a custom variant → conditional logic
+    function toggleCustomField() {
+      let isCustom = false;
+
+      variantSelects.forEach(select => {
+        const selectedText =
+          select.options[select.selectedIndex]?.text?.toLowerCase() || '';
+        if (selectedText.includes('custom')) {
+          isCustom = true;
+        }
+      });
+
+      if (isCustom) {
+        customField.style.display = '';
+        inputs.forEach(el => {
+          el.disabled = false;
+          el.required = true;
+        });
+      } else {
+        customField.style.display = 'none';
+        inputs.forEach(el => {
+          el.disabled = true;
+          el.required = false;
+          el.value = '';
+        });
+      }
+    }
+
+    variantSelects.forEach(select =>
+      select.addEventListener('change', toggleCustomField)
+    );
+
+    toggleCustomField();
+  });
+</script>
