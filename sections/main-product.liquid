@@ -232,59 +232,77 @@
 
 {% comment %} Custom variant / custom field logic {% endcomment %}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const customField = document.querySelector('[data-custom-field]');
-  if (!customField) return;
+  document.addEventListener('DOMContentLoaded', () => {
+    const customField = document.querySelector('[data-custom-field]');
+    if (!customField) return;
 
-  const hasVariantGate =
-    document.querySelector('[data-has-custom-variant="true"]') !== null;
+    const container = document.querySelector('[data-has-custom-variant]');
+    const hasVariantGate = container?.dataset.hasCustomVariant === 'true';
 
-  const inputs = customField.querySelectorAll('input, textarea, select');
+    const inputs = customField.querySelectorAll('input, textarea, select');
 
-  // ✅ No variant gating → always show field
-  if (!hasVariantGate) {
-    customField.style.display = '';
-    inputs.forEach(el => {
-      el.disabled = false;
-    });
-    return;
-  }
-
-  // ✅ Variant‑based control (button or dropdown picker)
-  function toggleCustomFieldByVariant(variant) {
-    if (!variant) return;
-
-    const isCustom =
-      variant.title &&
-      variant.title.toLowerCase().includes('custom');
-
-    if (isCustom) {
+    // Products WITHOUT a custom variant → always visible
+    if (!hasVariantGate) {
       customField.style.display = '';
       inputs.forEach(el => {
         el.disabled = false;
-        el.required = true;
       });
-    } else {
-      customField.style.display = 'none';
-      inputs.forEach(el => {
-        el.disabled = true;
-        el.required = false;
-        el.value = '';
-      });
+      return;
     }
-  }
 
-  // ✅ Run on initial load
-  if (window.Shopify && Shopify?.analytics?.meta?.selectedVariantId) {
-    const variantId = Shopify.analytics.meta.selectedVariantId;
-    const variant = Shopify.analytics.meta.product.variants
-      ?.find(v => v.id === variantId);
-    toggleCustomFieldByVariant(variant);
-  }
+    // Function to check selected variant via DOM
+    function isCustomVariantSelected() {
+      // Button / radio variants
+      const checkedRadio = document.querySelector(
+        'input[type="radio"][name^="options"]:checked'
+      );
+      if (checkedRadio) {
+        const label = document.querySelector(`label[for="${checkedRadio.id}"]`);
+        if (label && label.textContent.toLowerCase().includes('custom')) {
+          return true;
+        }
+      }
 
-  // ✅ Listen for variant changes (THIS is the key)
-  document.addEventListener('variant:change', event => {
-    toggleCustomFieldByVariant(event.detail.variant);
+      // Dropdown variants
+      const selects = document.querySelectorAll('select[name^="options"]');
+      for (const select of selects) {
+        const text = select.options[select.selectedIndex]?.text?.toLowerCase();
+        if (text && text.includes('custom')) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    function toggleCustomField() {
+      if (isCustomVariantSelected()) {
+        customField.style.display = '';
+        inputs.forEach(el => {
+          el.disabled = false;
+          el.required = true;
+        });
+      } else {
+        customField.style.display = 'none';
+        inputs.forEach(el => {
+          el.disabled = true;
+          el.required = false;
+          el.value = '';
+        });
+      }
+    }
+
+    // Listen to ANY variant interaction
+    document.addEventListener('change', event => {
+      if (
+        event.target.matches('input[type="radio"][name^="options"]') ||
+        event.target.matches('select[name^="options"]')
+      ) {
+        toggleCustomField();
+      }
+    });
+
+    // Run once on page load
+    toggleCustomField();
   });
-});
 </script>
