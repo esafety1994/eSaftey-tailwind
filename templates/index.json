@@ -138,10 +138,11 @@
             "collection": "crowd-control-barrier"
           }
         },
-        "collection_EtMCN9": {
-          "type": "collection",
+        "product_fNATHz": {
+          "type": "product",
           "settings": {
-            "collection": "floor-warning-safety-stickers"
+            "product": "geotextile-filter-fabric-1",
+            "image": "shopify://shop_images/809796.jpg"
           }
         },
         "collection_DapdmE": {
@@ -166,7 +167,7 @@
       "block_order": [
         "collection_h7acea",
         "collection_zzUxqV",
-        "collection_EtMCN9",
+        "product_fNATHz",
         "collection_DapdmE",
         "collection_FJHiVH",
         "collection_gPcdbR"
