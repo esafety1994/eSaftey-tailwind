@@ -12,7 +12,11 @@
     assign field_name = 'Custom field ' | append: forloop.index
   endif
 %}
-<div class="m-product-custom-field py-4 flex flex-col gap-2 mb-4" data-custom-field>
+<div
+  class="m-product-custom-field py-4 flex flex-col gap-2 mb-4"
+  data-custom-field
+  style="display:none;"
+>
   <label class="m-product-option--label{% if label_hidden %} m:hidden{% endif %}" for="{{ block.id }}">
     {{ field_name -}}
     {%- if field_required -%}
