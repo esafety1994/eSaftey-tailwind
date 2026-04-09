@@ -84,3 +84,24 @@
     {% endform %}
   </div>
 </esafety-cart-action-button>
+
+<script>
+  document.addEventListener('change', function (event) {
+    if (!event.target.matches('[data-upload-input]')) return;
+
+    const input = event.target;
+    const wrapper = input.closest('[data-design-upload]');
+    if (!wrapper) return;
+
+    const filenameSpan = wrapper.querySelector('[data-upload-filename]');
+    if (!filenameSpan) return;
+
+    if (input.files && input.files.length > 0) {
+      filenameSpan.textContent = input.files[0].name;
+      filenameSpan.classList.add('text-gray-900');
+    } else {
+      filenameSpan.textContent = 'Choose file…';
+      filenameSpan.classList.remove('text-gray-900');
+    }
+  });
+</script>
