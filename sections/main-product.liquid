@@ -236,6 +236,8 @@
 
 {% comment %} Custom variant / custom field logic {% endcomment %}
 <script>
+  window.productVariants = {{ product.variants | json }};
+  
   document.addEventListener('DOMContentLoaded', () => {
     const customField = document.querySelector('[data-custom-field]');
     if (!customField) return;
@@ -245,7 +247,7 @@
 
     const inputs = customField.querySelectorAll('input, textarea, select');
 
-    // ✅ Products WITHOUT custom variant → always show
+    // Products WITHOUT custom variant → always show
     if (!hasVariantGate) {
       customField.style.display = '';
       inputs.forEach(el => {
@@ -281,10 +283,10 @@
       }
     }
 
-    // ✅ Run on load
+    // Run on load
     toggleCustomFieldByVariantId();
 
-    // ✅ Watch variant changes (hidden input updates)
+    // Watch variant changes (hidden input updates)
     document.addEventListener('change', event => {
       if (event.target.name === 'id') {
         toggleCustomFieldByVariantId();
