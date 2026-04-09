@@ -145,10 +145,11 @@
             "image": "shopify://shop_images/809796.jpg"
           }
         },
-        "collection_DapdmE": {
-          "type": "collection",
+        "product_bTwhFn": {
+          "type": "product",
           "settings": {
-            "collection": "custom-signs"
+            "product": "custom-safety-signage",
+            "image": "shopify://shop_images/CustomSign.jpg"
           }
         },
         "collection_FJHiVH": {
@@ -168,7 +169,7 @@
         "collection_gPcdbR",
         "collection_zzUxqV",
         "product_fNATHz",
-        "collection_DapdmE",
+        "product_bTwhFn",
         "collection_FJHiVH",
         "collection_h7acea"
       ],
