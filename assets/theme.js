@@ -28,31 +28,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---- Design upload visibility (SKU-based) ----
   const wrapper = document.getElementById('design-upload-wrapper');
-  if (!wrapper || !window.productVariants) return;
+    if (!wrapper || !window.productVariants) return;
 
-  const allowedSkus = wrapper.dataset.uploadSkus
-    .split(',')
-    .map(sku => sku.trim());
+    const allowedSkus = wrapper.dataset.uploadSkus
+      .split(',')
+      .map(s => s.trim());
 
-  function updateVisibility() {
-    const variantIdInput = document.querySelector('input[name="id"]');
-    if (!variantIdInput) return;
+    function checkVariantById() {
+      const idInput = document.querySelector('input[name="id"]');
+      if (!idInput) return;
 
-    const variant = window.productVariants.find(
-      v => String(v.id) === String(variantIdInput.value)
-    );
+      const variant = window.productVariants.find(
+        v => String(v.id) === String(idInput.value)
+      );
 
-    if (!variant) return;
+      if (!variant) return;
 
-    if (allowedSkus.includes(variant.sku)) {
-      wrapper.classList.remove('hidden');
-    } else {
-      wrapper.classList.add('hidden');
-
-      // Clear file if switching away
-      const input = wrapper.querySelector('input[type="file"]');
-      if (input) input.value = '';
+      if (allowedSkus.includes(variant.sku)) {
+        wrapper.classList.remove('hidden');
+      } else {
+        wrapper.classList.add('hidden');
+        const file = wrapper.querySelector('input[type="file"]');
+        if (file) file.value = '';
+      }
     }
+
+    // Observe changes to the variant ID input (even if set by JS)
+    const observer = new MutationObserver(checkVariantById);
+    const idInput = document.querySelector('input[name="id"]');
+
+    if (idInput) {
+      observer.observe(idInput, { attributes: true, attributeFilter: ['value'] });
+      checkVariantById(); // initial run
+    }
+
   }
 
   // Run once on load
