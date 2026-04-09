@@ -27,44 +27,42 @@ document.addEventListener("DOMContentLoaded", function () {
   try{ window.applyHoverImages(); } catch(e){}
 
   // ---- Design upload visibility (SKU-based) ----
-  document.addEventListener('DOMContentLoaded', function () {
-    const wrapper = document.getElementById('design-upload-wrapper');
-    if (!wrapper || !window.productVariants) return;
+  const wrapper = document.getElementById('design-upload-wrapper');
+  if (!wrapper || !window.productVariants) return;
 
-    const allowedSkus = wrapper.dataset.uploadSkus
-      .split(',')
-      .map(sku => sku.trim());
+  const allowedSkus = wrapper.dataset.uploadSkus
+    .split(',')
+    .map(sku => sku.trim());
 
-    function updateVisibility() {
-      const variantIdInput = document.querySelector('input[name="id"]');
-      if (!variantIdInput) return;
+  function updateVisibility() {
+    const variantIdInput = document.querySelector('input[name="id"]');
+    if (!variantIdInput) return;
 
-      const variant = window.productVariants.find(
-        v => String(v.id) === String(variantIdInput.value)
-      );
+    const variant = window.productVariants.find(
+      v => String(v.id) === String(variantIdInput.value)
+    );
 
-      if (!variant) return;
+    if (!variant) return;
 
-      if (allowedSkus.includes(variant.sku)) {
-        wrapper.classList.remove('hidden');
-      } else {
-        wrapper.classList.add('hidden');
+    if (allowedSkus.includes(variant.sku)) {
+      wrapper.classList.remove('hidden');
+    } else {
+      wrapper.classList.add('hidden');
 
-        // Clear file if switching away
-        const input = wrapper.querySelector('input[type="file"]');
-        if (input) input.value = '';
-      }
+      // Clear file if switching away
+      const input = wrapper.querySelector('input[type="file"]');
+      if (input) input.value = '';
     }
+  }
 
-    // Run once on load
-    updateVisibility();
+  // Run once on load
+  updateVisibility();
 
-    // Run whenever variant changes
-    document.addEventListener('change', function (e) {
-      if (e.target && e.target.name === 'id') {
-        updateVisibility();
-      }
-    });
+  // Run whenever variant changes
+  document.addEventListener('change', function (e) {
+    if (e.target && e.target.name === 'id') {
+      updateVisibility();
+    }
   });
   
 });
