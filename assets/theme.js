@@ -23,6 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
       input.value = String(val);
     }
   });
+
+  try{ window.applyHoverImages(); } catch(e){}
+  const variantEvent = new CustomEvent('variant:change', {
+    detail: {
+      variant: window?.Shopify?.currentVariant || null
+    }
+  });
+  document.dispatchEvent(variantEvent);
 });
 
 // Hover image helper: move from inline snippet to central theme asset
@@ -36,6 +44,23 @@ window.applyHoverImages = function(){
   }catch(e){ /* ignore */}
 };
 
-document.addEventListener('DOMContentLoaded', function(){
-  try{ window.applyHoverImages(); } catch(e){}
+document.addEventListener('variant:change', function (event) {
+  const wrapper = document.getElementById('design-upload-wrapper');
+  if (!wrapper || !event.detail || !event.detail.variant) return;
+
+  const allowedSkus = wrapper.dataset.uploadSkus
+    .split(',')
+    .map(sku => sku.trim());
+
+  const selectedSku = event.detail.variant.sku;
+
+  if (allowedSkus.includes(selectedSku)) {
+    wrapper.classList.remove('hidden');
+  } else {
+    wrapper.classList.add('hidden');
+
+    // Clear file if switching to a non‑custom variant
+    const input = wrapper.querySelector('input[type="file"]');
+    if (input) input.value = '';
+  }
 });
