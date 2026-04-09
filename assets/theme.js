@@ -30,41 +30,48 @@ document.addEventListener("DOMContentLoaded", function () {
   const wrappers = document.querySelectorAll('[data-design-upload]');
   if (!wrappers.length || !window.productVariants) return;
 
-  function updateUploadVisibility() {
-    const variantIdInput = document.querySelector('input[name="id"]');
-    if (!variantIdInput) return;
+  function updateUploadVisibility(wrapper) {
+    // 🔑 Find the *correct* form for this wrapper
+    const form = wrapper.closest('form');
+    if (!form) return;
 
-    const currentVariant = window.productVariants.find(
-      v => String(v.id) === String(variantIdInput.value)
+    const idInput = form.querySelector('input[name="id"]');
+    if (!idInput) return;
+
+    const variantId = idInput.value;
+
+    const variant = window.productVariants.find(
+      v => String(v.id) === String(variantId)
     );
+    if (!variant) return;
 
-    if (!currentVariant) return;
+    const allowedSkus = wrapper.dataset.uploadSkus
+      .split(',')
+      .map(s => s.trim());
 
-    wrappers.forEach(wrapper => {
-      const allowedSkus = wrapper.dataset.uploadSkus
-        .split(',')
-        .map(sku => sku.trim());
+    if (allowedSkus.includes(variant.sku)) {
+      wrapper.classList.remove('hidden');
+    } else {
+      wrapper.classList.add('hidden');
 
-      if (allowedSkus.includes(currentVariant.sku)) {
-        wrapper.classList.remove('hidden');
-      } else {
-        wrapper.classList.add('hidden');
-
-        const fileInput = wrapper.querySelector('input[type="file"]');
-        if (fileInput) fileInput.value = '';
-      }
-    });
+      // Clear file when switching to non-logo variant
+      const file = wrapper.querySelector('input[type="file"]');
+      if (file) file.value = '';
+    }
   }
 
-  // Initial run (page load)
-  updateUploadVisibility();
+  function updateAll() {
+    wrappers.forEach(updateUploadVisibility);
+  }
 
-  // Re-run whenever variant changes
+  // ✅ Run once on page load
+  updateAll();
+
+  // ✅ Re-run whenever variants change
   document.addEventListener('change', function (e) {
     if (e.target && e.target.name === 'id') {
-      updateUploadVisibility();
+      updateAll();
     }
-  });
   
 });
 
