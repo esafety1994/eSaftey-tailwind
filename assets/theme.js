@@ -27,47 +27,44 @@ document.addEventListener("DOMContentLoaded", function () {
   try{ window.applyHoverImages(); } catch(e){}
 
   // ---- Design upload visibility (SKU-based) ----
-  const uploadWrapper = document.getElementById('design-upload-wrapper');
-  if (!uploadWrapper) return;
+  document.addEventListener('DOMContentLoaded', function () {
+    const wrapper = document.getElementById('design-upload-wrapper');
+    if (!wrapper || !window.productVariants) return;
 
-  const allowedSkus = uploadWrapper.dataset.uploadSkus
-    .split(',')
-    .map(sku => sku.trim());
+    const allowedSkus = wrapper.dataset.uploadSkus
+      .split(',')
+      .map(sku => sku.trim());
 
-  function evaluateUploadVisibility() {
-    const variantIdInput = document.querySelector('input[name="id"]');
-    if (!variantIdInput) return;
+    function updateVisibility() {
+      const variantIdInput = document.querySelector('input[name="id"]');
+      if (!variantIdInput) return;
 
-    const variantId = variantIdInput.value;
+      const variant = window.productVariants.find(
+        v => String(v.id) === String(variantIdInput.value)
+      );
 
-    // Make sure variant data is available
-    if (!window.productVariants) return;
+      if (!variant) return;
 
-    const currentVariant = window.productVariants.find(
-      v => String(v.id) === String(variantId)
-    );
+      if (allowedSkus.includes(variant.sku)) {
+        wrapper.classList.remove('hidden');
+      } else {
+        wrapper.classList.add('hidden');
 
-    if (!currentVariant || !currentVariant.sku) return;
-
-    if (allowedSkus.includes(currentVariant.sku)) {
-      uploadWrapper.classList.remove('hidden');
-    } else {
-      uploadWrapper.classList.add('hidden');
-
-      // Clear file if switching to non-custom variant
-      const input = uploadWrapper.querySelector('input[type="file"]');
-      if (input) input.value = '';
+        // Clear file if switching away
+        const input = wrapper.querySelector('input[type="file"]');
+        if (input) input.value = '';
+      }
     }
-  }
 
-  // Run once on initial page load
-  evaluateUploadVisibility();
+    // Run once on load
+    updateVisibility();
 
-  // Re-run whenever the variant selection changes
-  document.addEventListener('change', function (event) {
-    if (event.target && event.target.name === 'id') {
-      evaluateUploadVisibility();
-    }
+    // Run whenever variant changes
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.name === 'id') {
+        updateVisibility();
+      }
+    });
   });
   
 });
