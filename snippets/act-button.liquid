@@ -32,7 +32,11 @@
       </div>
 
       {% if product.handle == 'construction-site-entry-sign' %}
-        <div class="grid gap-2 my-4 mt-6">
+        <div
+          id="design-upload-wrapper"
+          data-upload-skus="CON-S-C,CON-S-C2"
+          class="hidden grid gap-2 my-4 mt-6"
+        >
           <span class="text-sm font-medium text-gray-700">
             Upload Design Reference
           </span>
@@ -60,7 +64,7 @@
           </label>
 
           <p class="text-xs text-gray-500">
-            Upload artwork, logo, or reference file
+            Upload artwork or logo (only for applicable sign types)
           </p>
         </div>
       {% endif %}
