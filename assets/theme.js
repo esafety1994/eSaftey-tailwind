@@ -25,31 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   try{ window.applyHoverImages(); } catch(e){}
-
-  // ---- Design upload visibility (SKU-based) ----
-  
-console.log('--- Variant debug start ---');
-
-  document.addEventListener('click', function () {
-    console.log('Clicked');
-
-    // Log all selects
-    document.querySelectorAll('select').forEach((s, i) => {
-      console.log(`Select ${i}:`, s.options[s.selectedIndex]?.text);
-    });
-
-    // Log checked radios
-    document.querySelectorAll('input[type="radio"]:checked').forEach((r, i) => {
-      console.log(`Radio ${i}:`, r.closest('label')?.innerText);
-    });
-
-    // Log hidden variant IDs
-    document.querySelectorAll('input[name="id"]').forEach((i, idx) => {
-      console.log(`Variant id input ${idx}:`, i.value);
-    });
-  });
-
-  
 });
 
 // Hover image helper: move from inline snippet to central theme asset
