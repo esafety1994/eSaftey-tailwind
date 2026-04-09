@@ -27,51 +27,28 @@ document.addEventListener("DOMContentLoaded", function () {
   try{ window.applyHoverImages(); } catch(e){}
 
   // ---- Design upload visibility (SKU-based) ----
-  const wrappers = document.querySelectorAll('[data-design-upload]');
-  if (!wrappers.length) return;
+  
+console.log('--- Variant debug start ---');
 
-  function getSelectedOptionText() {
-    // Works for dropdowns, radio buttons, and button groups
-    const select = document.querySelector('select');
-    if (select) return select.options[select.selectedIndex]?.text?.trim();
+  document.addEventListener('click', function () {
+    console.log('Clicked');
 
-    const checkedRadio = document.querySelector('input[type="radio"]:checked');
-    if (checkedRadio) {
-      const label = checkedRadio.closest('label');
-      return label ? label.innerText.trim() : null;
-    }
-
-    const activeButton = document.querySelector('[aria-pressed="true"], .is-active, .active');
-    if (activeButton) return activeButton.innerText.trim();
-
-    return null;
-  }
-
-  function updateUploads() {
-    const selectedText = getSelectedOptionText();
-    if (!selectedText) return;
-
-    wrappers.forEach(wrapper => {
-      const allowedOptions = wrapper.dataset.uploadOptions
-        .split(',')
-        .map(s => s.trim());
-
-      if (allowedOptions.includes(selectedText)) {
-        wrapper.classList.remove('hidden');
-      } else {
-        wrapper.classList.add('hidden');
-        const file = wrapper.querySelector('input[type="file"]');
-        if (file) file.value = '';
-      }
+    // Log all selects
+    document.querySelectorAll('select').forEach((s, i) => {
+      console.log(`Select ${i}:`, s.options[s.selectedIndex]?.text);
     });
-  }
 
-  // Initial run
-  updateUploads();
+    // Log checked radios
+    document.querySelectorAll('input[type="radio"]:checked').forEach((r, i) => {
+      console.log(`Radio ${i}:`, r.closest('label')?.innerText);
+    });
 
-  // Re-run on any interaction
-  document.addEventListener('click', updateUploads);
-  document.addEventListener('change', updateUploads);
+    // Log hidden variant IDs
+    document.querySelectorAll('input[name="id"]').forEach((i, idx) => {
+      console.log(`Variant id input ${idx}:`, i.value);
+    });
+  });
+
   
 });
 
