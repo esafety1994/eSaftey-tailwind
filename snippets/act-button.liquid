@@ -30,31 +30,6 @@
           button_small: button_small
         %}
       </div>
-
-      {% if product.handle == 'construction-site-entry-sign' %}
-        <div class="mt-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Upload Design Reference
-          </label>
-
-          <input
-            type="file"
-            name="properties[Design Reference]"
-            accept=".jpg,.jpeg,.png,.pdf,.ai,.eps"
-            class="block w-full text-sm text-gray-900
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-md file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-gray-100 file:text-gray-700
-                  hover:file:bg-gray-200"
-          >
-
-          <p class="mt-1 text-xs text-gray-500">
-            Upload artwork, logo, or design reference (optional)
-          </p>
-        </div>
-      {% endif %}
-      
       {% if layout == 'base' %}
         <div class="mt-4">
           {{ form | payment_button }}
