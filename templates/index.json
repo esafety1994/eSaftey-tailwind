@@ -126,10 +126,10 @@
     "top_collection_qjTiyL": {
       "type": "top-collection",
       "blocks": {
-        "collection_h7acea": {
+        "collection_gPcdbR": {
           "type": "collection",
           "settings": {
-            "collection": "street-furniture"
+            "collection": "construction-temporary-fencing"
           }
         },
         "collection_zzUxqV": {
@@ -157,20 +157,20 @@
             "collection": "kerb-ramps"
           }
         },
-        "collection_gPcdbR": {
+        "collection_h7acea": {
           "type": "collection",
           "settings": {
-            "collection": "flexible-bollards"
+            "collection": "street-furniture"
           }
         }
       },
       "block_order": [
-        "collection_h7acea",
+        "collection_gPcdbR",
         "collection_zzUxqV",
         "product_fNATHz",
         "collection_DapdmE",
         "collection_FJHiVH",
-        "collection_gPcdbR"
+        "collection_h7acea"
       ],
       "name": "Top Collections",
       "settings": {
