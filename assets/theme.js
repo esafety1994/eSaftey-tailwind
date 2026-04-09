@@ -31,33 +31,35 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!wrappers.length || !window.productVariants) return;
 
   function updateUploadVisibility() {
-    const idInput = document.querySelector('input[name="id"]');
-    if (!idInput) return;
+    const variantIdInput = document.querySelector('input[name="id"]');
+    if (!variantIdInput) return;
 
-    const variant = window.productVariants.find(
-      v => String(v.id) === String(idInput.value)
+    const currentVariant = window.productVariants.find(
+      v => String(v.id) === String(variantIdInput.value)
     );
-    if (!variant) return;
+
+    if (!currentVariant) return;
 
     wrappers.forEach(wrapper => {
       const allowedSkus = wrapper.dataset.uploadSkus
         .split(',')
-        .map(s => s.trim());
+        .map(sku => sku.trim());
 
-      if (allowedSkus.includes(variant.sku)) {
+      if (allowedSkus.includes(currentVariant.sku)) {
         wrapper.classList.remove('hidden');
       } else {
         wrapper.classList.add('hidden');
-        const file = wrapper.querySelector('input[type="file"]');
-        if (file) file.value = '';
+
+        const fileInput = wrapper.querySelector('input[type="file"]');
+        if (fileInput) fileInput.value = '';
       }
     });
   }
 
-  // Initial run
+  // Initial run (page load)
   updateUploadVisibility();
 
-  // React to ANY variant change
+  // Re-run whenever variant changes
   document.addEventListener('change', function (e) {
     if (e.target && e.target.name === 'id') {
       updateUploadVisibility();
