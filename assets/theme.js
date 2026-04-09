@@ -28,50 +28,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---- Design upload visibility (SKU-based) ----
   const wrappers = document.querySelectorAll('[data-design-upload]');
-  if (!wrappers.length || !window.productVariants) return;
+  if (!wrappers.length) return;
 
-  function updateUploadVisibility(wrapper) {
-    // 🔑 Find the *correct* form for this wrapper
-    const form = wrapper.closest('form');
-    if (!form) return;
+  function getSelectedOptionText() {
+    // Works for dropdowns, radio buttons, and button groups
+    const select = document.querySelector('select');
+    if (select) return select.options[select.selectedIndex]?.text?.trim();
 
-    const idInput = form.querySelector('input[name="id"]');
-    if (!idInput) return;
-
-    const variantId = idInput.value;
-
-    const variant = window.productVariants.find(
-      v => String(v.id) === String(variantId)
-    );
-    if (!variant) return;
-
-    const allowedSkus = wrapper.dataset.uploadSkus
-      .split(',')
-      .map(s => s.trim());
-
-    if (allowedSkus.includes(variant.sku)) {
-      wrapper.classList.remove('hidden');
-    } else {
-      wrapper.classList.add('hidden');
-
-      // Clear file when switching to non-logo variant
-      const file = wrapper.querySelector('input[type="file"]');
-      if (file) file.value = '';
+    const checkedRadio = document.querySelector('input[type="radio"]:checked');
+    if (checkedRadio) {
+      const label = checkedRadio.closest('label');
+      return label ? label.innerText.trim() : null;
     }
+
+    const activeButton = document.querySelector('[aria-pressed="true"], .is-active, .active');
+    if (activeButton) return activeButton.innerText.trim();
+
+    return null;
   }
 
-  function updateAll() {
-    wrappers.forEach(updateUploadVisibility);
+  function updateUploads() {
+    const selectedText = getSelectedOptionText();
+    if (!selectedText) return;
+
+    wrappers.forEach(wrapper => {
+      const allowedOptions = wrapper.dataset.uploadOptions
+        .split(',')
+        .map(s => s.trim());
+
+      if (allowedOptions.includes(selectedText)) {
+        wrapper.classList.remove('hidden');
+      } else {
+        wrapper.classList.add('hidden');
+        const file = wrapper.querySelector('input[type="file"]');
+        if (file) file.value = '';
+      }
+    });
   }
 
-  // ✅ Run once on page load
-  updateAll();
+  // Initial run
+  updateUploads();
 
-  // ✅ Re-run whenever variants change
-  document.addEventListener('change', function (e) {
-    if (e.target && e.target.name === 'id') {
-      updateAll();
-    }
+  // Re-run on any interaction
+  document.addEventListener('click', updateUploads);
+  document.addEventListener('change', updateUploads);
   
 });
 
