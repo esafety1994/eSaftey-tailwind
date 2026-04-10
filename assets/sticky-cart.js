@@ -94,20 +94,18 @@
     return null;
   }
 
-  
   function submitAddToCart(variantId, quantity){
+    // try to find the main product form and submit it
     var form = document.querySelector('form[action*="/cart/add"]') || document.querySelector('form');
-
-    // EXIT EARLY for file-upload products
-    if (form && form.dataset.disableAjax === 'true') {
+    if(form){
       var idInput = form.querySelector('input[name="id"]');
-      if (idInput) idInput.value = variantId;
-
+      if(idInput) idInput.value = variantId;
       var qtyInput = form.querySelector('input[name="quantity"]');
-      if (qtyInput) qtyInput.value = quantity;
-
-      form.submit(); // native submit (multipart/form-data)
-      return;
+      if(qtyInput) qtyInput.value = quantity;
+      // trigger click on submit button inside form
+      var submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
+      if(submitBtn){ submitBtn.click(); return; }
+      try{ form.submit(); return; }catch(e){}
     }
 
     // fallback: AJAX add to cart
@@ -167,24 +165,34 @@
     var addBtn = el.querySelector('button[type="submit"], input[type="submit"], .sticky-add-to-cart');
     if (addBtn) {
       addBtn.addEventListener('click', function (e) {
-        const mainForm = document.querySelector('form[action*="/cart/add"]');
-
-        // ✅ IMPORTANT: allow native form submit when uploads are needed
-        if (mainForm && mainForm.dataset.disableAjax === 'true') {
-          return; // DO NOT preventDefault → browser submits form
-        }
-
+        // Prevent native submit; we'll submit after ensuring the correct id
         e.preventDefault();
-
         var variantId = getSelectedVariantId();
-        var qtyElem = el.querySelector('input[name="quantity"]') || document.querySelector('input[name="quantity"]');
-        var qty = parseInt(qtyElem?.value || 1, 10) || 1;
-
+        var qtyElem = el.querySelector('input[name="quantity"]') || el.querySelector('.quantity-input') || document.querySelector('input[name="quantity"]');
+        var qty = 1;
+        try { qty = parseInt(qtyElem && qtyElem.value ? qtyElem.value : 1, 10) || 1; } catch(ex) { qty = 1; }
         if (!variantId) {
           alert('Please select a variant');
           return;
         }
 
+        // Try to find a form inside the sticky element first
+        var stickyForm = el.querySelector('form[action*="/cart/add"], form');
+        if (stickyForm) {
+          var idInput = stickyForm.querySelector('input[name="id"]');
+          if (idInput) idInput.value = variantId;
+          var qtyInput = stickyForm.querySelector('input[name="quantity"]');
+          if (qtyInput) qtyInput.value = qty;
+          // submit using requestSubmit() when available to respect validation
+          try {
+            if (typeof stickyForm.requestSubmit === 'function') { stickyForm.requestSubmit(); return; }
+            stickyForm.submit(); return;
+          } catch (err) {
+            // fall through to AJAX fallback
+          }
+        }
+
+        // no sticky form found — update main form or fallback to AJAX
         submitAddToCart(variantId, qty);
       });
     }
