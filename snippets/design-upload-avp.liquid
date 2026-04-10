@@ -1,0 +1,44 @@
+<div class="ap-options__file-container">
+  <label class="block text-sm font-medium text-gray-700 mb-1">
+    Upload Your Logo
+  </label>
+
+  <!-- Visible file chooser -->
+  <input
+    type="file"
+    class="ap-file-input"
+    data-ap-file
+  >
+
+  <!-- THIS is the critical part -->
+  <!-- This is what your theme actually reads -->
+  <input
+    type="hidden"
+    class="apo_value"
+    name="properties[Design Reference]"
+    field-name="Design Reference"
+    value=""
+  >
+
+  <p class="text-xs text-gray-500 mt-1">
+    Only required for custom signage
+  </p>
+</div>
+
+<script>
+document.addEventListener('change', async function (e) {
+  const input = e.target;
+  if (!input.matches('[data-ap-file]')) return;
+
+  const file = input.files[0];
+  if (!file) return;
+
+  // Fake upload for now — we just store filename
+  // (matches how AVP behaves internally)
+  const hidden = input
+    .closest('.ap-options__file-container')
+    .querySelector('.apo_value');
+
+  hidden.value = file.name;
+});
+</script>
