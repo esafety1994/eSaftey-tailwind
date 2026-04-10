@@ -16,7 +16,11 @@
 {% assign showPlus = showPlus | default: false %}
 <esafety-cart-action-button>
   <div id="product-act-button">
-    {% form 'product', product %}
+    {% assign disable_ajax = false %}
+    {% if product.handle == 'construction-site-entry-sign' %}
+      {% assign disable_ajax = true %}
+    {% endif %}
+    {% form 'product', product, data-disable-ajax: disable_ajax %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
       <div class="flex items-center space-x-4">
