@@ -94,19 +94,19 @@
     return null;
   }
 
+  
   function submitAddToCart(variantId, quantity){
-    // try to find the main product form and submit it
     var form = document.querySelector('form[action*="/cart/add"]') || document.querySelector('form');
-    
-    // IMPORTANT: allow native submit when AJAX is disabled
-    if (form && form.dataset && form.dataset.disableAjax === 'true') {
+
+    // EXIT EARLY for file-upload products
+    if (form && form.dataset.disableAjax === 'true') {
       var idInput = form.querySelector('input[name="id"]');
       if (idInput) idInput.value = variantId;
 
       var qtyInput = form.querySelector('input[name="quantity"]');
       if (qtyInput) qtyInput.value = quantity;
 
-      form.submit(); // native HTML submit (files included)
+      form.submit(); // native submit (multipart/form-data)
       return;
     }
 
@@ -167,14 +167,24 @@
     var addBtn = el.querySelector('button[type="submit"], input[type="submit"], .sticky-add-to-cart');
     if (addBtn) {
       addBtn.addEventListener('click', function (e) {
-        var mainForm = document.querySelector('form[action*="/cart/add"]');
+        const mainForm = document.querySelector('form[action*="/cart/add"]');
 
-        // Allow native submit for file uploads
+        // ✅ IMPORTANT: allow native form submit when uploads are needed
         if (mainForm && mainForm.dataset.disableAjax === 'true') {
-          return; // allow normal form submission
+          return; // DO NOT preventDefault → browser submits form
         }
 
         e.preventDefault();
+
+        var variantId = getSelectedVariantId();
+        var qtyElem = el.querySelector('input[name="quantity"]') || document.querySelector('input[name="quantity"]');
+        var qty = parseInt(qtyElem?.value || 1, 10) || 1;
+
+        if (!variantId) {
+          alert('Please select a variant');
+          return;
+        }
+
         submitAddToCart(variantId, qty);
       });
     }
