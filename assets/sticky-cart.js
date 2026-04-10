@@ -97,15 +97,17 @@
   function submitAddToCart(variantId, quantity){
     // try to find the main product form and submit it
     var form = document.querySelector('form[action*="/cart/add"]') || document.querySelector('form');
-    if(form){
+    
+    // IMPORTANT: allow native submit when AJAX is disabled
+    if (form && form.dataset && form.dataset.disableAjax === 'true') {
       var idInput = form.querySelector('input[name="id"]');
-      if(idInput) idInput.value = variantId;
+      if (idInput) idInput.value = variantId;
+
       var qtyInput = form.querySelector('input[name="quantity"]');
-      if(qtyInput) qtyInput.value = quantity;
-      // trigger click on submit button inside form
-      var submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
-      if(submitBtn){ submitBtn.click(); return; }
-      try{ form.submit(); return; }catch(e){}
+      if (qtyInput) qtyInput.value = quantity;
+
+      form.submit(); // native HTML submit (files included)
+      return;
     }
 
     // fallback: AJAX add to cart
@@ -165,34 +167,14 @@
     var addBtn = el.querySelector('button[type="submit"], input[type="submit"], .sticky-add-to-cart');
     if (addBtn) {
       addBtn.addEventListener('click', function (e) {
-        // Prevent native submit; we'll submit after ensuring the correct id
+        var mainForm = document.querySelector('form[action*="/cart/add"]');
+
+        // Allow native submit for file uploads
+        if (mainForm && mainForm.dataset.disableAjax === 'true') {
+          return; // allow normal form submission
+        }
+
         e.preventDefault();
-        var variantId = getSelectedVariantId();
-        var qtyElem = el.querySelector('input[name="quantity"]') || el.querySelector('.quantity-input') || document.querySelector('input[name="quantity"]');
-        var qty = 1;
-        try { qty = parseInt(qtyElem && qtyElem.value ? qtyElem.value : 1, 10) || 1; } catch(ex) { qty = 1; }
-        if (!variantId) {
-          alert('Please select a variant');
-          return;
-        }
-
-        // Try to find a form inside the sticky element first
-        var stickyForm = el.querySelector('form[action*="/cart/add"], form');
-        if (stickyForm) {
-          var idInput = stickyForm.querySelector('input[name="id"]');
-          if (idInput) idInput.value = variantId;
-          var qtyInput = stickyForm.querySelector('input[name="quantity"]');
-          if (qtyInput) qtyInput.value = qty;
-          // submit using requestSubmit() when available to respect validation
-          try {
-            if (typeof stickyForm.requestSubmit === 'function') { stickyForm.requestSubmit(); return; }
-            stickyForm.submit(); return;
-          } catch (err) {
-            // fall through to AJAX fallback
-          }
-        }
-
-        // no sticky form found — update main form or fallback to AJAX
         submitAddToCart(variantId, qty);
       });
     }
