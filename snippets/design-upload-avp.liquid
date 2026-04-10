@@ -48,3 +48,23 @@
     Only for custom type variants
   </p>
 </div>
+
+<script>
+document.addEventListener('change', function (e) {
+  const input = e.target;
+  if (!input.matches('.ap-file-input')) return;
+
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  const wrapper = input.closest('.ap-options__file-container');
+  if (!wrapper) return;
+
+  const labelText = wrapper.querySelector('label span.truncate');
+  if (!labelText) return;
+
+  // Visual feedback only
+  labelText.textContent = file.name;
+  labelText.classList.add('text-gray-900');
+});
+</script>
