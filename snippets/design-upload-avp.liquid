@@ -1,41 +1,15 @@
-<div class="ap-options__file-container grid gap-2 my-4 mt-6">
-  <span class="text-sm font-medium text-gray-700">
-    Upload Your Logo Here
-  </span>
-
-  <label
-    class="flex items-center justify-between
-           w-full border border-gray-300 rounded-md
-           px-3 py-2 text-sm text-gray-600
-           cursor-pointer hover:bg-gray-50"
-  >
-    <span class="truncate">
-      Choose file…
-    </span>
-
-    <svg
-      class="w-5 h-5 text-gray-400"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M15.172 7l-6.586 6.586a2 2 0 002.828 2.828L18 9"
-      />
-    </svg>
-
-    <!-- AVP uploader attaches HERE -->
-    <input
-      type="file"
-      class="hidden ap-file-input"
-      accept=".jpg,.jpeg,.png,.pdf,.ai,.eps"
-    />
+<div class="ap-options__file-container">
+  <label class="block text-sm font-medium text-gray-700 mb-1">
+    Upload Your Logo
   </label>
 
-  <!-- THIS gets populated with a FILE URL by AVP -->
+  <!-- Visible file chooser -->
+  <input
+    type="file"
+    class="ap-file-input"
+    data-ap-file
+  >
+
   <input
     type="hidden"
     class="apo_value"
@@ -44,27 +18,23 @@
     value=""
   >
 
-  <p class="text-xs text-gray-500">
-    Only for custom type variants
+  <p class="text-xs text-gray-500 mt-1">
+    Only required for custom signage
   </p>
 </div>
 
 <script>
-document.addEventListener('change', function (e) {
+document.addEventListener('change', async function (e) {
   const input = e.target;
-  if (!input.matches('.ap-file-input')) return;
+  if (!input.matches('[data-ap-file]')) return;
 
-  const file = input.files && input.files[0];
+  const file = input.files[0];
   if (!file) return;
 
-  const wrapper = input.closest('.ap-options__file-container');
-  if (!wrapper) return;
+  const hidden = input
+    .closest('.ap-options__file-container')
+    .querySelector('.apo_value');
 
-  const labelText = wrapper.querySelector('label span.truncate');
-  if (!labelText) return;
-
-  // Visual feedback only
-  labelText.textContent = file.name;
-  labelText.classList.add('text-gray-900');
+  hidden.value = file.name;
 });
 </script>
