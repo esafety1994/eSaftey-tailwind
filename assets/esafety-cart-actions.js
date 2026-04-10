@@ -530,35 +530,21 @@ class EsafetyCartActionsAddToCartButton extends HTMLElement {
   }
 
   handleAdd(event) {
-    const form = this.closest('form');
-
-    // IMPORTANT: if a file has been selected, allow native submit
-    if (form) {
-      const fileInput = form.querySelector('input[type="file"]');
-      if (fileInput && fileInput.files && fileInput.files.length > 0) {
-        return; // DO NOT preventDefault → native submit happens
-      }
-    }
-
     event.preventDefault();
     if (this._isLoading) return;
-
     const qtyElement = this.querySelector(
       "[data-qty-input-counter] .custom-number-input"
     );
-
     qtyElement.classList.remove("right-1/2", "opacity-0");
     qtyElement.classList.add("-right-1/2", "opacity-100");
-
     this.addBtn.classList.add("opacity-0");
     this.addBtn.classList.remove("opacity-100");
-
+    // ensure qty input is visible and set to 1, then add 1 item to cart
     if (this._qtyInput) this._qtyInput.value = 1;
-
     const variantId = this.getVariantId();
     if (variantId) this.addToCart(variantId, 1);
+    const cartActionForm = this.closest("esafety-cart-action-button");
   }
-
   handleMinus(event) {
     event.preventDefault();
     if (this._isLoading) return;
