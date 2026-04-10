@@ -35,13 +35,6 @@
         %}
       </div>
 
-      {%- comment -%}
-        Custom Signage‑style upload (pre‑upload reference, NOT raw file)
-      {%- endcomment -%}
-      {% if product.handle == 'construction-site-entry-sign' %}
-        {% render 'design-upload-avp' %}
-      {% endif %}
-
       {% if layout == 'base' %}
         <div class="mt-4">
           {{ form | payment_button }}
