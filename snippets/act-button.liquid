@@ -1,32 +1,28 @@
 {%- comment -%}
-  Act-button wrapper: renders a `form 'product', product`
+  Act-button wrapper: renders a `form 'product', product` containing the qty selector and add-to-cart button.
+  Pass `product` when rendering: {% render 'act-button', product: product %}
 {%- endcomment -%}
-
+{%- comment -%} Simple add-to-cart button snippet. Accepts `product` (optional) {%- endcomment -%}
 {% assign _variant = variant %}
 {% if _variant == null and product %}
   {% assign _variant = product.selected_or_first_available_variant %}
 {% endif %}
-
 {% assign layout = layout | default: 'base' %}
+{% comment %} Determine stock status (fall back to Add to Cart when missing) {% endcomment %}
 {% assign status = '' %}
 {% if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status %}
   {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
 {% endif %}
-
 {% assign showPlus = showPlus | default: false %}
-
 <esafety-cart-action-button>
   <div id="product-act-button">
-
     {% form 'product', product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
-
       <div class="flex items-center space-x-4">
         {% if hide_qty != true and product.available and status != 'Out of Stock' %}
           {% render 'qty-selector', mobile_hide: mobile_hide_qty %}
         {% endif %}
-
         {% render 'add-to-cart-button',
           status: status,
           showPlus: showPlus,
@@ -34,22 +30,20 @@
           button_small: button_small
         %}
       </div>
-
+      
       {% if layout == 'base' %}
         <div class="mt-4">
           {{ form | payment_button }}
         </div>
         {% render 'dynamic-buy-button', product: product %}
       {% endif %}
-
-      {%- comment -%} Rendr Shopify snippet {%- endcomment -%}
-      {% if product.tags contains 'Same Day Delivery' %}
-        <input type="hidden" name="properties[_parcel_dimension_cm@1]" value="20x30x5">
-        <input type="hidden" name="properties[_parcel_weight_kg@1]" value="{{ product.variants.first.weight | weight_with_unit }}">
-        <input type="hidden" name="properties[_store]" value="e_safety_supplies-wetherill_park">
-      {% endif %}
-
+      <!-- Begin Rendr-Shopify Cart Liquid Snippet (v1.0.0) -->
+  {% if product.tags contains 'Same Day Delivery' %}
+    <input type="hidden" name="properties[_parcel_dimension_cm@1]" value="20x30x5">
+    <input type="hidden" name="properties[_parcel_weight_kg@1]" value="{{ product.variants.first.weight | weight_with_unit }}">
+    <input type="hidden" name="properties[_store]" value="e_safety_supplies-wetherill_park">
+  {% endif %}
+<!-- End Rendr-Shopify Cart Liquid Snippet (v1.0.0) -->
     {% endform %}
-
   </div>
 </esafety-cart-action-button>
