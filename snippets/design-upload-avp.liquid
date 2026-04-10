@@ -1,17 +1,41 @@
 <div class="ap-options__file-container grid gap-2 my-4 mt-6">
-  <label class="text-sm font-medium text-gray-700">
+  <span class="text-sm font-medium text-gray-700">
     Upload Your Logo Here
+  </span>
+
+  <label
+    class="flex items-center justify-between
+           w-full border border-gray-300 rounded-md
+           px-3 py-2 text-sm text-gray-600
+           cursor-pointer hover:bg-gray-50"
+  >
+    <span class="truncate">
+      Choose file…
+    </span>
+
+    <svg
+      class="w-5 h-5 text-gray-400"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.172 7l-6.586 6.586a2 2 0 002.828 2.828L18 9"
+      />
+    </svg>
+
+    <!-- AVP uploader attaches HERE -->
+    <input
+      type="file"
+      class="hidden ap-file-input"
+      accept=".jpg,.jpeg,.png,.pdf,.ai,.eps"
+    />
   </label>
 
-  <!-- AVP uploader hooks into this -->
-  <input
-    type="file"
-    class="ap-file-input"
-    data-ap-file
-    accept=".jpg,.jpeg,.png,.pdf,.ai,.eps"
-  >
-
-  <!-- This gets populated by the uploader with a FILE URL -->
+  <!-- THIS gets populated with a FILE URL by AVP -->
   <input
     type="hidden"
     class="apo_value"
