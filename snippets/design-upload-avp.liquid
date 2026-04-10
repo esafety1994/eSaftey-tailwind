@@ -10,8 +10,6 @@
     data-ap-file
   >
 
-  <!-- THIS is the critical part -->
-  <!-- This is what your theme actually reads -->
   <input
     type="hidden"
     class="apo_value"
@@ -33,8 +31,6 @@ document.addEventListener('change', async function (e) {
   const file = input.files[0];
   if (!file) return;
 
-  // Fake upload for now — we just store filename
-  // (matches how AVP behaves internally)
   const hidden = input
     .closest('.ap-options__file-container')
     .querySelector('.apo_value');
