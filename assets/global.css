@@ -583,9 +583,3 @@ a.underline-animation:focus::after {
 .footer-block .text-sm p:not(:last-child) {
   margin-bottom: 8px;
 }
-
-/* Ensure Avis uploaded file rows are not clipped in Step 5 */
-.accordion-wrapper[data-step="5"] .accordion-content {
-  max-height: none !important;
-  overflow: visible !important;
-}
