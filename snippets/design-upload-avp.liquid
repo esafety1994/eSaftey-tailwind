@@ -3,14 +3,15 @@
     Upload Your Logo Here
   </label>
 
-  <!-- This input is transformed by the AVP uploader JS -->
+  <!-- AVP uploader hooks into this -->
   <input
     type="file"
     class="ap-file-input"
     data-ap-file
+    accept=".jpg,.jpeg,.png,.pdf,.ai,.eps"
   >
 
-  <!-- This hidden field is what gets sent to Shopify -->
+  <!-- This gets populated by the uploader with a FILE URL -->
   <input
     type="hidden"
     class="apo_value"
