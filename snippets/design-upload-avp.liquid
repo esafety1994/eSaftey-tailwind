@@ -23,29 +23,3 @@
     Only for custom type variants
   </p>
 </div>
-
-<script>
-document.addEventListener('change', function (e) {
-  const input = e.target;
-  if (!input.matches('[data-ap-file]')) return;
-
-  const file = input.files && input.files[0];
-  if (!file) return;
-
-  const wrapper = input.closest('.ap-options__file-container');
-  if (!wrapper) return;
-
-  const filenameSpan = wrapper.querySelector('[data-upload-filename]');
-  const hiddenValue = wrapper.querySelector('.apo_value');
-
-  if (filenameSpan) {
-    filenameSpan.textContent = file.name;
-    filenameSpan.classList.add('text-gray-900');
-  }
-
-  if (hiddenValue) {
-    // Mirror Custom Signage behaviour: store a string reference
-    hiddenValue.value = file.name;
-  }
-});
-</script>
