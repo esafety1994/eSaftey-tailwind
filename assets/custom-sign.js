@@ -181,11 +181,7 @@ function openAccordionByStep(stepOrWrapper) {
   content.classList.add("open");
   wrapper.classList.add("accordion-open");
   const stepAttr = Number(wrapper.getAttribute("data-step")) || null;
-  
-if (stepAttr === 5) {
-  content.style.maxHeight = (content.scrollHeight || 2000) + "px";
-}
-
+  if (stepAttr === 5) content.style.maxHeight = "375px";
   else {
     // Try to set to exact scrollHeight, fallback to a large value
     const h = content.scrollHeight || 2000;
