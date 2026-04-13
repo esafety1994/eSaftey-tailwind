@@ -584,14 +584,3 @@ a.underline-animation:focus::after {
   margin-bottom: 8px;
 }
 
-
-/* Allow Step 5 to grow naturally but not infinitely */
-.accordion-wrapper[data-step="5"] .accordion-content {
-  overflow: visible;          /* allow Avis row to show */
-  transition: max-height 0.25s ease;
-}
-
-/* Only remove the height cap while Step 5 is open */
-.accordion-wrapper[data-step="5"].accordion-open .accordion-content {
-  max-height: 2000px;
-}
