@@ -96,51 +96,64 @@
 {% else %}
   {% comment %}<p>No FAQ available.</p>{% endcomment %}
 {% endif %}
-{% comment %}<script type="application/ld+json">
+{% assign has_faq = false %}
+
+{% capture faq_items %}
+  {% assign first = true %}
+  {% assign question = '' %}
+  {% assign answer = '' %}
+
+  {% for item in faq_data.children %}
+    {% for child in item.children %}
+      
+      {% if child.bold %}
+        
+        {% if question != '' and answer != '' %}
+          {% assign has_faq = true %}
+          {% unless first %},{% endunless %}
+          {
+            "@type": "Question",
+            "name": {{ question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | strip_html | json }}
+            }
+          }
+          {% assign first = false %}
+        {% endif %}
+
+        {% assign question = child.value %}
+        {% assign answer = '' %}
+      
+      {% else %}
+        {% assign answer = answer | append: child.value %}
+      {% endif %}
+
+    {% endfor %}
+  {% endfor %}
+
+  {% if question != '' and answer != '' %}
+    {% assign has_faq = true %}
+    {% unless first %},{% endunless %}
+    {
+      "@type": "Question",
+      "name": {{ question | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ answer | strip_html | json }}
+      }
+    }
+  {% endif %}
+{% endcapture %}
+
+{% if has_faq %}
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {% assign first = true %}
-    {% assign question = '' %}
-    {% assign answer = '' %}
-
-    {% for item in faq_data.children %}
-      {% for child in item.children %}
-        {% if child.bold %}
-          
-          {% if question != '' and answer != '' %}
-            {% unless first %},{% endunless %}
-            {
-              "@type": "Question",
-              "name": {{ question | json }},
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": {{ answer | strip_html | json }}
-              }
-            }
-            {% assign first = false %}
-          {% endif %}
-
-          {% assign question = child.value %}
-          {% assign answer = '' %}
-        {% else %}
-          {% assign answer = answer | append: child.value %}
-        {% endif %}
-      {% endfor %}
-    {% endfor %}
-
-    {% if question != '' and answer != '' %}
-      {% unless first %},{% endunless %}
-      {
-        "@type": "Question",
-        "name": {{ question | json }},
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": {{ answer | strip_html | json }}
-        }
-      }
-    {% endif %}
+    {{ faq_items }}
   ]
 }
-</script>{% endcomment %}
+</script>
+{% endif %}
