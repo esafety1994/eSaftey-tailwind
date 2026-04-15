@@ -1,74 +1,9 @@
 {% comment %} Prefer the explicit `custom.rich_text` metafield and render with `rich_text` filter. Fallback to other keys if absent. {% endcomment %}
 {% assign faq = product.metafields.custom.rich_text %}
-
 {% if faq and faq != blank %}
   <div class="faq-section text-sm p-4 rounded">
     {{ faq | metafield_tag }}
   </div>
-
-  {% capture faq_html %}
-    {{ faq | metafield_tag }}
-  {% endcapture %}
-
-  {% assign parts = faq_html | split: '<p>' %}
-  {% assign has_faq = false %}
-
-  {% capture faq_items %}
-    {% assign first = true %}
-
-    {% for part in parts %}
-      
-      {% if part contains '<strong>' %}
-        
-        {% assign question = part 
-          | split: '<strong>' 
-          | last 
-          | split: '</strong>' 
-          | first 
-          | strip 
-        %}
-
-        {% assign next_index = forloop.index %}
-        {% assign answer_part = parts[next_index] | strip %}
-
-        {% assign answer = answer_part 
-          | remove: '</p>' 
-          | strip_html 
-          | strip 
-        %}
-
-        {% if question != blank and answer != blank %}
-          {% assign has_faq = true %}
-
-          {% unless first %},{% endunless %}
-          {
-            "@type": "Question",
-            "name": {{ question | json }},
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": {{ answer | json }}
-            }
-          }
-          {% assign first = false %}
-        {% endif %}
-
-      {% endif %}
-
-    {% endfor %}
-  {% endcapture %}
-
-  {% if has_faq %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {{ faq_items }}
-    ]
-  }
-  </script>
-  {% endif %}
-
 {% else %}
   <div class="text-sm text-gray-600 py-4">FAQ coming soon!</div>
 {% endif %}
