@@ -85,53 +85,63 @@
   {% endcapture %}
 
   {% assign parts = faq_html | split: '<p>' %}
-  {% assign first = true %}
+  {% assign has_faq = false %}
 
-  {% comment %}<script type="application/ld+json">
+  {% capture faq_items %}
+    {% assign first = true %}
+
+    {% for part in parts %}
+      
+      {% if part contains '<strong>' %}
+        
+        {% assign question = part 
+          | split: '<strong>' 
+          | last 
+          | split: '</strong>' 
+          | first 
+          | strip 
+        %}
+
+        {% assign next_index = forloop.index %}
+        {% assign answer_part = parts[next_index] | strip %}
+
+        {% assign answer = answer_part 
+          | remove: '</p>' 
+          | strip_html 
+          | strip 
+        %}
+
+        {% if question != blank and answer != blank %}
+          {% assign has_faq = true %}
+
+          {% unless first %},{% endunless %}
+          {
+            "@type": "Question",
+            "name": {{ question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | json }}
+            }
+          }
+          {% assign first = false %}
+        {% endif %}
+
+      {% endif %}
+
+    {% endfor %}
+  {% endcapture %}
+
+  {% if has_faq %}
+  <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {% for part in parts %}
-        
-        {% if part contains '<strong>' %}
-          
-          {% assign question = part 
-            | split: '<strong>' 
-            | last 
-            | split: '</strong>' 
-            | first 
-            | strip 
-          %}
-
-          {% assign next_index = forloop.index %}
-          {% assign answer_part = parts[next_index] | strip %}
-
-          {% assign answer = answer_part 
-            | remove: '</p>' 
-            | strip_html 
-            | strip 
-          %}
-
-          {% if question != blank and answer != blank %}
-            {% unless first %},{% endunless %}
-            {
-              "@type": "Question",
-              "name": {{ question | json }},
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": {{ answer | json }}
-              }
-            }
-            {% assign first = false %}
-          {% endif %}
-
-        {% endif %}
-
-      {% endfor %}
+      {{ faq_items }}
     ]
   }
-  </script>{% endcomment %}
+  </script>
+  {% endif %}
 
 {% endif %}
 {% schema %}
