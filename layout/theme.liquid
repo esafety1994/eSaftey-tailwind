@@ -323,30 +323,7 @@
 
   {% endif %}
   </body>
-<script>
-(function () {
-  function removeBadSchema() {
-    var el = document.getElementById('reviewsWidgetProductSnippets');
-    if (el) el.remove();
-  }
 
-  // Run immediately
-  removeBadSchema();
-
-  // Run again after widgets load
-  window.addEventListener('load', removeBadSchema);
-
-  // Catch late injections
-  var observer = new MutationObserver(function () {
-    removeBadSchema();
-  });
-
-  observer.observe(document.documentElement, {
-    childList: true,
-    subtree: true
-  });
-})();
-</script>
   {% comment %} PODIUM CODE FOR CHAT ON HOME PAGE {% endcomment %}
   <script defer="defer">
     window.addEventListener('scroll', function loadPodiumWidget() {
