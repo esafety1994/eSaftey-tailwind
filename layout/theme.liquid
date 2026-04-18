@@ -323,38 +323,7 @@
 
   {% endif %}
   </body>
-<script>
-(function () {
-  function fixReviewSchema() {
-    var el = document.getElementById('reviewsWidgetProductSnippets');
-    if (!el) return;
 
-    try {
-      var data = JSON.parse(el.textContent);
-
-      // Ensure Product has required "name"
-      if (data && data['@type'] === 'Product') {
-        if (!data.name || data.name.trim() === '') {
-          data.name = {{ product.title | json }};
-        }
-      }
-
-      // Write back fixed JSON
-      el.textContent = JSON.stringify(data);
-    } catch (e) {
-      console.warn('Schema patch failed:', e);
-    }
-  }
-
-  // Run now + after load
-  document.addEventListener('DOMContentLoaded', fixReviewSchema);
-  window.addEventListener('load', fixReviewSchema);
-
-  // Catch late injections
-  var observer = new MutationObserver(fixReviewSchema);
-  observer.observe(document.documentElement, { childList: true, subtree: true });
-})();
-</script>
   {% comment %} PODIUM CODE FOR CHAT ON HOME PAGE {% endcomment %}
   <script defer="defer">
     window.addEventListener('scroll', function loadPodiumWidget() {
