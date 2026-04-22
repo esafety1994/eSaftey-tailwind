@@ -15,9 +15,14 @@
     {%- endunless -%}
   </title>
 
-{% if page_description %}
-  <meta name="description" content="{{ page_description | escape }}{% if current_page > 1 %} - Page {{ current_page }}{% endif %}">
-{% endif %}
+{% capture meta_desc %}
+  {{ page_description | strip }}
+  {% if current_page > 1 %}
+    - Page {{ current_page }}
+  {% endif %}
+{% endcapture %}
+
+<meta name="description" content="{{ meta_desc | strip | escape }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
