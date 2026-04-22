@@ -27,7 +27,7 @@
         "content_position": "left",
         "banner_heading": "<p>CLICK</p><p>& COLLECT</p>",
         "heading_color": "#ffdc06",
-        "subheading": "<p>Sydney Warehouse Pickup</p><p>Fast & Free to collect</p>",
+        "subheading": "<h1>Sydney Warehouse Pickup</h1><h1>Fast & Free to collect</h1>",
         "subheading_color": "#ffffff",
         "button1_text": "Shop Now",
         "button1_link": "/",
@@ -44,7 +44,6 @@
       "name": "Click & Collect Content",
       "settings": {}
     }
-    
   },
   "order": [
     "title",
