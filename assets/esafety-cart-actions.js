@@ -37,6 +37,8 @@ if (!window._esafety_cart_add_interceptor_installed) {
       if (!form || !(form instanceof HTMLFormElement)) return;
       const action = (form.getAttribute && (form.getAttribute('action') || '') || '').toLowerCase();
       if (!action.includes('/cart/add')) return; // only handle cart add forms
+      // skip forms already handled by <esafety-cart-action-button> to avoid double-add
+      if (form.closest && form.closest('esafety-cart-action-button')) return;
 
       // If any real File objects are present, allow native multipart submit
       const fileInputs = form.querySelectorAll('input[type="file"]');
@@ -126,6 +128,7 @@ if (!customElements.get("esafety-cart-action-button")) {
 
     handleSubmit(event) {
       event.preventDefault();
+      if (this._submitting) return;
       const customFields = document.querySelector(".m-product-custom-field");
       if (customFields) {
         // remove any previous validation UI to avoid duplicates
@@ -396,6 +399,7 @@ if (!customElements.get("esafety-cart-action-button")) {
         }
       };
 
+      this._submitting = true;
       setLoading(true);
 
       // Safely read quantity (default to 1 when no quantity input present)
@@ -436,15 +440,26 @@ if (!customElements.get("esafety-cart-action-button")) {
         },
         body: JSON.stringify(formData),
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            const body = await response.text().catch(() => "");
+            const err = new Error("Add to cart HTTP " + response.status);
+            err.status = response.status;
+            err.body = body;
+            throw err;
+          }
+          return response.json();
+        })
         .then((data) => {
           document.documentElement.dispatchEvent(
             new CustomEvent("cart:render", { detail: data, bubbles: true })
           );
+          this._submitting = false;
           setLoading(false);
         })
         .catch((err) => {
           console.error("Add to cart failed", err);
+          this._submitting = false;
           setLoading(false);
         });
     }
