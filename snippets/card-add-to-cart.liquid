@@ -3,7 +3,10 @@
     Add to cart button for product cards
   endcomment
   assign showButton = true
-  if product.first_available_variant.id
+  assign _card_tag_string = product.tags | join: ',' | downcase
+  if _card_tag_string contains 'hide prices'
+    assign showButton = false
+  elsif product.first_available_variant.id
     assign _variant = product.selected_or_first_available_variant
     if _variant and _variant.metafields and _variant.metafields.custom and _variant.metafields.custom.stock_status
       assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status
