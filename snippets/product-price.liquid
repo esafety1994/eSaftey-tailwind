@@ -19,6 +19,22 @@
 {% comment %}Case-insensitive tag checks: join tags into a string and downcase it{% endcomment %}
 {% assign _tag_string = product.tags | join: ',' | downcase %}
 
+{% if _tag_string contains 'hide prices' %}
+  {% case layout %}
+    {% when 'card', 'search' %}
+      <div class="flex flex-col gap-1 text-lg">
+        <span class="font-semibold">Request for Quote</span>
+      </div>
+    {% when 'sticky' %}
+      <div class="text-left">
+        <span class="font-semibold">Request for Quote</span>
+      </div>
+    {% else %}
+      <div class="flex flex-col gap-1 text-xl">
+        <span class="font-semibold">Request for Quote</span>
+      </div>
+  {% endcase %}
+{% else %}
 {% case layout %}
   {% when 'card', 'search' %}
     <div class="flex flex-col gap-1 text-lg">
@@ -76,6 +92,7 @@
       {% unless _tag_string contains 'gst-exempt' or _tag_string contains 'tactile' %}
         <span class="text-lg text-grey-text">{{ ex_price | money }} (ex. GST)</span>
       {% endunless %}
-      
+
     </div>
 {% endcase %}
+{% endif %}
