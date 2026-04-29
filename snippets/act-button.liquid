@@ -14,8 +14,14 @@
   {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
 {% endif %}
 {% assign showPlus = showPlus | default: false %}
+{% assign _act_tag_string = product.tags | join: ',' | downcase %}
 <esafety-cart-action-button>
   <div id="product-act-button">
+    {% if _act_tag_string contains 'hide prices' %}
+      {% unless layout == 'sticky' %}
+        <div class="font-semibold text-lg py-3">Request for Quote</div>
+      {% endunless %}
+    {% else %}
     {% form 'product', product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
@@ -30,7 +36,7 @@
           button_small: button_small
         %}
       </div>
-      
+
       {% if layout == 'base' %}
         <div class="mt-4">
           {{ form | payment_button }}
@@ -45,5 +51,6 @@
   {% endif %}
 <!-- End Rendr-Shopify Cart Liquid Snippet (v1.0.0) -->
     {% endform %}
+    {% endif %}
   </div>
 </esafety-cart-action-button>
