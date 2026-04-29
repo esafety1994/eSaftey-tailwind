@@ -144,6 +144,32 @@
   {% endif %}
 
 {% endif %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "@id": "{{ shop.url }}{{ product.url }}",
+  "name": {{ product.title | json }},
+  "image": [
+    {% if product.featured_image %}
+      "{{ product.featured_image | image_url: width: 1200 }}"
+    {% endif %}
+  ],
+  "description": {{ product.description | strip_html | truncate: 160 | json }},
+  "sku": {{ product.selected_or_first_available_variant.sku | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | json }}
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ shop.url }}{{ product.url }}",
+    "priceCurrency": "{{ shop.currency }}",
+    "price": "{{ product.selected_or_first_available_variant.price | money_without_currency }}",
+    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+  }
+}
+</script>
 {% schema %}
 {
   "name": "Main Product",
