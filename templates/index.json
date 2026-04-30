@@ -12,8 +12,21 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
+        "slider_item_nVybjd": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/April-product-Web-Banner_effbe3ab-a2ce-43fd-8ea8-3248b6fcdb7e.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://blogs/esafety-blogs/april-blowout-sale"
+          }
+        },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/May-Web-Banner.jpg",
             "single_image": true,
@@ -26,6 +39,7 @@
         },
         "slider_item_KbcYQL": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/web-banner-straw-hat.jpg",
             "single_image": true,
@@ -62,19 +76,6 @@
             "button_link": "shopify://blogs/esafety-blogs/monthly-giveaway-esafety-ratchet-straps"
           }
         },
-        "slider_item_nVybjd": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/Giveaway-Web-Banner-T-Shirt.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/monthly-giveaway-esafety-branded-t-shirts"
-          }
-        },
         "slider_item_GK847N": {
           "type": "slider_item",
           "disabled": true,
@@ -90,11 +91,11 @@
         }
       },
       "block_order": [
+        "slider_item_nVybjd",
         "slider_item_wmYUEQ",
         "slider_item_KbcYQL",
         "slider_item_G4KkCk",
         "slider_item_Y9N7BV",
-        "slider_item_nVybjd",
         "slider_item_GK847N"
       ],
       "settings": {}
