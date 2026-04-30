@@ -12,16 +12,28 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
-        "slider_item_KbcYQL": {
+        "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/April-product-Web-Banner.jpg",
+            "background": "shopify://shop_images/May-Web-Banner.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": "shopify://products/200w-solar-relocatable-light-tower-australia"
+            "button_link": "shopify://blogs/esafety-blogs/may-blowout-sale-shade-cloth"
+          }
+        },
+        "slider_item_KbcYQL": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/web-banner-straw-hat.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat"
           }
         },
         "slider_item_G4KkCk": {
@@ -37,21 +49,9 @@
             "button_link": "shopify://blogs/esafety-blogs/5-off-easter-egg-hunt"
           }
         },
-        "slider_item_wmYUEQ": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/monthly-sale_web-banner.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/uncategorized/march-blowout"
-          }
-        },
         "slider_item_Y9N7BV": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Giveaway-Ratchet-Straps-Web-Banner.jpg",
             "single_image": true,
@@ -90,9 +90,9 @@
         }
       },
       "block_order": [
+        "slider_item_wmYUEQ",
         "slider_item_KbcYQL",
         "slider_item_G4KkCk",
-        "slider_item_wmYUEQ",
         "slider_item_Y9N7BV",
         "slider_item_nVybjd",
         "slider_item_GK847N"
