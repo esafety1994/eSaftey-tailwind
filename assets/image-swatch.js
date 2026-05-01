@@ -34,6 +34,16 @@
           // try if the name itself is a hex
           if (/^#([0-9A-F]{3}){1,2}$/i.test(name.trim())) {
             el.style.backgroundColor = name.trim();
+          } else if (name.trim().toLowerCase() === "clear") {
+            // transparency indicator (checkered pattern) for "Clear" variants
+            el.style.backgroundImage =
+              "linear-gradient(45deg, #d1d5db 25%, transparent 25%, transparent 75%, #d1d5db 75%)," +
+              "linear-gradient(45deg, #d1d5db 25%, transparent 25%, transparent 75%, #d1d5db 75%)";
+            el.style.backgroundSize = "8px 8px";
+            el.style.backgroundPosition = "0 0, 4px 4px";
+            el.style.backgroundColor = "#ffffff";
+            el.style.border = "1px solid #cccccc";
+            el.textContent = "";
           } else {
             // fallback: show text inside (accessible)
             el.style.backgroundColor = "transparent";
