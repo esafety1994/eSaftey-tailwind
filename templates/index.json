@@ -14,6 +14,7 @@
       "blocks": {
         "slider_item_nVybjd": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/April-product-Web-Banner_effbe3ab-a2ce-43fd-8ea8-3248b6fcdb7e.jpg",
             "single_image": true,
@@ -26,7 +27,6 @@
         },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/May-Web-Banner.jpg",
             "single_image": true,
@@ -39,7 +39,6 @@
         },
         "slider_item_KbcYQL": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/web-banner-straw-hat.jpg",
             "single_image": true,
