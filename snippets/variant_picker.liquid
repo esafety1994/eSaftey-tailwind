@@ -4,6 +4,32 @@
   defer="defer"
   data-color-map="{{ 'color-map.json' | asset_url }}"
 ></script>
+<style>
+  .color-swatch-label { position: relative; }
+  .color-swatch-label .color-swatch-tooltip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 4px);
+    transform: translateX(-50%);
+    background: rgba(17, 17, 17, 0.9);
+    color: #fff;
+    font-size: 11px;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 120ms ease;
+    z-index: 20;
+  }
+  .color-swatch-label:hover .color-swatch-tooltip,
+  .color-swatch-label:focus-within .color-swatch-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
 {% unless product.has_only_default_variant %}
   <variant-picker data-section-id="{{ section.id }}" data-variants='{{ product.variants | json | escape }}'>
     {% for option in product.options_with_values %}
