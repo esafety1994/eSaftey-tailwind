@@ -165,7 +165,7 @@
     "@type": "Offer",
     "url": "{{ shop.url }}{{ product.url }}",
     "priceCurrency": "{{ shop.currency }}",
-    "price": "{{ product.selected_or_first_available_variant.price | money_without_currency }}",
+    "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
     "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
   }
 }
