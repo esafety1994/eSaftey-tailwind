@@ -26,14 +26,6 @@
 
     <div id="cart-drawer-content" class="p-4 overflow-y-auto flex-1">
       {% render 'shipping-goals', cart: cart %}
-     
-      {% assign upsell = settings.cart_drawer_upsell_product %}
-      {% assign upsell_in_cart = false %}
-      {% for item_check in cart.items %}
-        {% if upsell and item_check.product and item_check.product.id == upsell.id %}
-          {% assign upsell_in_cart = true %}
-        {% endif %}
-      {% endfor %}
 
       {% if cart.item_count == 0 %}
         <div id="cart-items" class="space-y-4 overflow-auto"></div>
@@ -46,11 +38,6 @@
               {%- assign parent_index = parent_index | plus: 1 -%}
 
               {% render 'cart-line-item-drawer', item: item, index: forloop.index %}
-              {% if parent_index == 1 %}
-                {% if upsell and upsell_in_cart != true %}
-                  {% render 'cart-upsell-product' %}
-                {% endif %}
-              {% endif %}
             {% endunless %}
           {% endfor %}
         </div>
@@ -173,16 +160,13 @@
         <span id="cart-subtotal" data-cart-total-drawer class="font-semibold">{{ cart.total_price | money }}</span>
       </div>
       <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
-      <div class="py-4 flex gap-3">
-        <a href="/cart" class="w-3xs btn outline-button-rounded flex items-center
-">View cart</a>
+      <div class="py-4">
         <a
           id="cart-drawer-checkout-btn"
           href="/checkout"
-          class="btn primary-checkout-button !text-sm"
+          class="btn primary-checkout-button w-full flex items-center justify-center gap-2"
           >{%render 'icon-svg-lock-keyhole' %}Secure Checkout</a
         >
-          
       </div>
     </div>
   </aside>
