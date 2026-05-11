@@ -1,0 +1,328 @@
+{%- comment -%}
+  Price Beat Guaranteed modal. Triggered by [data-price-beat-open] buttons.
+  Submits via Formspree (AJAX) so the email lands directly in the configured
+  Formspree inbox without going through Shopify. Pass `product` for product
+  context fields.
+{%- endcomment -%}
+
+<div
+  id="price-beat-modal"
+  class="fixed inset-0 hidden items-center justify-center px-4"
+  style="z-index: 9999;"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="price-beat-headline"
+  aria-hidden="true"
+>
+  <div data-price-beat-overlay class="absolute inset-0" style="background:rgba(0,0,0,0.6);"></div>
+
+  <div
+    class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+    data-price-beat-dialog
+    style="max-height: 90vh; overflow-y: auto;"
+  >
+    <button
+      type="button"
+      data-price-beat-close
+      aria-label="Close"
+      class="absolute top-3 right-3 text-gray-500 p-1 rounded-full"
+      style="z-index: 1;"
+    >
+      {% render 'icon-svg-close', class: 'size-5' %}
+    </button>
+
+    <div data-price-beat-form-wrap class="p-6">
+      <div class="text-center mb-6">
+        <div class="mx-auto mb-3 flex items-center justify-center">
+          {% render 'icon-svg-percent-badge', class: 'size-12 text-red-500', stroke_width: 1.5 %}
+        </div>
+        <h3 id="price-beat-headline" class="text-xl font-semibold leading-tight">
+          We&rsquo;ll Beat Your Price by 5%
+        </h3>
+        <p class="text-sm text-gray-600 mt-2">
+          Found it cheaper? Send us the link and we&rsquo;ll beat it &mdash; fast.
+        </p>
+      </div>
+
+      <form
+        id="price-beat-form"
+        action="https://formspree.io/f/mojrwpoq"
+        method="POST"
+        class="space-y-4"
+      >
+        <input
+          type="hidden"
+          name="_subject"
+          value="Price Beat Request{% if product %} — {{ product.title | escape }}{% endif %}"
+        >
+        {% if product %}
+          <input type="hidden" name="Product" value="{{ product.title | escape }}">
+          <input type="hidden" name="Product URL" value="{{ shop.url }}{{ product.url }}">
+          <input type="hidden" name="Current Price" value="{{ product.selected_or_first_available_variant.price | money }}">
+          <input type="hidden" name="Product SKU" value="{{ product.selected_or_first_available_variant.sku | escape }}">
+        {% endif %}
+        {%- comment -%} Honeypot anti-spam — bots fill this, real users don't. {%- endcomment -%}
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+
+        <div>
+          <label class="sr-only" for="price-beat-name">Name</label>
+          <input
+            id="price-beat-name"
+            type="text"
+            name="Name"
+            placeholder="Your full name"
+            required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+            onfocus="this.style.borderColor='#000';"
+            onblur="this.style.borderColor='';"
+          >
+        </div>
+
+        <div>
+          <label class="sr-only" for="price-beat-email">Email</label>
+          <input
+            id="price-beat-email"
+            type="email"
+            name="Email"
+            placeholder="Your email address"
+            required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+            onfocus="this.style.borderColor='#000';"
+            onblur="this.style.borderColor='';"
+          >
+        </div>
+
+        <div>
+          <label class="sr-only" for="price-beat-phone">Phone Number</label>
+          <input
+            id="price-beat-phone"
+            type="tel"
+            name="Phone"
+            placeholder="Your phone number"
+            required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+            onfocus="this.style.borderColor='#000';"
+            onblur="this.style.borderColor='';"
+          >
+        </div>
+
+        <div>
+          <label class="sr-only" for="price-beat-postcode">Post Code</label>
+          <input
+            id="price-beat-postcode"
+            type="text"
+            name="Post Code"
+            placeholder="Postcode"
+            required
+            inputmode="numeric"
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+            onfocus="this.style.borderColor='#000';"
+            onblur="this.style.borderColor='';"
+          >
+        </div>
+
+        <div>
+          <label class="sr-only" for="price-beat-url">Competitor URL</label>
+          <input
+            id="price-beat-url"
+            type="url"
+            name="Competitor URL"
+            placeholder="Paste competitor product link"
+            required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+            onfocus="this.style.borderColor='#000';"
+            onblur="this.style.borderColor='';"
+          >
+        </div>
+
+        <div>
+          <label class="sr-only" for="price-beat-qty">Quantity</label>
+          <input
+            id="price-beat-qty"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            name="Quantity"
+            placeholder="Quantity (optional)"
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+            onfocus="this.style.borderColor='#000';"
+            onblur="this.style.borderColor='';"
+          >
+        </div>
+
+        <div>
+          <label class="sr-only" for="price-beat-comments">Comments</label>
+          <textarea
+            id="price-beat-comments"
+            name="Comments"
+            rows="3"
+            placeholder="Anything else we should know? (optional)"
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none"
+            onfocus="this.style.borderColor='#000';"
+            onblur="this.style.borderColor='';"
+          ></textarea>
+        </div>
+
+        <div data-price-beat-error class="hidden text-sm text-red-500"></div>
+
+        <button
+          type="submit"
+          data-price-beat-submit
+          class="btn primary-checkout-button w-full flex items-center justify-center gap-2"
+          style="padding-top:14px;padding-bottom:14px;"
+        >
+          <span data-price-beat-submit-label>Get My Better Price</span>
+          <svg data-price-beat-spinner class="hidden size-4 animate-spin" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <div class="pt-4 text-xs text-gray-500 space-y-1">
+          <div class="flex items-center gap-2">
+            <span aria-hidden="true">⚡</span>
+            <span>Fast response (usually same day)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span aria-hidden="true">🔒</span>
+            <span>No spam. No obligation.</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span aria-hidden="true">📄</span>
+            <span>Terms &amp; Conditions Apply</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div data-price-beat-success-wrap class="hidden p-6 text-center">
+      <div
+        class="mx-auto size-12 rounded-full text-green-600 flex items-center justify-center mb-3"
+        style="background:#d1fae5;"
+      >
+        {% render 'icon-svg-circle-check', class: 'size-6' %}
+      </div>
+      <h3 class="text-xl font-semibold mb-2">Request received</h3>
+      <p class="text-sm text-gray-600 mb-6">
+        We&rsquo;ll review and get back to you shortly with a better price.
+      </p>
+      <button
+        type="button"
+        data-price-beat-close
+        class="btn outline-button-rounded !px-5 !py-2"
+      >
+        Continue Shopping
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    if (window.__priceBeatBound) return;
+    window.__priceBeatBound = true;
+
+    var modal = document.getElementById('price-beat-modal');
+    if (!modal) return;
+    var formWrap = modal.querySelector('[data-price-beat-form-wrap]');
+    var successWrap = modal.querySelector('[data-price-beat-success-wrap]');
+    var form = modal.querySelector('#price-beat-form');
+    var submitBtn = modal.querySelector('[data-price-beat-submit]');
+    var submitLabel = modal.querySelector('[data-price-beat-submit-label]');
+    var spinner = modal.querySelector('[data-price-beat-spinner]');
+    var errorEl = modal.querySelector('[data-price-beat-error]');
+
+    function open() {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      var first = modal.querySelector('input:not([type=hidden]):not([name=_gotcha])');
+      if (first) setTimeout(function () { first.focus(); }, 30);
+    }
+
+    function close() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      formWrap.classList.remove('hidden');
+      successWrap.classList.add('hidden');
+      if (errorEl) {
+        errorEl.classList.add('hidden');
+        errorEl.textContent = '';
+      }
+    }
+
+    function showSuccess() {
+      formWrap.classList.add('hidden');
+      successWrap.classList.remove('hidden');
+      if (form) form.reset();
+    }
+
+    function showError(msg) {
+      if (!errorEl) return;
+      errorEl.textContent = msg;
+      errorEl.classList.remove('hidden');
+    }
+
+    function setSubmitting(isSubmitting) {
+      submitBtn.disabled = isSubmitting;
+      submitLabel.textContent = isSubmitting ? 'Sending...' : 'Get My Better Price';
+      spinner.classList.toggle('hidden', !isSubmitting);
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('[data-price-beat-open]')) {
+        e.preventDefault();
+        open();
+      } else if (e.target.closest('[data-price-beat-close]') || e.target.closest('[data-price-beat-overlay]')) {
+        close();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+    });
+
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (errorEl) {
+          errorEl.classList.add('hidden');
+          errorEl.textContent = '';
+        }
+        setSubmitting(true);
+
+        var fd = new FormData(form);
+
+        fetch(form.action, {
+          method: 'POST',
+          body: fd,
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              return { ok: res.ok, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.ok) {
+              showSuccess();
+            } else {
+              var msg = "Couldn't send right now — please email sales@esafetysupplies.com.au";
+              if (result.data && result.data.errors && result.data.errors.length) {
+                msg = result.data.errors.map(function (er) { return er.message; }).join(', ');
+              }
+              showError(msg);
+            }
+          })
+          .catch(function () {
+            showError("Couldn't send right now — please check your connection and try again.");
+          })
+          .finally(function () {
+            setSubmitting(false);
+          });
+      });
+    }
+  })();
+</script>
