@@ -28,7 +28,7 @@
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/May-Web-Banner.jpg",
+            "background": "shopify://shop_images/May-Web-Banner.png",
             "single_image": true,
             "content_position": "left",
             "title": "",
