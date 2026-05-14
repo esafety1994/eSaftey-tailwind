@@ -85,6 +85,8 @@
 
     input.addEventListener('blur', function(){
       this.value = sanitize(this.value);
+      // notify other qty inputs to sync (sanitized values can differ from input event)
+      this.dispatchEvent(new Event('input', { bubbles: true }));
     });
 
     input.addEventListener('paste', function(e){
@@ -92,6 +94,28 @@
       var sanitized = sanitize(paste);
       e.preventDefault();
       this.value = sanitized;
+      this.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  })();
+
+  // Global two-way sync across all quantity inputs (main buy box + sticky cart).
+  // Guarded so it binds only once even though this script renders per qty-selector.
+  (function(){
+    if (window.__qtySyncBound) return;
+    window.__qtySyncBound = true;
+
+    document.addEventListener('input', function(e){
+      var src = e.target;
+      if (!src || src.name !== 'quantity') return;
+      if (src.dataset.qtySyncing === '1') return; // avoid recursion
+      var val = src.value;
+      document.querySelectorAll('input[name="quantity"]').forEach(function(other){
+        if (other === src) return;
+        if (other.value === val) return;
+        other.dataset.qtySyncing = '1';
+        other.value = val;
+        delete other.dataset.qtySyncing;
+      });
     });
   })();
 </script>
