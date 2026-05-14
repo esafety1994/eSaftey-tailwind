@@ -122,7 +122,6 @@
               type="number"
               min="0.1"
               step="0.1"
-              value="1"
               placeholder="e.g. 1.5"
               class="cuts-length bg-gray-50 px-3 py-2 w-24 text-sm border rounded focus:outline-none"
               inputmode="decimal"
@@ -133,7 +132,6 @@
               type="number"
               min="1"
               step="1"
-              value="1"
               placeholder="Qty"
               class="cuts-qty bg-gray-50 px-3 py-2 w-20 text-sm border rounded focus:outline-none"
               inputmode="numeric"
@@ -201,19 +199,25 @@
             row.className = 'cuts-calculator__row flex items-center gap-2 flex-wrap';
             row.setAttribute('data-cuts-row', '');
             row.innerHTML =
-              '<input type="number" min="0.1" step="0.1" value="1" placeholder="e.g. 1.5" class="cuts-length bg-gray-50 px-3 py-2 w-24 text-sm border rounded focus:outline-none" inputmode="decimal" aria-label="Cut length in metres">' +
+              '<input type="number" min="0.1" step="0.1" placeholder="e.g. 1.5" class="cuts-length bg-gray-50 px-3 py-2 w-24 text-sm border rounded focus:outline-none" inputmode="decimal" aria-label="Cut length in metres">' +
               '<span class="text-sm text-gray-500" aria-hidden="true">×</span>' +
-              '<input type="number" min="1" step="1" value="1" placeholder="Qty" class="cuts-qty bg-gray-50 px-3 py-2 w-20 text-sm border rounded focus:outline-none" inputmode="numeric" aria-label="Number of pieces">' +
+              '<input type="number" min="1" step="1" placeholder="Qty" class="cuts-qty bg-gray-50 px-3 py-2 w-20 text-sm border rounded focus:outline-none" inputmode="numeric" aria-label="Number of pieces">' +
               '<button type="button" class="cuts-remove text-xs text-red-600 underline ml-auto" data-remove-row aria-label="Remove this cut">Remove</button>';
             return row;
           }
 
-          function getQuantityInput() {
-            return (
-              document.querySelector('#product-act-button input[name="quantity"]') ||
-              document.querySelector('form[action*="/cart/add"] input[name="quantity"]') ||
-              document.querySelector('input[name="quantity"]')
-            );
+          function getQuantityInputs() {
+            // Collect every quantity input on the page (main buy box + sticky bar + any others)
+            var seen = new Set();
+            var results = [];
+            var nodes = document.querySelectorAll('input[name="quantity"]');
+            nodes.forEach(function (el) {
+              if (!seen.has(el)) {
+                seen.add(el);
+                results.push(el);
+              }
+            });
+            return results;
           }
 
           function lockQuantitySelector(qtyEl) {
@@ -227,6 +231,20 @@
                 b.style.pointerEvents = 'none';
               });
               qtyContainer.title = 'Quantity is set automatically from your cuts above.';
+            }
+          }
+
+          function unlockQuantitySelector(qtyEl) {
+            if (!qtyEl) return;
+            qtyEl.removeAttribute('readonly');
+            var qtyContainer = qtyEl.closest('.qty-selector');
+            if (qtyContainer && qtyContainer.dataset.cutsLocked) {
+              delete qtyContainer.dataset.cutsLocked;
+              qtyContainer.querySelectorAll('button').forEach(function (b) {
+                b.style.opacity = '';
+                b.style.pointerEvents = '';
+              });
+              qtyContainer.removeAttribute('title');
             }
           }
 
@@ -286,11 +304,18 @@
               errorEl.classList.add('hidden');
             }
 
-            var qtyEl = getQuantityInput();
-            if (qtyEl) {
-              qtyEl.value = billable > 0 ? billable : 1;
-              lockQuantitySelector(qtyEl);
-            }
+            var qtyEls = getQuantityInputs();
+            var hasValidCut = lines.length > 0;
+            qtyEls.forEach(function (qtyEl) {
+              if (hasValidCut) {
+                qtyEl.value = billable;
+                lockQuantitySelector(qtyEl);
+              } else {
+                unlockQuantitySelector(qtyEl);
+                // Reset to 1 only if it was previously auto-set; don't stomp manual edits
+                if (qtyEl.value === '' || qtyEl.value === '0') qtyEl.value = 1;
+              }
+            });
           }
 
           rowsEl.addEventListener('input', function (e) {
