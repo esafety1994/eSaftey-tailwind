@@ -50,6 +50,8 @@
   </div>
 </div>
 
+{% render 'no-reviews-enhancer' %}
+
 {% comment %} Sticky product cart (fixed under header) {% endcomment %}
 
 {% render 'shipping-calculator', product: product %}
@@ -118,6 +120,14 @@
             {
               "label": "Select",
               "value": "select"
+            },
+            {
+              "label": "File upload",
+              "value": "file"
+            },
+            {
+              "label": "Cut-to-length calculator (price per metre)",
+              "value": "cuts_calculator"
             }
           ]
         },
@@ -131,6 +141,12 @@
           "type": "text",
           "label": "Placeholder",
           "id": "field_placeholder"
+        },
+        {
+          "type": "text",
+          "label": "Helper note",
+          "id": "field_help_text",
+          "info": "Optional. Shown in small grey text below the field to clarify what the customer should enter."
         },
         {
           "type": "checkbox",
