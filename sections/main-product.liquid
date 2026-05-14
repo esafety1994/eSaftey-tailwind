@@ -74,7 +74,7 @@
 {% comment %} Sticky product cart (fixed under header) {% endcomment %}
 {% render 'sticky-product-cart', product: product %}
 {% render 'shipping-calculator', product: product %}
-{% render 'no-reviews-enhancer' %}
+{% comment %} {% render 'no-reviews-enhancer' %} — snippet missing, commented out to suppress Liquid error {% endcomment %}
 
 
 {% assign faq = product.metafields.custom.rich_text %}
