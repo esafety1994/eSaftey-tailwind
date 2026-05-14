@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
         val = val + 1;
       }
       input.value = String(val);
+      // Notify the global qty-sync listener so other qty inputs match (main ↔ sticky)
+      input.dispatchEvent(new Event('input', { bubbles: true }));
     }
   });
 
