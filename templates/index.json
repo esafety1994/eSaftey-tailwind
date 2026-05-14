@@ -14,15 +14,14 @@
       "blocks": {
         "slider_item_nVybjd": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/April-product-Web-Banner_effbe3ab-a2ce-43fd-8ea8-3248b6fcdb7e.jpg",
+            "background": "shopify://shop_images/Grand-Opening-Web-Banner_1144f9fd-820e-4922-9210-fd34059d184c.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/april-blowout-sale"
+            "button_link": "https://esafetygrandopening.rsvpify.com"
           }
         },
         "slider_item_wmYUEQ": {
