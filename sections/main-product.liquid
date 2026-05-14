@@ -74,6 +74,7 @@
 {% comment %} Sticky product cart (fixed under header) {% endcomment %}
 {% render 'sticky-product-cart', product: product %}
 {% render 'shipping-calculator', product: product %}
+{% render 'no-reviews-enhancer' %}
 
 
 {% assign faq = product.metafields.custom.rich_text %}
@@ -144,32 +145,6 @@
   {% endif %}
 
 {% endif %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "@id": "{{ shop.url }}{{ product.url }}",
-  "name": {{ product.title | json }},
-  "image": [
-    {% if product.featured_image %}
-      "{{ product.featured_image | image_url: width: 1200 }}"
-    {% endif %}
-  ],
-  "description": {{ product.description | strip_html | truncate: 160 | json }},
-  "sku": {{ product.selected_or_first_available_variant.sku | json }},
-  "brand": {
-    "@type": "Brand",
-    "name": {{ product.vendor | json }}
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "{{ shop.url }}{{ product.url }}",
-    "priceCurrency": "{{ shop.currency }}",
-    "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
-    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
-  }
-}
-</script>
 {% schema %}
 {
   "name": "Main Product",
@@ -235,6 +210,14 @@
             {
               "label": "Select",
               "value": "select"
+            },
+            {
+              "label": "File upload",
+              "value": "file"
+            },
+            {
+              "label": "Cut-to-length calculator (price per metre)",
+              "value": "cuts_calculator"
             }
           ]
         },
@@ -248,6 +231,12 @@
           "type": "text",
           "label": "Placeholder",
           "id": "field_placeholder"
+        },
+        {
+          "type": "text",
+          "label": "Helper note",
+          "id": "field_help_text",
+          "info": "Optional. Shown in small grey text below the field to clarify what the customer should enter."
         },
         {
           "type": "checkbox",
