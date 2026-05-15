@@ -22,7 +22,9 @@
         <div class="font-semibold text-lg py-3">Request for Quote</div>
       {% endunless %}
     {% else %}
-    {% form 'product', product %}
+    {% assign _act_form_id = product_form_id | default: '' %}
+    {% if _act_form_id == '' %}{% assign _act_form_id = 'product-form-' | append: product.id %}{% endif %}
+    {% form 'product', product, id: _act_form_id, enctype: 'multipart/form-data' %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
       <div class="flex items-center space-x-4">
