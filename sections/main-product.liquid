@@ -47,9 +47,10 @@
 
       {% render 'product-fixing', product: product %}
       {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
+      {% assign product_form_id = 'product-form-' | append: product.id %}
       {% comment %} {% if product.template_suffix == 'product-with-custom-field' and custom_block %} {% endcomment %}
       {% if custom_block %}
-        {% render 'product-custom-field', block: custom_block, product: product %}
+        {% render 'product-custom-field', block: custom_block, product: product, product_form_id: product_form_id %}
       {% endif %}
 
       {% render 'bulk-discount', product: product %}
