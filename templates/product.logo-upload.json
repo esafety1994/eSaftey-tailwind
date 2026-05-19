@@ -1,0 +1,145 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb_GHt96W": {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "custom_field_logo_upload": {
+          "type": "custom_field",
+          "settings": {
+            "title": "Upload Your Logo",
+            "field_type": "file",
+            "field_options": "",
+            "field_placeholder": "",
+            "field_help_text": "PNG or JPG, max 20MB. Your logo will be printed in the top-left of the sign.",
+            "field_required": true,
+            "show_at_checkout": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "custom_field_logo_upload"
+      ],
+      "settings": {}
+    },
+    "product_info_tabs": {
+      "type": "product-info-tabs",
+      "settings": {
+        "shipping_content": "",
+        "buyer_guide_content": "<h3>Buyer's Guide</h3>\n<p><strong>Important information for custom logo signs.</strong></p>"
+      }
+    },
+    "product_recommendation_a4TCDB": {
+      "type": "product-recommendation",
+      "name": "Product recommendation",
+      "settings": {
+        "title": "You may also like",
+        "product_count": 10,
+        "show_ex_gst": false
+      }
+    },
+    "1768442681216c6726": {
+      "type": "apps",
+      "blocks": {
+        "reviews_io_reviewsio_polaris_YeqVFw": {
+          "type": "shopify://apps/reviews-io/blocks/reviewsio-polaris/92a082e5-b297-4e88-b428-ac96cbc505f9",
+          "settings": {
+            "star": "#ffd438",
+            "review_type": "product_review,questions",
+            "per_page": 3,
+            "primary_btn_bg_color": "#000000",
+            "primary_btn_border_color": "#000000",
+            "primary_btn_text_color": "#ffffff",
+            "secondary_btn_border_color": "#000000",
+            "secondary_btn_text_color": "#000000",
+            "border_color": "#000000",
+            "heading_text_color": "#000000",
+            "heading_font": "sans_serif_n4",
+            "body_text_color": "#000000",
+            "badge_icon_color": "#000000",
+            "badge_text_color": "#000000",
+            "enable_rich_snippets": true,
+            "show_location": true,
+            "show_tab_selector": false,
+            "show_dates": true,
+            "show_avatar": true,
+            "enable_sentiment_analysis": false,
+            "enable_replies": false,
+            "widget_spacing": 0,
+            "capitalise_headers_and_buttons": false,
+            "show_review_title": false,
+            "default_sort": "date_desc"
+          }
+        }
+      },
+      "block_order": [
+        "reviews_io_reviewsio_polaris_YeqVFw"
+      ],
+      "settings": {
+        "heading": "",
+        "custom_class": "container"
+      }
+    },
+    "shipping_calculator_f6crqN": {
+      "type": "shipping-calculator",
+      "name": "Shipping calculator",
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumb_GHt96W",
+    "main",
+    "product_info_tabs",
+    "product_recommendation_a4TCDB",
+    "1768442681216c6726",
+    "shipping_calculator_f6crqN"
+  ]
+}
