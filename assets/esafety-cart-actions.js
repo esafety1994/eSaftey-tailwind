@@ -257,7 +257,7 @@ if (!customElements.get("esafety-cart-action-button")) {
 
       let properties = {};
       if (customFields) {
-        const labels = customFields.querySelectorAll("label");
+        const labels = customFields.querySelectorAll("label.m-product-option--label");
         const pairs = Array.from(labels).map((label) => {
           let fieldEl = null;
           const forId = label.getAttribute && label.getAttribute("for");
@@ -419,6 +419,73 @@ if (!customElements.get("esafety-cart-action-button")) {
         const avpExtra = getAVPProperties(form) || {};
         Object.keys(avpExtra).forEach((k) => { if (!properties[k]) properties[k] = avpExtra[k]; });
       } catch (e) {}
+
+      // Detect file inputs anywhere relevant. The .m-product-custom-field container
+      // is often rendered OUTSIDE the form on this theme, and `product_form_id`
+      // is not always set, so file inputs end up orphaned (not in FormData(form)).
+      // We scan both the form and any custom-field containers.
+      const filesToUpload = [];
+      try {
+        const seen = new Set();
+        const collectFiles = (root) => {
+          if (!root || !root.querySelectorAll) return;
+          root.querySelectorAll('input[type="file"]').forEach((fi) => {
+            if (fi.files && fi.files.length > 0 && !seen.has(fi)) {
+              seen.add(fi);
+              filesToUpload.push(fi);
+            }
+          });
+        };
+        collectFiles(form);
+        document.querySelectorAll('.m-product-custom-field').forEach(collectFiles);
+      } catch (e) {}
+
+      if (filesToUpload.length > 0) {
+        // Native multipart form submit. Shopify's storefront /cart/add.js
+        // accepts file uploads only via classic form submission — AJAX
+        // multipart silently stores files as empty hashes ({}) instead of
+        // creating /uploads/cart/... URLs. The browser will navigate to /cart.
+        //
+        // The .m-product-custom-field container is rendered OUTSIDE the form
+        // and product_form_id is not set on this template, so its inputs are
+        // orphaned. We physically move all properties[...] inputs into the
+        // form right before submit so they're included. Setting the `form`
+        // attribute alone proved unreliable.
+        if (form) {
+          document.querySelectorAll('.m-product-custom-field [name^="properties["]').forEach((el) => {
+            try {
+              // Never move file inputs — appending them to a new parent resets
+              // their files list in all browsers, losing the selected file.
+              // File inputs are already form-associated via the form= attribute
+              // (set by product_form_id), so no move is needed.
+              if ((el.type || '').toLowerCase() === 'file') return;
+              // Remove the `form` attribute. Per HTML spec, an explicit (even
+              // empty) `form=""` attribute makes the element's form owner null,
+              // overriding the ancestor-form fallback. Without removing it,
+              // form.elements excludes the input even after appendChild.
+              el.removeAttribute('form');
+              // Hide visually so the page doesn't reflow during the brief
+              // moment before the navigation kicks in.
+              if (el.style) el.style.display = 'none';
+              form.appendChild(el);
+            } catch (e) {}
+          });
+        }
+
+        this._submitting = true;
+        setLoading(true);
+
+        try {
+          // form.submit() bypasses the submit event listener, so we don't
+          // re-enter handleSubmit. The browser performs a real multipart POST.
+          form.submit();
+        } catch (err) {
+          console.error('Native form submit failed', err);
+          this._submitting = false;
+          setLoading(false);
+        }
+        return;
+      }
 
       const formData = {
         items: [
