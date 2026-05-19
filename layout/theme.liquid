@@ -24,7 +24,7 @@
 
 <meta name="description" content="{{ meta_desc | strip | escape }}">
     <link rel="canonical" href="{{ canonical_url }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
 
     <script type="application/ld+json">
@@ -112,19 +112,22 @@
     
     <!-- End Google Tag Manager -->
     <script>
-      (function (h, o, t, j, a, r) {
-        h.hj =
-          h.hj ||
-          function () {
-            (h.hj.q = h.hj.q || []).push(arguments);
-          };
-        h._hjSettings = { hjid: 2509798, hjsv: 6 };
-        a = o.getElementsByTagName('head')[0];
-        r = o.createElement('script');
-        r.async = 1;
-        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-        a.appendChild(r);
-      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+      function loadHotjar() {
+        (function (h, o, t, j, a, r) {
+          h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments); };
+          h._hjSettings = { hjid: 2509798, hjsv: 6 };
+          a = o.getElementsByTagName('head')[0];
+          r = o.createElement('script');
+          r.async = 1;
+          r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => loadHotjar(), { timeout: 5000 });
+      } else {
+        setTimeout(loadHotjar, 3000);
+      }
     </script>
     {%- if settings.use_favicon == true and settings.favicon != blank -%}
       <link rel="shortcut icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -194,7 +197,7 @@
       <script defer src="{{ 'cart-item-control.js' | asset_url }}" defer="defer"></script>
       <script defer src="{{ 'accordion-tab.js' | asset_url }}" defer="defer"></script>
       <script defer src="{{ 'navigation.js' | asset_url }}" defer="defer"></script>
-      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+      <script defer src="{{ 'predictive-search.js' | asset_url }}"></script>
     {% endif %}
     {% sections 'footer-group' %}
 

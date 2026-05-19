@@ -1,3 +1,18 @@
+{% comment %} Preload first carousel image for faster LCP {% endcomment %}
+{% for block in section.blocks %}
+  {% if block.type == 'slider_item' and block.settings.background %}
+    <link
+      rel="preload"
+      as="image"
+      href="{{ block.settings.background | image_url: width: 800 }}"
+      imagesrcset="{{ block.settings.background | image_url: width: 400 }} 400w, {{ block.settings.background | image_url: width: 800 }} 800w, {{ block.settings.background | image_url: width: 1920 }} 1920w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    >
+    {% break %}
+  {% endif %}
+{% endfor %}
+
 <style>
   .glide__bullet--active {
     background-color: transparent;
@@ -47,7 +62,7 @@
                   <picture>
                     <source
                       media="(max-width: 640px)"
-                      srcset="{{ img | image_url: width:1200 }} 720w"
+                      srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w"
                       sizes="100vw"
                     />
                     <source
