@@ -298,6 +298,16 @@
         "error_message": "Sorry, something went wrong. Please try again."
       }
     },
+    "promo_popup": {
+      "type": "promo-popup",
+      "name": "Promo Popup",
+      "settings": {
+        "enable_popup": false,
+        "popup_version": "v1",
+        "popup_delay": 3,
+        "cookie_days": 30
+      }
+    },
     "custom_liquid_Rt76mc": {
       "type": "custom-liquid",
       "name": "Custom liquid",
@@ -316,6 +326,7 @@
     "blog_list_VRk9pE",
     "image_strip_LRcwDT",
     "connect_stay_mk7WnL",
-    "custom_liquid_Rt76mc"
+    "custom_liquid_Rt76mc",
+    "promo_popup"
   ]
 }
