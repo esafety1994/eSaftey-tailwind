@@ -305,20 +305,6 @@
         "custom_liquid": "<div class=\"container py-12\">\n      <div class=\"flex flex-wrap -mx-4\">\n        <div class=\"w-full sm:w-1/2 lg:w-1/4 px-4 mb-6\">\n          <div class=\"h-full grid gap-2 items-center justify-center\">\n            <div class=\"size-16 rounded-full bg-grey flex items-center justify-center mx-auto\">\n              {% render 'icon-svg-smile', stroke_width: 1.5, class: 'size-12' %}\n            </div>\n            <div class=\"flex flex-col justify-center min-w-0 text-center\">\n              <h3 class=\"text-lg font-semibold truncate\">324,985 happy customers</h3>\n              <p class=\"text-sm text-gray-500 truncate\">Order success rate</p>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"w-full sm:w-1/2 lg:w-1/4 px-4 mb-6\">\n          <div class=\"h-full grid gap-2 items-center justify-center\">\n            <div class=\"size-16 rounded-full bg-grey flex items-center justify-center mx-auto\">\n              {% render 'icon-svg-clipboard', stroke_width: 1.5, class: 'size-12' %}\n            </div>\n            <div class=\"flex flex-col justify-center min-w-0 text-center\">\n              <h3 class=\"text-lg font-semibold truncate\">92% of orders delivered</h3>\n              <p class=\"text-sm text-gray-500 truncate\">Within 2 business days</p>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"w-full sm:w-1/2 lg:w-1/4 px-4 mb-6\">\n          <div class=\"h-full grid gap-2 items-center justify-center\">\n            <div class=\"size-16 rounded-full bg-grey flex items-center justify-center mx-auto\">\n              {% render 'icon-svg-shield-check', stroke_width: 1.5, class: 'size-12' %}\n            </div>\n            <div class=\"flex flex-col justify-center min-w-0 text-center\">\n              <h3 class=\"text-lg font-semibold truncate\">Secured payment gateway</h3>\n              <p class=\"text-sm text-gray-500 truncate\">Risk-free shopping</p>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"w-full sm:w-1/2 lg:w-1/4 px-4 mb-6\">\n          <div class=\"h-full grid gap-2 items-center justify-center\">\n            <div class=\"size-16 rounded-full bg-grey flex items-center justify-center mx-auto\">\n              {% render 'icon-svg-return-box', stroke_width: 1.5, class: 'size-12' %}\n            </div>\n            <div class=\"flex flex-col justify-center min-w-0 text-center\">\n              <h3 class=\"text-lg font-semibold truncate\">Easy Return</h3>\n              <p class=\"text-sm text-gray-500 truncate\">Satisfaction guaranteed</p>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>",
         "custom_class": ""
       }
-    },
-    "promo_popup": {
-      "type": "promo-popup",
-      "name": "Promo Popup",
-      "settings": {
-        "enable_popup": true,
-        "popup_image": "shopify://shop_images/BPu1toWfHvbuQ2IRtN5-j.webp",
-        "popup_image_mobile": "shopify://shop_images/straw-hat-Mobile-Web-Banner.jpg",
-        "popup_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat",
-        "open_in_new_tab": false,
-        "popup_delay": 3,
-        "cookie_days": 30,
-        "popup_version": "v1"
-      }
     }
   },
   "order": [
@@ -330,7 +316,6 @@
     "blog_list_VRk9pE",
     "image_strip_LRcwDT",
     "connect_stay_mk7WnL",
-    "custom_liquid_Rt76mc",
-    "promo_popup"
+    "custom_liquid_Rt76mc"
   ]
 }
