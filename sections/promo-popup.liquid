@@ -1,0 +1,253 @@
+{% if section.settings.enable_popup and section.settings.popup_image != blank %}
+<style>
+  .promo-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .promo-popup-overlay.is-visible {
+    opacity: 1;
+  }
+  .promo-popup-dialog {
+    position: relative;
+    max-width: 860px;
+    width: calc(100% - 24px);
+    max-height: 90vh;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .promo-popup-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  {% if section.settings.popup_image_mobile != blank %}
+    .promo-popup-img--desktop { display: block; }
+    .promo-popup-img--mobile  { display: none; }
+    @media (max-width: 500px) {
+      .promo-popup-img--desktop { display: none; }
+      .promo-popup-img--mobile  { display: block; }
+    }
+  {% endif %}
+  .promo-popup-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    background: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    padding: 0;
+    color: #fff;
+  }
+  .promo-popup-close:hover { background: #333; }
+  .promo-popup-link { display: block; cursor: pointer; }
+</style>
+
+<div
+  id="promo-popup-overlay"
+  class="promo-popup-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Promotion"
+  style="display:none;"
+>
+  <div class="promo-popup-dialog">
+    <button class="promo-popup-close" type="button" aria-label="Close popup">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    {% if section.settings.popup_link != blank %}
+      <a
+        href="{{ section.settings.popup_link }}"
+        class="promo-popup-link"
+        {% if section.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}
+      >
+    {% endif %}
+
+    {% if section.settings.popup_image_mobile != blank %}
+      {{
+        section.settings.popup_image
+        | image_url: width: 860
+        | image_tag:
+          class: 'promo-popup-img promo-popup-img--desktop',
+          alt: 'Promotion',
+          loading: 'eager',
+          widths: '600,760,860',
+          sizes: '(max-width: 500px) calc(100vw - 24px), 860px'
+      }}
+      {{
+        section.settings.popup_image_mobile
+        | image_url: width: 400
+        | image_tag:
+          class: 'promo-popup-img promo-popup-img--mobile',
+          alt: 'Promotion',
+          loading: 'eager',
+          widths: '300,400',
+          sizes: 'calc(100vw - 48px)'
+      }}
+    {% else %}
+      {{
+        section.settings.popup_image
+        | image_url: width: 860
+        | image_tag:
+          class: 'promo-popup-img',
+          alt: 'Promotion',
+          loading: 'eager',
+          widths: '400,600,760,860',
+          sizes: '(max-width: 500px) calc(100vw - 24px), 860px'
+      }}
+    {% endif %}
+
+    {% if section.settings.popup_link != blank %}
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+(function () {
+  var COOKIE_KEY = 'esafety_popup_{{ section.settings.popup_version | escape }}';
+  var DELAY_MS   = {{ section.settings.popup_delay | times: 1000 }};
+  var COOKIE_DAYS = {{ section.settings.cookie_days }};
+
+  function getCookie(name) {
+    var m = document.cookie.match(new RegExp('(?:^| )' + name + '=([^;]+)'));
+    return m ? m[1] : null;
+  }
+
+  function setCookie(name, value, days) {
+    var d = new Date();
+    d.setTime(d.getTime() + days * 864e5);
+    document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  }
+
+  if (getCookie(COOKIE_KEY)) return;
+
+  var overlay = document.getElementById('promo-popup-overlay');
+  if (!overlay) return;
+
+  function openPopup() {
+    overlay.style.display = 'flex';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        overlay.classList.add('is-visible');
+      });
+    });
+    document.body.style.overflow = 'hidden';
+    // Mark as seen immediately — returning visitors will never see it again
+    setCookie(COOKIE_KEY, '1', COOKIE_DAYS);
+  }
+
+  function closePopup() {
+    overlay.classList.remove('is-visible');
+    overlay.addEventListener('transitionend', function () {
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    }, { once: true });
+  }
+
+  window.addEventListener('load', function () {
+    setTimeout(openPopup, DELAY_MS);
+  });
+
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closePopup();
+  });
+
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('.promo-popup-close')) closePopup();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closePopup();
+  });
+})();
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Promo Popup",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_popup",
+      "label": "Enable popup",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "popup_image",
+      "label": "Popup image",
+      "info": "Recommended size: 560×400px or wider. PNG or JPG."
+    },
+    {
+      "type": "image_picker",
+      "id": "popup_image_mobile",
+      "label": "Popup image (mobile)",
+      "info": "Optional. Shown on screens narrower than 500px. Recommended: square or portrait crop."
+    },
+    {
+      "type": "url",
+      "id": "popup_link",
+      "label": "Redirect link",
+      "info": "Where to send visitors when they click the popup."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open link in new tab",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "popup_delay",
+      "label": "Delay before popup appears",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 3,
+      "unit": "s"
+    },
+    {
+      "type": "range",
+      "id": "cookie_days",
+      "label": "Don't show again for",
+      "min": 1,
+      "max": 60,
+      "step": 1,
+      "default": 30,
+      "unit": "day",
+      "info": "Once a visitor dismisses or clicks the popup, it won't show again for this many days."
+    },
+    {
+      "type": "text",
+      "id": "popup_version",
+      "label": "Popup version / campaign ID",
+      "default": "v1",
+      "info": "Change this each month (e.g. 'may-2026', 'eofy-2026') to reset the popup for all visitors and show the new promo."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Popup"
+    }
+  ]
+}
+{% endschema %}
