@@ -53,7 +53,7 @@
             "field_type": "file",
             "field_options": "",
             "field_placeholder": "",
-            "field_help_text": "PNG or JPG, max 20MB. Your logo will be printed in the top-left of the sign.",
+            "field_help_text": "PDF recommended for best print quality. PNG or JPG also accepted. Max 20MB.",
             "field_required": true,
             "show_at_checkout": true
           }
