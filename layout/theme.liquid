@@ -32,7 +32,138 @@
       {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
     {% render 'rapid-search-settings' %}
-  </head>
+  
+{%- if customer.metafields.sparklayer.authentication -%}
+<!-- SparkLayer brand variables — Block 1: inside auth conditional -->
+<style type="text/css">
+:root {
+  /* Brand */
+  --b2b-brand-color: #FDDC14;
+  --b2b-brand-color-hover: #d7bb11;
+  --b2b-brand-font: Poppins, sans-serif;
+  --b2b-brand-font-heading: Poppins, sans-serif;
+
+  /* Colours */
+  --spark-default-body-color: #555555;
+  --spark-primary-color: #000000;
+  --spark-secondary-color: var(--b2b-brand-color);
+  --spark-link-color: var(--b2b-brand-color);
+
+  /* Typefaces */
+  --spark-font-default: var(--b2b-brand-font);
+  --spark-font-highlight: var(--b2b-brand-font-heading);
+  --spark-font-weight-default: 400;
+  --spark-font-weight-medium: 500;
+  --spark-font-weight-heavy: 600;
+
+  /* General */
+  --spark-border-radius-default: 0; /* 4px if theme has rounded buttons, otherwise 0 */
+  --spark-drawer-max-width: 700px;
+  --spark-drawer-max-width-wide: 1000px;
+
+  /* Font sizes */
+  --spark-font-default-size: 14px;
+  --spark-font-default-size-small: 14px;
+  --spark-header-font: var(--b2b-brand-font-heading);
+  --spark-header-font-weight: 500;
+  --spark-h1-fontsize: 24px;
+  --spark-h2-fontsize: 22px;
+  --spark-h3-fontsize: 20px;
+  --spark-h4-fontsize: 16px;
+  --spark-h5-fontsize: 15px;
+  --spark-h6-fontsize: 14px;
+  --spark-pricing-fontsize: 20px;
+  --spark-pricing-font-weight: 500;
+  --spark-pricing-fontsize-small: 14px;
+  --spark-product-code-fontsize: 16px;
+  --spark-product-code-font-weight: 500;
+  --spark-product-code-fontsize-small: 14px;
+  --spark-product-stockstatus-align: flex-start;
+
+  /* Buttons */
+  --spark-button-font-family: var(--b2b-brand-font-heading);
+  --spark-button-color: var(--b2b-brand-color);
+  --spark-button-color-highlight: var(--b2b-brand-color-hover);
+  --spark-button-large-color: var(--b2b-brand-color);
+  --spark-button-large-color-highlight: var(--b2b-brand-color-hover);
+  --spark-border-radius-button: 0;
+  --spark-button-font-weight: 600;
+  --spark-button-text-transform: none;
+  --spark-button-text-letter-spacing: 0;
+  --spark-button-padding: 1em 2.75em;
+  --spark-button-small-font-size: 16px;
+
+  /* Tables */
+  --spark-table-border-color: #CCCCCC;
+  --spark-table-header-background-color: #F1F1F1;
+  --spark-table-header-text-color: #222222;
+  --spark-table-header-font-weight: 500;
+
+  /* Product Card */
+  --spark-product-card-button-radius: 0;
+  --spark-product-card-button-padding: 0.75em 1em;
+  --spark-product-card-pricing-font-size: 15px;
+  --spark-product-card-pricing-font-size-small: 14px;
+  --spark-product-card-select-min-height: 0;
+}
+</style>
+
+<!-- SparkLayer — disable automatic theme install (core script loaded via app embed) -->
+<script>
+window.sparkShopify = {
+  options: {
+    disableAutoInstall: true
+  }
+};
+</script>
+
+<style>
+  /* SparkLayer — B2C element hides */
+  .cart-count-bubble,
+  .card__badge,
+  .announcement-bar,
+  .announcement-bar-section,
+  cart-drawer,
+  #product-price,
+  variant-picker,
+  esafety-cart-action-button,
+  #product-act-button,
+  .product-card esafety-custom-add-to-cart-button,
+  esafety-custom-add-to-cart-button,
+  .foxkit-stock-countdown,
+  [data-sticky-cart],
+  .sticky-cart,
+  #product-sku {
+    display: none !important;
+  }
+
+  /* SparkLayer — price wildcard (excludes containers with spark-product-card or spark-pdp) */
+  [class*="price"]:not(:has(spark-product-card)):not(:has(spark-pdp)) {
+    display: none !important;
+  }
+
+  /* SparkLayer — card layout */
+  spark-product-card {
+    display: block;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  /* SparkLayer — prevent :empty hiding before JS hydration */
+  spark-pdp:empty,
+  spark-product-card:empty {
+    display: block !important;
+  }
+
+</style>
+{%- endif -%}
+
+<!-- SparkLayer redirect — always outside conditional -->
+<script async src="https://cdn.sparklayer.io/spark-redirect.js"></script>
+
+</head>
   <body class="font-normal">
     {% render 'global-spinner' %}
     <div class="relative">

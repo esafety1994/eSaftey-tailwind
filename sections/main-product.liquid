@@ -31,6 +31,7 @@
       <div id="product-price" class="mb-4 text-xl font-semibold">
         {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
       </div>
+      <spark-pdp parent-id="{{ product.id }}"></spark-pdp>
 
       <div class="my-6 border-gray-300 border-y-1 py-6">
         {% render 'product-features', product: product %}

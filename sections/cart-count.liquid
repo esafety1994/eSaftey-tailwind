@@ -1,10 +1,15 @@
+{%- if customer.metafields.sparklayer.authentication -%}
+<a href="#" data-spark-link="cart" id="cart-btn" class="relative p-1 rounded hover:text-bg-light transition text-white">
+  {% render 'icon-svg-shopping-cart', class: 'size-6 cursor-pointer' %}
+</a>
+{%- else -%}
 <button
   id="cart-btn"
   aria-expanded="false"
   aria-controls="cart-drawer"
   class="relative p-1 rounded hover:text-bg-light transition text-white"
   data-drawer-trigger
->
+  data-spark-link="cart">
   {% render 'icon-svg-shopping-cart', class: 'size-6 cursor-pointer' %}
   {% assign cart_count = cart.item_count %}
 
@@ -16,3 +21,4 @@
     {% endif %}
   </span>
 </button>
+{%- endif -%}
