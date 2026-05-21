@@ -188,7 +188,7 @@
       },
       "16178409538858199964": {
         "type": "shopify://apps/powr-popup/blocks/app-embed/c42eddd7-7bc0-47cc-aa8a-df388049f012",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     }
