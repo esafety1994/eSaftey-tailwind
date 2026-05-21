@@ -5,7 +5,7 @@
   {% assign size_class = 'size-4' %}
   {% assign text_class = 'text-xs' %}
 {% endif %}
-<div id="product-stock-badge" class="text-gray-600">
+<div data-spark="b2c-only" id="product-stock-badge" class="text-gray-600">
   {% assign _variant = variant %}
   {% if _variant == null and product %}
     {% assign _variant = product.selected_or_first_available_variant %}
