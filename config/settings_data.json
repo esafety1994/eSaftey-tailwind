@@ -96,6 +96,19 @@
       "esaftey-cart-drawer": {
         "type": "esaftey-cart-drawer",
         "settings": {}
+      },
+      "promo-popup": {
+        "type": "promo-popup",
+        "settings": {
+          "enable_popup": true,
+          "popup_image": "shopify://shop_images/BPu1toWfHvbuQ2IRtN5-j.webp",
+          "popup_image_mobile": "shopify://shop_images/straw-hat-Mobile-Web-Banner.jpg",
+          "popup_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat",
+          "open_in_new_tab": false,
+          "popup_delay": 3,
+          "cookie_days": 30,
+          "popup_version": "may-2026"
+        }
       }
     },
     "content_for_index": [],
