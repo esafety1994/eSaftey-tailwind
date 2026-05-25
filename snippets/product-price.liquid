@@ -42,10 +42,10 @@
         <span>
           <span>{{- product.selected_or_first_available_variant.price | money }}</span>
         </span>
-        {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
+        {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
           <span>
             <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start items-center text-sm">
-              {{ product.compare_at_price | money }}
+              {{ product.selected_or_first_available_variant.compare_at_price | money }}
             </span>
           </span>
         {% endif %}
@@ -56,10 +56,10 @@
       <span class="font-semibold">
         <span>{{ product.selected_or_first_available_variant.price | money }}</span>
 
-        {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
+        {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
           <span>
             <span class="text-gray-500 line-through mr-2">
-              {{ product.compare_at_price | money }}
+              {{ product.selected_or_first_available_variant.compare_at_price | money }}
             </span>
           </span>
         {% endif %}
@@ -78,14 +78,14 @@
             {% endif %}
           </span>
         </span>
-        {% if product.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
+        {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
           <span>
             <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start items-center text-sm">
-              {{ product.compare_at_price | money }}
+              {{ product.selected_or_first_available_variant.compare_at_price | money }}
             </span>
           </span>
           <span class="text-green-700 flex items-center justify-center text-base">
-            Save {{ product.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}
+            Save {{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}
           </span>
         {% endif %}
       </span>
