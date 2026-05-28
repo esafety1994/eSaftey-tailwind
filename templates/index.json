@@ -12,6 +12,19 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
+        "slider_item_G4KkCk": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
+            "background": "shopify://shop_images/HomePage-Banner-EOFY_v2.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "https://esafetysupplies.com.au/collections/eofy-2026"
+          }
+        },
         "slider_item_nVybjd": {
           "type": "slider_item",
           "settings": {
@@ -48,19 +61,6 @@
             "button_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat"
           }
         },
-        "slider_item_G4KkCk": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/Easter-Web-Banner_9477435f-c917-4840-9931-13e746ea8e9a.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/5-off-easter-egg-hunt"
-          }
-        },
         "slider_item_Y9N7BV": {
           "type": "slider_item",
           "disabled": true,
@@ -89,10 +89,10 @@
         }
       },
       "block_order": [
+        "slider_item_G4KkCk",
         "slider_item_nVybjd",
         "slider_item_wmYUEQ",
         "slider_item_KbcYQL",
-        "slider_item_G4KkCk",
         "slider_item_Y9N7BV",
         "slider_item_GK847N"
       ],
