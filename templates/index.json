@@ -12,21 +12,8 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
-        "slider_item_G4KkCk": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/HomePage-Banner-EOFY_v2.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "https://esafetysupplies.com.au/collections/eofy-2026"
-          }
-        },
         "slider_item_nVybjd": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Grand-Opening-Web-Banner_1144f9fd-820e-4922-9210-fd34059d184c.jpg",
             "single_image": true,
@@ -39,7 +26,6 @@
         },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Untitled-8.png",
             "single_image": true,
@@ -52,7 +38,6 @@
         },
         "slider_item_KbcYQL": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/web-banner-straw-hat.jpg",
             "single_image": true,
@@ -61,6 +46,19 @@
             "description": "",
             "button_text": "",
             "button_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat"
+          }
+        },
+        "slider_item_G4KkCk": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
+            "background": "shopify://shop_images/Easter-Web-Banner_9477435f-c917-4840-9931-13e746ea8e9a.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://blogs/esafety-blogs/5-off-easter-egg-hunt"
           }
         },
         "slider_item_Y9N7BV": {
@@ -91,10 +89,10 @@
         }
       },
       "block_order": [
-        "slider_item_G4KkCk",
         "slider_item_nVybjd",
         "slider_item_wmYUEQ",
         "slider_item_KbcYQL",
+        "slider_item_G4KkCk",
         "slider_item_Y9N7BV",
         "slider_item_GK847N"
       ],
@@ -185,7 +183,7 @@
       "settings": {
         "collection_1": "new-arrivals",
         "collection_2": "best-sellers",
-        "collection_3": "cheap-deals"
+        "collection_3": "eofy-2026"
       }
     },
     "hero_full_bg_Bp4zeG": {

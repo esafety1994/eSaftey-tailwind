@@ -22,18 +22,9 @@
         "show_filters": true
       }
     },
-    "custom_liquid_6rTHPT": {
-      "type": "custom-liquid",
-      "name": "Custom liquid",
-      "settings": {
-        "custom_liquid": "<div class=\"text-center py-8 px-4\">\n  <p>For full terms and conditions of the EOFY 2026 Sale, \n    <a href=\"/pages/eofy-2026-terms-conditions\" \n       class=\"underline font-semibold\">\n      click here\n    </a>.\n  </p>\n</div>",
-        "custom_class": ""
-      }
-    }
   },
   "order": [
     "breadcrumb_yQnQpn",
-    "main",
-    "custom_liquid_6rTHPT"
+    "main"
   ]
 }
