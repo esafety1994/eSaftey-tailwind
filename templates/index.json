@@ -12,6 +12,18 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
+        "slider_item_G4KkCk": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/HomePage-Banner-EOFY_v2.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
         "slider_item_nVybjd": {
           "type": "slider_item",
           "disabled": true,
@@ -51,18 +63,6 @@
             "button_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat"
           }
         },
-        "slider_item_G4KkCk": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/HomePage-Banner-EOFY_v2.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": ""
-          }
-        },
         "slider_item_Y9N7BV": {
           "type": "slider_item",
           "disabled": true,
@@ -91,10 +91,10 @@
         }
       },
       "block_order": [
+        "slider_item_G4KkCk",
         "slider_item_nVybjd",
         "slider_item_wmYUEQ",
         "slider_item_KbcYQL",
-        "slider_item_G4KkCk",
         "slider_item_Y9N7BV",
         "slider_item_GK847N"
       ],
