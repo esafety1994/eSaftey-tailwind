@@ -14,7 +14,6 @@
       "blocks": {
         "slider_item_G4KkCk": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/HomePage-Banner-EOFY_v2.jpg",
             "single_image": true,
@@ -27,6 +26,7 @@
         },
         "slider_item_nVybjd": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Grand-Opening-Web-Banner_1144f9fd-820e-4922-9210-fd34059d184c.jpg",
             "single_image": true,
@@ -39,6 +39,7 @@
         },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Untitled-8.png",
             "single_image": true,
@@ -51,6 +52,7 @@
         },
         "slider_item_KbcYQL": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/web-banner-straw-hat.jpg",
             "single_image": true,
