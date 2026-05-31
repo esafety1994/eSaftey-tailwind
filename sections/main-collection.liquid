@@ -13,6 +13,11 @@
         {{ collection.metafields.custom.description_below_the_title | newline_to_br }}
       </p>
     {% endif %}
+    {% if collection.handle == 'eofy-2026' %}
+      <p class="text-right text-sm text-gray-500 mt-2">
+        *Sale conditions apply — <a href="/pages/eofy-2026-terms-conditions" class="underline font-medium" style="color:#dc2626;">view the full terms and conditions</a>
+      </p>
+    {% endif %}
   </div>
   <div class="mb-6">
     {%- assign collection_list = collection.metafields.custom.child_collections.value -%}
