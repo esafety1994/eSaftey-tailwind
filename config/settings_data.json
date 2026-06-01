@@ -203,6 +203,11 @@
         "type": "shopify://apps/powr-popup/blocks/app-embed/c42eddd7-7bc0-47cc-aa8a-df388049f012",
         "disabled": true,
         "settings": {}
+      },
+      "12439146293631897289": {
+        "type": "shopify://apps/blockify-fraud-filter/blocks/app_embed/2e3e0ba5-0e70-447a-9ec5-3bf76b5ef12e",
+        "disabled": false,
+        "settings": {}
       }
     }
   }
