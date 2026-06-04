@@ -26,7 +26,6 @@
         },
         "slider_item_nVybjd": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Grand-Opening-Web-Banner_1144f9fd-820e-4922-9210-fd34059d184c.jpg",
             "single_image": true,
