@@ -2,35 +2,6 @@
 {%- assign product_id = product.id -%}
 
 <style>
-  .product-recommendation-section .product-recommendations {
-    overflow: visible;
-    position: relative;
-  }
-  .product-recommendation-section .glide {
-    padding: 0 44px;
-    position: relative;
-  }
-  .product-recommendation-section .glide__arrow--prev {
-    left: 0 !important;
-  }
-  .product-recommendation-section .glide__arrow--next {
-    right: 0 !important;
-  }
-  .product-recommendation-section .glide__arrow {
-    z-index: 20;
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  }
-  .product-recommendation-section .glide__arrow:hover {
-    background: #f3f4f6;
-  }
   /* Consistent image area height */
   .product-recommendation-section .product-card > div:first-child {
     height: 200px;
@@ -50,31 +21,43 @@
     {% if section.settings.title != blank %}
       <h4 class="text-3xl font-semibold mb-4">{{ section.settings.title }}</h4>
     {% endif %}
-    <div class="product-recommendations py-4">
-      {%- if recommendations.performed? -%}
-        {%- if recommendations.products_count > 0 -%}
-          <div class="glide" id="productRecommendationGlide">
-            <div class="glide__track" data-glide-el="track">
-              <ul class="glide__slides">
-                {%- for product in recommendations.products -%}
-                  <li>
-                    {% render 'product-card', product: product, max_tags: 2 %}
-                  </li>
-                {%- endfor -%}
-              </ul>
-            </div>
 
-            <div class="glide__arrows" data-glide-el="controls">
-              <button class="product-gallery-arrow glide__arrow glide__arrow--prev absolute top-1/2 transform -translate-y-1/2 focus-visible:outline-none" data-glide-dir="<">{% render 'icon-svg-chevron-left', stroke-width: 2, class:'size-6' %}</button>
-              <button class="product-gallery-arrow glide__arrow glide__arrow--next absolute top-1/2 transform -translate-y-1/2 focus-visible:outline-none" data-glide-dir=">">{% render 'icon-svg-chevron-right', stroke-width: 2, class:'size-6' %}</button>
-            </div>
-          </div>
-          <ul></ul>
+    <div class="relative">
+      {{- '' -}}
+      <button
+        data-rec-arrow="prev"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-30 bg-white border border-gray-200 rounded-full w-9 h-9 flex items-center justify-center shadow hover:bg-gray-100 cursor-pointer"
+        aria-label="Previous"
+      >
+        {% render 'icon-svg-chevron-left', stroke_width: 2, class: 'size-5' %}
+      </button>
+      <button
+        data-rec-arrow="next"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-30 bg-white border border-gray-200 rounded-full w-9 h-9 flex items-center justify-center shadow hover:bg-gray-100 cursor-pointer"
+        aria-label="Next"
+      >
+        {% render 'icon-svg-chevron-right', stroke_width: 2, class: 'size-5' %}
+      </button>
 
-        {% else %}
-          <p>No recommendations available at this time.</p>
+      <div class="product-recommendations py-4 px-10">
+        {%- if recommendations.performed? -%}
+          {%- if recommendations.products_count > 0 -%}
+            <div class="glide" id="productRecommendationGlide">
+              <div class="glide__track" data-glide-el="track">
+                <ul class="glide__slides">
+                  {%- for product in recommendations.products -%}
+                    <li>
+                      {% render 'product-card', product: product, max_tags: 2 %}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          {% else %}
+            <p>No recommendations available at this time.</p>
+          {% endif %}
         {% endif %}
-      {% endif %}
+      </div>
     </div>
   </product-recommendations>
 </div>
