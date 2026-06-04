@@ -1,14 +1,56 @@
 {% comment %} Product Recommendation Section - carousel of recommended products {% endcomment %}
 {%- assign product_id = product.id -%}
+
+<style>
+  .product-recommendation-section .product-recommendations {
+    overflow: visible;
+    position: relative;
+  }
+  .product-recommendation-section .glide {
+    padding: 0 44px;
+    position: relative;
+  }
+  .product-recommendation-section .glide__arrow--prev {
+    left: 0 !important;
+  }
+  .product-recommendation-section .glide__arrow--next {
+    right: 0 !important;
+  }
+  .product-recommendation-section .glide__arrow {
+    z-index: 20;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+  .product-recommendation-section .glide__arrow:hover {
+    background: #f3f4f6;
+  }
+  /* Consistent image area height */
+  .product-recommendation-section .product-card > div:first-child {
+    height: 200px;
+    overflow: hidden;
+  }
+  .product-recommendation-section .product-card > div:first-child > div:first-child {
+    padding-bottom: 0 !important;
+    height: 200px !important;
+  }
+</style>
+
 <div
   id="product-recommendation-{{ section.id }}"
   class="container mx-auto px-4 py-8 max-w-7xl product-recommendation-section my-8"
 >
   <product-recommendations data-url="?product_id={{ product_id }}&section_id={{ section.id }}&&limit={{ section.settings.product_count | default: 4 }}&intent=related">
     {% if section.settings.title != blank %}
-      <h4 class="text-3xl font-semibold mb-4 px-8">{{ section.settings.title }}</h4>
+      <h4 class="text-3xl font-semibold mb-4">{{ section.settings.title }}</h4>
     {% endif %}
-    <div class="product-recommendations py-4 px-8">
+    <div class="product-recommendations py-4">
       {%- if recommendations.performed? -%}
         {%- if recommendations.products_count > 0 -%}
           <div class="glide" id="productRecommendationGlide">
@@ -23,10 +65,8 @@
             </div>
 
             <div class="glide__arrows" data-glide-el="controls">
-              <!-- Previous button: uses the '<' pattern -->
-              <button class="product-gallery-arrow glide__arrow glide__arrow--prev -left-10 absolute top-1/2 transform -translate-y-1/2 focus-visible:outline-none" data-glide-dir="<">{% render 'icon-svg-chevron-left', stroke-width: 2, class:'size-6' %}</button>
-              <!-- Next button: uses the '>' pattern -->
-              <button class="product-gallery-arrow glide__arrow glide__arrow--next -right-10 absolute top-1/2 transform -translate-y-1/2 focus-visible:outline-none" data-glide-dir=">">{% render 'icon-svg-chevron-right', stroke-width: 2, class:'size-6' %}</button>
+              <button class="product-gallery-arrow glide__arrow glide__arrow--prev absolute top-1/2 transform -translate-y-1/2 focus-visible:outline-none" data-glide-dir="<">{% render 'icon-svg-chevron-left', stroke-width: 2, class:'size-6' %}</button>
+              <button class="product-gallery-arrow glide__arrow glide__arrow--next absolute top-1/2 transform -translate-y-1/2 focus-visible:outline-none" data-glide-dir=">">{% render 'icon-svg-chevron-right', stroke-width: 2, class:'size-6' %}</button>
             </div>
           </div>
           <ul></ul>
