@@ -4,7 +4,11 @@
   "discount|20 - 49|5%, discount|50 -999 |10%"
   and renders Tailwind-styled tier discount boxes (no Alpine.js).
 {% endcomment %}
-{% assign raw = product.metafields.custom.tiered_discounts_qty | default: '' | strip %}
+{% if customer and customer.b2b? %}
+  {% assign raw = product.metafields.custom.b2b_tiered_discounts_qty | default: '' | strip %}
+{% else %}
+  {% assign raw = product.metafields.custom.tiered_discounts_qty | default: '' | strip %}
+{% endif %}
 {% if raw != '' %}
   <div class="tier-discounts flex gap-6 my-4 flex-wrap justify-center md:justify-normal">
     {% assign entries = raw | split: ',' %}
