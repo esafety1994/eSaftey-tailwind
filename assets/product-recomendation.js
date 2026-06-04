@@ -3,7 +3,6 @@ class ProductRecommendation extends HTMLElement {
     super();
   }
   connectedCallback() {
-    //product_id=12345690123&limit=4&section_id=product-recommendations&intent=related
     this.requestUrl = this.getAttribute("data-url");
     this.fetchRecommendations();
   }
@@ -13,7 +12,6 @@ class ProductRecommendation extends HTMLElement {
       ".product-recommendations",
     );
 
-    // ensure a container exists to receive injected markup
     if (!productRecommendationsSection) {
       productRecommendationsSection = document.createElement('div');
       productRecommendationsSection.className = 'product-recommendations';
@@ -29,13 +27,11 @@ class ProductRecommendation extends HTMLElement {
 
       if (!recommendations || !recommendations.innerHTML.trim()) return;
 
-      // remove nested custom elements to avoid recursive construction
       const safe = recommendations.cloneNode(true);
       safe.querySelectorAll('product-recommendations').forEach(el => el.remove());
 
       productRecommendationsSection.innerHTML = safe.innerHTML;
 
-      // Initialize Glide after injection (or re-init if already present)
       const glideEl = document.getElementById('productRecommendationGlide');
       if (glideEl && typeof Glide !== 'undefined') {
         if (window.productRecommendationGlideInstance) {
@@ -57,8 +53,18 @@ class ProductRecommendation extends HTMLElement {
           },
         });
 
-        
         window.productRecommendationGlideInstance.mount();
+
+        // Wire external arrow buttons to Glide API
+        const section = this.closest('.product-recommendation-section') || this.parentElement;
+        const prevBtn = section && section.querySelector('[data-rec-arrow="prev"]');
+        const nextBtn = section && section.querySelector('[data-rec-arrow="next"]');
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('<'));
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('>'));
+        }
       }
     } catch (err) {
       console.error('Failed to fetch recommendations', err);
@@ -67,4 +73,3 @@ class ProductRecommendation extends HTMLElement {
 }
 
 customElements.define("product-recommendations", ProductRecommendation);
-
