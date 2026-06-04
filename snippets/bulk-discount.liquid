@@ -4,8 +4,8 @@
   "discount|20 - 49|5%, discount|50 -999 |10%"
   and renders Tailwind-styled tier discount boxes (no Alpine.js).
 {% endcomment %}
-<!-- DEBUG: customer={{ customer.email }} b2b={{ customer.b2b? }} -->
-{% if customer and customer.b2b? %}
+{% assign customer_tags_lower = customer.tags | join: ',' | downcase %}
+{% if customer and customer_tags_lower contains 'b2b' %}
   {% assign raw = product.metafields.custom.b2b_tiered_discounts_qty | default: '' | strip %}
 {% else %}
   {% assign raw = product.metafields.custom.tiered_discounts_qty | default: '' | strip %}
