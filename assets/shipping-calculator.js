@@ -192,7 +192,7 @@ class ShippingCalculator extends HTMLElement {
       return;
     }
     const ratesHtml = this.shippingRates.map(rate => {
-      const price = (rate.total_price !== undefined) ? parseFloat(rate.total_price).toFixed(2) : (rate.price || '—');
+      const price = (rate.total_price !== undefined) ? (Math.ceil(parseFloat(rate.total_price) * 10) / 10).toFixed(2) : (rate.price || '—');
       return `
         <li>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
