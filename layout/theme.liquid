@@ -26,7 +26,7 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
-
+{% unless template contains 'product' %}
     <script type="application/ld+json">
 {
 "@context": "https://schema.org",
@@ -57,7 +57,7 @@
 "@type": "Person",
 "name": "Matthew Ryan"
 }
-},
+},y
 
 "geo": {
 "@type": "GeoCoordinates",
@@ -87,7 +87,7 @@
 ]
 }
 </script>
-
+{% endunless %}
     <!-- Google Tag Manager -->
 
     <script>
