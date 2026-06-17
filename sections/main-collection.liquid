@@ -226,21 +226,23 @@
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
-  "@type":"CollectionPage",
-  "name": {{ collection.title | json }},
-  "url":"{{ shop.url }}{{ collection.url }}"
-}
-</script>
-
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"Product",
-  "name": {{ collection.title | json }},
-  "description": {{ collection.description | strip_html | json }},
-  "brand":{
-    "@type":"Brand",
-    "name":"eSafety Supplies"
-  }
+  "@graph":[
+    {
+      "@type":"CollectionPage",
+      "@id":"{{ shop.url }}{{ collection.url }}#collection",
+      "url":"{{ shop.url }}{{ collection.url }}",
+      "name": {{ collection.title | json }}
+    },
+    {
+      "@type":"Product",
+      "@id":"{{ shop.url }}{{ collection.url }}#product",
+      "name": {{ collection.title | json }},
+      "description": {{ collection.description | strip_html | json }},
+      "brand":{
+        "@type":"Brand",
+        "name":"eSafety Supplies"
+      }
+    }
+  ]
 }
 </script>
