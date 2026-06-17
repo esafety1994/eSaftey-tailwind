@@ -223,3 +223,24 @@
   "presets": [{ "name": "Main Collection", "category": "Collection" }]
 }
 {% endschema %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"CollectionPage",
+  "name": {{ collection.title | json }},
+  "url":"{{ shop.url }}{{ collection.url }}"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Product",
+  "name": {{ collection.title | json }},
+  "description": {{ collection.description | strip_html | json }},
+  "brand":{
+    "@type":"Brand",
+    "name":"eSafety Supplies"
+  }
+}
+</script>
