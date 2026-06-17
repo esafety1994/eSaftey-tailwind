@@ -237,7 +237,7 @@
       "@type":"Product",
       "@id":"{{ shop.url }}{{ collection.url }}#product",
       "name": {{ collection.title | json }},
-      "description": {{ collection.metafields.custom.collection_description | strip_html | truncatewords: 30 | json }},
+      "description": {{ collection.description | default: collection.title | strip_html | truncate: 160 | json }},
       "brand":{
         "@type":"Brand",
         "name":"eSafety Supplies"
