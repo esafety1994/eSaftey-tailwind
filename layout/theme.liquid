@@ -260,7 +260,8 @@
     "@type": "BlogPosting",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "{{ shop.url }}{{ article.url }}"
+      "@id": "{{ shop.url }}{{ article.url }}",
+      "url": "{{ shop.url }}{{ article.url }}"
     },
     "headline": {{ article.title | json }},
     "description": {{ article.excerpt | strip_html | default: article.content | strip_html | truncate: 160 | json }},
