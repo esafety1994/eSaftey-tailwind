@@ -1,0 +1,53 @@
+{% doc %}
+  @prompt
+    i want this to be hidden in mobile view
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-mobile-visibility-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    {% if block.settings.hide_on_mobile %}
+      .ai-mobile-visibility-{{ ai_gen_id }} {
+        display: none !important;
+      }
+    {% endif %}
+  }
+{% endstyle %}
+
+<div class="ai-mobile-visibility-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <p>Your content here</p>
+</div>
+
+{% schema %}
+{
+  "name": "Mobile visibility block",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Hide on mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mobile visibility block"
+    }
+  ]
+}
+{% endschema %}
