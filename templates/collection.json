@@ -24,6 +24,7 @@
         "ai_gen_block_53fb0bb_npHnCy": {
           "type": "ai_gen_block_53fb0bb",
           "settings": {
+            "image": "shopify://shop_images/HomePage-Banner-EOFY.jpg",
             "link": "",
             "aspect_ratio": "4 / 1",
             "aspect_ratio_mobile": "2 / 1",
