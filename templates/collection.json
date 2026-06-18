@@ -16,30 +16,6 @@
     },
     "1781757801154c4b11": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_53fb0bb_TXpQLf": {
-          "type": "ai_gen_block_53fb0bb",
-          "name": "Collection Banner Strip",
-          "settings": {
-            "image": "shopify://shop_images/Homepage_banner1.jpg",
-            "link": "",
-            "aspect_ratio": "16 / 9",
-            "aspect_ratio_mobile": "4 / 3",
-            "max_width": 1200,
-            "border_radius": 0,
-            "padding_horizontal": 20,
-            "padding_horizontal_mobile": 15,
-            "margin_top": 20,
-            "margin_bottom": 20,
-            "margin_top_mobile": 15,
-            "margin_bottom_mobile": 15
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_53fb0bb_TXpQLf"
-      ],
       "settings": {}
     },
     "main": {

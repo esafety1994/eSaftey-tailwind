@@ -278,6 +278,31 @@
     "17817577498daccd2b": {
       "type": "_blocks",
       "settings": {}
+    },
+    "1781758910c0a92280": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_32a8f08_UgikAn": {
+          "type": "ai_gen_block_32a8f08",
+          "settings": {
+            "collection": "",
+            "desktop_width_percent": 100,
+            "max_height": 300,
+            "show_text": true,
+            "text_color": "#ffffff",
+            "title_size": 48,
+            "description_size": 16,
+            "show_overlay": true,
+            "overlay_color": "#000000",
+            "overlay_opacity": 0.3
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_32a8f08_UgikAn"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -290,6 +315,7 @@
     "image_strip_LRcwDT",
     "connect_stay_mk7WnL",
     "custom_liquid_Rt76mc",
-    "17817577498daccd2b"
+    "17817577498daccd2b",
+    "1781758910c0a92280"
   ]
 }
