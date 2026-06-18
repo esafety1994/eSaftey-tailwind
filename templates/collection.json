@@ -9,11 +9,6 @@
  */
 {
   "sections": {
-    "breadcrumb_yQnQpn": {
-      "type": "breadcrumb",
-      "name": "Breadcrumb",
-      "settings": {}
-    },
     "blocks_pMgfeK": {
       "type": "_blocks",
       "blocks": {
@@ -49,6 +44,11 @@
       "name": "Collection banner",
       "settings": {}
     },
+    "breadcrumb_yQnQpn": {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": {}
+    },
     "1781757801154c4b11": {
       "type": "_blocks",
       "settings": {}
@@ -68,8 +68,8 @@
     }
   },
   "order": [
-    "breadcrumb_yQnQpn",
     "blocks_pMgfeK",
+    "breadcrumb_yQnQpn",
     "1781757801154c4b11",
     "blocks_7UmW9J",
     "main"
