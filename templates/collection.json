@@ -76,6 +76,7 @@
         "ai_gen_block_605bde8_WLbTHr": {
           "type": "ai_gen_block_605bde8",
           "settings": {
+            "banner_image": "shopify://shop_images/EOFY-slim-banner.jpg",
             "max_width": 2000,
             "max_height": 200,
             "border_radius": 0,
@@ -83,9 +84,9 @@
             "overlay_color": "#000000",
             "overlay_opacity": 0.3,
             "show_content": true,
-            "heading": "Welcome to our store",
+            "heading": "",
             "heading_size": 48,
-            "subheading": "Discover our latest collection",
+            "subheading": "",
             "subheading_size": 18,
             "text_color": "#ffffff",
             "button_text": "Shop now",
