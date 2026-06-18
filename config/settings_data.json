@@ -107,7 +107,7 @@
       },
       "9880403401104739693": {
         "type": "shopify://apps/sparklayer-b2b-wholesale/blocks/sparklayer_core_script/019bbd73-3010-74e2-b9bd-86c9cb3ee550",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "css-variables": "",
           "css-display-none": ""
