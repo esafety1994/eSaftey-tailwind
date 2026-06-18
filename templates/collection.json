@@ -14,6 +14,39 @@
       "name": "Breadcrumb",
       "settings": {}
     },
+    "178176071513ff648e": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_0b8541a_FQMGgy": {
+          "type": "ai_gen_block_0b8541a",
+          "settings": {
+            "banner_link": "",
+            "max_width": 1200,
+            "max_height": 300,
+            "max_height_mobile": 200,
+            "border_radius": 0,
+            "show_overlay_content": false,
+            "heading": "",
+            "heading_size": 32,
+            "subheading": "",
+            "subheading_size": 16,
+            "text_color": "#ffffff",
+            "button_text": "",
+            "button_link": "",
+            "button_font_size": 14,
+            "button_bg_color": "#000000",
+            "button_hover_bg_color": "#333333",
+            "button_text_color": "#ffffff",
+            "button_border_radius": 4
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_0b8541a_FQMGgy"
+      ],
+      "settings": {}
+    },
     "1781757801154c4b11": {
       "type": "_blocks",
       "settings": {}
@@ -34,6 +67,7 @@
   },
   "order": [
     "breadcrumb_yQnQpn",
+    "178176071513ff648e",
     "1781757801154c4b11",
     "blocks_7UmW9J",
     "main"
