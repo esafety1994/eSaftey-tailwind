@@ -24,7 +24,7 @@
             "banner_link": "",
             "max_width": 1200,
             "max_height": 200,
-            "max_height_mobile": 150,
+            "max_height_mobile": 100,
             "border_radius": 0,
             "show_overlay_content": false,
             "heading": "",
