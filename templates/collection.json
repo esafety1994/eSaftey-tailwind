@@ -14,25 +14,6 @@
       "name": "Breadcrumb",
       "settings": {}
     },
-    "image_strip_k8cmzp": {
-      "type": "image-strip",
-      "blocks": {
-        "image_block_UiE7Hd": {
-          "type": "image_block",
-          "settings": {
-            "image": "shopify://shop_images/eofy-pos-screen.jpg"
-          }
-        }
-      },
-      "block_order": [
-        "image_block_UiE7Hd"
-      ],
-      "name": "Image Strip",
-      "settings": {
-        "title": "",
-        "image_height": 200
-      }
-    },
     "main": {
       "type": "main-collection",
       "settings": {
@@ -44,7 +25,6 @@
   },
   "order": [
     "breadcrumb_yQnQpn",
-    "image_strip_k8cmzp",
     "main"
   ]
 }
