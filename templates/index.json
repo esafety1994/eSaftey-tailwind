@@ -303,6 +303,32 @@
         "ai_gen_block_32a8f08_UgikAn"
       ],
       "settings": {}
+    },
+    "1781764636d620d45e": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_f2a90aa_G4Gw94": {
+          "type": "ai_gen_block_f2a90aa",
+          "settings": {
+            "banner_height": 500,
+            "mobile_banner_height": 350,
+            "title": "Collection name",
+            "description": "Discover our latest collection",
+            "text_color": "#ffffff",
+            "title_size": 48,
+            "description_size": 18,
+            "show_overlay": true,
+            "overlay_color": "#000000",
+            "overlay_opacity": 0.3,
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_f2a90aa_G4Gw94"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -316,6 +342,7 @@
     "connect_stay_mk7WnL",
     "custom_liquid_Rt76mc",
     "17817577498daccd2b",
-    "1781758910c0a92280"
+    "1781758910c0a92280",
+    "1781764636d620d45e"
   ]
 }
