@@ -14,10 +14,10 @@
       "name": "Breadcrumb",
       "settings": {}
     },
-    "178176071513ff648e": {
+    "blocks_pMgfeK": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_0b8541a_FQMGgy": {
+        "ai_gen_block_0b8541a_4h3pCz": {
           "type": "ai_gen_block_0b8541a",
           "settings": {
             "banner_link": "",
@@ -43,8 +43,9 @@
         }
       },
       "block_order": [
-        "ai_gen_block_0b8541a_FQMGgy"
+        "ai_gen_block_0b8541a_4h3pCz"
       ],
+      "name": "Collection banner",
       "settings": {}
     },
     "1781757801154c4b11": {
@@ -67,7 +68,7 @@
   },
   "order": [
     "breadcrumb_yQnQpn",
-    "178176071513ff648e",
+    "blocks_pMgfeK",
     "1781757801154c4b11",
     "blocks_7UmW9J",
     "main"
