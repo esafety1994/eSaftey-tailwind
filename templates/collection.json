@@ -19,6 +19,7 @@
       "blocks": {
         "ai_gen_block_53fb0bb_TXpQLf": {
           "type": "ai_gen_block_53fb0bb",
+          "name": "Collection Banner Strip",
           "settings": {
             "image": "shopify://shop_images/Homepage_banner1.jpg",
             "link": "",
