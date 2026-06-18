@@ -17,14 +17,6 @@
     "blocks_pMgfeK": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_0aa5b7d_EFU4ea": {
-          "type": "ai_gen_block_0aa5b7d",
-          "settings": {
-            "hide_on_mobile": true,
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
-        },
         "ai_gen_block_0b8541a_4h3pCz": {
           "type": "ai_gen_block_0b8541a",
           "settings": {
@@ -52,7 +44,6 @@
         }
       },
       "block_order": [
-        "ai_gen_block_0aa5b7d_EFU4ea",
         "ai_gen_block_0b8541a_4h3pCz"
       ],
       "name": "Collection banner",
@@ -78,6 +69,40 @@
     "178176394017e78c1a": {
       "type": "_blocks",
       "settings": {}
+    },
+    "178176418120d9232a": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_605bde8_WLbTHr": {
+          "type": "ai_gen_block_605bde8",
+          "settings": {
+            "max_width": 2000,
+            "max_height": 200,
+            "border_radius": 0,
+            "show_overlay": true,
+            "overlay_color": "#000000",
+            "overlay_opacity": 0.3,
+            "show_content": true,
+            "heading": "Welcome to our store",
+            "heading_size": 48,
+            "subheading": "Discover our latest collection",
+            "subheading_size": 18,
+            "text_color": "#ffffff",
+            "button_text": "Shop now",
+            "button_link": "",
+            "button_font_size": 16,
+            "button_bg_color": "#000f9f",
+            "button_hover_bg_color": "#000000",
+            "button_text_color": "#ffffff",
+            "button_border_radius": 4
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_605bde8_WLbTHr"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -86,6 +111,7 @@
     "1781757801154c4b11",
     "blocks_7UmW9J",
     "main",
-    "178176394017e78c1a"
+    "178176394017e78c1a",
+    "178176418120d9232a"
   ]
 }
