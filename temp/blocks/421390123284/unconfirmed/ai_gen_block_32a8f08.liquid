@@ -1,6 +1,282 @@
+{% doc %}
+  @prompt
+    Add a maximum height setting (in pixels) to the Collection Banner Strip block, so the banner cannot exceed a specified height regardless of the aspect ratio or container width. The height should be configurable via a theme setting, with a sensible default (e.g. 400px).
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-collection-banner-strip-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    overflow: hidden;
+    display: block;
+  }
+
+  .ai-collection-banner-strip__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    max-height: {{ block.settings.max_height }}px;
+    overflow: hidden;
+  }
+
+  .ai-collection-banner-strip__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    max-height: {{ block.settings.max_height }}px;
+  }
+
+  .ai-collection-banner-strip__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    max-height: {{ block.settings.max_height }}px;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-collection-banner-strip__placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-height: {{ block.settings.max_height }}px;
+    object-fit: cover;
+  }
+
+  .ai-collection-banner-strip__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-collection-banner-strip__overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.overlay_color }};
+    opacity: {{ block.settings.overlay_opacity }};
+    pointer-events: none;
+  }
+
+  .ai-collection-banner-strip__content-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: {{ block.settings.text_color }};
+    z-index: 2;
+    width: 90%;
+    max-width: 800px;
+  }
+
+  .ai-collection-banner-strip__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-collection-banner-strip__description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    margin: 0;
+    color: {{ block.settings.text_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-collection-banner-strip__title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.7);
+    }
+
+    .ai-collection-banner-strip__description-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.description_size }}px * 0.85);
+    }
+  }
+{% endstyle %}
+
+<collection-banner-strip-{{ ai_gen_id }}
+  class="ai-collection-banner-strip-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-collection-banner-strip__image-wrapper-{{ ai_gen_id }}">
+    {% if block.settings.collection %}
+      {% if block.settings.collection.image %}
+        <img
+          src="{{ block.settings.collection.image | image_url: width: 2000 }}"
+          alt="{{ block.settings.collection.image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.collection.image.width }}"
+          height="{{ block.settings.collection.image.height }}"
+          class="ai-collection-banner-strip__image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="ai-collection-banner-strip__placeholder-{{ ai_gen_id }}">
+          {{ 'collection-apparel-1' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="ai-collection-banner-strip__placeholder-{{ ai_gen_id }}">
+        {{ 'collection-apparel-1' | placeholder_svg_tag }}
+        <div class="ai-collection-banner-strip__empty-state-{{ ai_gen_id }}">
+          Next, select a collection
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.show_overlay %}
+      <div class="ai-collection-banner-strip__overlay-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    {% if block.settings.show_text %}
+      <div class="ai-collection-banner-strip__content-{{ ai_gen_id }}">
+        {% if block.settings.collection %}
+          <h2 class="ai-collection-banner-strip__title-{{ ai_gen_id }}">
+            {{ block.settings.collection.title }}
+          </h2>
+          {% if block.settings.collection.description != blank %}
+            <p class="ai-collection-banner-strip__description-{{ ai_gen_id }}">
+              {{ block.settings.collection.description }}
+            </p>
+          {% endif %}
+        {% else %}
+          <h2 class="ai-collection-banner-strip__title-{{ ai_gen_id }}">
+            Collection title
+          </h2>
+          <p class="ai-collection-banner-strip__description-{{ ai_gen_id }}">
+            Collection description will appear here
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</collection-banner-strip-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CollectionBannerStrip{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.style.display = 'block';
+      }
+    }
+
+    customElements.define('collection-banner-strip-{{ ai_gen_id }}', CollectionBannerStrip{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Collection banner strip",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "max_height",
+      "label": "Maximum height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text",
+      "label": "Show text overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection banner strip"
+    }
+  ]
+}
 {% endschema %}
