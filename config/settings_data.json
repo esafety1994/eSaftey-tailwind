@@ -101,13 +101,13 @@
         "type": "promo-popup",
         "settings": {
           "enable_popup": false,
-          "popup_image": "shopify://shop_images/BPu1toWfHvbuQ2IRtN5-j.webp",
-          "popup_image_mobile": "shopify://shop_images/straw-hat-Mobile-Web-Banner.jpg",
-          "popup_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat",
+          "popup_image": "shopify://shop_images/eofy-pop-up.jpg",
+          "popup_image_mobile": "shopify://shop_images/eofy-pop-up_mobile.jpg",
+          "popup_link": "shopify://collections/eofy-2026",
           "open_in_new_tab": false,
           "popup_delay": 3,
           "cookie_days": 30,
-          "popup_version": "may-2026"
+          "popup_version": "EOFY-2026"
         }
       }
     },
