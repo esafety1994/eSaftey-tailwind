@@ -100,7 +100,7 @@
       "promo-popup": {
         "type": "promo-popup",
         "settings": {
-          "enable_popup": false,
+          "enable_popup": true,
           "popup_image": "shopify://shop_images/eofy-pop-up.jpg",
           "popup_image_mobile": "shopify://shop_images/eofy-pop-up_mobile.jpg",
           "popup_link": "shopify://collections/eofy-2026",
