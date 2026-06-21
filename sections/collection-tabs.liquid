@@ -54,7 +54,7 @@
             {% assign col = collections[col_setting] %}
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-y-12">
               {% for product in col.products limit: 8 %}
-                <div>{% render 'product-card', product: product %}</div>
+                <div>{% render 'product-card', product: product, enable_preload: forloop.index <= 3 %}</div>
               {% endfor %}
             </div>
             <div class="pt-16 text-center">

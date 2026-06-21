@@ -29,6 +29,39 @@ document.addEventListener("DOMContentLoaded", function () {
   try{ window.applyHoverImages(); } catch(e){}
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  var heroBanner = document.querySelector('.hero-banner');
+  if (heroBanner && typeof Glide !== 'undefined') {
+    new Glide('.hero-banner', {
+      type: 'slider',
+      autoplay: false,
+      hoverpause: true,
+      perView: 1,
+    }).mount();
+  }
+
+  var announcementGlide = document.querySelector('.announcement-glide');
+  if (announcementGlide && typeof Glide !== 'undefined') {
+    new Glide('.announcement-glide', {
+      type: 'slider',
+      autoplay: 8000,
+      animationDuration: 1000,
+      perView: 1,
+      hoverpause: true,
+    }).mount();
+  }
+
+  var closeBtn = document.getElementById('announcement-close');
+  var bar = document.getElementById('announcement-bar');
+  if (closeBtn && bar) {
+    closeBtn.addEventListener('click', function () {
+      bar.classList.add('opacity-0', '-translate-y-full');
+      bar.classList.remove('opacity-100', 'translate-y-0');
+      setTimeout(function () { bar.style.display = 'none'; }, 500);
+    });
+  }
+});
+
 // Hover image helper: move from inline snippet to central theme asset
 window.applyHoverImages = function(){
   try{

@@ -13,12 +13,22 @@
   <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
     <div>
       {% render 'product-media-gallery' %}
-      <script
-        src="https://widget.shopassistant-ai.com/preguide_ai.js"
-        data-tenantid="tnt_VIostKRn5lTpaXD"
-        data-app-type="pdp"
-        defer
-      ></script>
+      <script>
+        (function() {
+          var el = document.currentScript.previousElementSibling || document.currentScript.parentElement;
+          var obs = new IntersectionObserver(function(entries, o) {
+            if (!entries[0].isIntersecting) return;
+            o.disconnect();
+            var s = document.createElement('script');
+            s.src = 'https://widget.shopassistant-ai.com/preguide_ai.js';
+            s.setAttribute('data-tenantid', 'tnt_VIostKRn5lTpaXD');
+            s.setAttribute('data-app-type', 'pdp');
+            s.defer = true;
+            document.head.appendChild(s);
+          }, { rootMargin: '200px' });
+          obs.observe(el);
+        })();
+      </script>
       <div class="mt-6 border-t border-grey">
         {% render 'product-faq-preview', product: product %}
       </div>
@@ -70,9 +80,6 @@
         {% render 'product-quotify-button', product: product %}
       </div>
       
-      <script>
-        window.productVariants = {{ product.variants | json }};
-      </script>
     </div>
   </div>
 </div>

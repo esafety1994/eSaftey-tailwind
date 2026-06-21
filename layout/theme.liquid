@@ -25,6 +25,13 @@
 <meta name="description" content="{{ meta_desc | strip | escape }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://static.hotjar.com">
+    <link rel="preconnect" href="https://connect.podium.com">
+    <link rel="preconnect" href="https://widget.shopassistant-ai.com" crossorigin>
+    <link rel="preconnect" href="https://api.starshipit.com" crossorigin>
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
 {% unless template contains 'product' %}
     <script type="application/ld+json">
@@ -139,7 +146,8 @@
     {% render 'font-face' %}
     {{ 'glide.core.min.css' | asset_url | stylesheet_tag: preload: true }}
     {{ 'tailwind.output.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'esafety-drawer.css' | asset_url | stylesheet_tag: preload: true }}
+    <link rel="preload" href="{{ 'esafety-drawer.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}"></noscript>
     {{ 'global.css' | asset_url | stylesheet_tag: preload: true }}
     {%- if template == 'product' -%}
       {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
@@ -173,29 +181,22 @@
     </main>
 
     {% section 'esaftey-cart-drawer' %}
-    <script defer src="{{ 'glide.min.js' | asset_url }}" defer="defer"></script>
     {% if settings.use_minified_assets %}
       {%- if template contains 'product' -%}
-        <script defer src="{{ 'product-details.min.js' | asset_url }}" defer="defer"></script>
+        <script defer src="{{ 'product-bundle.min.js' | asset_url }}"></script>
       {%- endif -%}
-      <script defer src="{{ 'esafety-drawer.min.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'esafety-cart-actions.min.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'cart-item-control.min.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'accordion-tab.min.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'navigation.min.js' | asset_url }}" defer="defer"></script>
-      
-      <script defer src="{{ 'predictive-search.min.js' | asset_url }}" defer="defer"></script>
+      <script defer src="{{ 'theme-bundle.min.js' | asset_url }}"></script>
     {% else %}
+      <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
       {%- if template contains 'product' -%}
-        <script defer src="{{ 'product-details.js' | asset_url }}" defer="defer"></script>
+        <script defer src="{{ 'product-details.js' | asset_url }}"></script>
       {%- endif -%}
-      <script defer src="{{ 'esafety-drawer.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'esafety-cart-actions.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'cart-item-control.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'accordion-tab.js' | asset_url }}" defer="defer"></script>
-      <script defer src="{{ 'navigation.js' | asset_url }}" defer="defer"></script>
+      <script defer src="{{ 'esafety-drawer.js' | asset_url }}"></script>
+      <script defer src="{{ 'esafety-cart-actions.js' | asset_url }}"></script>
+      <script defer src="{{ 'theme.js' | asset_url }}"></script>
+      <script defer src="{{ 'cart-item-control.js' | asset_url }}"></script>
+      <script defer src="{{ 'accordion-tab.js' | asset_url }}"></script>
+      <script defer src="{{ 'navigation.js' | asset_url }}"></script>
       <script defer src="{{ 'predictive-search.js' | asset_url }}"></script>
     {% endif %}
     {% sections 'footer-group' %}
@@ -292,7 +293,7 @@
   {%- section 'promo-popup' -%}
   </body>
   {% comment %} PODIUM CODE FOR CHAT ON HOME PAGE {% endcomment %}
-  <script defer="defer">
+  <script>
     window.addEventListener('scroll', function loadPodiumWidget() {
       if (window.scrollY > 300) {
         // Adjust this value if needed
