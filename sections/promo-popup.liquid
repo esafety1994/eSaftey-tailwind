@@ -148,7 +148,9 @@
 
   if (getCookie(COOKIE_KEY)) return;
 
-  window.addEventListener('load', function () {
+  var MIN_DELAY_MS = Math.max(DELAY_MS, 3000);
+
+  document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () {
       var tpl = document.getElementById('promo-popup-tpl');
       if (!tpl) return;
@@ -190,7 +192,7 @@
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') closePopup();
       });
-    }, DELAY_MS);
+    }, MIN_DELAY_MS);
   });
 })();
 </script>
