@@ -160,7 +160,7 @@
       <script defer src="{{ 'navigation.js' | asset_url }}"></script>
       <script defer src="{{ 'predictive-search.js' | asset_url }}"></script>
     {% endif %}
-    {% sections 'footer-group' %}
+    <footer>{% sections 'footer-group' %}</footer>
 
     {% if template contains 'blog' and template != 'article' %}
   <script type="application/ld+json">
