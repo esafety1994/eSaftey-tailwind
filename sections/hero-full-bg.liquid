@@ -1,9 +1,17 @@
-{% comment %}
-  Section: Hero Full Background
-  - Full-width background image
-  - Section-level button text/url
-  - Up to 2 blocks rendered as columns with gap-16
-{% endcomment %}
+{% comment %} Preload first block image for faster LCP {% endcomment %}
+{% for block in section.blocks %}
+  {% if block.settings.background_image != blank %}
+    <link
+      rel="preload"
+      as="image"
+      href="{{ block.settings.background_image | image_url: width: 400, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background_image | image_url: width: 400, format: 'webp' }} 400w, {{ block.settings.background_image | image_url: width: 800, format: 'webp' }} 800w, {{ block.settings.background_image | image_url: width: 1200, format: 'webp' }} 1200w"
+      imagesizes="(max-width: 768px) 100vw, 50vw"
+      fetchpriority="high"
+    >
+    {% break %}
+  {% endif %}
+{% endfor %}
 
 <section id="hero-full-bg-{{ section.id }}" class="hero-full-bg relative w-full my-6">
   <div class="relative z-20 container mx-auto px-4 py-12">

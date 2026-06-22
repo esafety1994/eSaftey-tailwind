@@ -13,9 +13,9 @@
   {% assign _header = _header | remove_first: "strn.rise-ai.com" %}
 {% endunless %}
 
-{% comment %} Reviews.io widget only needed on product, collection, and index pages {% endcomment %}
-{% if tiny_page_name == "cart" or tiny_page_name == "customers" or tiny_page_name == "blog" or tiny_page_name == "article" or tiny_page_name == "page" %}
+{% comment %} Reviews.io widget only needed on product and collection pages {% endcomment %}
+{% unless tiny_page_name == "product" or tiny_page_name == "collection" %}
   {% assign _header = _header | remove_first: "widget.reviews.io" %}
-{% endif %}
+{% endunless %}
 
 {{ _header }}

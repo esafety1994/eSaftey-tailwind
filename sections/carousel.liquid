@@ -1,12 +1,25 @@
-{% comment %} Preload first carousel image for faster LCP {% endcomment %}
+{% comment %} Preload first carousel image — one hint per <source> breakpoint so the URL always matches {% endcomment %}
 {% for block in section.blocks %}
   {% if block.type == 'slider_item' and block.settings.background %}
-    <link
-      rel="preload"
-      as="image"
-      href="{{ block.settings.background | image_url: width: 800, format: 'webp' }}"
-      imagesrcset="{{ block.settings.background | image_url: width: 400, format: 'webp' }} 400w, {{ block.settings.background | image_url: width: 800, format: 'webp' }} 800w, {{ block.settings.background | image_url: width: 1920, format: 'webp' }} 1920w"
+    <link rel="preload" as="image"
+      href="{{ block.settings.background | image_url: width: 400, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background | image_url: width: 400, format: 'webp' }} 400w, {{ block.settings.background | image_url: width: 800, format: 'webp' }} 800w"
       imagesizes="100vw"
+      media="(max-width: 640px)"
+      fetchpriority="high"
+    >
+    <link rel="preload" as="image"
+      href="{{ block.settings.background | image_url: width: 768, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background | image_url: width: 768, format: 'webp' }} 768w, {{ block.settings.background | image_url: width: 1536, format: 'webp' }} 1536w"
+      imagesizes="100vw"
+      media="(min-width: 641px) and (max-width: 1024px)"
+      fetchpriority="high"
+    >
+    <link rel="preload" as="image"
+      href="{{ block.settings.background | image_url: width: 1024, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background | image_url: width: 1024, format: 'webp' }} 1024w, {{ block.settings.background | image_url: width: 1920, format: 'webp' }} 1920w"
+      imagesizes="100vw"
+      media="(min-width: 1025px)"
       fetchpriority="high"
     >
     {% break %}
