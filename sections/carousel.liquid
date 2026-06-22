@@ -14,6 +14,14 @@
 {% endfor %}
 
 <style>
+  /* Show first slide immediately before Glide.js initialises */
+  .hero-banner:not(.glide--mounted) .glide__slide:not(:first-child) {
+    display: none;
+  }
+  .hero-banner:not(.glide--mounted) .glide__slides {
+    overflow: visible;
+    transform: translate3d(0, 0, 0);
+  }
   .glide__bullet--active {
     background-color: transparent;
     border: 1px solid;

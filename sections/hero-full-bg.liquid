@@ -20,7 +20,8 @@
               srcset="{{ bg_image | image_url: width: 400 }} 400w, {{ bg_image | image_url: width: 800 }} 800w, {{ bg_image | image_url: width: 1200 }} 1200w"
               sizes="(max-width: 768px) 100vw, 50vw"
               alt="{{ bg_image.alt | escape }}"
-              loading="lazy"
+              loading="eager"
+              {% if forloop.first %}fetchpriority="high"{% endif %}
               width="{{ bg_image.width }}"
               height="{{ bg_image.height }}"
               class="absolute inset-0 w-full h-full object-cover"

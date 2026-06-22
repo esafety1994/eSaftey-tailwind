@@ -25,14 +25,9 @@
 <meta name="description" content="{{ meta_desc | strip | escape }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://static.hotjar.com">
-    <link rel="dns-prefetch" href="https://connect.facebook.net">
     <link rel="dns-prefetch" href="https://widget.reviews.io">
-    <link rel="dns-prefetch" href="https://cdn.506.io">
-    <link rel="dns-prefetch" href="https://strn.rise-ai.com">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
 {% unless template contains 'product' %}
     <script type="application/ld+json">
@@ -292,13 +287,11 @@
 
   {% endif %}
   {%- section 'promo-popup' -%}
-  </body>
-  {% comment %} PODIUM CODE FOR CHAT ON HOME PAGE {% endcomment %}
+
   <script>
     window.addEventListener('scroll', function loadPodiumWidget() {
       if (window.scrollY > 300) {
-        // Adjust this value if needed
-        window.removeEventListener('scroll', loadPodiumWidget); // Remove listener after loading
+        window.removeEventListener('scroll', loadPodiumWidget);
         var script = document.createElement('script');
         script.src = 'https://connect.podium.com/widget.js#ORG_TOKEN=45d615a7-fd5b-4202-96bb-1a277644e6a7';
         script.id = 'podium-widget';
@@ -311,20 +304,14 @@
     });
   </script>
 
-  {% comment %} PREEZIE CODE FOR AUTOMATIC PODIUM CHAT {% endcomment %}
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Get the current URL path
       const path = window.location.pathname;
-
-      // Check if the URL path matches your trigger
       if (path === '/PodiumWebChat.open' || path === '/chat') {
-        // Make sure Podium Web Chat is loaded before trying to open it
         const tryOpenChat = () => {
           if (window.PodiumWebChat && typeof PodiumWebChat.open === 'function') {
             PodiumWebChat.open();
           } else {
-            // Retry until the widget loads
             setTimeout(tryOpenChat, 500);
           }
         };
@@ -332,4 +319,5 @@
       }
     });
   </script>
+  </body>
 </html>
