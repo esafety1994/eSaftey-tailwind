@@ -4,8 +4,8 @@
     <link
       rel="preload"
       as="image"
-      href="{{ block.settings.background | image_url: width: 800 }}"
-      imagesrcset="{{ block.settings.background | image_url: width: 400 }} 400w, {{ block.settings.background | image_url: width: 800 }} 800w, {{ block.settings.background | image_url: width: 1920 }} 1920w"
+      href="{{ block.settings.background | image_url: width: 800, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background | image_url: width: 400, format: 'webp' }} 400w, {{ block.settings.background | image_url: width: 800, format: 'webp' }} 800w, {{ block.settings.background | image_url: width: 1920, format: 'webp' }} 1920w"
       imagesizes="100vw"
       fetchpriority="high"
     >
@@ -69,13 +69,20 @@
                 {% if img %}
                   <picture>
                     <source
+                      type="image/webp"
                       media="(max-width: 640px)"
-                      srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w"
+                      srcset="{{ img | image_url: width: 400, format: 'webp' }} 400w, {{ img | image_url: width: 800, format: 'webp' }} 800w"
                       sizes="100vw"
                     />
                     <source
+                      type="image/webp"
                       media="(max-width: 1024px)"
-                      srcset="{{ img | image_url: width:768 }} 768w, {{ img | image_url: width:1536 }} 1536w"
+                      srcset="{{ img | image_url: width: 768, format: 'webp' }} 768w, {{ img | image_url: width: 1536, format: 'webp' }} 1536w"
+                      sizes="100vw"
+                    />
+                    <source
+                      type="image/webp"
+                      srcset="{{ img | image_url: width: 1024, format: 'webp' }} 1024w, {{ img | image_url: width: 1920, format: 'webp' }} 1920w"
                       sizes="100vw"
                     />
                     <img
