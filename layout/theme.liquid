@@ -90,47 +90,6 @@
 }
 </script>
 {% endunless %}
-    <!-- Google Tag Manager -->
-
-    <script>
-      function loadGTM() {
-        (function (w, d, s, l, i) {
-          w[l] = w[l] || [];
-          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-          var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s),
-            dl = l != 'dataLayer' ? '&l=' + l : '';
-          j.async = true;
-          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-          f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-WT8Q95B');
-      }
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => loadGTM());
-      } else {
-        setTimeout(loadGTM, 3000); // Load after 1s
-      }
-    </script>
-    
-    <!-- End Google Tag Manager -->
-    <script>
-      function loadHotjar() {
-        (function (h, o, t, j, a, r) {
-          h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments); };
-          h._hjSettings = { hjid: 2509798, hjsv: 6 };
-          a = o.getElementsByTagName('head')[0];
-          r = o.createElement('script');
-          r.async = 1;
-          r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-          a.appendChild(r);
-        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-      }
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => loadHotjar(), { timeout: 5000 });
-      } else {
-        setTimeout(loadHotjar, 3000);
-      }
-    </script>
     {%- if settings.use_favicon == true and settings.favicon != blank -%}
       <link rel="shortcut icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
@@ -287,6 +246,37 @@
 
   {% endif %}
   {%- section 'promo-popup' -%}
+
+  <script>
+    function loadGTM() {
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-WT8Q95B');
+    }
+    function loadHotjar() {
+      (function (h, o, t, j, a, r) {
+        h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments); };
+        h._hjSettings = { hjid: 2509798, hjsv: 6 };
+        a = o.getElementsByTagName('head')[0];
+        r = o.createElement('script');
+        r.async = 1;
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+        a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(function () { loadGTM(); loadHotjar(); });
+    } else {
+      setTimeout(function () { loadGTM(); loadHotjar(); }, 3000);
+    }
+  </script>
 
   <script>
     window.addEventListener('scroll', function loadPodiumWidget() {

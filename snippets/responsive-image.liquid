@@ -65,6 +65,6 @@
   >
   {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
   <noscript>
-    <img class="{{ image_class }}" loading="lazy" width="" height="" src="{{ image | image_url: width: 1920, height: 680 }}" alt="{{ alt | default: image.alt | escape }}">
+    <img class="{{ image_class }}" loading="lazy" width="{{ def_img_size }}" height="{{ def_img_size }}" src="{{ image | image_url: width: 800 }}" alt="{{ alt | escape }}">
   </noscript>
 </responsive-image>

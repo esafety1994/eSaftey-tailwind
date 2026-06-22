@@ -194,7 +194,10 @@ a.underline-animation:focus::after {
   width: 100%;
   background-image:
     linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(92, 92, 92, 0.8) 100%),
-    url(https://cdn.shopify.com/s/files/1/0638/5175/7736/files/cart-cta-bg.png?v=1748820020);
+    image-set(
+      url("https://cdn.shopify.com/s/files/1/0638/5175/7736/files/cart-cta-bg.png?v=1748820020&format=webp") type("image/webp"),
+      url("https://cdn.shopify.com/s/files/1/0638/5175/7736/files/cart-cta-bg.png?v=1748820020") type("image/png")
+    );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

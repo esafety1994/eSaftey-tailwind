@@ -364,9 +364,15 @@ document.addEventListener("DOMContentLoaded", function () {
           anchorRect = null; // first panel fixed from left (160px)
         } else {
           // attach level-2 to the right of the level-1 panel if present
+          // Use cached _rightEdge to avoid forced reflow on a freshly-appended element
           var lvl1 = document.querySelector(".desktop-subpanel.panel-level-1");
-          if (lvl1) anchorRect = lvl1.getBoundingClientRect();
-          else if (menuRoot) anchorRect = menuRoot.getBoundingClientRect();
+          if (lvl1 && lvl1._rightEdge) {
+            anchorRect = { right: lvl1._rightEdge };
+          } else if (lvl1) {
+            anchorRect = lvl1.getBoundingClientRect();
+          } else if (menuRoot) {
+            anchorRect = menuRoot.getBoundingClientRect();
+          }
         }
 
         var panel = document.createElement("div");
@@ -436,9 +442,12 @@ document.addEventListener("DOMContentLoaded", function () {
             var targetWidth = Math.min(desired, Math.max(220, maxAllowed));
             panel.style.width = targetWidth + "px";
             panel.style.transform = "translateX(0)";
+            // Cache right edge so level-2 panels don't need getBoundingClientRect
+            panel._rightEdge = finalLeft + targetWidth;
           } catch (e) {
             panel.style.transform = "translateX(0)";
             panel.style.width = "360px";
+            panel._rightEdge = finalLeft + 360;
           }
         });
 
