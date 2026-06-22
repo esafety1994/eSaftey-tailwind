@@ -131,22 +131,28 @@
 
 <script>
 (function () {
-  var COOKIE_KEY = 'esafety_popup_{{ section.settings.popup_version | escape }}';
-  var DELAY_MS   = {{ section.settings.popup_delay | times: 1000 }};
-  var COOKIE_DAYS = {{ section.settings.cookie_days }};
+  var STORAGE_KEY = 'esafety_popup_{{ section.settings.popup_version | escape }}';
+  var DELAY_MS    = {{ section.settings.popup_delay | times: 1000 }};
 
-  function getCookie(name) {
-    var m = document.cookie.match(new RegExp('(?:^| )' + name + '=([^;]+)'));
-    return m ? m[1] : null;
+  function hasSeen() {
+    try { if (localStorage.getItem(STORAGE_KEY) === '1') return true; } catch (e) {}
+    try {
+      var m = document.cookie.match(new RegExp('(?:^| )' + STORAGE_KEY + '=([^;]+)'));
+      if (m) return true;
+    } catch (e) {}
+    return false;
   }
 
-  function setCookie(name, value, days) {
-    var d = new Date();
-    d.setTime(d.getTime() + days * 864e5);
-    document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  function markSeen() {
+    try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+    try {
+      var d = new Date();
+      d.setTime(d.getTime() + 365 * 864e5);
+      document.cookie = STORAGE_KEY + '=1;expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+    } catch (e) {}
   }
 
-  if (getCookie(COOKIE_KEY)) return;
+  if (hasSeen()) return;
 
   function waitThenShow(callback) {
     var fired = false;
@@ -176,7 +182,7 @@
           });
         });
         document.body.style.overflow = 'hidden';
-        setCookie(COOKIE_KEY, '1', COOKIE_DAYS);
+        markSeen();
       }
 
       function closePopup() {
