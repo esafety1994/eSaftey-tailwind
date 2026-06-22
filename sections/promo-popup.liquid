@@ -148,10 +148,18 @@
 
   if (getCookie(COOKIE_KEY)) return;
 
-  var MIN_DELAY_MS = Math.max(DELAY_MS, 3000);
+  function waitThenShow(callback) {
+    var fired = false;
+    function trigger() {
+      if (fired) return;
+      fired = true;
+      window.removeEventListener('scroll', trigger);
+      setTimeout(callback, DELAY_MS);
+    }
+    window.addEventListener('scroll', trigger, { passive: true, once: true });
+  }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(function () {
+  waitThenShow(function () {
       var tpl = document.getElementById('promo-popup-tpl');
       if (!tpl) return;
 
@@ -192,7 +200,6 @@
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') closePopup();
       });
-    }, MIN_DELAY_MS);
   });
 })();
 </script>
