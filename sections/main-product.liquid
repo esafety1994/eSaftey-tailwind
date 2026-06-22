@@ -3,32 +3,17 @@
   Two-column product page: left (info), right (image carousel with Glide.js)
 {% endcomment %}
 
-{% comment %} {% if customer %}
-  B2B: {{ customer.b2b? }}
-{% endif %} {% endcomment %}
-
-
 
 <div class="container mx-auto px-4 pt-8 max-w-7xl" data-has-custom-variant="{% if product.tags contains 'requires-custom-variant' %}true{% else %}false{% endif %}">
   <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
     <div>
       {% render 'product-media-gallery' %}
-      <script>
-        (function() {
-          var el = document.currentScript.previousElementSibling || document.currentScript.parentElement;
-          var obs = new IntersectionObserver(function(entries, o) {
-            if (!entries[0].isIntersecting) return;
-            o.disconnect();
-            var s = document.createElement('script');
-            s.src = 'https://widget.shopassistant-ai.com/preguide_ai.js';
-            s.setAttribute('data-tenantid', 'tnt_VIostKRn5lTpaXD');
-            s.setAttribute('data-app-type', 'pdp');
-            s.defer = true;
-            document.head.appendChild(s);
-          }, { rootMargin: '200px' });
-          obs.observe(el);
-        })();
-      </script>
+      <script
+        src="https://widget.shopassistant-ai.com/preguide_ai.js"
+        data-tenantid="tnt_VIostKRn5lTpaXD"
+        data-app-type="pdp"
+        defer
+      ></script>
       <div class="mt-6 border-t border-grey">
         {% render 'product-faq-preview', product: product %}
       </div>
@@ -80,6 +65,9 @@
         {% render 'product-quotify-button', product: product %}
       </div>
       
+      <script>
+        window.productVariants = {{ product.variants | json }};
+      </script>
     </div>
   </div>
 </div>
@@ -89,32 +77,6 @@
 {% render 'shipping-calculator', product: product %}
 {% comment %} {% render 'no-reviews-enhancer' %} — snippet missing, commented out to suppress Liquid error {% endcomment %}
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "@id": "{{ shop.url }}{{ product.url }}",
-  "name": {{ product.title | json }},
-  "image": [
-    {% if product.featured_image %}
-      "{{ product.featured_image | image_url: width: 1200 }}"
-    {% endif %}
-  ],
-  "description": {{ product.description | strip_html | strip_newlines | truncate: 160 | json }},
-  "sku": {{ product.selected_or_first_available_variant.sku | json }},
-  "brand": {
-    "@type": "Brand",
-    "name": {{ product.vendor | json }}
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "{{ shop.url }}{{ product.url }}",
-    "priceCurrency": "{{ cart.currency.iso_code }}",
-    "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
-    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
-  }
-}
-</script>
 
 {% assign faq = product.metafields.custom.rich_text %}
 
