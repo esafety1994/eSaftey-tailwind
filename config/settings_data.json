@@ -12,6 +12,9 @@
     "type_base_font": "poppins_n4",
     "cart_trust_badge": "shopify://shop_images/trust-badge.webp",
     "cart_drawer_upsell_product": "esafety-straw-hat",
+    "internal_page_banner_image": "shopify://shop_images/EOFY-slim-banner.jpg",
+    "internal_page_banner_link": "shopify://collections/eofy-2026",
+    "internal_page_banner_new_tab": true,
     "favicon": "shopify://shop_images/favicon_2097d34f-cf85-4770-9102-9fb7ac0c0d99.png",
     "header_contact_email": "sales@esafetysupplies.com.au",
     "use_minified_assets": true,
@@ -109,6 +112,10 @@
           "cookie_days": 30,
           "popup_version": "EOFY-2026"
         }
+      },
+      "head-critical-css": {
+        "type": "head-critical-css",
+        "settings": {}
       }
     },
     "content_for_index": [],
@@ -197,11 +204,6 @@
       "6279071938380501511": {
         "type": "shopify://apps/powerful-form-builder/blocks/app-embed/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
         "disabled": false,
-        "settings": {}
-      },
-      "16178409538858199964": {
-        "type": "shopify://apps/powr-popup/blocks/app-embed/c42eddd7-7bc0-47cc-aa8a-df388049f012",
-        "disabled": true,
         "settings": {}
       },
       "12439146293631897289": {
