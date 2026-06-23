@@ -1,0 +1,9 @@
+<style>
+.hero-banner .glide__slide>div{position:relative;height:35vh;overflow:hidden}
+@media(min-width:1024px){.hero-banner .glide__slide>div{height:45vh}}
+.hero-banner .glide__slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.hero-banner:not(.glide--mounted) .glide__slide:not(:first-child){display:none}
+.hero-banner:not(.glide--mounted) .glide__slides{overflow:visible;transform:translate3d(0,0,0)}
+.hero-banner:not(.glide--mounted) .glide__arrows{display:none}
+</style>
+{% schema %}{"name":"Head Critical CSS","settings":[],"presets":[]}{% endschema %}

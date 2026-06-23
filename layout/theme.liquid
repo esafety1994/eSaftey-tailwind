@@ -98,6 +98,9 @@
 
     {%- if tinyscript -%}{{ content_for_header }}{%- else -%}{% render 'tiny-script-control' %}{%- endif -%}
 
+    {% comment %} Critical CSS in <head> so carousel LCP element has dimensions before any script can block rendering {% endcomment %}
+    {% section 'head-critical-css' %}
+
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
