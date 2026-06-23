@@ -3,7 +3,8 @@
 @media(min-width:1024px){.hero-banner .glide__slide>div{height:45vh}}
 .hero-banner .glide__slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .hero-banner:not(.glide--mounted) .glide__slide:not(:first-child){display:none}
-.hero-banner:not(.glide--mounted) .glide__slides{overflow:visible;transform:translate3d(0,0,0)}
+.hero-banner:not(.glide--mounted) .glide__slides{overflow:visible;transform:translate3d(0,0,0);transition:none!important}
 .hero-banner:not(.glide--mounted) .glide__arrows{display:none}
+.announcement-glide:not(.glide--mounted) .glide__slides{transition:none!important}
 </style>
 {% schema %}{"name":"Head Critical CSS","settings":[],"presets":[]}{% endschema %}
