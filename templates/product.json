@@ -14,6 +14,11 @@
       "name": "Breadcrumb",
       "settings": {}
     },
+    "internal_page_banner": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {}
+    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -123,6 +128,7 @@
   },
   "order": [
     "breadcrumb_GHt96W",
+    "internal_page_banner",
     "main",
     "product_info_tabs",
     "1768442681216c6726",

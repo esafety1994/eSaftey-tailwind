@@ -14,6 +14,11 @@
       "name": "Breadcrumb",
       "settings": {}
     },
+    "internal_page_banner": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {}
+    },
     "main": {
       "type": "main-collection",
       "settings": {
@@ -25,6 +30,7 @@
   },
   "order": [
     "breadcrumb_yQnQpn",
+    "internal_page_banner",
     "main"
   ]
 }
