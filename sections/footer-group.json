@@ -11,6 +11,15 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
+    "internal_page_banner_wzQM7F": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
+        "banner_link": "",
+        "open_in_new_tab": false
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -63,6 +72,7 @@
     }
   },
   "order": [
+    "internal_page_banner_wzQM7F",
     "footer"
   ]
 }
