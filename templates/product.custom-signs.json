@@ -53,6 +53,7 @@
             "field_type": "textarea",
             "field_options": "",
             "field_placeholder": "Enter your message for the custom sign",
+            "field_help_text": "",
             "field_required": true,
             "show_at_checkout": true
           }
@@ -131,10 +132,20 @@
       "type": "shipping-calculator",
       "name": "Shipping calculator",
       "settings": {}
+    },
+    "internal_page_banner_MRCnrW": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
+        "banner_link": "",
+        "open_in_new_tab": false
+      }
     }
   },
   "order": [
     "breadcrumb_GHt96W",
+    "internal_page_banner_MRCnrW",
     "main",
     "product_info_tabs",
     "product_recommendation_a4TCDB",
