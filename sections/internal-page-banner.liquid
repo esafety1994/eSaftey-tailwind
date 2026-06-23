@@ -1,23 +1,27 @@
-<section id="section-{{ section.id }}" class="internal-page-banner">
+<section id="section-{{ section.id }}" class="internal-page-banner" style="margin-top: 16px;">
 
-  {% if section.settings.background != blank %}
+  {%- assign banner_image = section.settings.background | default: settings.internal_page_banner_image -%}
+  {%- assign banner_link = section.settings.banner_link | default: settings.internal_page_banner_link -%}
+  {%- assign banner_new_tab = section.settings.open_in_new_tab | default: settings.internal_page_banner_new_tab -%}
+
+  {% if banner_image != blank %}
     <div class="hidden md:block">
       <div class="mx-auto px-4" style="max-width: 1220px;">
-        {% if section.settings.banner_link != blank %}
-          <a href="{{ section.settings.banner_link }}" {% if section.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}>
+        {% if banner_link != blank %}
+          <a href="{{ banner_link }}" {% if banner_new_tab %}target="_blank" rel="noopener"{% endif %}>
         {% endif %}
         <picture>
           <img
-            src="{{ section.settings.background | image_url: width: section.settings.background.width }}"
-            width="{{ section.settings.background.width }}"
-            height="{{ section.settings.background.height }}"
+            src="{{ banner_image | image_url: width: banner_image.width }}"
+            width="{{ banner_image.width }}"
+            height="{{ banner_image.height }}"
             alt=""
             class="w-full block"
             style="max-height: 85px; object-fit: cover;"
             aria-hidden="true"
           >
         </picture>
-        {% if section.settings.banner_link != blank %}
+        {% if banner_link != blank %}
           </a>
         {% endif %}
       </div>

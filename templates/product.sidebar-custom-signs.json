@@ -14,6 +14,11 @@
       "name": "Breadcrumb",
       "settings": {}
     },
+    "internal_page_banner": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {}
+    },
     "main": {
       "type": "custom-sign-product",
       "blocks": {
@@ -64,6 +69,15 @@
         "buyer_guide_content": "<h3>Buyer's Guide</h3>\n<p><strong>Important information for custom cut to length products.</strong></p>"
       }
     },
+    "product_recommendation_a4TCDB": {
+      "type": "product-recommendation",
+      "name": "Product recommendation",
+      "settings": {
+        "title": "You may also like",
+        "product_count": 10,
+        "show_ex_gst": false
+      }
+    },
     "1768442681216c6726": {
       "type": "apps",
       "blocks": {
@@ -106,33 +120,15 @@
         "custom_class": "container"
       }
     },
-    "product_recommendation_a4TCDB": {
-      "type": "product-recommendation",
-      "name": "Product recommendation",
-      "settings": {
-        "title": "You may also like",
-        "product_count": 10,
-        "show_ex_gst": false
-      }
-    },
     "shipping_calculator_f6crqN": {
       "type": "shipping-calculator",
       "name": "Shipping calculator",
       "settings": {}
-    },
-    "internal_page_banner_CrJi6V": {
-      "type": "internal-page-banner",
-      "name": "Single Banner",
-      "settings": {
-        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
-        "banner_link": "",
-        "open_in_new_tab": false
-      }
     }
   },
   "order": [
     "breadcrumb_GHt96W",
-    "internal_page_banner_CrJi6V",
+    "internal_page_banner",
     "main",
     "product_info_tabs",
     "1768442681216c6726",

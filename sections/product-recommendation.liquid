@@ -62,7 +62,7 @@
   </product-recommendations>
 </div>
 
-<script defer src="{{ 'product-recomendation.js' | asset_url }}"></script>
+{{ 'product-recomendation.js' | asset_url | script_tag }}
 {% schema %}
 {
   "name": "Product recommendation",

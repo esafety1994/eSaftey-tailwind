@@ -14,14 +14,10 @@
       "name": "Breadcrumb",
       "settings": {}
     },
-    "internal_page_banner_Hx7UKF": {
+    "internal_page_banner": {
       "type": "internal-page-banner",
       "name": "Single Banner",
-      "settings": {
-        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
-        "banner_link": "shopify://collections/eofy-2026",
-        "open_in_new_tab": true
-      }
+      "settings": {}
     },
     "main": {
       "type": "main-product",
@@ -59,7 +55,7 @@
           "type": "custom_field",
           "settings": {
             "title": "Custom Cut Length: (Price per metre)",
-            "field_type": "cuts_calculator",
+            "field_type": "textarea",
             "field_options": "",
             "field_placeholder": "Example: (10m/3  = 1 x 5m + 2 x 2.5m)                                           List Your Cut Sizes & Total Qtys Needed",
             "field_help_text": "Enter total metres needed, not number of pieces.",
@@ -145,7 +141,7 @@
   },
   "order": [
     "breadcrumb_GHt96W",
-    "internal_page_banner_Hx7UKF",
+    "internal_page_banner",
     "main",
     "product_info_tabs",
     "product_recommendation_a4TCDB",

@@ -140,7 +140,11 @@
 
   <!-- Quantity -->
   <div class="w-full ml-auto flex justify-end md:justify-center">
-    {% if in_drawer and is_addon %}
+    {%- assign is_custom_cut = false -%}
+    {%- if item.properties['Custom Cut Length'] != blank -%}
+      {%- assign is_custom_cut = true -%}
+    {%- endif -%}
+    {% if is_custom_cut or in_drawer and is_addon %}
       <div class="text-sm text-gray-700">Qty: {{ item.quantity }}</div>
     {% else %}
       {% render 'cart-qty-control', key: item.key, qty: item.quantity, is_addon: has_addons %}

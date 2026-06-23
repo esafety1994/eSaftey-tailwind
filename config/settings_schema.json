@@ -31,6 +31,28 @@
     ]
   },
   {
+    "name": "Internal Page Banner",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "internal_page_banner_image",
+        "label": "Banner image (global)",
+        "info": "Applies to all product, collection, and search pages. 1920 x 85px recommended."
+      },
+      {
+        "type": "url",
+        "id": "internal_page_banner_link",
+        "label": "Banner link (optional)"
+      },
+      {
+        "type": "checkbox",
+        "id": "internal_page_banner_new_tab",
+        "label": "Open link in new tab",
+        "default": false
+      }
+    ]
+  },
+  {
     "name": "General",
     "settings": [
       {
