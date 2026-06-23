@@ -14,6 +14,15 @@
       "name": "Breadcrumb",
       "settings": {}
     },
+    "internal_page_banner_MRCnrW": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
+        "banner_link": "https://esafetysupplies.com.au/collections/eofy-2026",
+        "open_in_new_tab": false
+      }
+    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -132,15 +141,6 @@
       "type": "shipping-calculator",
       "name": "Shipping calculator",
       "settings": {}
-    },
-    "internal_page_banner_MRCnrW": {
-      "type": "internal-page-banner",
-      "name": "Single Banner",
-      "settings": {
-        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
-        "banner_link": "",
-        "open_in_new_tab": false
-      }
     }
   },
   "order": [
