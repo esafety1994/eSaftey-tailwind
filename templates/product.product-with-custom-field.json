@@ -14,6 +14,15 @@
       "name": "Breadcrumb",
       "settings": {}
     },
+    "internal_page_banner_Hx7UKF": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
+        "banner_link": "shopify://collections/eofy-2026",
+        "open_in_new_tab": true
+      }
+    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -132,15 +141,6 @@
       "type": "shipping-calculator",
       "name": "Shipping calculator",
       "settings": {}
-    },
-    "internal_page_banner_Hx7UKF": {
-      "type": "internal-page-banner",
-      "name": "Single Banner",
-      "settings": {
-        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
-        "banner_link": "",
-        "open_in_new_tab": false
-      }
     }
   },
   "order": [
