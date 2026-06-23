@@ -141,10 +141,28 @@
   <!-- Quantity -->
   <div class="w-full ml-auto flex justify-end md:justify-center">
     {%- assign is_custom_cut = false -%}
-    {%- if item.properties['Custom Cut Length'] != blank -%}
-      {%- assign is_custom_cut = true -%}
-    {%- endif -%}
-    {% if is_custom_cut or in_drawer and is_addon %}
+    {%- for p in item.properties -%}
+      {%- assign prop_key = p.first | downcase -%}
+      {%- if prop_key contains 'custom cut' -%}
+        {%- assign is_custom_cut = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {% if is_custom_cut %}
+      <cart-qty-control data-key="{{ item.key }}" data-quantity="{{ item.quantity }}">
+        <div class="inline-flex items-center space-x-2 cart-qty-component border p-1 rounded-lg shadow-lg" aria-live="polite">
+          <button
+            type="button"
+            class="dec w-8 h-8 flex items-center justify-center text-gray-700 hover:text-bg-light-red cursor-pointer"
+            aria-label="Remove item"
+            data-minus
+            data-quantity="0"
+          >
+            {% render 'icon-trash-svg', class: 'size-4' %}
+          </button>
+          <span class="w-12 text-center text-sm">{{ item.quantity }}</span>
+        </div>
+      </cart-qty-control>
+    {% elsif in_drawer and is_addon %}
       <div class="text-sm text-gray-700">Qty: {{ item.quantity }}</div>
     {% else %}
       {% render 'cart-qty-control', key: item.key, qty: item.quantity, is_addon: has_addons %}
