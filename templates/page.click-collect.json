@@ -23,20 +23,9 @@
       "type": "internal-page-banner",
       "name": "Single Banner",
       "settings": {
-        "background": "shopify://shop_images/click-collect.png",
-        "content_position": "left",
-        "banner_heading": "<p>CLICK</p><p>& COLLECT</p>",
-        "heading_color": "#ffdc06",
-        "subheading": "<h2>Sydney Warehouse Pickup Fast & Free to collect</h2>",
-        "subheading_color": "#ffffff",
-        "button1_text": "Shop Now",
-        "button1_link": "/",
-        "button1_text_color": "#2c2c2c",
-        "button1_bg_color": "#fddc14",
-        "button2_text": "Get Directions",
-        "button2_link": "shopify://pages/contact-us",
-        "button2_text_color": "#2c2c2c",
-        "button2_bg_color": "#ffffff"
+        "background": "shopify://shop_images/EOFY-slim-banner.jpg",
+        "banner_link": "",
+        "open_in_new_tab": false
       }
     },
     "content": {
