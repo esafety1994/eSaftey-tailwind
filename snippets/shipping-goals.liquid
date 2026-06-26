@@ -37,6 +37,8 @@
   {%- endif -%}
 {%- endfor -%}
 
+{%- comment -%} Free shipping progress bar hidden per Evan Gholab — removal of $499 FIS (ticket #11968) {%- endcomment -%}
+{%- if false -%}
 {%- unless bulky -%}
 <div class="shipping-goals w-full my-4 p-4 bg-white rounded-lg shadow-sm">
   <div class="flex items-start gap-3">
@@ -84,3 +86,4 @@
   </div>
 </div>
 {%- endunless -%}
+{%- endif -%}
