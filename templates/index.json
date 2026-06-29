@@ -54,13 +54,13 @@
           "type": "slider_item",
           "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/web-banner-straw-hat.jpg",
+            "background": "shopify://shop_images/Giveaway-Web-Banner-entrance-mat.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/may-giveaway-esafety-straw-hat"
+            "button_link": ""
           }
         },
         "slider_item_Y9N7BV": {
