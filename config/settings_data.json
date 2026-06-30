@@ -104,13 +104,13 @@
         "type": "promo-popup",
         "settings": {
           "enable_popup": true,
-          "popup_image": "shopify://shop_images/eofy-pop-up.jpg",
-          "popup_image_mobile": "shopify://shop_images/eofy-pop-up_mobile.jpg",
-          "popup_link": "shopify://collections/eofy-2026",
+          "popup_image": "shopify://shop_images/website-pop-up-ccb.jpg",
+          "popup_image_mobile": "shopify://shop_images/website-pop-up-ccb.jpg",
+          "popup_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers",
           "open_in_new_tab": false,
           "popup_delay": 3,
           "cookie_days": 30,
-          "popup_version": "EOFY-2026"
+          "popup_version": "JULY-BLOWOUT-SALE-2026"
         }
       },
       "head-critical-css": {
