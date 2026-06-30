@@ -102,9 +102,11 @@
                   {% assign prod = all_products[prod.handle] %}
                 {% endif %}
 
-                <div class="w-full">
-                  {% render 'product-card', product: prod, max_tags: 2 %}
-                </div>
+                {% unless prod.tags contains 'Fixing Addon' %}
+                  <div class="w-full">
+                    {% render 'product-card', product: prod, max_tags: 2 %}
+                  </div>
+                {% endunless %}
               {% endif %}
             {% endfor %}
           </div>
