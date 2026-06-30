@@ -14,6 +14,7 @@
       "blocks": {
         "slider_item_G4KkCk": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/HomePage-Banner-EOFY_v2.jpg",
             "single_image": true,
@@ -78,7 +79,6 @@
         },
         "slider_item_GK847N": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Install_Banner_1.webp",
             "single_image": true,
