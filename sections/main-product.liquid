@@ -58,9 +58,6 @@
       {% render 'act-button', product: product, showPlus: true %}
 
       {% render 'product-below-act-button', product: product %}
-      {% if product.tags contains 'Bulky' %}
-        {% render 'bulky-item-shipping-note' %}
-      {% endif %}
       <div class="mt-6 border-t border-grey">
         {% render 'product-quotify-button', product: product %}
       </div>
