@@ -79,7 +79,7 @@
         "type": "textarea",
         "id": "bulky_shipping_note",
         "label": "Bulky shipping note",
-        "default": "This item is excluded from our free shipping promotion due to its bulky nature. Adding it to your cart will result in the order not qualifying for free shipping."
+        "default": "This item is a bulky product and may incur additional freight charges."
       },
       {
         "type": "header",
