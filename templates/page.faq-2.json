@@ -139,7 +139,7 @@
           "settings": {
             "category": "Delivery",
             "question": "How much does delivery cost?",
-            "answer": "<p>FREE delivery for standard orders over $499 (some exclusions apply). Free Click & Collect from our Wetherill Park warehouse. Some large or bulky items may incur additional charges.</p>",
+            "answer": "<p>Free Click & Collect is available from our Wetherill Park warehouse. Shipping rates are calculated at checkout based on your order and delivery location. Some large or bulky items may incur additional freight charges.</p>",
             "tags": "Free, Charges, Click & Collect, Delivery"
           }
         },

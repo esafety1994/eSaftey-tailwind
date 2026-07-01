@@ -27,17 +27,10 @@
             "settings": {
               "content": "Welcome to our Store"
             }
-          },
-          "announcement_content_c6xnPn": {
-            "type": "announcement_content",
-            "settings": {
-              "content": "Free shipping over 499"
-            }
           }
         },
         "block_order": [
-          "announcement_content_EXRXzY",
-          "announcement_content_c6xnPn"
+          "announcement_content_EXRXzY"
         ],
         "settings": {
           "show-announcement": true

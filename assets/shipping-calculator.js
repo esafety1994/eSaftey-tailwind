@@ -188,8 +188,7 @@ class ShippingCalculator extends HTMLElement {
   renderResults() {
     if (!this.resultsEl) return;
     if (this.isFreeShipping) {
-      this.resultsEl.innerHTML = `<div class="free-shipping-msg" style="color:#16a34a;font-weight:600;padding:8px 0;">Eligible for Free Shipping</div>`;
-      return;
+      this.isFreeShipping = false;
     }
     const ratesHtml = this.shippingRates.map(rate => {
       const price = (rate.total_price !== undefined) ? (Math.ceil(parseFloat(rate.total_price) * 10) / 10).toFixed(2) : (rate.price || '—');

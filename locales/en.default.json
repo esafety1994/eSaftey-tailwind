@@ -394,7 +394,7 @@
       "quick_view": "Quick view",
       "collection": "Collection",
       "shipping_days": "",
-      "free_shipping_calc": "Eligible for Free Shipping",
+      "free_shipping_calc": "",
       "no_shipping": "No shipping rates found",
       "no_shipping_contact": "Contact us at 1300 291 700 for the best shipping rate!",
       "decrease_quantity": "Decrease quantity of {{ title }} by one",
