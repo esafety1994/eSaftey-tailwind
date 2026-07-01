@@ -1,26 +1,68 @@
+{% assign variant = product.selected_or_first_available_variant %}
+
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "@id": "{{ shop.url }}{{ product.url }}",
+  "@context":"https://schema.org",
+  "@type":"Product",
+  "@id":"{{ shop.url }}{{ product.url }}",
+
   "name": {{ product.title | json }},
-  "image": [
+
+  "image":[
     {% if product.featured_image %}
       "{{ product.featured_image | image_url: width: 1200 }}"
     {% endif %}
   ],
+
   "description": {{ product.description | strip_html | strip_newlines | truncate: 5000 | json }},
-  "sku": {{ product.selected_or_first_available_variant.sku | json }},
-  "brand": {
-    "@type": "Brand",
+
+  {% if variant.sku != blank %}
+  "sku": {{ variant.sku | json }},
+  {% endif %}
+
+  {% if product.type != blank %}
+  "category": {{ product.type | json }},
+  {% endif %}
+
+  {% if variant.barcode != blank %}
+  "gtin13": "{{ variant.barcode }}",
+  {% endif %}
+
+  "brand":{
+    "@type":"Brand",
     "name": {{ product.vendor | json }}
   },
-  "offers": {
-    "@type": "Offer",
-    "url": "{{ shop.url }}{{ product.url }}",
-    "priceCurrency": "{{ cart.currency.iso_code }}",
-    "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 }},
-    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}"
+
+  "offers":{
+    "@type":"Offer",
+
+    "url":"{{ shop.url }}{{ product.url }}",
+
+    "priceCurrency":"{{ cart.currency.iso_code }}",
+
+    "price":"{{ variant.price | divided_by:100.0 }}",
+
+    "availability":"https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+
+    "itemCondition":"https://schema.org/NewCondition",
+
+    "priceValidUntil":"{{ 'now' | date: '%Y' | plus: 1 }}-07-01",
+
+    "name": {{ product.title | json }},
+
+    {% if variant.sku != blank %}
+    "sku": {{ variant.sku | json }},
+    {% endif %}
+
+    {% if variant.barcode != blank %}
+    "gtin13":"{{ variant.barcode }}",
+    {% endif %}
+
+    {% if product.featured_image %}
+    "image":"{{ product.featured_image | image_url: width:1200 }}",
+    {% endif %}
+
+    "description": {{ product.description | strip_html | strip_newlines | truncate:5000 | json }}
   }
 }
 </script>
