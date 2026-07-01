@@ -14,7 +14,7 @@
     {% endif %}
   ],
 
-  "description": {{ product.description | strip_html | strip_newlines | truncate: 5000 | json }},
+  "description": {{ product.description | strip_html | strip_newlines | truncate: 500 | json }},
 
   {% if variant.sku != blank %}
   "sku": {{ variant.sku | json }},
