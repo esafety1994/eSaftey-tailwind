@@ -12,18 +12,6 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
-        "slider_item_wmYUEQ": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/July-Web-Banner_3368f915-a1a4-4864-be65-a758dff922e3.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers"
-          }
-        },
         "slider_item_Y9N7BV": {
           "type": "slider_item",
           "settings": {
@@ -34,6 +22,18 @@
             "description": "",
             "button_text": "",
             "button_link": "shopify://blogs/esafety-blogs/july-giveaway-esafety-entrance-mat"
+          }
+        },
+        "slider_item_wmYUEQ": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/July-Web-Banner_3368f915-a1a4-4864-be65-a758dff922e3.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers"
           }
         },
         "slider_item_G4KkCk": {
@@ -90,8 +90,8 @@
         }
       },
       "block_order": [
-        "slider_item_wmYUEQ",
         "slider_item_Y9N7BV",
+        "slider_item_wmYUEQ",
         "slider_item_G4KkCk",
         "slider_item_nVybjd",
         "slider_item_KbcYQL",
