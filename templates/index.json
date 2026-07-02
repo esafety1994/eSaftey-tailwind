@@ -47,12 +47,11 @@
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": ""
+            "button_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers"
           }
         },
         "slider_item_KbcYQL": {
           "type": "slider_item",
-          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Giveaway-Web-Banner-entrance-mat.jpg",
             "single_image": true,
@@ -78,6 +77,7 @@
         },
         "slider_item_GK847N": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Install_Banner_1.webp",
             "single_image": true,
