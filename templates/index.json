@@ -36,45 +36,6 @@
             "button_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers"
           }
         },
-        "slider_item_G4KkCk": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/HomePage-Banner-EOFY_v2.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://collections/eofy-2026"
-          }
-        },
-        "slider_item_nVybjd": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/Grand-Opening-Web-Banner_1144f9fd-820e-4922-9210-fd34059d184c.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "https://esafetygrandopening.rsvpify.com"
-          }
-        },
-        "slider_item_KbcYQL": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/Giveaway-Web-Banner-entrance-mat.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/july-giveaway-esafety-entrance-mat"
-          }
-        },
         "slider_item_GK847N": {
           "type": "slider_item",
           "disabled": true,
@@ -92,9 +53,6 @@
       "block_order": [
         "slider_item_Y9N7BV",
         "slider_item_wmYUEQ",
-        "slider_item_G4KkCk",
-        "slider_item_nVybjd",
-        "slider_item_KbcYQL",
         "slider_item_GK847N"
       ],
       "settings": {}
