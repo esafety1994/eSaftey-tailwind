@@ -12,6 +12,30 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
+        "slider_item_wmYUEQ": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/July-Web-Banner_3368f915-a1a4-4864-be65-a758dff922e3.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers"
+          }
+        },
+        "slider_item_Y9N7BV": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/Giveaway-Web-Banner-entrance-mat_e6c19df3-d13b-49d9-8182-55690385deef.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://blogs/esafety-blogs/july-giveaway-esafety-entrance-mat"
+          }
+        },
         "slider_item_G4KkCk": {
           "type": "slider_item",
           "disabled": true,
@@ -38,20 +62,9 @@
             "button_link": "https://esafetygrandopening.rsvpify.com"
           }
         },
-        "slider_item_wmYUEQ": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/July-Web-Banner_3368f915-a1a4-4864-be65-a758dff922e3.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers"
-          }
-        },
         "slider_item_KbcYQL": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Giveaway-Web-Banner-entrance-mat.jpg",
             "single_image": true,
@@ -60,19 +73,6 @@
             "description": "",
             "button_text": "",
             "button_link": "shopify://blogs/esafety-blogs/july-giveaway-esafety-entrance-mat"
-          }
-        },
-        "slider_item_Y9N7BV": {
-          "type": "slider_item",
-          "disabled": true,
-          "settings": {
-            "background": "shopify://shop_images/Giveaway-Ratchet-Straps-Web-Banner.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/monthly-giveaway-esafety-ratchet-straps"
           }
         },
         "slider_item_GK847N": {
@@ -90,11 +90,11 @@
         }
       },
       "block_order": [
+        "slider_item_wmYUEQ",
+        "slider_item_Y9N7BV",
         "slider_item_G4KkCk",
         "slider_item_nVybjd",
-        "slider_item_wmYUEQ",
         "slider_item_KbcYQL",
-        "slider_item_Y9N7BV",
         "slider_item_GK847N"
       ],
       "settings": {}
