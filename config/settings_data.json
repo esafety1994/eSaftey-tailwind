@@ -97,8 +97,8 @@
         "type": "promo-popup",
         "settings": {
           "enable_popup": true,
-          "popup_image": "shopify://shop_images/website-pop-up-ccb.jpg",
-          "popup_image_mobile": "shopify://shop_images/website-pop-up-ccb.jpg",
+          "popup_image": "shopify://shop_images/website-pop-up_July.jpg",
+          "popup_image_mobile": "shopify://shop_images/website-pop-up_July_3784265c-8b3f-446d-b7c8-fbe1a04c3041.jpg",
           "popup_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers",
           "open_in_new_tab": false,
           "popup_delay": 3,
