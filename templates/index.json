@@ -26,6 +26,7 @@
         },
         "slider_item_Y9N7BV": {
           "type": "slider_item",
+          "disabled": true,
           "settings": {
             "background": "shopify://shop_images/Giveaway-Web-Banner-entrance-mat_e6c19df3-d13b-49d9-8182-55690385deef.jpg",
             "single_image": true,
