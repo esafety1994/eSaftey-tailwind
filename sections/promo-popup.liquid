@@ -153,6 +153,7 @@
   }
 
   if (hasSeen()) return;
+  if (window.matchMedia('(max-width: 767px)').matches) return;
 
   function waitThenShow(callback) {
     var fired = false;
