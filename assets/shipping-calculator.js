@@ -160,7 +160,7 @@ class ShippingCalculator extends HTMLElement {
     if (this.isRemoteState(data.zip)) {
       // WA / NT / TAS — call Starshipit for a per-item estimate; auto-inject state for routing
       data.province = this.getStateCode(data.zip);
-      await this.fetchStarshipitRate(data, true);
+      await this.fetchStarshipitRate(data, true, orderTotal);
     } else {
       // All other states — flat rate tiers from Shopify settings
       const rate = this.getFlatRate(orderTotal);
@@ -169,7 +169,7 @@ class ShippingCalculator extends HTMLElement {
     }
   }
 
-  async fetchStarshipitRate(data, isRemote = false) {
+  async fetchStarshipitRate(data, isRemote = false, orderTotal = 0) {
     this.setLoading(true);
     this.shippingRates = [];
     this.noShippingRates = false;
@@ -238,7 +238,7 @@ class ShippingCalculator extends HTMLElement {
       } else {
         this.noShippingRates = true;
         if (isRemote) {
-          this.renderRemoteStateMessage();
+          this.renderRemoteStateMessage(orderTotal);
         } else {
           this.renderNoRates();
         }
@@ -276,8 +276,9 @@ class ShippingCalculator extends HTMLElement {
     this.resultsEl.innerHTML = html;
   }
 
-  renderRemoteStateMessage() {
+  renderRemoteStateMessage(orderTotal = 0) {
     if (!this.resultsEl) return;
+    const baseRate = this.getFlatRate(orderTotal);
     this.resultsEl.innerHTML = `
       <ul class="shipping-rate">
         <li>
@@ -285,7 +286,7 @@ class ShippingCalculator extends HTMLElement {
             <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <p>WA, NT &amp; TAS — rate confirmed at checkout based on your full order</p>
+          <p>Estimated from <strong>$${baseRate}.00</strong> — WA, NT &amp; TAS rates may be higher, confirm at checkout</p>
         </li>
       </ul>`;
   }
