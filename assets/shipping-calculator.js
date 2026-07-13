@@ -260,7 +260,7 @@ class ShippingCalculator extends HTMLElement {
     const ratesHtml = this.shippingRates.map(rate => {
       const price = (rate.total_price !== undefined) ? (parseFloat(rate.total_price)).toFixed(2) : (rate.price !== undefined ? (parseFloat(rate.price)).toFixed(2) : '—');
       const label = isRemote
-        ? `Your estimate is: <strong>$${price}</strong> — final rate confirmed at checkout`
+        ? `Your estimate: <strong>$${price}</strong>`
         : `Your estimate: <strong>$${price}</strong>`;
       return `
         <li>
@@ -286,7 +286,7 @@ class ShippingCalculator extends HTMLElement {
             <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <p>Estimated from <strong>$${baseRate}.00</strong> — WA, NT &amp; TAS rates may be higher, confirm at checkout</p>
+          <p>Your estimate: <strong>$${baseRate}.00</strong></p>
         </li>
       </ul>`;
   }
