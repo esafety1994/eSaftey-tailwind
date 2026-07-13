@@ -178,6 +178,13 @@ class ShippingCalculator extends HTMLElement {
 
     const payload = {
       rate: {
+        origin: {
+          suburb: 'Wetherill Park',
+          city: 'Wetherill Park',
+          province: 'NSW',
+          postal_code: '2164',
+          country: 'AU'
+        },
         destination: {
           address1: data.street,
           address: null,
