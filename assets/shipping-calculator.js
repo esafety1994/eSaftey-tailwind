@@ -2,6 +2,8 @@
   Shipping Calculator
   - Single custom element implementation following the lightweight pattern used by `accordion-tab.js`.
   - Keeps original behaviour: binds to existing Liquid markup, validates inputs, and posts the same payload shape as the Alpine script.
+  - Standard AU states (non-WA/NT/TAS): flat rate tiers based on order value — no API call.
+  - WA / NT / TAS: carrier-calculated via Starshipit (margin-based, minimum $29).
 */
 
 class ShippingCalculator extends HTMLElement {
@@ -10,7 +12,6 @@ class ShippingCalculator extends HTMLElement {
   }
 
   connectedCallback() {
-    // read configuration and product JSON
     this.apiKey = 'd0b9db77d62442edb7301ddd4dbc8297';
     this.subscriptionKey = '2753e655f9704eea8ad3e957f72642e2';
 
@@ -36,7 +37,6 @@ class ShippingCalculator extends HTMLElement {
     if (this._boundClick && this.calculateBtn) this.calculateBtn.removeEventListener('click', this._boundClick);
   }
 
-  // Find expected nodes inside the element
   findElements() {
     this.form = this.querySelector('form[data-address="root"]') || this.querySelector('form');
     this.fieldQuantity = this.querySelector('#QuantityShipping') || (this.form && this.form.querySelector('input[name="quantity"]'));
@@ -100,6 +100,47 @@ class ShippingCalculator extends HTMLElement {
     }
   }
 
+  // Returns true for WA, NT, TAS postcodes (carrier-calculated + margin via Starshipit).
+  // All other Australian postcodes use Shopify flat rate tiers.
+  isRemoteState(postcode) {
+    const pc = parseInt(String(postcode).replace(/\D/g, ''), 10);
+    if (isNaN(pc)) return false;
+    if (pc >= 800 && pc <= 999) return true;   // NT: 0800–0999
+    if (pc >= 6000 && pc <= 6999) return true;  // WA
+    if (pc >= 7000 && pc <= 7999) return true;  // TAS
+    return false;
+  }
+
+  // Derives the Australian state code from a postcode so Starshipit can route correctly.
+  getStateCode(postcode) {
+    const pc = parseInt(String(postcode).replace(/\D/g, ''), 10);
+    if (isNaN(pc)) return null;
+    if (pc >= 200  && pc <= 299)  return 'ACT';
+    if (pc >= 800  && pc <= 999)  return 'NT';
+    if (pc >= 1000 && pc <= 2599) return 'NSW';
+    if (pc >= 2600 && pc <= 2618) return 'ACT';
+    if (pc >= 2619 && pc <= 2899) return 'NSW';
+    if (pc >= 2900 && pc <= 2920) return 'ACT';
+    if (pc >= 2921 && pc <= 2999) return 'NSW';
+    if (pc >= 3000 && pc <= 3999) return 'VIC';
+    if (pc >= 4000 && pc <= 4999) return 'QLD';
+    if (pc >= 5000 && pc <= 5999) return 'SA';
+    if (pc >= 6000 && pc <= 6999) return 'WA';
+    if (pc >= 7000 && pc <= 7999) return 'TAS';
+    if (pc >= 8000 && pc <= 8999) return 'VIC';
+    if (pc >= 9000 && pc <= 9999) return 'QLD';
+    return null;
+  }
+
+  // Flat rate tiers matching Shopify shipping settings for standard (non-WA/NT/TAS) states.
+  // price is in Shopify cents, so divide by 100 before passing here.
+  getFlatRate(orderTotalDollars) {
+    if (orderTotalDollars <= 250) return 29;
+    if (orderTotalDollars < 500) return 39;
+    if (orderTotalDollars <= 1500) return 59;
+    return 129;
+  }
+
   async handleCalculate() {
     if (!this.resultsEl) return;
     this.resultsEl.innerHTML = '';
@@ -114,6 +155,21 @@ class ShippingCalculator extends HTMLElement {
       return;
     }
 
+    const orderTotal = (this.product.price / 100) * data.quantity;
+
+    if (this.isRemoteState(data.zip)) {
+      // WA / NT / TAS — call Starshipit for a per-item estimate; auto-inject state for routing
+      data.province = this.getStateCode(data.zip);
+      await this.fetchStarshipitRate(data, true);
+    } else {
+      // All other states — flat rate tiers from Shopify settings
+      const rate = this.getFlatRate(orderTotal);
+      this.shippingRates = [{ total_price: rate }];
+      this.renderResults(false);
+    }
+  }
+
+  async fetchStarshipitRate(data, isRemote = false) {
     this.setLoading(true);
     this.shippingRates = [];
     this.noShippingRates = false;
@@ -171,10 +227,14 @@ class ShippingCalculator extends HTMLElement {
             this.shippingRates.some(r => r && (Number(r.total_price) === 0 || Number(r.price) === 0))) {
           this.isFreeShipping = true;
         }
-        this.renderResults();
+        this.renderResults(isRemote);
       } else {
         this.noShippingRates = true;
-        this.renderNoRates();
+        if (isRemote) {
+          this.renderRemoteStateMessage();
+        } else {
+          this.renderNoRates();
+        }
       }
 
     } catch (err) {
@@ -185,25 +245,42 @@ class ShippingCalculator extends HTMLElement {
     }
   }
 
-  renderResults() {
+  renderResults(isRemote = false) {
     if (!this.resultsEl) return;
     if (this.isFreeShipping) {
       this.isFreeShipping = false;
     }
     const ratesHtml = this.shippingRates.map(rate => {
       const price = (rate.total_price !== undefined) ? (parseFloat(rate.total_price)).toFixed(2) : (rate.price !== undefined ? (parseFloat(rate.price)).toFixed(2) : '—');
+      const label = isRemote
+        ? `Estimate for this item: <strong>$${price}</strong> — final rate confirmed at checkout`
+        : `Your estimate: <strong>$${price}</strong>`;
       return `
         <li>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <p>Your estimate: <strong>$${price}</strong></p>
+          <p>${label}</p>
         </li>`;
     }).join('');
 
     const html = `<ul class="shipping-rate">${ratesHtml}</ul>`;
     this.resultsEl.innerHTML = html;
+  }
+
+  renderRemoteStateMessage() {
+    if (!this.resultsEl) return;
+    this.resultsEl.innerHTML = `
+      <ul class="shipping-rate">
+        <li>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p>WA, NT &amp; TAS — rate confirmed at checkout based on your full order</p>
+        </li>
+      </ul>`;
   }
 
   renderNoRates() {
@@ -216,11 +293,8 @@ class ShippingCalculator extends HTMLElement {
     const html = this.errors.map(err => `<p role="alert" style="color:#dc2626;margin:0 0 8px;">${(err && err.details) ? err.details : String(err)}</p>`).join('');
     this.resultsEl.innerHTML = `<div class="shipping-errors">${html}</div>`;
   }
-
-  // product is provided by Liquid `data-product` attribute; no normalization required
 }
 
 if (!customElements.get('shipping-calculator')) {
   customElements.define('shipping-calculator', ShippingCalculator);
 }
-
