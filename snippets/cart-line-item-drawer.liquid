@@ -95,6 +95,40 @@
             <span class="uppercase">{{- item.discounts[0].title }}</span>
           </div>
         </div>
+      {% elsif customer %}
+        {%- assign customer_tags_lower = customer.tags | join: ',' | downcase -%}
+        {%- if customer_tags_lower contains 'b2b' -%}
+          {%- assign b2b_raw = item.product.metafields.custom.b2b_tiered_discounts_qty | default: '' | strip -%}
+          {%- if b2b_raw != '' -%}
+            {%- assign b2b_matched_pct = '' -%}
+            {%- assign b2b_entries = b2b_raw | split: ',' -%}
+            {%- for b2b_entry in b2b_entries -%}
+              {%- assign b2b_parts = b2b_entry | strip | split: '|' -%}
+              {%- if b2b_parts.size >= 3 -%}
+                {%- assign b2b_range = b2b_parts[1] | strip | replace: ' ', '' -%}
+                {%- assign b2b_pct = b2b_parts[2] | strip | replace: ' ', '' -%}
+                {%- assign b2b_range_parts = b2b_range | split: '-' -%}
+                {%- assign b2b_min = b2b_range_parts[0] | times: 1 -%}
+                {%- assign b2b_max_str = b2b_range_parts[1] | default: '' -%}
+                {%- if b2b_max_str == '' or b2b_max_str contains '999' -%}
+                  {%- if item.quantity >= b2b_min -%}{%- assign b2b_matched_pct = b2b_pct -%}{%- endif -%}
+                {%- else -%}
+                  {%- assign b2b_max = b2b_max_str | times: 1 -%}
+                  {%- if item.quantity >= b2b_min and item.quantity <= b2b_max -%}{%- assign b2b_matched_pct = b2b_pct -%}{%- endif -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if b2b_matched_pct != '' -%}
+              {%- unless b2b_matched_pct contains '%' -%}{%- assign b2b_matched_pct = b2b_matched_pct | append: '%' -%}{%- endunless -%}
+              <div class="text-xs text-bg-light-red flex mt-1">
+                <div class="flex gap-1 items-center">
+                  {% render 'icon-svg-tag', class: 'size-3' %}
+                  <span class="uppercase">B2B {{ b2b_matched_pct }} OFF</span>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
       {% endif %}
     </div>
     <!-- Quantity -->
