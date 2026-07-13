@@ -6,6 +6,66 @@
   - WA / NT / TAS: carrier-calculated via Starshipit (margin-based, minimum $29).
 */
 
+const REMOTE_SUBURB_LOOKUP = {
+  // NT
+  799:'Darwin',800:'Darwin',801:'Darwin',802:'Darwin',804:'Darwin',
+  810:'Casuarina',811:'Darwin',812:'Karama',815:'Palmerston',
+  820:'Fannie Bay',821:'Darwin',822:'Howard Springs',828:'Darwin',
+  829:'Darwin',830:'Palmerston',831:'Palmerston',832:'Humpty Doo',
+  835:'Batchelor',836:'Katherine',837:'Katherine',838:'Katherine',
+  840:'Katherine',845:'Katherine',850:'Tennant Creek',
+  860:'Alice Springs',870:'Alice Springs',872:'Alice Springs',
+  // WA - Perth metro
+  6000:'Perth',6001:'Perth',6003:'Northbridge',6004:'East Perth',
+  6005:'West Perth',6006:'North Perth',6007:'Leederville',6008:'Subiaco',
+  6009:'Nedlands',6010:'Claremont',6011:'Cottesloe',6012:'Mosman Park',
+  6014:'Floreat',6015:'City Beach',6016:'Mount Hawthorn',6017:'Mount Claremont',
+  6018:'Karrinyup',6019:'Wembley Downs',6020:'Duncraig',6021:'Balcatta',
+  6022:'Gwelup',6023:'Churchlands',6024:'Yokine',6025:'Greenwood',
+  6026:'Kingsley',6027:'Joondalup',6028:'Ocean Reef',6029:'Edgewater',
+  6030:'Mindarie',6031:'Clarkson',6032:'Merriwa',6033:'Alkimos',
+  6034:'Yanchep',6035:'Eglinton',6036:'Butler',6037:'Two Rocks',
+  6050:'Mount Lawley',6051:'Maylands',6052:'Inglewood',6053:'Bedford',
+  6054:'Bayswater',6055:'Caversham',6056:'Midland',6057:'Greenmount',
+  6059:'Morley',6060:'Nollamara',6061:'Westminster',6062:'Mirrabooka',
+  6063:'Beechboro',6064:'Malaga',6065:'Wanneroo',6066:'Madeley',
+  6069:'Ellenbrook',6070:'Mundaring',6071:'Kalamunda',6072:'Lesmurdie',
+  6073:'Forrestfield',6074:'High Wycombe',6076:'Gooseberry Hill',6078:'Bullsbrook',
+  6090:'Landsdale',6100:'Burswood',6101:'Lathlain',6102:'Rivervale',
+  6104:'Ascot',6105:'Cloverdale',6106:'Welshpool',6107:'Beckenham',
+  6108:'Thornlie',6109:'Cannington',6110:'Gosnells',6111:'Maddington',
+  6112:'Forrestdale',6113:'Armadale',6114:'Kelmscott',
+  6147:'Lynwood',6148:'Ferndale',6149:'Parkwood',6150:'Bull Creek',
+  6151:'Booragoon',6152:'Applecross',6153:'Ardross',6154:'Brentwood',
+  6155:'Canning Vale',6157:'North Fremantle',6158:'East Fremantle',
+  6159:'Fremantle',6160:'Fremantle',6162:'South Fremantle',
+  6163:'Spearwood',6164:'Munster',6165:'Henderson',6166:'Jandakot',
+  6167:'Cockburn Central',6168:'Rockingham',6169:'Safety Bay',
+  6170:'Baldivis',6171:'Port Kennedy',6172:'Secret Harbour',
+  6173:'Golden Bay',6174:'Singleton',6175:'Mandurah',
+  // WA - regional
+  6210:'Mandurah',6220:'Bunbury',6230:'Bunbury',6280:'Busselton',
+  6290:'Augusta',6300:'Northam',6320:'Albany',6330:'Albany',
+  6430:'Kalgoorlie',6450:'Esperance',6530:'Geraldton',
+  6710:'Exmouth',6714:'Karratha',6720:'Port Hedland',
+  6725:'Broome',6728:'Derby',6730:'Kununurra',
+  // TAS - Hobart
+  7000:'Hobart',7001:'Hobart',7004:'Battery Point',7005:'Sandy Bay',
+  7007:'Lenah Valley',7008:'New Town',7009:'Moonah',7010:'Glenorchy',
+  7011:'Claremont',7012:'Berriedale',7015:'Lindisfarne',7016:'Rokeby',
+  7018:'Howrah',7019:'Bellerive',7020:'Lauderdale',7026:'Sorell',
+  7027:'Richmond',7030:'Brighton',7050:'Kingston',7051:'Blackmans Bay',
+  7140:'New Norfolk',
+  // TAS - Launceston
+  7248:'Launceston',7249:'Launceston',7250:'Launceston',
+  7252:'Prospect',7253:'Kings Meadows',7254:'Ravenswood',
+  7255:'West Launceston',7258:'Exeter',7260:'George Town',
+  // TAS - north west
+  7307:'Devonport',7310:'Devonport',7315:'Devonport',
+  7316:'Devonport',7320:'Burnie',7321:'Burnie',7325:'Burnie',
+  7330:'Wynyard',7334:'Smithton',
+};
+
 class ShippingCalculator extends HTMLElement {
   constructor() {
     super();
@@ -158,8 +218,10 @@ class ShippingCalculator extends HTMLElement {
     const orderTotal = (this.product.price / 100) * data.quantity;
 
     if (this.isRemoteState(data.zip)) {
-      // WA / NT / TAS — call Starshipit for a per-item estimate; auto-inject state for routing
+      // WA / NT / TAS — auto-inject state and suburb for exact Starshipit routing
       data.province = this.getStateCode(data.zip);
+      const pc = parseInt(String(data.zip).replace(/\D/g, ''), 10);
+      if (!data.city) data.city = REMOTE_SUBURB_LOOKUP[pc] || null;
       await this.fetchStarshipitRate(data, true, orderTotal);
     } else {
       // All other states — flat rate tiers from Shopify settings
