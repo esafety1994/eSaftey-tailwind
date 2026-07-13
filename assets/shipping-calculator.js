@@ -15,6 +15,7 @@ const REMOTE_SUBURB_LOOKUP = {
   835:'Batchelor',836:'Katherine',837:'Katherine',838:'Katherine',
   840:'Katherine',845:'Katherine',850:'Tennant Creek',
   860:'Alice Springs',870:'Alice Springs',872:'Alice Springs',
+  880:'Alice Springs',885:'Alice Springs',886:'Yulara',890:'Alice Springs',
   // WA - Perth metro
   6000:'Perth',6001:'Perth',6003:'Northbridge',6004:'East Perth',
   6005:'West Perth',6006:'North Perth',6007:'Leederville',6008:'Subiaco',
@@ -321,9 +322,7 @@ class ShippingCalculator extends HTMLElement {
     }
     const ratesHtml = this.shippingRates.map(rate => {
       const price = (rate.total_price !== undefined) ? (parseFloat(rate.total_price)).toFixed(2) : (rate.price !== undefined ? (parseFloat(rate.price)).toFixed(2) : '—');
-      const label = isRemote
-        ? `Your estimate: <strong>$${price}</strong>`
-        : `Your estimate: <strong>$${price}</strong>`;
+      const label = `Your estimate: <strong>$${price}</strong>`;
       return `
         <li>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
