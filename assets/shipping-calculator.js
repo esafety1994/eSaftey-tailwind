@@ -105,7 +105,7 @@ class ShippingCalculator extends HTMLElement {
   isRemoteState(postcode) {
     const pc = parseInt(String(postcode).replace(/\D/g, ''), 10);
     if (isNaN(pc)) return false;
-    if (pc >= 800 && pc <= 999) return true;   // NT: 0800–0999
+    if (pc >= 799 && pc <= 999) return true;   // NT: 0799–0999
     if (pc >= 6000 && pc <= 6999) return true;  // WA
     if (pc >= 7000 && pc <= 7999) return true;  // TAS
     return false;
@@ -116,7 +116,7 @@ class ShippingCalculator extends HTMLElement {
     const pc = parseInt(String(postcode).replace(/\D/g, ''), 10);
     if (isNaN(pc)) return null;
     if (pc >= 200  && pc <= 299)  return 'ACT';
-    if (pc >= 800  && pc <= 999)  return 'NT';
+    if (pc >= 799  && pc <= 999)  return 'NT';
     if (pc >= 1000 && pc <= 2599) return 'NSW';
     if (pc >= 2600 && pc <= 2618) return 'ACT';
     if (pc >= 2619 && pc <= 2899) return 'NSW';
