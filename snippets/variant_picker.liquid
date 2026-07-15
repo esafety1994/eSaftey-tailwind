@@ -5,6 +5,12 @@
   data-color-map="{{ 'color-map.json' | asset_url }}"
 ></script>
 <style>
+  /* Selected swatch ring */
+  .variant-picker__values input[type="radio"]:checked + .color-swatch-label {
+    border-color: #111827;
+    box-shadow: 0 0 0 1.5px #111827;
+    border-radius: 9999px;
+  }
   .color-swatch-label { position: relative; }
   .color-swatch-label .color-swatch-tooltip {
     position: absolute;

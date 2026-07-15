@@ -1,4 +1,8 @@
+{% if mobile %}
+<div class="usp-mobile-bar">
+{% else %}
 <div class="hidden md:flex justify-between w-full flex-wrap py-2 px-4 text-white text-xs xl:max-w-7xl xl:mx-auto">
+{% endif %}
   <div class="usp-item-wrapper flex items-center">
     <div class="usp-item gird gap-1 xl:flex">
       <svg width="29" height="29" class="mx-auto" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,3 +99,38 @@
     </div>
   </div>
 </div>
+
+<style>
+  .usp-mobile-bar {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 11px;
+    width: 100%;
+  }
+  .usp-mobile-bar::-webkit-scrollbar { display: none; }
+  .usp-mobile-bar .usp-item-wrapper {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 7px 14px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+  .usp-mobile-bar .usp-item-wrapper:last-child { border-right: none; }
+  .usp-mobile-bar .usp-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+  }
+  .usp-mobile-bar .usp-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .usp-mobile-bar .usp-item p { margin: 0; display: flex; align-items: center; gap: 4px; }
+  .usp-mobile-bar .usp-item p strong { font-weight: 700; font-size: 11px; }
+  .usp-mobile-bar .usp-item p span { font-weight: 400; color: rgba(255,255,255,0.75); font-size: 10px; }
+</style>

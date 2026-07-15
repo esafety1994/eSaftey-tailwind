@@ -56,5 +56,15 @@
   "Yellow/Navy": "https://esafetysupplies.com.au/cdn/shop/t/63/assets/filter_color11.png?width=40",
   "Red & White": "https://cdn.shopify.com/s/files/1/0638/5175/7736/files/filter_color8.png?width=40",
   "Green & White": "https://cdn.shopify.com/s/files/1/0638/5175/7736/files/filter_color7.png?width=40",
-  "Black & Yellow": "https://cdn.shopify.com/s/files/1/0638/5175/7736/files/filter_color4.png?width=40"
+  "Black & Yellow": "https://cdn.shopify.com/s/files/1/0638/5175/7736/files/filter_color4.png?width=40",
+  "Smoke": "#5a5a5a",
+  "smoke": "#5a5a5a",
+  "Tinted": "#c8b47a",
+  "tinted": "#c8b47a",
+  "Amber": "#c78a00",
+  "amber": "#c78a00",
+  "Grey Lens": "#808080",
+  "grey lens": "#808080",
+  "Smoke Lens": "#5a5a5a",
+  "smoke lens": "#5a5a5a"
 }

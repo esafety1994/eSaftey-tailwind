@@ -23,461 +23,766 @@
   "title": {{ product.title | json }},
   "sku": {{ variant.sku | json }},
   "price": {{ variant.price | default: product.price }},
-  "grams": {{ item_grams | strip }}
+  "grams": {{ item_grams | strip }},
+  "image": {{ variant.image | default: product.featured_image | image_url: width: 200 | json }},
+  "variant_id": {{ variant.id }}
 }
 {%- endcapture -%}
 
 <shipping-calculator class="shipping-calculator" data-product='{{ required_product | strip }}'>
-  <div class="m-cart-addon__title m:font-large flex gap-2 items-center">
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-      <path d="M19.9993 2.66699V16.0003C19.9993 17.467 18.7993 18.667 17.3327 18.667H2.66602V10.1603C3.63935 11.3203 5.13272 12.0403 6.78605 12.0003C8.13272 11.9737 9.34602 11.4537 10.2527 10.587C10.666 10.2403 11.0127 9.80031 11.2794 9.32031C11.7594 8.50698 12.026 7.54696 11.9993 6.54696C11.9593 4.98696 11.266 3.61366 10.186 2.66699H19.9993Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M29.3327 18.667V22.667C29.3327 24.8803 27.546 26.667 25.3327 26.667H23.9993C23.9993 25.2003 22.7993 24.0003 21.3327 24.0003C19.866 24.0003 18.666 25.2003 18.666 26.667H13.3327C13.3327 25.2003 12.1327 24.0003 10.666 24.0003C9.19935 24.0003 7.99935 25.2003 7.99935 26.667H6.66602C4.45268 26.667 2.66602 24.8803 2.66602 22.667V18.667H17.3327C18.7993 18.667 19.9993 17.467 19.9993 16.0003V6.66699H22.4527C23.4127 6.66699 24.2927 7.18701 24.7727 8.01367L27.0527 12.0003H25.3327C24.5993 12.0003 23.9993 12.6003 23.9993 13.3337V17.3337C23.9993 18.067 24.5993 18.667 25.3327 18.667H29.3327Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M10.6667 29.3333C12.1394 29.3333 13.3333 28.1394 13.3333 26.6667C13.3333 25.1939 12.1394 24 10.6667 24C9.19391 24 8 25.1939 8 26.6667C8 28.1394 9.19391 29.3333 10.6667 29.3333Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M21.3327 29.3333C22.8054 29.3333 23.9993 28.1394 23.9993 26.6667C23.9993 25.1939 22.8054 24 21.3327 24C19.8599 24 18.666 25.1939 18.666 26.6667C18.666 28.1394 19.8599 29.3333 21.3327 29.3333Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M29.3333 16V18.6667H25.3333C24.6 18.6667 24 18.0667 24 17.3333V13.3333C24 12.6 24.6 12 25.3333 12H27.0533L29.3333 16Z" stroke="#595959" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M11.9987 6.66732C11.9987 8.26732 11.2921 9.69398 10.1854 10.6673C9.23872 11.494 8.01203 12.0007 6.66536 12.0007C3.7187 12.0007 1.33203 9.61398 1.33203 6.66732C1.33203 4.98732 2.10536 3.48066 3.33203 2.50732C4.25203 1.77399 5.41203 1.33398 6.66536 1.33398C9.61203 1.33398 11.9987 3.72065 11.9987 6.66732Z" stroke="#595959" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M6.9987 5.00098V7.00098L5.33203 8.00098" stroke="#595959" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span>Shipping details</span>
-    <svg
-      class="shipping-cal-close"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M9.16992 14.8299L14.8299 9.16992" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M14.8299 14.8299L9.16992 9.16992" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </div>
+
+  <!-- Header -->
+  <header class="m-cart-addon__title">
+    <div class="sc-header-left">
+      <svg class="sc-header-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <span>Shipping details</span>
+    </div>
+    <button class="shipping-cal-close" aria-label="Close">
+      <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+      </svg>
+    </button>
+  </header>
 
   <div class="shipping-calc-scroll">
-  <div class="shipping-calculator-form-wrapper">
-    <p class="shipping-cal-form-title">Calculate your rate</p>
-    <p class="text-xs text-gray-500 mb-2">Enter your postcode to see your exact shipping cost</p>
+    <div class="sc-body">
 
-    <div class="shipping-rates-result">
-      <!-- results rendered by shipping-calculator.js -->
-    </div>
-    <form data-address="root">
-      <div class="form-field-group visible-fields quantity flex flex-col" data-line-count="3">
-        <label class="form-field--label" for="QuantityShipping">{{ 'products.product.quantity' | t }}</label>
-        <input
-          class="form-field p-2 my-3"
-          type="number"
-          inputmode="numeric"
-          pattern="\d*"
-          min="1"
-          step="1"
-          id="QuantityShipping"
-          name="quantity"
-          value="1"
-        >
-      </div>
-      <div class="form-field-group hidden">
-        <label class="form-field--label" for="AddressFirstName">{{ 'customer.addresses.first_name' | t }}</label>
-        <input
-          class="form-field"
-          type="text"
-          id="AddressFirstName"
-          name="address[first_name]"
-          value="{{ form.first_name }}"
-        >
-      </div>
-
-      <div class="form-field-group hidden">
-        <label class="form-field--label" for="AddressLastName">{{ 'customer.addresses.last_name' | t }}</label>
-        <input
-          class="form-field"
-          type="text"
-          id="AddressLastName"
-          name="address[last_name]"
-          value="{{ form.last_name }}"
-        >
-      </div>
-
-      <div class="form-field-group hidden">
-        <label class="form-field--label" for="AddressCompany">{{ 'customer.addresses.company' | t }}</label>
-        <input class="form-field" type="text" id="AddressCompany" name="address[company]" value="{{ form.company }}">
-      </div>
-
-      <div class="form-field-group hidden">
-        <label class="form-field--label" for="AddressAddress1">{{ 'customer.addresses.address1' | t }}</label>
-        <input
-          class="form-field"
-          type="text"
-          id="AddressAddress1"
-          name="address[address1]"
-          value="{{ form.address1 }}"
-        >
-      </div>
-
-      <div class="form-field-group hidden">
-        <label class="form-field--label" for="AddressAddress2">{{ 'customer.addresses.address2' | t }}</label>
-        <input
-          class="form-field"
-          type="text"
-          id="AddressAddress2"
-          name="address[address2]"
-          value="{{ form.address2 }}"
-        >
-      </div>
-
-      <div class="form-field-group hidden">
-        <label class="form-field--label" for="AddressCity">{{ 'customer.addresses.city' | t }}</label>
-        <input
-          class="form-field"
-          type="text"
-          id="AddressCity"
-          name="address[city]"
-          value="{{ form.city }}"
-        >
-      </div>
-
-      <div class="form-field-group hidden">
-        <label class="form-field--label" for="AddressCountry">{{ 'customer.addresses.country' | t }}</label>
-        <select
-          class="form-field"
-          id="AddressCountry"
-          name="address[country]"
-          data-default="AU"
-        ></select>
-      </div>
-
-      <div class="form-field-group hidden state">
-        <label class="form-field--label" for="AddressProvince">{{ 'customer.addresses.province' | t }}</label>
-        <select
-          class="form-field"
-          id="AddressProvince"
-          name="address[province]"
-          data-default="{{ form.province }}"
-        ></select>
-      </div>
-
-      <div class="form-field-group visible-fields postcode flex flex-col">
-        <label class="form-field--label" for="AddressZip">{{ 'customer.addresses.zip' | t }}</label>
-        <input
-          class="form-field p-2 my-3"
-          type="number"
-          inputmode="numeric"
-          pattern="\d*"
-          id="AddressZip"
-          name="address[zip]"
-          value="{{ form.zip }}"
-          autocapitalize="characters"
-        >
-      </div>
-
-      <div class="form-field-group  hidden">
-        <label for="AddressPhone">{{ 'customer.addresses.phone' | t }}</label>
-        <input class="form-field" type="tel" id="AddressPhone" name="address[phone]" value="{{ form.phone }}">
-      </div>
-    </form>
-  </div>
-
-  <div class="space-y-2 px-4 mb-4">
-    <div class="relative flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors group">
-      <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style="margin-right:16px">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016 2.993 2.993 0 0 0 2.25-1.016 3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+      <!-- Trust banner -->
+      <div class="sc-trust">
+        <svg class="sc-trust-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
         </svg>
+        <p>Clear shipping pricing. No surprises at checkout.</p>
       </div>
-      <span class="text-sm font-semibold text-gray-800 flex-1">Click &amp; collect available</span>
-      <div class="relative ml-2" id="cc-tooltip-wrap">
-        <span
-          class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-300 text-gray-600 text-xs font-bold cursor-pointer"
-          onmouseenter="document.getElementById('cc-tooltip').style.display='block'"
-          onmouseleave="document.getElementById('cc-tooltip').style.display='none'"
-        >?</span>
-        <div id="cc-tooltip" style="display:none;position:absolute;bottom:calc(100% + 8px);right:0;width:220px;background:#111827;color:#fff;font-size:12px;border-radius:8px;padding:10px 12px;z-index:9999;">
-          Click &amp; Collect from our Wetherill Park HQ in under 24 hours, simply select Pickup at Check out.
-          <div style="position:absolute;top:100%;right:12px;border:6px solid transparent;border-top-color:#111827;"></div>
+
+      <!-- Title + intro -->
+      <div class="sc-intro">
+        <h2 class="sc-title">Check shipping cost &amp; ETA</h2>
+        <p class="sc-subtitle">Enter your postcode for an instant delivery estimate before checkout.</p>
+      </div>
+
+      <!-- Form fields -->
+      <form data-address="root" class="sc-form">
+        <div class="sc-field">
+          <label class="sc-label" for="QuantityShipping">{{ 'products.product.quantity' | t }}</label>
+          <input
+            class="sc-input"
+            type="number"
+            inputmode="numeric"
+            pattern="\d*"
+            min="1"
+            step="1"
+            id="QuantityShipping"
+            name="quantity"
+            value="1"
+          >
+        </div>
+
+        <!-- Hidden address fields required by the JS -->
+        <div class="sc-field-hidden">
+          <input class="form-field" type="text" id="AddressFirstName" name="address[first_name]" value="{{ form.first_name }}">
+        </div>
+        <div class="sc-field-hidden">
+          <input class="form-field" type="text" id="AddressLastName" name="address[last_name]" value="{{ form.last_name }}">
+        </div>
+        <div class="sc-field-hidden">
+          <input class="form-field" type="text" id="AddressCompany" name="address[company]" value="{{ form.company }}">
+        </div>
+        <div class="sc-field-hidden">
+          <input class="form-field" type="text" id="AddressAddress1" name="address[address1]" value="{{ form.address1 }}">
+        </div>
+        <div class="sc-field-hidden">
+          <input class="form-field" type="text" id="AddressAddress2" name="address[address2]" value="{{ form.address2 }}">
+        </div>
+        <div class="sc-field-hidden">
+          <input class="form-field" type="text" id="AddressCity" name="address[city]" value="{{ form.city }}">
+        </div>
+        <div class="sc-field-hidden">
+          <select class="form-field" id="AddressCountry" name="address[country]" data-default="AU"></select>
+        </div>
+        <div class="sc-field-hidden state">
+          <select class="form-field" id="AddressProvince" name="address[province]" data-default="{{ form.province }}"></select>
+        </div>
+
+        <div class="sc-field">
+          <label class="sc-label" for="AddressZip">{{ 'customer.addresses.zip' | t }}</label>
+          <input
+            class="sc-input"
+            type="number"
+            inputmode="numeric"
+            pattern="\d*"
+            id="AddressZip"
+            name="address[zip]"
+            value="{{ form.zip }}"
+            autocapitalize="characters"
+          >
+        </div>
+
+        <div class="sc-field-hidden">
+          <input class="form-field" type="tel" id="AddressPhone" name="address[phone]" value="{{ form.phone }}">
+        </div>
+      </form>
+
+      <!-- CTA button -->
+      <button class="m-spinner-button sc-cta" type="button">
+        <span class="sc-cta-label">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Calculate shipping instantly
+        </span>
+        <span class="m-spinner-icon">
+          <span class="calculating">
+            <svg class="animate-spin m-svg-icon--medium" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" style="display:none;"></circle>
+              <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+        </span>
+      </button>
+
+      <!-- Result box — always visible so layout never shifts -->
+      <div class="sc-result-box">
+        <div class="shipping-rates-result"></div>
+        <div class="sc-placeholder">
+          <div class="sc-placeholder-icon-wrap">
+            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+              <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+            </svg>
+          </div>
+          <p>Enter your postcode to see your shipping cost, ETA, and whether Click &amp; Collect is available in your area.</p>
         </div>
       </div>
-    </div>
-    <div class="flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors group">
-      <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style="margin-right:16px">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-green-700" viewBox="0 0 24 24" fill="currentColor">
-          <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
-        </svg>
-      </div>
-      <span class="text-sm font-semibold text-gray-800">Secure checkout</span>
-    </div>
-    <div class="flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors group">
-      <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style="margin-right:16px">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-purple-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
-        </svg>
-      </div>
-      <span class="text-sm font-semibold text-gray-800">Easy returns</span>
-    </div>
-    <div class="flex items-center p-3 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors group">
-      <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style="margin-right:16px">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-        </svg>
-      </div>
-      <span class="text-sm font-semibold text-gray-800">Fast Dispatch</span>
-    </div>
-  </div>
 
-  <div class="px-4 space-y-2 pb-4 border-t border-gray-100 pt-4">
-    <div class="flex items-center px-4 py-3 border border-gray-200 rounded-lg bg-white">
-      <span class="text-lg leading-none flex-shrink-0" style="margin-right:16px">🚚</span>
-      <p class="text-sm text-gray-700">Estimated delivery <strong id="shipping-calc-eta">–</strong></p>
-    </div>
-    <script>
-      (function () {
-        function addBizDays(d, n) {
-          var r = new Date(d);
-          for (var i = 0; i < n; ) {
-            r.setDate(r.getDate() + 1);
-            var dow = r.getDay();
-            if (dow !== 0 && dow !== 6) i++;
-          }
-          return r;
-        }
-        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-        function fmt(d) { return d.getDate() + ' ' + months[d.getMonth()]; }
-        var today = new Date();
-        var el = document.getElementById('shipping-calc-eta');
-        if (el) el.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 4));
-      })();
-    </script>
-    {% comment %}
-    <div class="flex items-center px-4 py-3 border border-green-200 rounded-lg bg-green-50">
-      <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-green-700 flex-shrink-0" style="margin-right:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
-      </svg>
-      <p class="text-sm text-green-700 font-semibold">Shipping from just $29</p>
-      
-    </div>{% endcomment %}
-  </div>
+      <!-- Feature footer -->
+      <div class="sc-badges">
+        <div class="sc-badge">
+          <div class="sc-badge-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+            </svg>
+          </div>
+          <span>Click and Collect</span>
+        </div>
+        <div class="sc-badge">
+          <div class="sc-badge-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+            </svg>
+          </div>
+          <span>Fast Dispatch</span>
+        </div>
+        <div class="sc-badge">
+          <div class="sc-badge-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+            </svg>
+          </div>
+          <span>Clear pricing. No surprises</span>
+        </div>
+        <div class="sc-badge">
+          <div class="sc-badge-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="11" width="18" height="11" rx="2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></rect>
+              <path d="M7 11V7a5 5 0 0110 0v4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+            </svg>
+          </div>
+          <span>Secure Checkout</span>
+        </div>
+      </div>
 
+    </div>
   </div><!-- end shipping-calc-scroll -->
 
-  <div class="shipping-calc-footer">
-  <div class="m-cart-addon__action m:flex m:flex-col shipping-rate-button">
-    <button
-      class="m-spinner-button m-button m-button--primary m-cart-addon--calculate btn primary-button w-full"
-      type="button"
-    >
-      <span>
-        Show my shipping cost
-      </span>
-      <span class="m-spinner-icon">
-        <span class="calculating flex gap-2 items-center">
-          <svg
-            class="animate-spin m-svg-icon--medium size-3"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" style="display: none;"></circle>
-            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        </span>
-      </span>
-    </button>
-    <p class="text-center text-xs text-gray-500 mt-2 flex items-center justify-center gap-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
-      Rates shown instantly · No checkout required
-    </p>
-  </div>
-  </div><!-- end shipping-calc-footer -->
-
 </shipping-calculator>
+
+<script>
+  (function () {
+    var ship = document.querySelector('.shipping-calculator');
+    if (!ship) return;
+
+    // Move the calculator to <body> so its z-index is in the root stacking context
+    document.body.appendChild(ship);
+
+    // Create backdrop as a direct body child (same root stacking context)
+    var backdrop = document.createElement('div');
+    backdrop.setAttribute('aria-hidden', 'true');
+    backdrop.style.cssText = [
+      'display:none',
+      'position:fixed',
+      'inset:0',
+      'z-index:9998',
+      'background:rgba(0,0,0,0.35)',
+      'cursor:pointer'
+    ].join(';');
+    document.body.appendChild(backdrop);
+
+    backdrop.addEventListener('click', function () {
+      ship.classList.remove('open');
+    });
+
+    new MutationObserver(function () {
+      backdrop.style.display = ship.classList.contains('open') ? 'block' : 'none';
+    }).observe(ship, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
+
 <style>
+  /* ── Panel shell ── */
   .shipping-calculator {
     display: flex;
     flex-direction: column;
     position: fixed;
     top: 0;
-    right: -100%;
+    right: 0;
     height: 100%;
-    z-index: 99999999999;
+    z-index: 9999;
     background: #fff;
-    border-radius: 0;
-    border: none;
-    padding: 0;
     width: 448px;
-    transition: all 1s ease-out;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-out;
     overflow: hidden;
+    border: none;
+    border-radius: 0;
+    padding: 0;
   }
+  .shipping-calculator.open { transform: translateX(0); }
   .shipping-calc-scroll {
     flex: 1;
     overflow-y: auto;
-    padding-top: 8px;
   }
-  .shipping-calc-footer {
-    flex-shrink: 0;
-    background: #fff;
-    border-top: 1px solid #e5e7eb;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-    padding: 16px;
-  }
-  .shipping-calculator.open {
-    right: 0;
+  .sc-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
   }
 
+  /* ── Header ── */
   .shipping-calculator .m-cart-addon__title {
-    padding: 20px 40px 20px 16px !important;
-    gap: 16px;
-    background: var(--Yellow-gradient, linear-gradient(170deg, #fedc13 31.94%, #fac802 99.43%));
-    position: relative;
-  }
-
-  .shipping-calculator .shipping-cal-close {
-    position: absolute;
-    top: 50%;
-    right: 16px;
-    transform: translateY(-50%);
-    margin: 0 !important;
-    cursor: pointer;
-  }
-
-  .shipping-calculator .shipping-calculator-form-wrapper {
-    margin: 8px 16px;
     display: flex;
-    flex-direction: column;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 1px solid var(--Grey-200, #d6d4d4);
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: linear-gradient(170deg, #fedc13 31.94%, #fac802 99.43%);
+    flex-shrink: 0;
   }
-
-  .shipping-calculator [data-address='root'] {
+  .sc-header-left {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
-
-  .shipping-rates-result {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #d9d9d9;
+  .sc-header-icon {
+    width: 24px;
+    height: 24px;
+    color: #1a1a1a;
+    flex-shrink: 0;
   }
-
-  .shipping-rates-result p {
-    color: #20782c;
-  }
-
-  .shipping-calc-footer > div {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .shipping-calculator .m-cart-addon__title > span {
-    color: var(--Text-Black, #131313);
+  .shipping-calculator .m-cart-addon__title span {
     font-family: Poppins, 'M-Body-Font', sans-serif;
-    font-size: 24px;
-    font-style: normal;
+    font-size: 20px;
     font-weight: 700;
-    line-height: 42px;
-    letter-spacing: -0.24px;
+    color: #1a1a1a;
+    line-height: 1.3;
   }
-  p.shipping-cal-form-title {
-    color: var(--Text-Black, #131313);
-    font-family: Poppins, 'M-Body-Font', sans-serif;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 32px;
-    letter-spacing: -0.18px;
-    margin-bottom: 4px;
+  .shipping-cal-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.15s;
   }
-  .shipping-calculator label.form-field--label {
-    color: #000;
+  .shipping-cal-close:hover { opacity: 1; }
+
+  /* ── Trust banner ── */
+  .sc-trust {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff9e6;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .sc-trust-icon {
+    width: 20px;
+    height: 20px;
+    color: #008a00;
+    flex-shrink: 0;
+  }
+  .sc-trust p {
     font-family: Poppins, 'M-Body-Font', sans-serif;
     font-size: 14px;
-    font-style: normal;
     font-weight: 500;
-    line-height: 24px;
-    letter-spacing: -0.14px;
-  }
-  .shipping-calculator [data-address='root'] .form-field {
-    border-radius: 6px;
-    border: 1px solid var(--Grey-200, #d6d4d4);
-    background: var(--Background-eWhite, #fff);
-    font-family: Poppins, 'M-Body-Font', sans-serif;
+    color: #1f2937;
+    margin: 0;
   }
 
+  /* ── Title + intro ── */
+  .sc-intro { display: flex; flex-direction: column; gap: 8px; }
+  .sc-title {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    letter-spacing: -0.2px;
+  }
+  .sc-subtitle {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── Form ── */
+  .sc-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .sc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sc-field-hidden { display: none; }
+  .sc-label {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  .sc-input {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 15px;
+    color: #111827;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+  }
+  .sc-input:focus {
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 3px rgba(251,191,36,0.25);
+  }
+
+  /* ── CTA button ── */
+  .sc-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 16px;
+    background: #fff;
+    border: 2px solid #008a00;
+    border-radius: 6px;
+    color: #008a00;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: initial;
+    transition: background 0.15s;
+  }
+  .sc-cta:hover:not(:disabled) { background: #f0fdf4; }
+  .sc-cta:disabled { opacity: 0.6; cursor: not-allowed; }
+  .sc-cta-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .shipping-calculator span.m-spinner-icon {
+    display: block;
+    position: relative;
+    top: unset; bottom: unset; left: unset; right: unset;
+  }
+  .shipping-calculator span.calculating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .shipping-calculator svg.animate-spin.m-svg-icon--medium { display: block; }
+
+  /* ── Results ── */
+  .sc-result-box:has(.sc-result-card) {
+    border-color: transparent;
+    min-height: 0;
+  }
   .shipping-calculator .no-shipping-rates {
     padding: 16px;
     display: flex;
     gap: 16px;
     border-radius: 12px;
-    background: var(--Concrete-05, #f7f5f5);
-  }
-
-  .shipping-calculator .no-shipping-rates p {
-    color: #5d5d5d;
-    font-family: Poppins, M-Body-Font, sans-serif;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 21px;
-    letter-spacing: -0.14px;
-  }
-
-  /*ul.shipping-rate li:nth-child(2) {
-        display: none;
-    }*/
-
-  ul.shipping-rate li {
-    display: flex;
-    gap: 16px;
-    padding: 16px;
-    border-radius: 12px;
-    background: #deffe2;
-  }
-
-  ul.shipping-rate li:nth-child(3) p {
-    color: #20782c;
+    background: #f7f5f5;
     font-family: Poppins, 'M-Body-Font', sans-serif;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: -0.16px;
+    font-size: 14px;
+    color: #5d5d5d;
+  }
+  .shipping-calculator .shipping-errors p {
+    color: #dc2626;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    margin: 0 0 8px;
   }
 
-  .shipping-calculator button {
-    text-transform: initial;
-  }
-
-  .shipping-calculator span.m-spinner-icon {
-    display: block;
-    top: unset;
-    bottom: unset;
-    left: unset;
-    right: unset;
-    position: relative;
-  }
-
-  .shipping-calculator svg.animate-spin.m-svg-icon--medium {
-    display: block;
-  }
-
-  .shipping-calculator span.calculating {
+  /* ── Result box — always rendered, holds border so layout never shifts ── */
+  .sc-result-box {
+    border: 2px dashed #e5e7eb;
+    border-radius: 12px;
+    min-height: 190px;
     display: flex;
+    flex-direction: column;
+  }
+
+  /* Results rendered inside the box */
+  .shipping-rates-result:empty { display: none; }
+  .shipping-rates-result:not(:empty) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    width: 100%;
+  }
+
+  /* Placeholder fills the box when results are absent */
+  .sc-placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     gap: 16px;
+    padding: 24px;
+    text-align: center;
   }
+  .shipping-rates-result:not(:empty) + .sc-placeholder { display: none; }
+  .sc-placeholder-icon-wrap {
+    width: 56px;
+    height: 56px;
+    background: #f9fafb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+  }
+  .sc-placeholder p {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    line-height: 1.6;
+    max-width: 200px;
+    margin: 0;
+  }
+
+  /* ── Result box loading spinner ── */
+  .sc-rate-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+  }
+  .sc-spin {
+    width: 36px;
+    height: 36px;
+    animation: sc-spin-anim 0.75s linear infinite;
+  }
+  @keyframes sc-spin-anim {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ── Feature badges ── */
+  .sc-badges {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 14px 12px;
+    background: #fff;
+    border: 2px solid #fcd34d;
+    border-radius: 12px;
+  }
+  .sc-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+  }
+  .sc-badge-icon {
+    width: 40px;
+    height: 40px;
+    background: #f9fafb;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+    flex-shrink: 0;
+  }
+  .sc-badge span {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #374151;
+    line-height: 1.4;
+  }
+
+  /* ── C&C detection banner (yellow, sibling above the green card) ── */
+  .sc-cc-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    padding: 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .sc-cc-icon-wrap {
+    width: 36px;
+    height: 36px;
+    background: #fef3c7;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .sc-cc-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .sc-cc-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sc-cc-title {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  .sc-cc-badge {
+    background: #dcfce7;
+    color: #15803d;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 100px;
+    white-space: nowrap;
+    line-height: 1.6;
+  }
+  .sc-cc-desc {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0;
+  }
+  .sc-cc-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 12px;
+    color: #6b7280;
+    text-decoration: none;
+    margin-top: 2px;
+  }
+  .sc-cc-link:hover { color: #111827; }
+  .sc-cc-chevron { flex-shrink: 0; color: #9ca3af; align-self: center; }
+
+  /* ── Green estimate card ── */
+  .sc-result-card {
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .sc-estimate-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #15803d;
+  }
+
+  /* Delivery detail rows */
+  .sc-delivery-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .sc-delivery-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px;
+    color: #374151;
+  }
+  .sc-delivery-date { font-weight: 600; color: #15803d; }
+
+  /* Product row */
+  .sc-product-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .sc-product-img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    border: 1px solid #e5e7eb;
+  }
+  .sc-product-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+  .sc-product-name {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sc-product-qty {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  /* Cost summary */
+  .sc-cost-summary {
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sc-cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px;
+    color: #4b5563;
+  }
+  .sc-cost-divider {
+    border: none;
+    border-top: 1px dashed #d1d5db;
+    margin: 2px 0;
+  }
+  .sc-cost-total { font-weight: 700; color: #111827; font-size: 14px; }
+
+  /* Action buttons */
+  .sc-result-actions { display: flex; flex-direction: column; gap: 8px; }
+  .sc-btn-checkout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 11px 16px;
+    background: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+    box-sizing: border-box;
+  }
+  .sc-btn-checkout:hover { background: #1f2937; }
+  .sc-btn-addcart {
+    width: 100%;
+    padding: 10px 16px;
+    background: transparent;
+    color: #111827;
+    border: 1.5px solid #111827;
+    border-radius: 6px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    box-sizing: border-box;
+  }
+  .sc-btn-addcart:hover { background: rgba(255,255,255,0.8); }
+  .sc-btn-keep {
+    width: 100%;
+    padding: 8px;
+    background: transparent;
+    color: #6b7280;
+    border: none;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .sc-btn-keep:hover { color: #374151; }
 
   @media (max-width: 767px) {
-    .shipping-calculator {
-      width: 100%;
-      max-width: 448px;
-    }
+    .shipping-calculator { width: 100%; max-width: 448px; }
   }
-
   @media (max-width: 389px) {
-    .shipping-calculator .m-cart-addon__title {
-      padding: 16px 40px 16px 16px !important;
-    }
-    .shipping-calculator .m-cart-addon__action {
-      padding: 16px;
-    }
+    .sc-body { padding: 16px; gap: 20px; }
+    .sc-badges { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 

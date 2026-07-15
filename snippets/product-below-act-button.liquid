@@ -1,116 +1,394 @@
-<div class="mt-6 text-sm leading-tight text-gray-600 flex gap-2.5 lg:gap-8 flex-wrap">
-  <a
-    href="/pages/click-and-collect"
-    target="_blank"
-    class="border-gray-50 rounded-xl shadow-2xl py-4 px-2 grid gap-1 max-w-36 hover:scale-105 ease-in-out duration-200 transition-all"
-  >
-    <div class="flex gap-2 items-center">
-      {% render 'icon-svg-store', class: 'size-10 text-yellow-500', stroke_width: 1.25 %}
-      <div class="flex gap-2 flex-wrap">
-        <p>Click & Collect</p>
-      </div>
-    </div>
-    <div>
-      <div class="flex gap-2 text-xs justify-center">
-        <span class="underline text-gray-600">Find out more</span>
-        {% render 'icon-svg-arrow-right-circle', class: 'size-5', stroke_width: 1.25 %}
-      </div>
-    </div>
-  </a>
+<!-- Delivery + Shipping info card -->
+<div class="pdp-main-card mt-5 mb-3">
 
-  <a
-    href="#"
-    onclick="triggerShippingEstimate(event)"
-    class="border-gray-50 rounded-xl shadow-2xl py-4 px-2 grid gap-1 max-w-36 hover:scale-105 ease-in-out duration-200 transition-all"
-  >
-    <div class="flex gap-2 items-center ">
-      {% render 'icon-svg-package', classes: 'size-10 text-yellow-500', stroke_width: 1.25 %}
-      <div class="flex gap-2 flex-wrap">
-        <p>Calculate Shipping</p>
-      </div>
+  <!-- Estimated Delivery Header -->
+  <div class="pdp-delivery-row">
+    <div class="pdp-truck-circle">
+      {% render 'icon-svg-truck', class: 'pdp-truck-icon', stroke_width: 1.5 %}
     </div>
-    <div>
-      <button
-        class="underline text-gray-600 flex gap-2 text-xs justify-center w-full"
-      >
-        <div
-          class="underline text-gray-600 flex gap-2 text-xs justify-center"
-        >
-          <span class="underline text-gray-600"> Get my Rates </span>
-          {% render 'icon-svg-arrow-right-circle', class: 'size-5', stroke_width: 1.25 %}
+    <div class="pdp-delivery-text-wrap">
+      <span class="pdp-delivery-label">Estimated delivery</span>
+      <strong id="pdp-eta-dates" class="pdp-delivery-dates">–</strong>
+    </div>
+  </div>
+
+
+  <!-- 3-column info grid (horizontal layout: icon left, text right) -->
+  <div class="pdp-info-grid">
+
+    <!-- Click & Collect -->
+    <button type="button" class="pdp-info-box" id="pdp-cc-toggle" aria-expanded="false" aria-controls="pdp-cc-expand">
+      <div class="pdp-box-icon-wrap">
+        {% render 'icon-svg-store', class: 'pdp-box-icon pdp-icon-gray', stroke_width: 1.25 %}
+      </div>
+      <div class="pdp-box-text">
+        <p class="pdp-box-title">Click &amp; Collect</p>
+        <p class="pdp-box-sub">Available in Sydney</p>
+        <span class="pdp-box-link">View details</span>
+      </div>
+    </button>
+
+    <!-- Shipping Cost -->
+    <a href="#" onclick="triggerShippingEstimate(event)" class="pdp-info-box">
+      <div class="pdp-box-icon-wrap">
+        {% render 'icon-svg-package', classes: 'pdp-box-icon pdp-icon-orange', stroke_width: 1.25 %}
+      </div>
+      <div class="pdp-box-text">
+        <p class="pdp-box-title">Shipping Cost</p>
+        <p class="pdp-box-sub">Calculate now</p>
+        <span class="pdp-box-link">Get exact cost ›</span>
+      </div>
+    </a>
+
+    <!-- Price Beat -->
+    <button type="button" class="pdp-info-box" data-price-beat-open>
+      <div class="pdp-box-icon-wrap">
+        {% render 'icon-svg-percent-badge', class: 'pdp-box-icon pdp-icon-orange', stroke_width: 1.5 %}
+      </div>
+      <div class="pdp-box-text">
+        <p class="pdp-box-title">Price Beat</p>
+        <p class="pdp-box-sub">Get better price</p>
+        <span class="pdp-box-link">Claim now ›</span>
+      </div>
+    </button>
+
+  </div>
+
+  <!-- C&C expandable section (inside the card) -->
+  <div class="pdp-cc-expand" id="pdp-cc-expand" hidden>
+    <div class="pdp-cc-inner">
+
+      <!-- Left: details -->
+      <div class="pdp-cc-left">
+        <div class="pdp-cc-title-row">
+          <strong class="pdp-cc-title">Click &amp; Collect from our Sydney Warehouse</strong>
+          <span class="pdp-cc-badge">Available</span>
         </div>
-      </button>
-    </div>
-  </a>
-
-  <a
-    href="#"
-    onclick="shippingAnchor(event)"
-    class="relative group border-gray-50 rounded-xl shadow-2xl py-4 px-2 grid gap-1 max-w-36 hover:scale-105 ease-in-out duration-200 transition-all"
-  >
-    <div class="flex gap-2 items-center ">
-      {% render 'icon-svg-truck', class: 'size-10 text-yellow-500', stroke_width: 1.25 %}
-      <div class="flex gap-2 flex-wrap">
-        <p>Delivery Times</p>
-      </div>
-    </div>
-    <div>
-      <div
-        class="underline text-gray-600 flex gap-2 text-xs cursor-pointer justify-center"
-      >
-        Get my ETA
-        {% render 'icon-svg-arrow-right-circle', class: 'size-5', stroke_width: 1.25 %}
-      </div>
-    </div>
-    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-20 w-52 pointer-events-none">
-      <div class="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 text-center whitespace-nowrap">
-        <div class="flex items-center gap-1.5 justify-center">
-          <span class="leading-none">🚚</span>
-          Estimated delivery <strong class="ml-1" id="pdp-eta-dates">–</strong>
+        <div class="pdp-cc-details">
+          <div class="pdp-cc-detail-item">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span>Wetherill Park, NSW</span>
+          </div>
+          <div class="pdp-cc-detail-item">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            <span>Usually ready: Same day or next business day</span>
+          </div>
+          <div class="pdp-cc-detail-item">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+            </svg>
+            <span>No delivery charge</span>
+          </div>
         </div>
+        <p class="pdp-cc-email-note"><em>Order online and we'll email you when it's ready to collect.</em></p>
       </div>
-      <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-    </div>
-  </a>
-  <script>
-    (function () {
-      function addBizDays(d, n) {
-        var r = new Date(d);
-        for (var i = 0; i < n; ) {
-          r.setDate(r.getDate() + 1);
-          var dow = r.getDay();
-          if (dow !== 0 && dow !== 6) i++;
-        }
-        return r;
-      }
-      var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-      function fmt(d) { return d.getDate() + ' ' + months[d.getMonth()]; }
-      var today = new Date();
-      var el = document.getElementById('pdp-eta-dates');
-      if (el) el.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 4));
-    })();
-  </script>
 
-  <button
-    type="button"
-    data-price-beat-open
-    class="border-gray-50 rounded-xl shadow-2xl py-4 px-2 grid gap-1 max-w-36 hover:scale-105 ease-in-out duration-200 transition-all text-left bg-transparent cursor-pointer"
-  >
-    <div class="flex gap-2 items-center">
-      {% render 'icon-svg-percent-badge', class: 'size-10 text-red-500', stroke_width: 1.5 %}
-      <div class="flex gap-2 flex-wrap">
-        <p>Price Beat Guaranteed</p>
+      <!-- Right: action buttons + close -->
+      <div class="pdp-cc-right">
+        <button type="button" class="pdp-cc-close-btn" id="pdp-cc-close" aria-label="Collapse">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path d="M18 15l-6-6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <a href="/pages/click-and-collect" class="pdp-cc-btn-primary">View Details</a>
+        <button type="button" class="pdp-cc-btn-secondary" onclick="triggerShippingEstimate(event)">Calculate delivery</button>
       </div>
+
     </div>
-    <div>
-      <div
-        class="underline text-gray-600 flex gap-2 text-xs cursor-pointer justify-center"
-      >
-        Get Better Price
-        {% render 'icon-svg-arrow-right-circle', class: 'size-5', stroke_width: 1.25 %}
-      </div>
-    </div>
-  </button>
+  </div>
+
 </div>
 
 {% render 'price-beat-modal', product: product %}
+
+<script>
+  (function () {
+    function addBizDays(d, n) {
+      var r = new Date(d);
+      for (var i = 0; i < n;) {
+        r.setDate(r.getDate() + 1);
+        if (r.getDay() !== 0 && r.getDay() !== 6) i++;
+      }
+      return r;
+    }
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    function fmt(d) { return d.getDate() + ' ' + months[d.getMonth()]; }
+    var today = new Date();
+    var etaEl = document.getElementById('pdp-eta-dates');
+    if (etaEl) etaEl.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 5));
+
+    var toggle   = document.getElementById('pdp-cc-toggle');
+    var expand   = document.getElementById('pdp-cc-expand');
+    var closeBtn = document.getElementById('pdp-cc-close');
+    function openCC()  { expand.hidden = false; toggle && toggle.setAttribute('aria-expanded', 'true'); }
+    function closeCC() { expand.hidden = true;  toggle && toggle.setAttribute('aria-expanded', 'false'); }
+    if (toggle)   toggle.addEventListener('click', function () { expand.hidden ? openCC() : closeCC(); });
+    if (closeBtn) closeBtn.addEventListener('click', closeCC);
+  })();
+</script>
+
+<style>
+  /* ── Main card ── */
+  .pdp-main-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 14px 20px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+
+  /* ── Delivery header ── */
+  .pdp-delivery-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+  }
+  .pdp-truck-circle {
+    width: 40px;
+    height: 40px;
+    background: #fef9c3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pdp-truck-icon { width: 22px; height: 22px; color: #d97706; }
+  .pdp-delivery-text-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pdp-delivery-label {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 15px;
+    color: #374151;
+    white-space: nowrap;
+  }
+  .pdp-delivery-dates {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    white-space: nowrap;
+  }
+
+  /* ── 3-column grid ── */
+  .pdp-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .pdp-info-box {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .pdp-info-box:hover {
+    border-color: #fedc13;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  }
+  .pdp-box-icon-wrap {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .pdp-box-icon { width: 22px; height: 22px; }
+  .pdp-icon-gray  { color: #6b7280; }
+  .pdp-icon-orange { color: #f59e0b; }
+  .pdp-box-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .pdp-box-title {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.3;
+  }
+  .pdp-box-sub {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 10px;
+    color: #6b7280;
+    margin: 0;
+  }
+  .pdp-box-link {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #374151;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    margin-top: 4px;
+  }
+
+  /* ── C&C expanded ── */
+  .pdp-cc-expand {
+    margin-top: 14px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .pdp-cc-inner {
+    display: flex;
+    gap: 16px;
+    padding: 18px;
+    align-items: flex-start;
+  }
+  .pdp-cc-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+  .pdp-cc-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .pdp-cc-title {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+  }
+  .pdp-cc-badge {
+    background: #dcfce7;
+    color: #15803d;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .pdp-cc-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pdp-cc-detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 12px;
+    color: #4b5563;
+  }
+  .pdp-cc-detail-item svg { flex-shrink: 0; margin-top: 1px; color: #6b7280; }
+  .pdp-cc-email-note {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 11px;
+    color: #92400e;
+    margin: 0;
+  }
+
+  /* ── C&C right column ── */
+  .pdp-cc-right {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    flex-shrink: 0;
+    width: 170px;
+  }
+  .pdp-cc-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 2px;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .pdp-cc-btn-primary {
+    padding: 10px 14px;
+    background: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .pdp-cc-btn-primary:hover { background: #1f2937; color: #fff; }
+  .pdp-cc-btn-secondary {
+    padding: 10px 14px;
+    background: transparent;
+    color: #111827;
+    border: 1.5px solid #111827;
+    border-radius: 6px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .pdp-cc-btn-secondary:hover { background: #f9fafb; }
+  .pdp-cc-hours-link {
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 11px;
+    color: #6b7280;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-align: center;
+    display: block;
+  }
+  .pdp-cc-hours-link:hover { color: #374151; }
+
+  /* ── Mobile ── */
+  @media (max-width: 480px) {
+    .pdp-main-card { padding: 10px; }
+    .pdp-info-grid { gap: 5px; margin-top: 8px; }
+    .pdp-info-box { padding: 8px 6px; gap: 6px; }
+    .pdp-box-icon { width: 16px; height: 16px; }
+    .pdp-box-icon-wrap { margin-top: 0; }
+    .pdp-box-title { font-size: 10px; }
+    .pdp-box-sub { font-size: 9px; }
+    .pdp-box-link { font-size: 9px; margin-top: 2px; }
+    .pdp-truck-circle { width: 32px; height: 32px; }
+    .pdp-truck-icon { width: 16px; height: 16px; }
+    .pdp-delivery-label { font-size: 11px; }
+    .pdp-delivery-dates { font-size: 14px; }
+    .pdp-cc-inner { flex-direction: column; }
+    .pdp-cc-right { width: 100%; }
+    .pdp-cc-close-btn { align-self: flex-start; }
+  }
+</style>

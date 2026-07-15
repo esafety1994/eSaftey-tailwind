@@ -34,8 +34,8 @@
           // try if the name itself is a hex
           if (/^#([0-9A-F]{3}){1,2}$/i.test(name.trim())) {
             el.style.backgroundColor = name.trim();
-          } else if (name.trim().toLowerCase() === "clear") {
-            // transparency indicator (checkered pattern) for "Clear" variants
+          } else if (/\bclear\b/i.test(name.trim())) {
+            // transparency indicator (checkered pattern) for "Clear" / "Clear Lens" variants
             el.style.backgroundImage =
               "linear-gradient(45deg, #d1d5db 25%, transparent 25%, transparent 75%, #d1d5db 75%)," +
               "linear-gradient(45deg, #d1d5db 25%, transparent 25%, transparent 75%, #d1d5db 75%)";

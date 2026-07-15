@@ -281,6 +281,17 @@
 
         // open the shipping calculator as a drawer
         ship.classList.add('open');
+
+        // close when clicking outside the panel
+        setTimeout(function () {
+          function handleOutsideClick(ev) {
+            if (!ship.contains(ev.target)) {
+              ship.classList.remove('open');
+              document.removeEventListener('click', handleOutsideClick, true);
+            }
+          }
+          document.addEventListener('click', handleOutsideClick, true);
+        }, 0);
       } else {
         console.warn('No .shipping-calculator element found to open');
       }

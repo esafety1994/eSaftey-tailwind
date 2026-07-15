@@ -159,6 +159,15 @@ class ShippingCalculator extends HTMLElement {
       if (isLoading) this.calculateBtn.classList.add('opacity-60', 'cursor-not-allowed');
       else this.calculateBtn.classList.remove('opacity-60', 'cursor-not-allowed');
     }
+    if (this.resultsEl && isLoading) {
+      this.resultsEl.innerHTML = `
+        <div class="sc-rate-loading">
+          <svg class="sc-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <path fill="#008a00" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+          </svg>
+          <span>Calculating&hellip;</span>
+        </div>`;
+    }
   }
 
   // Returns true for WA, NT, TAS postcodes (carrier-calculated + margin via Starshipit).
@@ -217,6 +226,8 @@ class ShippingCalculator extends HTMLElement {
     }
 
     const orderTotal = (this.product.price / 100) * data.quantity;
+    this._lastPostcode = data.zip;
+    this._lastQuantity = data.quantity;
 
     if (this.isRemoteState(data.zip)) {
       // WA / NT / TAS — auto-inject state and suburb for exact Starshipit routing
@@ -226,9 +237,12 @@ class ShippingCalculator extends HTMLElement {
       await this.fetchStarshipitRate(data, true, orderTotal);
     } else {
       // All other states — flat rate tiers from Shopify settings
+      this.setLoading(true);
+      await new Promise(r => setTimeout(r, 600));
       const rate = this.getFlatRate(orderTotal);
       this.shippingRates = [{ total_price: rate }];
       this.renderResults(false);
+      this.setLoading(false);
     }
   }
 
@@ -274,15 +288,18 @@ class ShippingCalculator extends HTMLElement {
 
     try {
       const url = `https://api.starshipit.com/api/rates/shopify?apiKey=${encodeURIComponent(this.apiKey)}`;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'StarShipIT-Api-Key': this.apiKey,
-          'Ocp-Apim-Subscription-Key': this.subscriptionKey
-        },
-        body: JSON.stringify(payload)
-      });
+      const [res] = await Promise.all([
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'StarShipIT-Api-Key': this.apiKey,
+            'Ocp-Apim-Subscription-Key': this.subscriptionKey
+          },
+          body: JSON.stringify(payload)
+        }),
+        new Promise(r => setTimeout(r, 600))
+      ]);
 
       if (!res.ok) {
         const txt = await res.text();
@@ -316,40 +333,203 @@ class ShippingCalculator extends HTMLElement {
   }
 
   renderResults(isRemote = false) {
-    if (!this.resultsEl) return;
-    if (this.isFreeShipping) {
-      this.isFreeShipping = false;
-    }
-    const ratesHtml = this.shippingRates.map(rate => {
-      const price = (rate.total_price !== undefined) ? (parseFloat(rate.total_price)).toFixed(2) : (rate.price !== undefined ? (parseFloat(rate.price)).toFixed(2) : '—');
-      const label = `Your estimate: <strong>$${price}</strong>`;
-      return `
-        <li>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p>${label}</p>
-        </li>`;
-    }).join('');
+    if (!this.resultsEl || !this.shippingRates.length) return;
+    this.isFreeShipping = false;
 
-    const html = `<ul class="shipping-rate">${ratesHtml}</ul>`;
-    this.resultsEl.innerHTML = html;
+    const postcode = this._lastPostcode || '';
+    const quantity = this._lastQuantity || 1;
+    const rate = this.shippingRates[0];
+    const shippingCost = parseFloat(rate.total_price !== undefined ? rate.total_price : (rate.price || 0));
+    const productTotal = (this.product.price / 100) * quantity;
+    const estimatedTotal = productTotal + shippingCost;
+    const etaDates = this._getETADates(postcode);
+    const isNSW = this._isNSW(postcode);
+    const productImage = this.product.image || '';
+    const variantId = this.product.variant_id || '';
+
+    // C&C banner: separate yellow card shown above the green estimate card for NSW
+    const ccBanner = isNSW ? `
+      <div class="sc-cc-banner">
+        <div class="sc-cc-icon-wrap">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#92400e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="sc-cc-content">
+          <div class="sc-cc-title-row">
+            <strong class="sc-cc-title">Sydney postcode detected</strong>
+            <span class="sc-cc-badge">Click &amp; collect available</span>
+          </div>
+          <p class="sc-cc-desc">Click &amp; collect available from our Sydney warehouse.</p>
+          <a href="/pages/click-collect" class="sc-cc-link">View pickup details <span aria-hidden="true">›</span></a>
+        </div>
+        <svg class="sc-cc-chevron" width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>` : '';
+
+    const productImgHtml = productImage
+      ? `<img src="${productImage}" alt="" class="sc-product-img">`
+      : '';
+
+    this.resultsEl.innerHTML = `
+      ${ccBanner}
+      <div class="sc-result-card">
+        <div class="sc-estimate-header">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="#15803d" stroke-width="1.5"/>
+            <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="#15803d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Your shipping estimate</span>
+        </div>
+        <div class="sc-delivery-info">
+          <div class="sc-delivery-row">
+            <span>Delivery to ${postcode}</span>
+          </div>
+          <div class="sc-delivery-row">
+            <span>Shipping</span>
+            <span>$${shippingCost.toFixed(2)}</span>
+          </div>
+          <div class="sc-delivery-row">
+            <span>Estimated delivery</span>
+            <span class="sc-delivery-date">${etaDates}</span>
+          </div>
+        </div>
+        <div class="sc-product-row">
+          ${productImgHtml}
+          <div class="sc-product-meta">
+            <span class="sc-product-name">${this.product.title || ''}</span>
+            <span class="sc-product-qty">Quantity: ${quantity}</span>
+          </div>
+        </div>
+        <div class="sc-cost-summary">
+          <div class="sc-cost-row">
+            <span>Product total</span>
+            <span>$${productTotal.toFixed(2)}</span>
+          </div>
+          <div class="sc-cost-row">
+            <span>Shipping</span>
+            <span>$${shippingCost.toFixed(2)}</span>
+          </div>
+          <div class="sc-cost-divider"></div>
+          <div class="sc-cost-row sc-cost-total">
+            <span>Estimated total</span>
+            <span>$${estimatedTotal.toFixed(2)}</span>
+          </div>
+        </div>
+        <div class="sc-result-actions">
+          <button class="sc-btn-checkout">
+            Checkout now
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="sc-btn-addcart">Add to cart</button>
+          <button class="sc-btn-keep">Keep shopping</button>
+        </div>
+      </div>`;
+
+    this._bindResultButtons(variantId, quantity);
   }
 
   renderRemoteStateMessage(orderTotal = 0) {
     if (!this.resultsEl) return;
     const baseRate = this.getFlatRate(orderTotal);
-    this.resultsEl.innerHTML = `
-      <ul class="shipping-rate">
-        <li>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M7.75 11.9999L10.58 14.8299L16.25 9.16992" stroke="#20782C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p>Your estimate: <strong>$${baseRate}.00</strong></p>
-        </li>
-      </ul>`;
+    this.shippingRates = [{ total_price: baseRate }];
+    this.renderResults(true);
+  }
+
+  _isNSW(postcode) {
+    const pc = parseInt(String(postcode).replace(/\D/g, ''), 10);
+    if (isNaN(pc)) return false;
+    if (pc >= 1000 && pc <= 2599) return true;
+    if (pc >= 2619 && pc <= 2899) return true;
+    if (pc >= 2921 && pc <= 2999) return true;
+    return false;
+  }
+
+  _getETARange(postcode) {
+    return '1–5 business days';
+  }
+
+  _getETADates(postcode) {
+    const start = this._addBusinessDays(new Date(), 1);
+    const end   = this._addBusinessDays(new Date(), 5);
+    return `${this._fmtDate(start)} – ${this._fmtDate(end)}`;
+  }
+
+  _addBusinessDays(date, n) {
+    const d = new Date(date);
+    let added = 0;
+    while (added < n) {
+      d.setDate(d.getDate() + 1);
+      const day = d.getDay();
+      if (day !== 0 && day !== 6) added++;
+    }
+    return d;
+  }
+
+  _fmtDate(date) {
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return `${date.getDate()} ${months[date.getMonth()]}`;
+  }
+
+  _bindResultButtons(variantId, quantity) {
+    const checkoutBtn = this.resultsEl && this.resultsEl.querySelector('.sc-btn-checkout');
+    const cartBtn     = this.resultsEl && this.resultsEl.querySelector('.sc-btn-addcart');
+    const keepBtn     = this.resultsEl && this.resultsEl.querySelector('.sc-btn-keep');
+    const ccBanner    = this.resultsEl && this.resultsEl.querySelector('.sc-cc-banner');
+
+    if (checkoutBtn) checkoutBtn.addEventListener('click', () => this._addToCartAndGo(variantId, quantity, '/checkout'));
+    if (cartBtn)     cartBtn.addEventListener('click',     () => this._addToCartAndOpenDrawer(variantId, quantity));
+    if (keepBtn) {
+      keepBtn.addEventListener('click', () => {
+        const closeBtn = this.querySelector('.shipping-cal-close');
+        if (closeBtn) closeBtn.click();
+      });
+    }
+    if (ccBanner) {
+      ccBanner.addEventListener('click', () => { window.location.href = '/pages/click-collect'; });
+    }
+  }
+
+  async _addToCartAndGo(variantId, quantity, redirectTo) {
+    if (!variantId) { window.location.href = redirectTo; return; }
+    try {
+      await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: Number(variantId), quantity: Number(quantity) })
+      });
+    } catch (e) { /* proceed to redirect even on error */ }
+    window.location.href = redirectTo;
+  }
+
+  async _addToCartAndOpenDrawer(variantId, quantity) {
+    if (!variantId) return;
+    const cartBtn = this.resultsEl && this.resultsEl.querySelector('.sc-btn-addcart');
+    if (cartBtn) { cartBtn.disabled = true; cartBtn.textContent = 'Adding…'; }
+    try {
+      const res = await fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: [{ id: Number(variantId), quantity: Number(quantity) }],
+          sections: 'esaftey-cart-drawer,cart-count'
+        })
+      });
+      const data = await res.json();
+      // Close the shipping panel first so z-index doesn't stack
+      this.classList.remove('open');
+      // Fire the same event the rest of the theme uses to open the cart drawer
+      document.documentElement.dispatchEvent(
+        new CustomEvent('cart:render', { detail: data, bubbles: true })
+      );
+    } catch (e) {
+      window.location.href = '/cart';
+    } finally {
+      if (cartBtn) { cartBtn.disabled = false; cartBtn.textContent = 'Add to cart'; }
+    }
   }
 
   renderNoRates() {
