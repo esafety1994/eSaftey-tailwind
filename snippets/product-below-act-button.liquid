@@ -130,6 +130,16 @@
     function closeCC() { expand.hidden = true;  toggle && toggle.setAttribute('aria-expanded', 'false'); }
     if (toggle)   toggle.addEventListener('click', function () { expand.hidden ? openCC() : closeCC(); });
     if (closeBtn) closeBtn.addEventListener('click', closeCC);
+
+    function trackBox(label) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'pdp_info_box_click', box_label: label });
+    }
+    if (toggle) toggle.addEventListener('click', function () { trackBox('Click & Collect'); });
+    var shippingBox = document.querySelector('[onclick="triggerShippingEstimate(event)"]');
+    if (shippingBox) shippingBox.addEventListener('click', function () { trackBox('Shipping Cost'); });
+    var priceBeatBox = document.querySelector('[data-price-beat-open]');
+    if (priceBeatBox) priceBeatBox.addEventListener('click', function () { trackBox('Price Beat'); });
   })();
 </script>
 
