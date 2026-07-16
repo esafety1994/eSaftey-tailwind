@@ -324,10 +324,19 @@
       })(window, document, "clarity", "script", "o0rr0feh4u");
     }
     if ('requestIdleCallback' in window) {
-      requestIdleCallback(function () { loadGTM(); loadHotjar(); loadClarity(); });
+      requestIdleCallback(function () { loadGTM(); });
     } else {
-      setTimeout(function () { loadGTM(); loadHotjar(); loadClarity(); }, 3000);
+      setTimeout(function () { loadGTM(); }, 3000);
     }
+    var _heatmapsLoaded = false;
+    function loadHeatmaps() {
+      if (_heatmapsLoaded) return;
+      _heatmapsLoaded = true;
+      loadHotjar();
+      loadClarity();
+    }
+    window.addEventListener('scroll', loadHeatmaps, { once: true });
+    window.addEventListener('click', loadHeatmaps, { once: true });
   </script>
 
   <script>
