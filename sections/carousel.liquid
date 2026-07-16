@@ -30,11 +30,12 @@
   /* Critical: give LCP image container explicit dimensions before async CSS loads */
   .hero-banner .glide__slide > div {
     position: relative;
-    height: 35vh;
+    height: 46vh;
+    min-height: 220px;
     overflow: hidden;
   }
   @media (min-width: 1024px) {
-    .hero-banner .glide__slide > div { height: 45vh; }
+    .hero-banner .glide__slide > div { height: 50vh; min-height: 0; }
   }
   .hero-banner .glide__slide img {
     position: absolute;
@@ -63,13 +64,21 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 94%;
+    width: 92%;
     max-width: 600px;
     margin-right: auto;
-    margin-left: 20px;
+    margin-left: 16px;
   }
   .carousel-content-wrapper p {
-    font-size: 34px;
+    font-size: 22px;
+  }
+  @media (min-width: 640px) {
+    .carousel-content-wrapper {
+      margin-left: 20px;
+    }
+    .carousel-content-wrapper p {
+      font-size: 34px;
+    }
   }
   .carousel-content-right .carousel-content-wrapper {
     align-items: flex-end;
@@ -95,7 +104,7 @@
         {% case block.type %}
           {% when 'slider_item' %}
             <li class="glide__slide relative w-full">
-              <div class="relative w-full h-[35vh] lg:h-[45vh] overflow-hidden">
+              <div class="relative w-full h-[46vh] lg:h-[50vh] overflow-hidden" style="min-height:220px">
                 {% assign img = block.settings.background %}
                 {% if img %}
                   <picture>
@@ -121,8 +130,8 @@
                       srcset="{{ img | image_url: width:1024 }} 1024w, {{ img | image_url: width:1920 }} 1920w"
                       sizes="100vw"
                       alt="{{ img.alt | escape }}"
-                      {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
-                      class="w-full h-full object-cover object-center block"
+                      {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}
+                      class="w-full h-full object-cover object-left sm:object-center block"
                       width="1920"
                       height="900"
                     />
@@ -140,7 +149,7 @@
                         {% endif %}
 
                         {% if block.settings.description != blank %}
-                          <div class="text-4xl mb-6 font-semibold">{{ block.settings.description }}</div>
+                          <div class="text-2xl md:text-4xl mb-4 md:mb-6 font-semibold leading-tight">{{ block.settings.description }}</div>
                         {% endif %}
 
                         {% if block.settings.button_text != blank and block.settings.button_link != blank %}
@@ -165,8 +174,10 @@
       <button
         class="hidden md:block glide__arrow glide__arrow--left absolute left-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
         data-glide-dir="<"
+        aria-label="Previous slide"
       >
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -180,8 +191,10 @@
       <button
         class="hidden md:block glide__arrow glide__arrow--right absolute right-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
         data-glide-dir=">"
+        aria-label="Next slide"
       >
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -203,6 +216,7 @@
         <button
           class="glide__bullet bg-black w-2.5 h-2.5 rounded-full cursor-pointer transition-all hover:bg-transparent hover:border"
           data-glide-dir="={{ i }}"
+          aria-label="Go to slide {{ i | plus: 1 }} of {{ block_count }}"
         ></button>
       {% endfor %}
     </div>

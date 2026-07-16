@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en-AU">
   <head>
   <title>
@@ -28,7 +29,6 @@
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://widget.reviews.io">
-    <link rel="dns-prefetch" href="https://assets.reviews.io">
     <link rel="dns-prefetch" href="https://api.reviews.io">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
 {% unless template contains 'product' %}
@@ -128,6 +128,7 @@
     <div id="esf-loader"><div id="esf-loader-ring"></div></div>
     <script>
       (function(){
+        var maxWait=setTimeout(function(){var l=document.getElementById('esf-loader');if(l)l.style.display='none';},2000);
         function check(){
           var t=document.createElement('div');
           t.className='hidden';
@@ -136,6 +137,7 @@
           var ready=getComputedStyle(t).display==='none';
           document.body.removeChild(t);
           if(ready){
+            clearTimeout(maxWait);
             requestAnimationFrame(function(){
               var l=document.getElementById('esf-loader');
               if(l) l.style.display='none';
@@ -197,6 +199,7 @@
       <script defer src="{{ 'predictive-search.js' | asset_url }}"></script>
     {% endif %}
     <footer>{% sections 'footer-group' %}</footer>
+{% render 'mobile-bottom-nav' %}
 
     {% if template contains 'blog' and template != 'article' %}
   <script type="application/ld+json">
@@ -336,7 +339,7 @@
         script.id = 'podium-widget';
         script.setAttribute('data-organization-api-token', '45d615a7-fd5b-4202-96bb-1a277644e6a7');
         script.setAttribute('data-styles', 'bottom: -10px;');
-        script.setAttribute('data-styles-phone', 'bottom: 25px;');
+        script.setAttribute('data-styles-phone', 'bottom: 75px;');
         script.defer = true;
         document.head.appendChild(script);
       }
