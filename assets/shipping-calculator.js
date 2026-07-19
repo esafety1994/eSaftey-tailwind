@@ -207,8 +207,13 @@ class ShippingCalculator extends HTMLElement {
   getFlatRate(orderTotalDollars) {
     if (orderTotalDollars <= 250) return 29;
     if (orderTotalDollars < 500) return 39;
-    if (orderTotalDollars <= 1500) return 59;
-    return 129;
+    if (orderTotalDollars <= 1500) return 89;
+    if (orderTotalDollars <= 2000) return 129;
+    if (orderTotalDollars <= 2500) return 150;
+    if (orderTotalDollars <= 4000) return 240;
+    if (orderTotalDollars <= 6000) return 360;
+    if (orderTotalDollars <= 8000) return 480;
+    return 600;
   }
 
   async handleCalculate() {
