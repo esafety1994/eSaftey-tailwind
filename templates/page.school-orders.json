@@ -1,0 +1,136 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "school-orders",
+      "blocks": {
+        "badge1": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Primary Schools"
+          }
+        },
+        "badge2": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Secondary Schools"
+          }
+        },
+        "badge3": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Universities & TAFE"
+          }
+        },
+        "badge4": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Private & Independent Schools"
+          }
+        },
+        "badge5": {
+          "type": "coverage_badge",
+          "settings": {
+            "text": "Early Learning Centres"
+          }
+        },
+        "step1": {
+          "type": "step",
+          "settings": {
+            "title": "Request a Quote (optional)",
+            "desc": "Email SKUs/quantities to receive a formal quote for budget approval."
+          }
+        },
+        "step2": {
+          "type": "step",
+          "settings": {
+            "title": "Raise your PO",
+            "desc": "Create a Purchase Order referencing our ABN and quote/invoice number."
+          }
+        },
+        "step3": {
+          "type": "step",
+          "settings": {
+            "title": "Email the PO",
+            "desc": "Send to orders@esafetysupplies.com.au. We'll confirm stock and ETA."
+          }
+        },
+        "step4": {
+          "type": "step",
+          "settings": {
+            "title": "Delivery & Invoice",
+            "desc": "Goods ship with a tax invoice emailed to Accounts Payable."
+          }
+        },
+        "faq1": {
+          "type": "faq",
+          "settings": {
+            "q": "Can we submit a Purchase Order after delivery?",
+            "a": "For audit compliance we require a valid PO prior to shipment. If urgent, contact us and we can hold stock while your PO is raised."
+          }
+        },
+        "faq2": {
+          "type": "faq",
+          "settings": {
+            "q": "Who qualifies for school payment terms?",
+            "a": "Australian public and private schools, universities, TAFEs, and other registered education institutions. Contact us if you're unsure whether your institution qualifies."
+          }
+        },
+        "faq3": {
+          "type": "faq",
+          "settings": {
+            "q": "How do we send POs and where are invoices sent?",
+            "a": "Send POs to orders@esafetysupplies.com.au. Tax invoices are emailed to your nominated Accounts Payable contact when goods ship."
+          }
+        },
+        "faq4": {
+          "type": "faq",
+          "settings": {
+            "q": "What are your delivery timeframes and shipping coverage?",
+            "a": "We ship Australia-wide. In-stock items usually dispatch promptly after PO receipt; any lead times or backorders are confirmed with ETA in your order acknowledgement."
+          }
+        }
+      },
+      "block_order": [
+        "badge1",
+        "badge2",
+        "badge3",
+        "badge4",
+        "badge5",
+        "step1",
+        "step2",
+        "step3",
+        "step4",
+        "faq1",
+        "faq2",
+        "faq3",
+        "faq4"
+      ],
+      "settings": {
+        "heading": "School Orders & Payment Terms",
+        "intro": "eSafety Supplies proudly supplies Australian schools, universities, and education institutions. We accept official Purchase Orders and offer approved account terms to simplify your procurement.",
+        "legal_name": "eSafety Supplies Pty Ltd",
+        "abn": "78 630 262 789",
+        "accounts_email": "accounts@esafetysupplies.com.au",
+        "po_email": "orders@esafetysupplies.com.au",
+        "phone": "1300 291 700",
+        "address": "396 Victoria Street, Wetherill Park NSW 2164",
+        "payment_terms": "30 days from invoice (EOM)",
+        "apply_link": "",
+        "primary_color": "#222222",
+        "accent_color": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

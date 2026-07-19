@@ -1,0 +1,285 @@
+{% comment %}
+  eSafety Supplies — School Orders & Payment Terms
+  Section for Online Store 2.0 themes.
+  Edit content via Theme Editor (blocks for badges, steps, documents, FAQs).
+{% endcomment %}
+
+<section class="school-orders color-scheme-1">
+  <div class="so-container">
+    <!-- Hero -->
+    <div class="so-hero">
+      <div class="so-eyebrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+        School & Education Purchasing
+      </div>
+      <h1 class="so-title">{{ section.settings.heading | escape }}</h1>
+      {% if section.settings.intro != blank %}
+        <p class="so-intro">{{ section.settings.intro }}</p>
+      {% endif %}
+      <div class="so-cta-row">
+        {% if section.settings.apply_link != blank %}
+          <a class="so-btn so-btn--primary" href="{{ section.settings.apply_link }}">Apply for a School Account</a>
+        {% endif %}
+      </div>
+      {% assign coverage = section.blocks | where: 'type', 'coverage_badge' %}
+      {% if coverage.size > 0 %}
+        <div class="so-badges">
+          {% for b in coverage %}
+            <span class="so-badge"><span class="so-tick">&#10003;</span> {{ b.settings.text }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Key terms -->
+    <div class="so-cards">
+      <div class="so-card">
+        <div class="so-card-head">
+          <div class="so-icon" aria-hidden="true">⏱</div>
+          <h3>Payment Terms</h3>
+        </div>
+        <p>Standard terms for approved schools: <strong>{{ section.settings.payment_terms | escape }}</strong>. Statements issued monthly. No credit card required for PO accounts.</p>
+      </div>
+      <div class="so-card">
+        <div class="so-card-head">
+          <div class="so-icon" aria-hidden="true">🏫</div>
+          <h3>Purchase Orders</h3>
+        </div>
+        <p>We accept official <strong>Purchase Orders</strong> via email. Ensure the PO includes ABN, delivery details, item codes, and an authorised signatory.</p>
+      </div>
+      <div class="so-card">
+        <div class="so-card-head">
+          <div class="so-icon" aria-hidden="true">💳</div>
+          <h3>Payment Methods</h3>
+        </div>
+        <p>Bank transfer (EFT), credit card, or school procurement card. Send remittances to <strong>{{ section.settings.accounts_email }}</strong> with PO/Invoice number.</p>
+      </div>
+    </div>
+
+    <!-- How to order -->
+    {% assign steps = section.blocks | where: 'type', 'step' %}
+    {% if steps.size > 0 %}
+      <div class="so-section-head">
+        <h2>How to place a School Order</h2>
+      </div>
+      <div class="so-grid so-grid--4">
+        {% for s in steps %}
+          <div class="so-card">
+            <div class="so-step">
+              <div class="so-step-icon" aria-hidden="true">✔</div>
+              <div>
+                <div class="so-step-title">{{ s.settings.title }}</div>
+                <div class="so-step-desc">{{ s.settings.desc }}</div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Supplier details -->
+    <div class="so-section-head">
+      <h2>Supplier Details</h2>
+    </div>
+    <div class="so-supplier">
+      <div class="so-supplier-grid">
+        <table class="so-supplier-table">
+          <tbody>
+            <tr>
+              <th scope="row">Legal Entity</th>
+              <td>{{ section.settings.legal_name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">ABN</th>
+              <td>{{ section.settings.abn }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Accounts Email</th>
+              <td><a href="mailto:{{ section.settings.accounts_email }}">{{ section.settings.accounts_email }}</a></td>
+            </tr>
+            <tr>
+              <th scope="row">PO Email</th>
+              <td><a href="mailto:{{ section.settings.po_email }}">{{ section.settings.po_email }}</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Phone</th>
+              <td><a href="tel:{{ section.settings.phone | replace: ' ', '' }}">{{ section.settings.phone }}</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Head Office</th>
+              <td>{{ section.settings.address }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Standard Terms</th>
+              <td>{{ section.settings.payment_terms }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Forms & documents -->
+    {% assign docs = section.blocks | where: 'type', 'document' %}
+    {% if docs.size > 0 %}
+      <div class="so-section-head">
+        <h2>Forms & Documents</h2>
+      </div>
+      <div class="so-grid so-grid--4">
+        {% for d in docs %}
+          <a class="so-card so-doc" href="{{ d.settings.url }}" target="_blank" rel="noopener">
+            <div class="so-doc-icon" aria-hidden="true">📄</div>
+            <div>
+              <div class="so-doc-title">{{ d.settings.name }}</div>
+              <div class="so-doc-meta">PDF / 1–2 pages</div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- FAQs -->
+    {% assign faqs = section.blocks | where: 'type', 'faq' %}
+    {% if faqs.size > 0 %}
+      <div class="so-section-head">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="so-faq">
+        {% for f in faqs %}
+          <details class="so-faq-item">
+            <summary class="so-faq-q">{{ f.settings.q }}</summary>
+            <div class="so-faq-a">{{ f.settings.a }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- CTA band -->
+    <div class="so-cta">
+      <h2>Open a School Account</h2>
+      <p>Send us your school details and we'll set up PO-based purchasing with your approved payment terms.</p>
+      <div class="so-cta-actions">
+        {% if section.settings.apply_link != blank %}
+          <a class="so-btn so-btn--invert" href="{{ section.settings.apply_link }}">Start Application</a>
+        {% endif %}
+        <a class="so-btn so-btn--outline" href="tel:{{ section.settings.phone | replace: ' ', '' }}">Call {{ section.settings.phone }}</a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .so-tick { font-size: 20px; margin-right: 6px; font-weight: bold; color: #000; }
+    .school-orders { --so-primary: {{ section.settings.primary_color }}; --so-accent: {{ section.settings.accent_color }}; --so-border: #e5e7eb; --so-text: #0b1220; --so-muted: #64748b; background: #f8fafc; }
+    .school-orders .so-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 60px; }
+    .so-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--so-border); border-radius: 999px; padding: 6px 10px; font-size: 12px; color: var(--so-text); }
+    .so-title { font-size: clamp(32px, 4vw, 44px); margin: 10px 0 8px; color: var(--so-text); font-weight: 800; }
+    .so-intro { color: var(--so-muted); font-size: 18px; max-width: none; line-height: 1.6; }
+    .so-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .so-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; border-radius: 14px; font-weight: 700; text-decoration: none; }
+    .so-btn--primary { background: var(--so-primary); color: #fff; }
+    .so-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .so-badge { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--so-border); border-radius: 999px; padding: 6px 12px; font-size: 13px; color: var(--so-text); background: #fff; }
+    .so-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0 10px; }
+    .so-card { background: #fff; border-radius: 18px; border: 1px solid var(--so-border); padding: 18px; }
+    .so-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .so-card-head h3 { margin: 0; font-size: 18px; }
+    .so-icon { width: 60px; height: 60px; display: grid; font-size: 32px; place-items: center; border: 1px solid var(--so-border); border-radius: 10px; background: #f1f5f9; }
+    .so-section-head h2 { font-size: 24px; margin: 28px 0 12px; color: var(--so-text); font-weight: 800; }
+    .so-grid { display: grid; gap: 16px; }
+    .so-grid--4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .so-step { display: flex; gap: 12px; }
+    .so-step-icon { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--so-border); border-radius: 10px; background: #f1f5f9; font-weight: 700; flex-shrink: 0; }
+    .so-step-title { font-weight: 700; }
+    .so-step-desc { color: var(--so-muted); font-size: 14px; margin-top: 4px; }
+    .so-supplier { margin-top: 10px; }
+    .so-supplier-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .so-supplier-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border: 1px solid var(--so-border); border-radius: 12px; overflow: hidden; }
+    .so-supplier-table th, .so-supplier-table td { padding: 12px 16px; vertical-align: top; border-bottom: 1px solid var(--so-border); }
+    .so-supplier-table th { width: 32%; background: #f8fafc; text-align: left; font-weight: 700; color: var(--so-text); }
+    .so-supplier-table td { color: var(--so-muted); }
+    .so-supplier-table tr:last-child th, .so-supplier-table tr:last-child td { border-bottom: none; }
+    .so-supplier-table a { color: var(--so-primary); text-decoration: none; }
+    .so-supplier-table a:hover { text-decoration: underline; }
+    .so-doc { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+    .so-doc-icon { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--so-border); border-radius: 10px; background: #f1f5f9; font-size: 18px; }
+    .so-doc-title { font-weight: 700; }
+    .so-doc-meta { color: var(--so-muted); font-size: 12px; }
+    .so-faq { display: grid; gap: 10px; }
+    .so-faq-item { background: #fff; border: 1px solid var(--so-border); border-radius: 14px; padding: 12px 16px; }
+    .so-faq-q { cursor: pointer; font-weight: 700; }
+    .so-faq-a { color: var(--so-muted); margin-top: 10px; }
+    .so-cta { margin-top: 24px; background: var(--so-primary); color: #fff; border-radius: 24px; padding: 28px; text-align: center; }
+    .so-cta h2 { margin: 0; font-size: 28px; color: white; }
+    .so-cta p { opacity: 0.95; max-width: 760px; margin: 8px auto 0; }
+    .so-cta-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+    .so-btn--invert { background: #fff; color: #0f172a; }
+    .so-btn--outline { border: 1px solid rgba(255,255,255,.6); color: #fff; }
+    @media (max-width: 980px) {
+      .so-cards { grid-template-columns: 1fr; }
+      .so-grid--4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 640px) {
+      .so-grid--4 { grid-template-columns: 1fr; }
+      .so-supplier-table th, .so-supplier-table td { padding: 12px; }
+      .so-supplier-table th { width: 40%; }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "School orders (eSafety)",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "School Orders & Payment Terms" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "eSafety Supplies proudly supplies Australian schools, universities, and education institutions. We accept official Purchase Orders and offer approved account terms to simplify your procurement." },
+    { "type": "text", "id": "legal_name", "label": "Legal entity", "default": "eSafety Supplies Pty Ltd" },
+    { "type": "text", "id": "abn", "label": "ABN", "default": "78 630 262 789" },
+    { "type": "text", "id": "accounts_email", "label": "Accounts email", "default": "accounts@esafetysupplies.com.au" },
+    { "type": "text", "id": "po_email", "label": "PO email", "default": "orders@esafetysupplies.com.au" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
+    { "type": "text", "id": "address", "label": "Head office address", "default": "396 Victoria Street, Wetherill Park NSW 2164" },
+    { "type": "text", "id": "payment_terms", "label": "Payment terms", "default": "30 days from invoice (EOM)" },
+    { "type": "url", "id": "apply_link", "label": "Apply link (optional)" },
+    { "type": "color", "id": "primary_color", "label": "Primary brand colour", "default": "#222222" },
+    { "type": "color", "id": "accent_color", "label": "Accent colour", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "coverage_badge",
+      "name": "Coverage badge",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Primary Schools" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Request a Quote (optional)" },
+        { "type": "textarea", "id": "desc", "label": "Description", "default": "Email SKUs/quantities to receive a formal quote for approval." }
+      ]
+    },
+    {
+      "type": "document",
+      "name": "Document link",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Document name", "default": "Certificate of Currency" },
+        { "type": "url", "id": "url", "label": "File URL" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question", "default": "Who qualifies for school payment terms?" },
+        { "type": "textarea", "id": "a", "label": "Answer", "default": "Australian public and private schools, universities, TAFEs, and other registered education institutions. Contact us if you're unsure whether your institution qualifies." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "School orders (eSafety)",
+      "category": "Pages"
+    }
+  ]
+}
+{% endschema %}
