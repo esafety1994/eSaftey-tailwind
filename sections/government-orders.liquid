@@ -18,7 +18,8 @@
       {% endif %}
       <div class="go-cta-row">
         {% if section.settings.apply_link != blank %}
-          <a class="go-btn go-btn--primary" href="{{ section.settings.apply_link }}">Apply for a Government Account</a>
+         <a class="go-btn go-btn--primary" href="{{ section.settings.apply_link }}">Apply for a Government or Education Account</a>
+
         {% endif %}
         </div>
       {% assign coverage = section.blocks | where: 'type', 'coverage_badge' %}
