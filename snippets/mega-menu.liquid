@@ -18,8 +18,7 @@
           <div class="flex w-full items-center justify-between">
             {% if has_children %}
               <a
-                href="#"
-                data-href="{{ item.url }}"
+                href="{{ item.url }}"
                 class="mega-item-link bg-white text-left flex-1 p-3 hover:bg-[#FDDC14] font-semibold capitalize flex gap-2 items-center h-14"
                 data-has-children="true"
                 data-index="{{ ns_outer }}"
@@ -63,8 +62,7 @@
                     {% if has_grand %}
                       <div class="flex w-full items-center justify-between">
                         <a
-                          href="#"
-                          data-href="{{ child.url }}"
+                          href="{{ child.url }}"
                           class="mega-item-link block text-black flex-1 font-normal hover:bg-[#FDDC14] hover:text-black capitalize "
                           data-has-children="true"
                           data-index="{{ ns_child }}"
