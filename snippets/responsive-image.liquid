@@ -42,12 +42,6 @@
   {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
 
   {% assign def_img_size = max_width | default: image.width | times: 2 %}
-  {%- comment -%} Preserve actual aspect ratio in width/height attrs so browsers reserve correct space (no CLS) {%- endcomment -%}
-  {% if image.width and image.height %}
-    {% assign def_img_height = def_img_size | times: image.height | divided_by: image.width %}
-  {% else %}
-    {% assign def_img_height = def_img_size %}
-  {% endif %}
   {% assign alt = image.alt | default: 'Image - esafety' %}
   {% assign img_sizes = "(min-width: " | append: settings.container_width | append: "px) " | append: settings.container_width | minus: 130 | divided_by: 4 | append: "px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)" %}
   <picture>
@@ -81,12 +75,12 @@
         fetchPriority="{{ fetchpriority }}"
         class="{{ image_class }}"
         width="{{ def_img_size }}"
-        height="{{ def_img_height }}"
+        height="{{ def_img_size }}"
         {{ image_attributes }}
     >
   </picture>
   {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
   <noscript>
-    <img class="{{ image_class }}" loading="lazy" width="{{ def_img_size }}" height="{{ def_img_height }}" src="{{ image | image_url: width: 800 }}" alt="{{ alt | escape }}">
+    <img class="{{ image_class }}" loading="lazy" width="{{ def_img_size }}" height="{{ def_img_size }}" src="{{ image | image_url: width: 800 }}" alt="{{ alt | escape }}">
   </noscript>
 </responsive-image>

@@ -26,10 +26,10 @@
 <meta name="description" content="{{ meta_desc | strip | escape }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% comment %} Keep preconnects ≤4 — Chrome warns above that {% endcomment %}
-    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://widget.reviews.io">
+    <link rel="dns-prefetch" href="https://api.reviews.io">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
 {% unless template contains 'product' %}
     <script type="application/ld+json">
@@ -101,19 +101,54 @@
     {% comment %} Critical CSS in <head> so carousel LCP element has dimensions before any script can block rendering {% endcomment %}
     {% section 'head-critical-css' %}
 
+    {% comment %} Page-load overlay — covers unstyled content until async CSS is ready {% endcomment %}
+    <style>
+      #esf-loader{position:fixed;inset:0;z-index:2147483647;background:#fff;display:flex;align-items:center;justify-content:center}
+      @keyframes esf-spin{to{transform:rotate(360deg)}}
+      #esf-loader-ring{width:48px;height:48px;border-radius:50%;border:4px solid #fedc13;border-top-color:#1a1a1a;animation:esf-spin .75s linear infinite}
+    </style>
+
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
-    {% comment %} Render-blocking CSS — no FOUC, reliable across all browsers/CSPs. {% endcomment %}
-    <link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
+    <link rel="preload" href="{{ 'glide.core.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'tailwind.output.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'esafety-drawer.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'global.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'global.css' | asset_url }}"></noscript>
     {%- if template == 'product' -%}
-      <link rel="stylesheet" href="{{ 'product.css' | asset_url }}">
+      <link rel="preload" href="{{ 'product.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="{{ 'product.css' | asset_url }}"></noscript>
     {%- endif -%}
   </head>
   <body class="font-normal static">
+    <div id="esf-loader"><div id="esf-loader-ring"></div></div>
+    <script>
+      (function(){
+        var maxWait=setTimeout(function(){var l=document.getElementById('esf-loader');if(l)l.style.display='none';},2000);
+        function check(){
+          var t=document.createElement('div');
+          t.className='hidden';
+          t.style.cssText='position:absolute;top:-9999px;pointer-events:none';
+          document.body.appendChild(t);
+          var ready=getComputedStyle(t).display==='none';
+          document.body.removeChild(t);
+          if(ready){
+            clearTimeout(maxWait);
+            requestAnimationFrame(function(){
+              var l=document.getElementById('esf-loader');
+              if(l) l.style.display='none';
+            });
+          } else {
+            setTimeout(check,30);
+          }
+        }
+        check();
+      })();
+    </script>
     {% render 'global-spinner' %}
     <div class="sticky top-0 z-50 bg-white">
       {% sections 'header-group' %}
@@ -288,32 +323,11 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "o0rr0feh4u");
     }
-    var _gtmLoaded = false;
-    function bootGTM() {
-      if (_gtmLoaded) return;
-      _gtmLoaded = true;
-      loadGTM();
-    }
-    // Load GTM on first user interaction — captures real visitors as soon as they engage.
-    // Fallback: after `load` event + idle callback — under Lighthouse Slow 4G throttling
-    // `load` doesn't fire until all resources are down (~15-20s), keeping GTM out of the
-    // performance measurement window entirely.
-    ['scroll', 'mousemove', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
-      window.addEventListener(ev, bootGTM, { once: true, passive: true });
-    });
-    function scheduleGTMFallback() {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(bootGTM, { timeout: 5000 });
-      } else {
-        setTimeout(bootGTM, 2000);
-      }
-    }
-    if (document.readyState === 'complete') {
-      scheduleGTMFallback();
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(function () { loadGTM(); });
     } else {
-      window.addEventListener('load', scheduleGTMFallback, { once: true });
+      setTimeout(function () { loadGTM(); }, 3000);
     }
-
     var _heatmapsLoaded = false;
     function loadHeatmaps() {
       if (_heatmapsLoaded) return;
