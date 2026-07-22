@@ -101,54 +101,19 @@
     {% comment %} Critical CSS in <head> so carousel LCP element has dimensions before any script can block rendering {% endcomment %}
     {% section 'head-critical-css' %}
 
-    {% comment %} Page-load overlay — covers unstyled content until async CSS is ready {% endcomment %}
-    <style>
-      #esf-loader{position:fixed;inset:0;z-index:2147483647;background:#fff;display:flex;align-items:center;justify-content:center}
-      @keyframes esf-spin{to{transform:rotate(360deg)}}
-      #esf-loader-ring{width:48px;height:48px;border-radius:50%;border:4px solid #fedc13;border-top-color:#1a1a1a;animation:esf-spin .75s linear infinite}
-    </style>
-
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
-    <link rel="preload" href="{{ 'glide.core.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}"></noscript>
-    <link rel="preload" href="{{ 'tailwind.output.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}"></noscript>
-    <link rel="preload" href="{{ 'esafety-drawer.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}"></noscript>
-    <link rel="preload" href="{{ 'global.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'global.css' | asset_url }}"></noscript>
+    {% comment %} Render-blocking critical CSS — total ~70KB minified, avoids FOUC and unblocks LCP paint {% endcomment %}
+    <link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
     {%- if template == 'product' -%}
-      <link rel="preload" href="{{ 'product.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="{{ 'product.css' | asset_url }}"></noscript>
+      <link rel="stylesheet" href="{{ 'product.css' | asset_url }}">
     {%- endif -%}
   </head>
   <body class="font-normal static">
-    <div id="esf-loader"><div id="esf-loader-ring"></div></div>
-    <script>
-      (function(){
-        var maxWait=setTimeout(function(){var l=document.getElementById('esf-loader');if(l)l.style.display='none';},2000);
-        function check(){
-          var t=document.createElement('div');
-          t.className='hidden';
-          t.style.cssText='position:absolute;top:-9999px;pointer-events:none';
-          document.body.appendChild(t);
-          var ready=getComputedStyle(t).display==='none';
-          document.body.removeChild(t);
-          if(ready){
-            clearTimeout(maxWait);
-            requestAnimationFrame(function(){
-              var l=document.getElementById('esf-loader');
-              if(l) l.style.display='none';
-            });
-          } else {
-            setTimeout(check,30);
-          }
-        }
-        check();
-      })();
-    </script>
     {% render 'global-spinner' %}
     <div class="sticky top-0 z-50 bg-white">
       {% sections 'header-group' %}

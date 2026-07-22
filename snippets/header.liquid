@@ -8,10 +8,14 @@
       {% if shop.brand.logo %}
         <a href="/" class="block m-auto">
           <img
-            src="{{ shop.brand.logo | img_url: '300x300' }}"
+            src="{{ shop.brand.logo | image_url: width: 320, format: 'webp' }}"
+            srcset="{{ shop.brand.logo | image_url: width: 160, format: 'webp' }} 160w, {{ shop.brand.logo | image_url: width: 320, format: 'webp' }} 320w"
+            sizes="160px"
             alt="{{ shop.name }}"
             width="160"
             height="150"
+            fetchpriority="high"
+            decoding="async"
             class="h-auto object-contain"
           >
         </a>
