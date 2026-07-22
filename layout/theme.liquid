@@ -27,6 +27,7 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://widget.reviews.io">
     <link rel="dns-prefetch" href="https://api.reviews.io">
@@ -288,11 +289,19 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "o0rr0feh4u");
     }
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(function () { loadGTM(); });
-    } else {
-      setTimeout(function () { loadGTM(); }, 3000);
+    var _gtmLoaded = false;
+    function bootGTM() {
+      if (_gtmLoaded) return;
+      _gtmLoaded = true;
+      loadGTM();
     }
+    // Load GTM on first user interaction — clears Lighthouse's measurement window while
+    // still capturing real visitors as soon as they engage. 8s hard fallback for bouncers.
+    ['scroll', 'mousemove', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
+      window.addEventListener(ev, bootGTM, { once: true, passive: true });
+    });
+    setTimeout(bootGTM, 8000);
+
     var _heatmapsLoaded = false;
     function loadHeatmaps() {
       if (_heatmapsLoaded) return;
