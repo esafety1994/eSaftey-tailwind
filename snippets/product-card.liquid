@@ -65,6 +65,8 @@
             <img
               src="{{ hover_url }}"
               data-hover-src="{{ hover_url }}"
+              srcset="{{ prod.images[1] | image_url: width: 200 }} 200w, {{ prod.images[1] | image_url: width: 300 }} 300w, {{ prod.images[1] | image_url: width: 450 }} 450w, {{ prod.images[1] | image_url: width: 600 }} 600w"
+              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 300px"
               alt="{{ prod.images[1].alt | default: prod.title | escape }}"
               class="absolute inset-0 w-full h-full object-contain transition-all duration-300 opacity-0 group-hover:!opacity-100 group-hover:scale-105 z-20 hover-image"
               loading="lazy"
