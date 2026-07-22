@@ -26,11 +26,10 @@
 <meta name="description" content="{{ meta_desc | strip | escape }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {% comment %} Keep preconnects ≤4 — Chrome warns above that {% endcomment %}
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://widget.reviews.io">
-    <link rel="dns-prefetch" href="https://api.reviews.io">
     <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
 {% unless template contains 'product' %}
     <script type="application/ld+json">
@@ -105,13 +104,18 @@
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
-    {% comment %} Render-blocking critical CSS — total ~70KB minified, avoids FOUC and unblocks LCP paint {% endcomment %}
-    <link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}">
-    <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
+    {% comment %} Async CSS — head-critical-css section handles above-fold styling so FOUC is minimal {% endcomment %}
+    <link rel="preload" href="{{ 'glide.core.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'tailwind.output.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'esafety-drawer.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'global.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'global.css' | asset_url }}"></noscript>
     {%- if template == 'product' -%}
-      <link rel="stylesheet" href="{{ 'product.css' | asset_url }}">
+      <link rel="preload" href="{{ 'product.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="{{ 'product.css' | asset_url }}"></noscript>
     {%- endif -%}
   </head>
   <body class="font-normal static">

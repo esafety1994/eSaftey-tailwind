@@ -20,7 +20,7 @@
             style="background-color: {{ section.settings.bg_color_img_1 }}"
           >
         {% endif %}
-        {% render 'responsive-image', image: section.settings.image_1, wrapper_class: 'flex items-center justify-center w-full', image_class: 'max-w-full h-52 sm:h-80 md:h-[420px] object-center object-contain hover:scale-105 transition-transform duration-300' %}
+        {% render 'responsive-image', image: section.settings.image_1, wrapper_class: 'flex items-center justify-center w-full', image_class: 'max-w-full h-52 sm:h-80 md:h-[420px] object-center object-contain hover:scale-105 transition-transform duration-300', enable_preload_image: true %}
         {% if section.settings.button_text_1 != blank %}
           <span class="absolute  w-full text-center bottom-4">
             <span class="inline-block btn primary-button transition">
