@@ -104,18 +104,13 @@
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
-    {% comment %} Async CSS — head-critical-css section handles above-fold styling so FOUC is minimal {% endcomment %}
-    <link rel="preload" href="{{ 'glide.core.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}"></noscript>
-    <link rel="preload" href="{{ 'tailwind.output.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}"></noscript>
-    <link rel="preload" href="{{ 'esafety-drawer.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}"></noscript>
-    <link rel="preload" href="{{ 'global.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{ 'global.css' | asset_url }}"></noscript>
+    {% comment %} Render-blocking + preload hint via Shopify's stylesheet_tag — prevents FOUC while letting the platform prioritize CSS delivery {% endcomment %}
+    {{ 'glide.core.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'tailwind.output.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'esafety-drawer.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'global.css' | asset_url | stylesheet_tag: preload: true }}
     {%- if template == 'product' -%}
-      <link rel="preload" href="{{ 'product.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="{{ 'product.css' | asset_url }}"></noscript>
+      {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
     {%- endif -%}
   </head>
   <body class="font-normal static">
