@@ -104,13 +104,21 @@
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
-    {% comment %} Render-blocking + preload hint via Shopify's stylesheet_tag — prevents FOUC while letting the platform prioritize CSS delivery {% endcomment %}
-    {{ 'glide.core.min.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'tailwind.output.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'esafety-drawer.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'global.css' | asset_url | stylesheet_tag: preload: true }}
+    {% comment %}
+      Async CSS — inline critical CSS in head-critical-css section covers above-fold,
+      so this loading below the fold happens without FOUC.
+    {% endcomment %}
+    <link rel="preload" href="{{ 'glide.core.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'tailwind.output.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'esafety-drawer.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'global.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'global.css' | asset_url }}"></noscript>
     {%- if template == 'product' -%}
-      {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
+      <link rel="preload" href="{{ 'product.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="{{ 'product.css' | asset_url }}"></noscript>
     {%- endif -%}
   </head>
   <body class="font-normal static">
