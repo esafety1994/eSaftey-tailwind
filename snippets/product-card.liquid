@@ -39,6 +39,7 @@
   assign price_color = price_color | default: '#000000'
   assign max_tags = max_tags | default: 0
   assign layout = layout | default: 'card'
+  assign enable_preload = enable_preload | default: false
 %}
 
 {% comment %} Try to resolve a full product object from `all_products` if `product` appears to be a shallow drop (handles may be present) {% endcomment %}
@@ -60,11 +61,7 @@
       <a href="{{ prod.url }}" class="absolute inset-0 z-20 block">
         {% if prod.featured_image %}
           {% if prod.images[1] %}
-            {% if layout == 'search' %}
-              {% assign hover_url = prod.images[1] | image_url: width: 400 %}
-            {% else %}
-              {% assign hover_url = prod.images[1] | image_url: width: 600 %}
-            {% endif %}
+            {% assign hover_url = prod.images[1] | image_url: width: 400 %}
             <img
               src="{{ hover_url }}"
               data-hover-src="{{ hover_url }}"
@@ -89,7 +86,8 @@
             {% render 'responsive-image',
               image: prod.featured_image,
               image_class: featured_class,
-              wrapper_class: 'absolute inset-0 z-10'
+              wrapper_class: 'absolute inset-0 z-10',
+              enable_preload_image: enable_preload
             %}
           {% endif %}
         {% else %}
