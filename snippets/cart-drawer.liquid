@@ -24,7 +24,8 @@
       </button>
     </div>
 
-    <div id="cart-drawer-content" class="p-4 overflow-y-auto flex-1">
+    <div class="relative flex-1 flex flex-col overflow-hidden">
+    <div id="cart-drawer-content" class="p-4 overflow-y-auto flex-1 cart-drawer-scroll">
       {% render 'shipping-goals', cart: cart %}
 
       {% if cart.item_count == 0 %}
@@ -97,6 +98,52 @@
         })();
       </script>
     </div>
+      <div id="cart-drawer-scrolltrack" aria-hidden="true" style="position:absolute;top:8px;bottom:8px;right:4px;width:8px;background:#e5e7eb;border-radius:4px;opacity:0;transition:opacity 0.15s;pointer-events:none;">
+        <div id="cart-drawer-scrollthumb" style="position:absolute;left:0;right:0;background:#6b7280;border-radius:4px;min-height:24px;"></div>
+      </div>
+    </div>
+
+    <style>
+      /* Hide native scrollbar — we render our own persistent indicator */
+      .cart-drawer-scroll { scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
+      .cart-drawer-scroll::-webkit-scrollbar { display: none; width: 0; height: 0; }
+    </style>
+
+    <script>
+      (function () {
+        var scroller = document.getElementById('cart-drawer-content');
+        var track = document.getElementById('cart-drawer-scrolltrack');
+        var thumb = document.getElementById('cart-drawer-scrollthumb');
+        if (!scroller || !track || !thumb) return;
+
+        function updateThumb() {
+          var sh = scroller.scrollHeight;
+          var ch = scroller.clientHeight;
+          if (sh <= ch + 1) {
+            track.style.opacity = '0';
+            return;
+          }
+          track.style.opacity = '1';
+          var trackH = track.clientHeight;
+          var ratio = ch / sh;
+          var thumbH = Math.max(24, Math.round(trackH * ratio));
+          var maxTop = trackH - thumbH;
+          var top = Math.round((scroller.scrollTop / (sh - ch)) * maxTop);
+          thumb.style.height = thumbH + 'px';
+          thumb.style.top = top + 'px';
+        }
+
+        scroller.addEventListener('scroll', updateThumb, { passive: true });
+        window.addEventListener('resize', updateThumb);
+
+        if (window.MutationObserver) {
+          new MutationObserver(function () { setTimeout(updateThumb, 30); })
+            .observe(scroller, { childList: true, subtree: true });
+        }
+
+        setTimeout(updateThumb, 50);
+      })();
+    </script>
 
     <div class="p-4">
       <!-- Note toggle button and sliding panel -->
