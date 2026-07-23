@@ -10,11 +10,6 @@
   {% assign _header = _header | remove: "d1liekpayvooaz.cloudfront.net/apps/customizery/product-widget" %}
 {% endunless %}
 
-{% comment %} Synctrack tracker only needed on order status/tracking pages {% endcomment %}
-{% unless tiny_page_name == "order" or template contains "customers" %}
-  {% assign _header = _header | remove: "https://media.synctrack.io" %}
-{% endunless %}
-
 {% comment %} Rise.ai wallet widget is only relevant on cart and account pages {% endcomment %}
 {% unless tiny_page_name == "cart" or tiny_page_name == "customers" %}
   {% assign _header = _header | remove_first: "strn.rise-ai.com" %}
