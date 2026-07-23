@@ -2,10 +2,17 @@
 {% assign tiny_page_name = template.name | replace: tiny_template_suffix, "" %}
 {% assign _header = content_for_header %}
 
-{% comment %} Customizery is only needed on product pages — strip it everywhere else {% endcomment %}
+{% comment %} Customizery is only needed on product pages — strip JS + CSS everywhere else {% endcomment %}
 {% unless tiny_page_name == "product" %}
   {% assign _header = _header | remove: "https://d1liekpayvooaz.cloudfront.net/apps/customizery/customizery.js?shop=5c59e6.myshopify.com" %}
   {% assign _header = _header | remove: "https://d1liekpayvooaz.cloudfront.net/apps/customizery/customizery.js" %}
+  {% assign _header = _header | remove: "d1liekpayvooaz.cloudfront.net/apps/customizery/product-widget/style.css" %}
+  {% assign _header = _header | remove: "d1liekpayvooaz.cloudfront.net/apps/customizery/product-widget" %}
+{% endunless %}
+
+{% comment %} Synctrack tracker only needed on order status/tracking pages {% endcomment %}
+{% unless tiny_page_name == "order" or template contains "customers" %}
+  {% assign _header = _header | remove: "https://media.synctrack.io" %}
 {% endunless %}
 
 {% comment %} Rise.ai wallet widget is only relevant on cart and account pages {% endcomment %}
