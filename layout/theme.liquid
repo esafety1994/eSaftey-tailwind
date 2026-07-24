@@ -305,30 +305,11 @@
         f.parentNode.insertBefore(j, f);
       })(window, document, 'script', 'dataLayer', 'GTM-WT8Q95B');
     }
-    function loadHotjar() {
-      (function (h, o, t, j, a, r) {
-        h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments); };
-        h._hjSettings = { hjid: 2509798, hjsv: 6 };
-        a = o.getElementsByTagName('head')[0];
-        r = o.createElement('script');
-        r.async = 1;
-        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-        a.appendChild(r);
-      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-    }
     if ('requestIdleCallback' in window) {
       requestIdleCallback(function () { loadGTM(); });
     } else {
       setTimeout(function () { loadGTM(); }, 3000);
     }
-    var _heatmapsLoaded = false;
-    function loadHeatmaps() {
-      if (_heatmapsLoaded) return;
-      _heatmapsLoaded = true;
-      loadHotjar();
-    }
-    window.addEventListener('scroll', loadHeatmaps, { once: true });
-    window.addEventListener('click', loadHeatmaps, { once: true });
   </script>
 
   <script>
