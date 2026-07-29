@@ -121,7 +121,7 @@
     function fmt(d) { return d.getDate() + ' ' + months[d.getMonth()]; }
     var today = new Date();
     var etaEl = document.getElementById('pdp-eta-dates');
-    if (etaEl) etaEl.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 5));
+    if (etaEl) etaEl.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 4));
 
     var toggle   = document.getElementById('pdp-cc-toggle');
     var expand   = document.getElementById('pdp-cc-expand');
