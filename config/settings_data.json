@@ -97,12 +97,13 @@
         "type": "promo-popup",
         "settings": {
           "enable_popup": true,
-          "popup_image": "shopify://shop_images/website-pop-up_July.jpg",
-          "popup_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers",
+          "popup_image": "shopify://shop_images/august-ccb-pos-screen.jpg",
+          "popup_image_mobile": "shopify://shop_images/August-social-media-1080x1080_3.jpg",
+          "popup_link": "shopify://collections/super-sale",
           "open_in_new_tab": false,
           "popup_delay": 3,
           "cookie_days": 30,
-          "popup_version": "JULY-BLOWOUT-SALE-2026"
+          "popup_version": "AUGUST-SUPER-SALE-2026"
         }
       },
       "head-critical-css": {
