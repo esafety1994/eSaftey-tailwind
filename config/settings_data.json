@@ -96,7 +96,7 @@
       "promo-popup": {
         "type": "promo-popup",
         "settings": {
-          "enable_popup": true,
+          "enable_popup": false,
           "popup_image": "shopify://shop_images/august-ccb-pos-screen.jpg",
           "popup_image_mobile": "shopify://shop_images/August-social-media-1080x1080_3.jpg",
           "popup_link": "shopify://collections/super-sale",
