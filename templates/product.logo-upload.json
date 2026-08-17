@@ -54,7 +54,7 @@
         "custom_field_logo_upload": {
           "type": "custom_field",
           "settings": {
-            "title": "Upload Your Logo",
+            "title": "Upload Your Logo/Design",
             "field_type": "file",
             "field_options": "",
             "field_placeholder": "",
