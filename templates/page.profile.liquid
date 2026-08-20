@@ -1,0 +1,573 @@
+{% comment %}
+  Custom B2B Account Profile page
+  Uses Liquid customer object for auth + data
+  Layout: keeps theme header, hides theme footer, fits viewport
+{% endcomment %}
+
+{%- if customer == blank -%}
+  <script>window.location.href = "/account/login?return_to=/pages/profile";</script>
+  <noscript>Please <a href="/account/login">log in</a> to view your profile.</noscript>
+{%- else -%}
+
+{%- assign customer_tags_lower = customer.tags | join: ',' | downcase -%}
+{%- assign is_b2b = false -%}
+{%- if customer_tags_lower contains 'b2b' -%}
+  {%- assign is_b2b = true -%}
+{%- elsif customer.company != blank -%}
+  {%- assign is_b2b = true -%}
+{%- elsif customer.company_available_locations.size > 0 -%}
+  {%- assign is_b2b = true -%}
+{%- endif -%}
+{%- unless is_b2b -%}
+  <script>window.location.href = "/account";</script>
+  <noscript>This profile is only available for B2B customers. <a href="/account">Go to your account</a>.</noscript>
+{%- else -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="esa-dashboard">
+  <aside class="esa-sidebar">
+    <nav class="esa-sidebar-nav">
+      <a href="/pages/dashboard?view=dashboard" class="esa-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <span>Orders</span>
+      </a>
+      <a href="/pages/profile?view=profile" class="esa-nav-item esa-nav-active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </a>
+      <a href="/" class="esa-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span>Back to Website</span>
+      </a>
+    </nav>
+    <div class="esa-sidebar-help">
+      <div class="esa-help-inner">
+        <div class="esa-help-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3v4zM3 19a2 2 0 0 0 2 2h1v-6H3v4z"/></svg>
+        </div>
+        <div>
+          <div class="esa-help-title">Need help?</div>
+          <div class="esa-help-sub">Our team is here to help.</div>
+        </div>
+      </div>
+      <a href="/pages/contact-us" class="esa-help-btn">
+        Contact Us
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="esa-main">
+    <header class="esa-header">
+      <div class="esa-header-logo">
+        <img src="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Advantage_Logo_2-2.png?v=1785216933" alt="eSafety Advantage" width="279" height="44">
+      </div>
+      <div class="esa-header-user esa-user-menu">
+        <button type="button" class="esa-user-btn" id="esa-user-btn" aria-haspopup="true" aria-expanded="false">
+          {%- if customer.company -%}
+            <span class="esa-company-name">{{ customer.company.name }}</span>
+          {%- else -%}
+            <span class="esa-company-name">{{ customer.first_name }} {{ customer.last_name }}</span>
+          {%- endif -%}
+          <svg class="esa-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <div class="esa-avatar">
+            {{ customer.first_name | slice: 0 | upcase }}
+          </div>
+        </button>
+        <div class="esa-user-dropdown" id="esa-user-dropdown">
+          <a href="/pages/profile?view=profile" class="esa-user-dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+          </a>
+          <a href="/account/logout" class="esa-user-dropdown-item esa-user-dropdown-signout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <section class="esa-content">
+      <div class="esa-welcome">
+        <div>
+          <div class="esa-breadcrumb">
+            <a href="/pages/dashboard?view=dashboard">Home</a> <span>/</span> <span>Profile</span>
+          </div>
+          <h1 class="esa-title">Profile</h1>
+          <p class="esa-subtitle">View and manage your account preferences.</p>
+        </div>
+        <div class="esa-controls">
+          <div class="esa-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search orders, products or PO number..." id="esa-search-input">
+          </div>
+          <button class="esa-filters-btn" id="esa-filters-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="6" x2="3" y2="6"/><line x1="17" y1="12" x2="7" y2="12"/><line x1="14" y1="18" x2="10" y2="18"/></svg>
+            Filters
+          </button>
+        </div>
+      </div>
+
+      <div class="esa-profile-grid">
+        <div class="esa-card esa-card-personal">
+          <div class="esa-card-head">
+            <div class="esa-card-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <div>
+                <div class="esa-card-heading">Personal Details</div>
+                <div class="esa-card-sub">Update the details linked to your account.</div>
+              </div>
+            </div>
+            <button type="button" class="esa-outline-btn" id="esa-edit-details-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit details
+            </button>
+          </div>
+          <form id="esa-profile-form" class="esa-form" method="post" action="/account">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <div class="esa-form-row">
+              <div class="esa-form-field">
+                <label>First name</label>
+                <input type="text" name="customer[first_name]" value="{{ customer.first_name }}" readonly>
+              </div>
+              <div class="esa-form-field">
+                <label>Last name</label>
+                <input type="text" name="customer[last_name]" value="{{ customer.last_name }}" readonly>
+              </div>
+            </div>
+            <div class="esa-form-field">
+              <label>Email</label>
+              <input type="email" name="customer[email]" value="{{ customer.email }}" readonly>
+            </div>
+            <div class="esa-form-field">
+              <label>Company</label>
+              <input type="text" value="{%- if customer.company -%}{{ customer.company.name }}{%- endif -%}" readonly disabled>
+            </div>
+            <div class="esa-form-actions" style="display:none;">
+              <button type="submit" class="esa-yellow-btn">Save changes</button>
+              <button type="button" class="esa-outline-btn" id="esa-cancel-edit">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="esa-side-col">
+          <div class="esa-card">
+            <div class="esa-card-head">
+              <div class="esa-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div class="esa-card-heading">Default address</div>
+              </div>
+              <a href="/account/addresses" class="esa-outline-btn">Manage addresses</a>
+            </div>
+            <div class="esa-address-body">
+              {%- if customer.default_address -%}
+                <div class="esa-address-detail">
+                  <div class="esa-address-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </div>
+                  <div>
+                    {{ customer.default_address | format_address }}
+                  </div>
+                </div>
+              {%- else -%}
+                <div class="esa-address-detail">
+                  <div class="esa-address-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </div>
+                  <div>
+                    <div class="esa-address-title">No default address added</div>
+                    <div class="esa-address-sub">Add an address to make checkout faster.</div>
+                    <a href="/account/addresses" class="esa-yellow-btn esa-add-address-btn">
+                      <span class="esa-plus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      </span>
+                      Add address
+                    </a>
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <div class="esa-card">
+            <div class="esa-card-head">
+              <div class="esa-card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <div class="esa-card-heading">Marketing Preferences</div>
+              </div>
+            </div>
+            <hr class="esa-divider">
+            <form method="post" action="/account" id="esa-marketing-form">
+              <input type="hidden" name="form_type" value="customer">
+              <input type="hidden" name="customer[accepts_marketing]" value="{% if customer.accepts_marketing %}0{% else %}1{% endif %}">
+              <div class="esa-marketing-row">
+                <div>
+                  <div class="esa-marketing-title">Email Marketing</div>
+                  <div class="esa-marketing-sub">Receive product news, offers and updates.</div>
+                </div>
+                <button type="submit" class="esa-toggle {% if customer.accepts_marketing %}is-on{% endif %}" aria-label="Toggle email marketing">
+                  <span class="esa-toggle-thumb">
+                    {%- if customer.accepts_marketing -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    {%- endif -%}
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="esa-signout-form">
+            <a href="/account/logout" class="esa-yellow-btn esa-signout-btn">Sign out</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function() {
+  var editBtn = document.getElementById('esa-edit-details-btn');
+  var form = document.getElementById('esa-profile-form');
+  if (!editBtn || !form) return;
+  var actions = form.querySelector('.esa-form-actions');
+  var inputs = form.querySelectorAll('input[type="text"], input[type="email"]');
+  var cancelBtn = document.getElementById('esa-cancel-edit');
+
+  function setEditing(on) {
+    inputs.forEach(function(i) {
+      if (i.disabled) return;
+      if (on) { i.removeAttribute('readonly'); }
+      else { i.setAttribute('readonly', ''); }
+    });
+    actions.style.display = on ? 'flex' : 'none';
+    editBtn.style.display = on ? 'none' : 'inline-flex';
+  }
+
+  editBtn.addEventListener('click', function() { setEditing(true); });
+  if (cancelBtn) cancelBtn.addEventListener('click', function() { setEditing(false); });
+})();
+</script>
+
+<style>
+/* Hide theme footer + prevent page scroll for profile */
+html.esa-dashboard-active,
+body.esa-dashboard-active {
+  overflow: hidden !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+body.esa-dashboard-active footer,
+body.esa-dashboard-active .footer,
+body.esa-dashboard-active .site-footer,
+body.esa-dashboard-active #footer,
+body.esa-dashboard-active [class*="site-footer"],
+body.esa-dashboard-active [id*="shopify-section-footer"],
+body.esa-dashboard-active [class*="promo-popup"],
+body.esa-dashboard-active [id*="shopify-section-promo"] { display: none !important; }
+body.esa-dashboard-active [class*="feedback"],
+body.esa-dashboard-active [id*="feedback"] { display: none !important; }
+
+.esa-dashboard {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  height: 100vh; /* JS overrides */
+  background: #F7F8F9;
+  color: #000;
+  margin: 0;
+  overflow: hidden;
+}
+.esa-sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: #0D0D0D;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  color: #fff;
+  height: 100%;
+  overflow: hidden;
+}
+.esa-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.esa-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  border-radius: 15px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+}
+.esa-nav-item svg { width: 24px; height: 24px; }
+.esa-nav-item:hover { background: #16161A; }
+.esa-nav-active { background: #FEEB06; color: #000; }
+.esa-nav-active:hover { background: #FEEB06; }
+.esa-sidebar-help { background: #16161A; border-radius: 15px; padding: 16px; }
+.esa-help-inner { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.esa-help-icon {
+  width: 40px; height: 40px; background: #0D0D0D; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #FEEB06; flex-shrink: 0;
+}
+.esa-help-icon svg { width: 20px; height: 20px; }
+.esa-help-title { color: #fff; font-weight: 500; font-size: 15px; }
+.esa-help-sub { color: #ccc; font-size: 11px; }
+.esa-help-btn {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; background: #FEEB06; color: #000;
+  padding: 12px 20px; border-radius: 15px;
+  font-weight: 500; text-decoration: none; font-size: 14px;
+}
+.esa-help-btn svg { width: 14px; height: 14px; }
+
+.esa-main { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; overflow: hidden; }
+.esa-header {
+  height: 78px; flex-shrink: 0; background: #fff;
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.05);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+}
+.esa-header-logo img { height: 44px; width: auto; display: block; }
+.esa-header-user { position: relative; display: flex; align-items: center; gap: 12px; }
+.esa-user-btn {
+  display: flex; align-items: center; gap: 12px;
+  background: transparent; border: none;
+  padding: 6px 8px; border-radius: 8px;
+  cursor: pointer; font-family: inherit;
+}
+.esa-user-btn:hover { background: #F7F8F9; }
+.esa-company-name { font-weight: 600; font-size: 16px; }
+.esa-caret { width: 14px; height: 14px; transition: transform 0.2s; }
+.esa-user-menu.is-open .esa-caret { transform: rotate(180deg); }
+.esa-avatar {
+  width: 42px; height: 42px; background: #FEEB06; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 20px; color: #000;
+}
+.esa-user-dropdown {
+  position: absolute; top: 100%; right: 0; margin-top: 8px;
+  background: #fff; border: 1px solid #EFF0F2;
+  border-radius: 12px; box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
+  min-width: 200px; padding: 8px;
+  display: none; z-index: 100;
+}
+.esa-user-menu.is-open .esa-user-dropdown { display: block; }
+.esa-user-dropdown-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px;
+  color: #000; text-decoration: none;
+  font-size: 14px; font-weight: 500;
+}
+.esa-user-dropdown-item:hover { background: #F7F8F9; }
+.esa-user-dropdown-item svg { width: 16px; height: 16px; }
+.esa-user-dropdown-signout { color: #C11414; }
+.esa-user-dropdown-signout:hover { background: #FFECEC; }
+
+.esa-content {
+  padding: 32px 48px 48px; flex: 1;
+  max-width: 1400px; width: 100%; margin: 0 auto;
+  overflow-y: auto; overflow-x: hidden; min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #999 #E9EAEE;
+}
+.esa-content::-webkit-scrollbar { width: 10px; }
+.esa-content::-webkit-scrollbar-track { background: #E9EAEE; border-radius: 5px; }
+.esa-content::-webkit-scrollbar-thumb { background: #999; border-radius: 5px; }
+.esa-content::-webkit-scrollbar-thumb:hover { background: #666; }
+.esa-welcome {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 32px; margin-bottom: 28px;
+}
+.esa-breadcrumb {
+  font-size: 14px; color: #333; margin-bottom: 6px;
+}
+.esa-breadcrumb a { color: #000; text-decoration: underline; }
+.esa-breadcrumb span { color: #666; }
+.esa-title {
+  font-size: 34px; font-weight: 700; line-height: 1.2;
+  margin: 0 0 6px; letter-spacing: -0.005em;
+}
+.esa-subtitle {
+  font-size: 15px; color: #555; margin: 0; line-height: 1.5;
+}
+.esa-controls { display: flex; gap: 12px; flex-shrink: 0; }
+.esa-search {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff; border: 1px solid #D9D9D9; border-radius: 9px;
+  padding: 0 18px; width: 380px; height: 46px;
+}
+.esa-search svg { width: 16px; height: 16px; flex-shrink: 0; }
+.esa-search input {
+  border: none; outline: none; background: transparent;
+  width: 100%; font-family: inherit; font-size: 14px;
+}
+.esa-filters-btn {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; background: #fff; border: 1px solid #D9D9D9;
+  border-radius: 9px; padding: 0 20px; height: 46px;
+  font-family: inherit; font-weight: 700; font-size: 14px;
+  cursor: pointer;
+}
+.esa-filters-btn svg { width: 16px; height: 16px; }
+
+.esa-profile-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: flex-start;
+}
+.esa-card {
+  background: #fff; border: 1px solid #EFF0F2;
+  border-radius: 16px; padding: 24px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+}
+.esa-card-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; margin-bottom: 20px;
+}
+.esa-card-title { display: flex; align-items: flex-start; gap: 12px; }
+.esa-card-title svg { width: 22px; height: 22px; margin-top: 2px; }
+.esa-card-heading { font-weight: 700; font-size: 15px; letter-spacing: 0.04em; }
+.esa-card-sub { font-size: 13px; color: #444; margin-top: 4px; }
+.esa-outline-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 16px; background: #fff;
+  border: 1px solid #1E1E1E; border-radius: 11px;
+  font-family: inherit; font-weight: 700; font-size: 12px;
+  letter-spacing: 0.05em; cursor: pointer; color: #000;
+  text-decoration: none;
+}
+.esa-outline-btn svg { width: 14px; height: 14px; }
+.esa-outline-btn:hover { background: #f7f7f7; }
+.esa-yellow-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; background: #FEEB06; color: #000;
+  padding: 12px 20px; border: none; border-radius: 11px;
+  font-family: inherit; font-weight: 700; font-size: 13px;
+  letter-spacing: 0.05em; cursor: pointer;
+  text-decoration: none;
+}
+.esa-yellow-btn:hover { background: #f5d900; }
+
+.esa-form { display: flex; flex-direction: column; gap: 14px; }
+.esa-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.esa-form-field { display: flex; flex-direction: column; gap: 6px; }
+.esa-form-field label { font-size: 13px; font-weight: 500; }
+.esa-form-field input {
+  height: 42px; padding: 0 14px;
+  background: #fff; border: 1px solid #D9D9D9; border-radius: 8px;
+  font-family: inherit; font-size: 13px; color: #000;
+}
+.esa-form-field input[readonly] { background: #FAFAFA; color: #333; }
+.esa-form-field input[disabled] { background: #F0F0F0; color: #666; cursor: not-allowed; }
+.esa-form-actions { display: flex; gap: 12px; margin-top: 8px; }
+
+.esa-side-col { display: flex; flex-direction: column; gap: 20px; }
+
+.esa-address-body { padding-top: 4px; }
+.esa-address-detail { display: flex; gap: 14px; align-items: flex-start; }
+.esa-address-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: #F7F8F9;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.esa-address-icon svg { width: 20px; height: 20px; }
+.esa-address-title { font-weight: 700; font-size: 14px; }
+.esa-address-sub { font-size: 13px; color: #444; margin: 4px 0 12px; }
+.esa-add-address-btn { padding: 10px 16px; }
+.esa-plus { width: 22px; height: 22px; border: 1px solid #000; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+.esa-plus svg { width: 12px; height: 12px; }
+
+.esa-divider { border: 0; border-top: 1px solid #D9D9D9; margin: 12px 0 16px; }
+.esa-marketing-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.esa-marketing-title { font-weight: 700; font-size: 13px; letter-spacing: 0.04em; }
+.esa-marketing-sub { font-size: 12px; color: #444; margin-top: 2px; }
+.esa-toggle {
+  position: relative; width: 62px; height: 32px;
+  border: 0.5px solid #1E1E1E; border-radius: 30px;
+  background: #E9EAEE;
+  cursor: pointer; padding: 0;
+  transition: background 0.2s;
+}
+.esa-toggle.is-on { background: #FEEB06; }
+.esa-toggle-thumb {
+  position: absolute; top: 50%; left: 2px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #fff; border: 2px solid #1E1E1E;
+  transform: translateY(-50%);
+  transition: left 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  color: #000;
+}
+.esa-toggle.is-on .esa-toggle-thumb { left: 30px; }
+.esa-toggle-thumb svg { width: 14px; height: 14px; }
+
+.esa-signout-form { display: flex; justify-content: flex-end; margin-top: 4px; }
+.esa-signout-btn { padding: 14px 28px; font-size: 16px; }
+
+@media (max-width: 900px) {
+  .esa-dashboard { flex-direction: column; }
+  .esa-sidebar { width: 100%; min-width: 0; }
+  .esa-header { padding: 0 20px; }
+  .esa-content { padding: 20px; }
+  .esa-welcome { flex-direction: column; }
+  .esa-controls { width: 100%; }
+  .esa-search { width: 100%; }
+  .esa-profile-grid { grid-template-columns: 1fr; }
+  .esa-form-row { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+(function() {
+  document.documentElement.classList.add('esa-dashboard-active');
+  document.body.classList.add('esa-dashboard-active');
+  function resizeDashboard() {
+    var dashboard = document.querySelector('.esa-dashboard');
+    if (!dashboard) return;
+    var rect = dashboard.getBoundingClientRect();
+    var offsetTop = rect.top + window.scrollY;
+    var newHeight = window.innerHeight - offsetTop;
+    dashboard.style.height = Math.max(newHeight, 400) + 'px';
+  }
+  resizeDashboard();
+  window.addEventListener('resize', resizeDashboard);
+  window.addEventListener('load', function() {
+    setTimeout(resizeDashboard, 100);
+    setTimeout(resizeDashboard, 500);
+  });
+
+  // User menu dropdown
+  var userBtn = document.getElementById('esa-user-btn');
+  var userMenu = document.querySelector('.esa-user-menu');
+  if (userBtn && userMenu) {
+    userBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      userMenu.classList.toggle('is-open');
+      userBtn.setAttribute('aria-expanded', userMenu.classList.contains('is-open'));
+    });
+    document.addEventListener('click', function(e) {
+      if (!userMenu.contains(e.target)) {
+        userMenu.classList.remove('is-open');
+        userBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+})();
+</script>
+
+{%- endunless -%}
+{%- endif -%}
