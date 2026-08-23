@@ -245,7 +245,7 @@
         "eyebrow": "Eligible products",
         "title": "What's in the program",
         "collection": "return-ready",
-        "product_limit": 7,
+        "product_limit": 8,
         "cta_label": "View product",
         "show_price": true,
         "new_tab": false
