@@ -1,0 +1,115 @@
+{{ 'return-ready.css' | asset_url | stylesheet_tag }}
+
+<section class="rr rr-section rr-section--white" id="compare">
+  <div class="rr__container">
+    <div class="rr-compare-grid">
+
+      <div>
+        <div class="rr__eyebrow">{{ section.settings.eyebrow | default: 'Side by side' }}</div>
+        <h2 class="rr__h2">{{ section.settings.title | default: 'What changes on the invoice' }}</h2>
+
+        <div class="rr-table">
+          <div class="rr-table__head">
+            <div>&nbsp;</div>
+            <div>{{ section.settings.col_a | default: 'Hiring' }}</div>
+            <div>{{ section.settings.col_b | default: 'Return Ready' }}</div>
+          </div>
+
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'row' -%}
+              <div class="rr-table__row" {{ block.shopify_attributes }}>
+                <div>{{ block.settings.label }}</div>
+                <div>{{ block.settings.a }}</div>
+                <div>{{ block.settings.b }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <aside class="rr-example">
+        <div class="rr__eyebrow" style="color:var(--rr-text-muted)">{{ section.settings.example_eyebrow | default: 'Worked example' }}</div>
+        <div class="rr-example__title">
+          {{ section.settings.example_title | default: '100m of temp fencing' }}<br>
+          {{ section.settings.example_subtitle | default: '12-week job' }}
+        </div>
+
+        <div class="rr-example__rows">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'example_row' -%}
+              <div class="rr-example__row" {{ block.shopify_attributes }}>
+                <span class="rr-example__row-label">{{ block.settings.label }}</span>
+                <span class="rr-example__row-num {% if block.settings.accent %}rr-example__row-num--accent{% endif %}">{{ block.settings.value }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <div class="rr-example__keep">
+          <span class="rr-example__keep-label">{{ section.settings.keep_label | default: 'You keep' }}</span>
+          <span class="rr-example__keep-num">{{ section.settings.keep_value | default: '$11,633' }}</span>
+        </div>
+
+        <p class="rr-example__foot">{{ section.settings.example_foot | default: 'Plus 100m of fencing still on the books for the next job.' }}</p>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Return Ready Compare",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Side by side" },
+    { "type": "text", "id": "title", "label": "Title", "default": "What changes on the invoice" },
+    { "type": "text", "id": "col_a", "label": "Column A heading", "default": "Hiring" },
+    { "type": "text", "id": "col_b", "label": "Column B heading", "default": "Return Ready" },
+
+    { "type": "header", "content": "Worked example (right column)" },
+    { "type": "text", "id": "example_eyebrow", "label": "Eyebrow", "default": "Worked example" },
+    { "type": "text", "id": "example_title", "label": "Title (line 1)", "default": "100m of temp fencing" },
+    { "type": "text", "id": "example_subtitle", "label": "Title (line 2)", "default": "12-week job" },
+    { "type": "text", "id": "keep_label", "label": "Keep label", "default": "You keep" },
+    { "type": "text", "id": "keep_value", "label": "Keep value", "default": "$11,633" },
+    { "type": "textarea", "id": "example_foot", "label": "Footnote", "default": "Plus 100m of fencing still on the books for the next job." }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Compare row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Upfront" },
+        { "type": "text", "id": "a", "label": "Hiring", "default": "Bond, plus first invoice" },
+        { "type": "text", "id": "b", "label": "Return Ready", "default": "Trade price, no bond" }
+      ]
+    },
+    {
+      "type": "example_row",
+      "name": "Example row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Hire at $12/m/wk" },
+        { "type": "text", "id": "value", "label": "Value", "default": "$14,400" },
+        { "type": "checkbox", "id": "accent", "label": "Yellow accent (use for savings/refund)", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [
+    {
+      "name": "Return Ready Compare",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Upfront", "a": "Bond, plus first invoice", "b": "Trade price, no bond" } },
+        { "type": "row", "settings": { "label": "Job runs long", "a": "Rate keeps ticking", "b": "Costs nothing extra" } },
+        { "type": "row", "settings": { "label": "Paperwork", "a": "Hire agreement, off-hire admin", "b": "A purchase order" } },
+        { "type": "row", "settings": { "label": "Wear and tear", "a": "Damage waiver charges", "b": "Normal job wear is fine" } },
+        { "type": "row", "settings": { "label": "Next job", "a": "Hire it again", "b": "Redeploy what you own" } },
+        { "type": "row", "settings": { "label": "End of job", "a": "You own nothing", "b": "25% cash or 30% credit back" } },
+        { "type": "example_row", "settings": { "label": "Hire at $12/m/wk", "value": "$14,400" } },
+        { "type": "example_row", "settings": { "label": "Buy at $36.90/m", "value": "$3,690" } },
+        { "type": "example_row", "settings": { "label": "Buy-back at 25% cash", "value": "−$923", "accent": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,50 @@
+{{ 'return-ready.css' | asset_url | stylesheet_tag }}
+
+<section class="rr rr-section rr-section--beige" id="how-it-works">
+  <div class="rr__container">
+    <div class="rr__eyebrow">{{ section.settings.eyebrow | default: 'How it works' }}</div>
+    <h2 class="rr__h2">{{ section.settings.title | default: 'Three steps. No hire desk.' }}</h2>
+
+    <div class="rr-steps">
+      {%- for block in section.blocks -%}
+        <article class="rr-step" {{ block.shopify_attributes }}>
+          <div class="rr-step__num">{{ block.settings.num | default: forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+          <h3 class="rr__h3">{{ block.settings.title }}</h3>
+          <p class="rr__body">{{ block.settings.body }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Return Ready Steps",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "How it works" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Three steps. No hire desk." }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "num", "label": "Step number", "default": "01" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Buy at trade price" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "No hire agreement. No bond. The gear is yours the day it lands on site." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Return Ready Steps",
+      "blocks": [
+        { "type": "step", "settings": { "num": "01", "title": "Buy at trade price", "body": "No hire agreement. No bond. The gear is yours the day it lands on site." } },
+        { "type": "step", "settings": { "num": "02", "title": "Use it for the job", "body": "No daily rate creeping up when the job runs long. Move it to the next site if it doesn't." } },
+        { "type": "step", "settings": { "num": "03", "title": "Return within 12 months", "body": "Send it back in re-saleable condition for 25% cash back or 30% store credit." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

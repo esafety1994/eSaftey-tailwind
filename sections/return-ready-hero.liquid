@@ -1,0 +1,366 @@
+{{ 'return-ready.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cash_pct = section.settings.cash_pct | default: 25
+  assign credit_pct = section.settings.credit_pct | default: 30
+-%}
+
+<section class="rr rr-hero" id="hero">
+  <div class="rr__container">
+    <div class="rr-hero__grid">
+
+      <div class="rr-hero__copy">
+        <span class="rr__eyebrow rr__eyebrow--badge">
+          {{ section.settings.eyebrow | default: 'Return Ready · Buy-back program' }}
+        </span>
+        <h1 class="rr__h1" style="color:#fff">
+          {{ section.settings.title_line1 | default: 'Buy it. Use it.' }}<br>
+          <span class="rr__accent">{{ section.settings.title_line2 | default: 'Return it.' }}</span>
+        </h1>
+        <p class="rr-hero__desc">
+          {{ section.settings.description | default: "Buy the fencing and site gear you need at trade price. Use it for as long as the job runs. Send it back within 12 months for cash or store credit — instead of paying hire fees on equipment you'll never own." }}
+        </p>
+
+        <div class="rr-hero__actions">
+          <button type="button" class="rr-btn" data-rr="scroll-to-calc">
+            {{ section.settings.cta_primary_label | default: "See what you'd save" }}
+          </button>
+          <a href="{{ section.settings.cta_secondary_link | default: '#rr-enquiry' }}" class="rr-link">
+            {{ section.settings.cta_secondary_label | default: 'Talk to your account manager' }}
+          </a>
+        </div>
+
+        <div class="rr-hero__stats">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'stat' -%}
+              <div {{ block.shopify_attributes }}>
+                <div class="rr-hero__stat-num">{{ block.settings.value }}</div>
+                <div class="rr-hero__stat-label">{{ block.settings.label }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="rr-calc" id="rr-calc" data-rr="calc"
+           data-cash-pct="{{ cash_pct }}"
+           data-credit-pct="{{ credit_pct }}">
+        <div class="rr-calc__inputs">
+          <div class="rr-calc__head">
+            <h2 class="rr-calc__title">{{ section.settings.calc_title | default: 'Hire vs Return Ready' }}</h2>
+            <span class="rr-calc__badge">Calculator</span>
+          </div>
+
+          <div class="rr-field">
+            <label class="rr-field__label" for="rr-calc-item">Item</label>
+            <select id="rr-calc-item" class="rr-field__select" data-rr="item">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'calc_item' -%}
+                  <option value="{{ forloop.index0 }}"
+                          data-price="{{ block.settings.price }}"
+                          data-rate="{{ block.settings.rate }}"
+                          data-unit="{{ block.settings.unit }}">
+                    {{ block.settings.label }}
+                  </option>
+                {%- endif -%}
+              {%- endfor -%}
+              <option value="custom" data-price="" data-rate="" data-unit="ea">Other / custom</option>
+            </select>
+          </div>
+
+          <div class="rr-pair">
+            <div class="rr-field">
+              <label class="rr-field__label" data-rr="price-label">Purchase price</label>
+              <div class="rr-field__money">
+                <span class="rr-field__money-sign">$</span>
+                <input type="number" data-rr="price" placeholder="0" step="0.01" min="0">
+              </div>
+            </div>
+            <div class="rr-field">
+              <label class="rr-field__label" data-rr="rate-label">Hire rate / week</label>
+              <div class="rr-field__money">
+                <span class="rr-field__money-sign">$</span>
+                <input type="number" data-rr="rate" placeholder="0" step="0.01" min="0">
+              </div>
+            </div>
+          </div>
+
+          <div class="rr-pair">
+            <div class="rr-field">
+              <label class="rr-field__label" data-rr="qty-label">Quantity</label>
+              <input type="number" class="rr-field__input" data-rr="qty" min="0">
+            </div>
+            <div class="rr-field">
+              <label class="rr-field__label">Project (weeks)</label>
+              <input type="number" class="rr-field__input" data-rr="weeks" min="0">
+            </div>
+          </div>
+
+          <div class="rr-field">
+            <label class="rr-field__label">Buy-back option</label>
+            <div class="rr-triple">
+              <button type="button" class="rr-toggle" data-rr="mode" data-mode="cash" aria-pressed="true">
+                Cash {{ cash_pct }}%
+              </button>
+              <button type="button" class="rr-toggle" data-rr="mode" data-mode="credit" aria-pressed="false">
+                Store credit {{ credit_pct }}%
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="rr-calc__results">
+          <div class="rr-pair">
+            <div class="rr-tile">
+              <div class="rr-tile__label">Cost to hire</div>
+              <div class="rr-tile__num" data-rr="hire">$0</div>
+            </div>
+            <div class="rr-tile">
+              <div class="rr-tile__label">Net with Return Ready</div>
+              <div class="rr-tile__num" data-rr="net">$0</div>
+            </div>
+          </div>
+
+          <div class="rr-save rr-save--positive" data-rr="save">
+            <div>
+              <div class="rr-save__label" data-rr="save-label">You save</div>
+              <div class="rr-save__sub" data-rr="save-sub">vs hiring — and you keep the gear</div>
+            </div>
+            <div class="rr-save__num" data-rr="save-num">$0</div>
+          </div>
+
+          <div class="rr-breakdown">
+            <div class="rr-breakdown__row">
+              <span>Hire total <span class="rr-breakdown__row-calc" data-rr="hire-calc"></span></span>
+              <span class="rr-breakdown__row-num" data-rr="hire-2">$0</span>
+            </div>
+            <div class="rr-breakdown__row">
+              <span>Purchase total <span class="rr-breakdown__row-calc" data-rr="buy-calc"></span></span>
+              <span class="rr-breakdown__row-num" data-rr="buy">$0</span>
+            </div>
+            <div class="rr-breakdown__row">
+              <span>Buy-back refund <span class="rr-breakdown__row-calc" data-rr="mode-label">· {{ cash_pct }}% cash</span></span>
+              <span class="rr-breakdown__row-num rr-breakdown__row-num--accent" data-rr="refund">−$0</span>
+            </div>
+          </div>
+
+          <p class="rr-calc__note">
+            {{ section.settings.calc_note | default: 'Indicative only. Buy-back requires re-saleable condition within 12 months. Your account manager confirms exact figures on quote.' }}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.querySelector('[data-rr="calc"]');
+  if (!root) return;
+
+  var cashPct = parseFloat(root.dataset.cashPct) || 25;
+  var creditPct = parseFloat(root.dataset.creditPct) || 30;
+
+  var itemSel = root.querySelector('[data-rr="item"]');
+  var priceEl = root.querySelector('[data-rr="price"]');
+  var rateEl = root.querySelector('[data-rr="rate"]');
+  var qtyEl = root.querySelector('[data-rr="qty"]');
+  var weeksEl = root.querySelector('[data-rr="weeks"]');
+  var modeBtns = root.querySelectorAll('[data-rr="mode"]');
+
+  var priceLabel = root.querySelector('[data-rr="price-label"]');
+  var rateLabel = root.querySelector('[data-rr="rate-label"]');
+  var qtyLabel = root.querySelector('[data-rr="qty-label"]');
+
+  var hireOut = root.querySelector('[data-rr="hire"]');
+  var hireOut2 = root.querySelector('[data-rr="hire-2"]');
+  var buyOut = root.querySelector('[data-rr="buy"]');
+  var netOut = root.querySelector('[data-rr="net"]');
+  var refundOut = root.querySelector('[data-rr="refund"]');
+  var save = root.querySelector('[data-rr="save"]');
+  var saveNum = root.querySelector('[data-rr="save-num"]');
+  var saveLabel = root.querySelector('[data-rr="save-label"]');
+  var saveSub = root.querySelector('[data-rr="save-sub"]');
+  var hireCalc = root.querySelector('[data-rr="hire-calc"]');
+  var buyCalc = root.querySelector('[data-rr="buy-calc"]');
+  var modeLabel = root.querySelector('[data-rr="mode-label"]');
+
+  var state = { mode: 'cash', unit: 'ea', qty: 100, weeks: 12 };
+  var fmt = new Intl.NumberFormat('en-AU');
+
+  function money(n, negative) {
+    if (!isFinite(n)) return '$0';
+    var abs = Math.round(Math.abs(n));
+    return (negative ? '−$' : '$') + fmt.format(abs);
+  }
+
+  function num(n) {
+    n = Number(n) || 0;
+    return n % 1 ? n.toFixed(2) : String(n);
+  }
+
+  function loadItem(opt) {
+    if (!opt || opt.value === 'custom') return;
+    priceEl.value = opt.dataset.price || '';
+    rateEl.value = opt.dataset.rate || '';
+    state.unit = opt.dataset.unit || 'ea';
+  }
+
+  function render() {
+    var perM = state.unit === 'm';
+    var pct = state.mode === 'cash' ? cashPct : creditPct;
+    var price = Number(priceEl.value) || 0;
+    var rate = Number(rateEl.value) || 0;
+    var qty = Math.max(0, Number(qtyEl.value) || 0);
+    var weeks = Math.max(0, Number(weeksEl.value) || 0);
+
+    var hire = rate * weeks * qty;
+    var buy = price * qty;
+    var refund = buy * pct / 100;
+    var net = buy - refund;
+    var saved = hire - net;
+
+    priceLabel.textContent = perM ? 'Purchase price / metre' : 'Purchase price ea';
+    rateLabel.textContent = perM ? 'Hire rate / metre / week' : 'Hire rate / week';
+    qtyLabel.textContent = perM ? 'Total metres' : 'Quantity';
+
+    hireOut.textContent = money(hire);
+    hireOut2.textContent = money(hire);
+    buyOut.textContent = money(buy);
+    netOut.textContent = money(net);
+    refundOut.textContent = money(refund, true);
+
+    var unitSuffix = perM ? 'm' : '';
+    hireCalc.textContent = '· $' + num(rate) + '/wk × ' + weeks + ' × ' + qty + unitSuffix;
+    buyCalc.textContent = '· $' + num(price) + ' × ' + qty + unitSuffix;
+    modeLabel.textContent = state.mode === 'cash'
+      ? '· ' + cashPct + '% cash'
+      : '· ' + creditPct + '% credit';
+
+    var weeksStr = weeks === 1 ? '1 week' : weeks + ' weeks';
+    if (saved > 0) {
+      save.classList.remove('rr-save--negative');
+      save.classList.add('rr-save--positive');
+      saveLabel.textContent = 'You save';
+      saveSub.textContent = 'vs hiring for ' + weeksStr + ' — and you keep the gear';
+    } else {
+      save.classList.remove('rr-save--positive');
+      save.classList.add('rr-save--negative');
+      saveLabel.textContent = 'Difference';
+      saveSub.textContent = 'hire is cheaper over ' + weeksStr + ' — but you own nothing at the end';
+    }
+    saveNum.textContent = money(Math.abs(saved));
+  }
+
+  itemSel.addEventListener('change', function () {
+    loadItem(itemSel.options[itemSel.selectedIndex]);
+    render();
+  });
+  [priceEl, rateEl, qtyEl, weeksEl].forEach(function (el) {
+    el.addEventListener('input', function () {
+      if (el === priceEl || el === rateEl) {
+        var customOpt = itemSel.querySelector('option[value="custom"]');
+        if (customOpt) itemSel.value = 'custom';
+      }
+      render();
+    });
+  });
+  modeBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      state.mode = btn.dataset.mode;
+      modeBtns.forEach(function (b) {
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+      render();
+    });
+  });
+
+  qtyEl.value = state.qty;
+  weeksEl.value = state.weeks;
+  loadItem(itemSel.options[itemSel.selectedIndex]);
+  render();
+
+  var scrollBtn = document.querySelector('[data-rr="scroll-to-calc"]');
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', function () {
+      var r = root.getBoundingClientRect();
+      if (r.top < 0 || r.bottom > window.innerHeight) {
+        window.scrollTo({ top: r.top + window.scrollY - 24, behavior: 'smooth' });
+      }
+      root.style.boxShadow = '0 28px 70px rgba(0,0,0,.4), 0 0 0 4px rgba(255,213,0,.85)';
+      setTimeout(function () {
+        root.style.boxShadow = '0 28px 70px rgba(0,0,0,.4)';
+      }, 900);
+      var q = root.querySelector('input[type=number]');
+      if (q) q.focus();
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Return Ready Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow badge", "default": "Return Ready · Buy-back program" },
+    { "type": "text", "id": "title_line1", "label": "Title (line 1)", "default": "Buy it. Use it." },
+    { "type": "text", "id": "title_line2", "label": "Title (line 2, yellow)", "default": "Return it." },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Buy the fencing and site gear you need at trade price. Use it for as long as the job runs. Send it back within 12 months for cash or store credit — instead of paying hire fees on equipment you'll never own." },
+    { "type": "text", "id": "cta_primary_label", "label": "Primary CTA label", "default": "See what you'd save" },
+    { "type": "text", "id": "cta_secondary_label", "label": "Secondary link label", "default": "Talk to your account manager" },
+    { "type": "url", "id": "cta_secondary_link", "label": "Secondary link URL" },
+
+    { "type": "header", "content": "Calculator" },
+    { "type": "text", "id": "calc_title", "label": "Calculator title", "default": "Hire vs Return Ready" },
+    { "type": "range", "id": "cash_pct", "label": "Cash buy-back %", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 25 },
+    { "type": "range", "id": "credit_pct", "label": "Store credit buy-back %", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 30 },
+    { "type": "textarea", "id": "calc_note", "label": "Calculator footnote", "default": "Indicative only. Buy-back requires re-saleable condition within 12 months. Your account manager confirms exact figures on quote." }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Hero stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "25%" },
+        { "type": "text", "id": "label", "label": "Label", "default": "cash back" }
+      ]
+    },
+    {
+      "type": "calc_item",
+      "name": "Calculator item",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Item label (shown in dropdown)", "default": "Light duty temporary fence — per metre" },
+        { "type": "number", "id": "price", "label": "Purchase price ($)", "default": 36.90 },
+        { "type": "number", "id": "rate", "label": "Hire rate / week ($)", "default": 12 },
+        {
+          "type": "select",
+          "id": "unit",
+          "label": "Unit",
+          "options": [
+            { "value": "ea", "label": "Per unit (ea)" },
+            { "value": "m", "label": "Per metre (m)" }
+          ],
+          "default": "m"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Return Ready Hero",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "25%", "label": "cash back" } },
+        { "type": "stat", "settings": { "value": "30%", "label": "store credit" } },
+        { "type": "stat", "settings": { "value": "12", "label": "months to return" } },
+        { "type": "stat", "settings": { "value": "$0", "label": "bond" } },
+        { "type": "calc_item", "settings": { "label": "Light duty temporary fence — per metre", "price": 36.90, "rate": 12, "unit": "m" } },
+        { "type": "calc_item", "settings": { "label": "Water filled barrier — per unit", "price": 325, "rate": 15, "unit": "ea" } },
+        { "type": "calc_item", "settings": { "label": "NoiseBlock acoustic curtain — per unit", "price": 325, "rate": 30, "unit": "ea" } },
+        { "type": "calc_item", "settings": { "label": "Orange crowd control barrier — per metre", "price": 26, "rate": 10, "unit": "m" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,81 @@
+{{ 'return-ready.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign coll = section.settings.collection
+  assign limit = section.settings.product_limit | default: 8
+-%}
+
+<section class="rr rr-section rr-section--beige" id="eligible">
+  <div class="rr__container">
+    <div class="rr__eyebrow">{{ section.settings.eyebrow | default: 'Eligible products' }}</div>
+    <h2 class="rr__h2">{{ section.settings.title | default: "What's in the program" }}</h2>
+
+    <div class="rr-products">
+      {%- if coll != blank and coll.products.size > 0 -%}
+        {%- for product in coll.products limit: limit -%}
+          <a class="rr-product" href="{{ product.url }}" {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+            <div class="rr-product__media">
+              {%- if product.featured_image != blank -%}
+                {{ product.featured_image | image_url: width: 600 | image_tag: alt: product.title, loading: 'lazy', widths: '300,600', sizes: '(max-width: 640px) 90vw, 300px' }}
+              {%- else -%}
+                <div class="rr-product__placeholder">Product image</div>
+              {%- endif -%}
+            </div>
+            <div class="rr-product__body">
+              <h3 class="rr-product__title">{{ product.title }}</h3>
+              {%- if section.settings.show_price -%}
+                <div class="rr-product__meta">
+                  {%- if product.price_varies -%}
+                    From {{ product.price_min | money }}
+                  {%- else -%}
+                    {{ product.price | money }}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if product.metafields.custom.short_description != blank -%}
+                <p class="rr-product__desc">{{ product.metafields.custom.short_description }}</p>
+              {%- elsif product.description != blank -%}
+                <p class="rr-product__desc">{{ product.description | strip_html | truncatewords: 22 }}</p>
+              {%- endif -%}
+              <div class="rr-product__cta">
+                {{ section.settings.cta_label | default: 'View product' }}
+                <span class="rr-product__cta-arrow">&rarr;</span>
+              </div>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Theme editor / empty-collection placeholder {%- endcomment -%}
+        {%- for i in (1..4) -%}
+          <div class="rr-product">
+            <div class="rr-product__media">
+              <div class="rr-product__placeholder">Product image</div>
+            </div>
+            <div class="rr-product__body">
+              <h3 class="rr-product__title">Add a collection to display eligible products</h3>
+              <p class="rr-product__desc">Pick a collection in the section settings — products from that collection will appear here.</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Return Ready Products",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Eligible products" },
+    { "type": "text", "id": "title", "label": "Title", "default": "What's in the program" },
+    { "type": "collection", "id": "collection", "label": "Products collection" },
+    { "type": "range", "id": "product_limit", "label": "Number of products", "min": 2, "max": 24, "step": 1, "default": 8 },
+    { "type": "text", "id": "cta_label", "label": "Card CTA label", "default": "View product" },
+    { "type": "checkbox", "id": "show_price", "label": "Show price", "default": true },
+    { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": false }
+  ],
+  "presets": [
+    { "name": "Return Ready Products", "settings": {} }
+  ]
+}
+{% endschema %}
