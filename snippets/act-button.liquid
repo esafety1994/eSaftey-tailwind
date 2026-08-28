@@ -14,8 +14,10 @@
   {% assign status = _variant.metafields.custom.stock_status.value | default: _variant.metafields.custom.stock_status %}
 {% endif %}
 {% assign showPlus = showPlus | default: false %}
+{% assign _act_tag_string = product.tags | join: ',' | downcase %}
 <esafety-cart-action-button>
   <div id="product-act-button">
+    {% unless _act_tag_string contains 'quote only' %}
     {% form 'product', product %}
       {% assign current_variant = product.selected_or_first_available_variant %}
       <input type="hidden" name="id" value="{{ current_variant.id }}">
@@ -26,6 +28,6 @@
         {% render 'add-to-cart-button', status: status, showPlus: showPlus, button_classes: button_classes, button_small: button_small %}
       </div>
     {% endform %}
+    {% endunless %}
   </div>
 </esafety-cart-action-button>
-
