@@ -25,23 +25,55 @@
 <style>
   .quotify-btns {
     display: flex;
-    gap: 24px;
-    padding: 24px 0;
+    gap: 10px;
+    padding: 12px 0 6px;
     position: relative;
   }
   .quotify-btns button > * {
     pointer-events: none;
   }
-  @media (max-width: 640px) {
+  .quotify-add-btn,
+  .quotify-view-btn {
+    flex: 1;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: Poppins, 'M-Body-Font', sans-serif;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 12px 16px !important;
+    border-radius: 8px;
+    white-space: nowrap;
+    cursor: pointer;
+    line-height: 1.2;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .quotify-add-btn {
+    background: #111827 !important;
+    color: #fedc13 !important;
+    border: none !important;
+  }
+  .quotify-add-btn:hover { background: #1f2937 !important; color: #fedc13 !important; }
+  .quotify-view-btn {
+    background: #fff !important;
+    color: #111827 !important;
+    border: 1.5px solid #111827 !important;
+  }
+  .quotify-view-btn:hover { background: #f9fafb !important; }
+  .quotify-add-icon { flex-shrink: 0; }
+
+  /* Mobile: stack, hide "View quote" */
+  @media (max-width: 767px) {
     .quotify-btns {
+      flex-direction: column;
       gap: 8px;
-      padding: 12px 0;
+      padding: 10px 0 6px;
     }
-    .quotify-btns button {
-      font-size: 13px !important;
-      padding-top: 10px !important;
-      padding-bottom: 10px !important;
-      white-space: nowrap;
-    }
+    .quotify-add-btn { width: 100% !important; }
+    .quotify-view-btn { display: none !important; }
   }
 </style>
+
