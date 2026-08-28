@@ -1,19 +1,18 @@
-<div class="quotify-btns">
+<div class="quotify-btns" style="display: none;">
   <button
+    style=""
     data-quotify
     data-product="{{ product | json | escape }}"
     data-checksum="{{ product | json | prepend: quotify_shop_secret | sha256 }}"
-    data-shop="{{ shop.metafields.quotify.shop_id }}"
+    data-shop="{{ quotify_shop_id }}"
     data-variant="{{ product.selected_or_first_available_variant.id }}"
     type="button"
-    class="btn quotify-add-btn"
+    class="quotify-request-quote-btn m-add-to-cart m-spinner-button m-button m-button--primary"
   >
-    <svg class="quotify-add-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/>
-      <path d="M14 3v6h6"/>
-      <path d="M10 13h4M10 17h3"/>
-      <circle cx="17" cy="18" r="3" fill="#22c55e" stroke="none"/>
-      <path d="m15.7 18 .9.9 1.7-1.7" stroke="#fff" stroke-width="1.6"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#FDEC12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 12H16" stroke="#FDEC12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 16V8" stroke="#FDEC12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <span>Add to quote</span>
   </button>
@@ -23,7 +22,7 @@
     data-quotify-cart
     data-shop="{{ shop.metafields.quotify.shop_id }}"
     type="button"
-    class="btn outline-button quotify-view-btn"
+    class="quotify-request-quote-btn m-add-to-cart m-spinner-button m-button m-button--primary"
   >
     View quote
   </button>
@@ -31,54 +30,50 @@
 <style>
   .quotify-btns {
     display: flex;
-    gap: 10px;
-    padding: 12px 0 6px;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid #d9d9d9;
     position: relative;
   }
   .quotify-btns button > * {
     pointer-events: none;
   }
-  .quotify-add-btn,
-  .quotify-view-btn {
-    flex: 1;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: Poppins, 'M-Body-Font', sans-serif;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    padding: 12px 16px !important;
-    border-radius: 8px;
-    white-space: nowrap;
-    cursor: pointer;
-    line-height: 1.2;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  .quotify-btns button:first-child {
+    background: var(--Text-Black, #131313);
+    color: var(--Primary-eYellow, #fdec12);
+    font-family: Poppins, M-Body-Font, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.16px;
+    display: flex;
+    gap: 16px;
   }
-  .quotify-add-btn {
-    background: #111827 !important;
-    color: #fedc13 !important;
-    border: none !important;
+  .quotify-btns button:first-child:hover {
+    color: var(--Primary-eYellow, #fdec12);
   }
-  .quotify-add-btn:hover { background: #1f2937 !important; color: #fedc13 !important; }
-  .quotify-view-btn {
-    background: #fff !important;
-    color: #111827 !important;
-    border: 1.5px solid #111827 !important;
+  .quotify-btns button:last-child {
+    border: 1px solid var(--Grey-200, #d6d4d4);
+    background: var(--Background-eWhite, #fff);
+    color: var(--Text-Black-Subdued, #595959);
+    font-family: Poppins, M-Body-Font, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 150% */
+    letter-spacing: -0.16px;
   }
-  .quotify-view-btn:hover { background: #f9fafb !important; }
-  .quotify-add-icon { flex-shrink: 0; }
 
-  /* Mobile: stack, hide "View quote" */
-  @media (max-width: 767px) {
-    .quotify-btns {
-      flex-direction: column;
-      gap: 8px;
-      padding: 10px 0 6px;
+  .quotify-btns button {
+    text-transform: initial;
+  }
+
+  @media (max-width: 400px) {
+    .quotify-btns button {
+      gap: 12px;
+      padding: 16px 10px;
+      font-size: 14px;
     }
-    .quotify-add-btn { width: 100% !important; }
-    .quotify-view-btn { display: none !important; }
   }
 </style>
