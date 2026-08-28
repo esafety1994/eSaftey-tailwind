@@ -21,13 +21,10 @@
       {% unless layout == 'sticky' %}
         <div class="font-semibold text-lg py-3">Request for Quote</div>
       {% endunless %}
-    {% elsif _act_tag_string contains 'quote only' %}
-      {% if layout == 'base' %}
-        <div class="pdp-quote-slot">
-          {% render 'product-quotify-button', product: product %}
-        </div>
-      {% endif %}
+        {% elsif _act_tag_string contains 'quote only' %}
+      {% comment %} Cart form hidden. Quotify app-embed renders the visible quote button. {% endcomment %}
     {% else %}
+
     {% assign _act_form_id = product_form_id | default: '' %}
     {% if _act_form_id == '' %}{% assign _act_form_id = 'product-form-' | append: product.id %}{% endif %}
     {% form 'product', product, id: _act_form_id, enctype: 'multipart/form-data' %}
