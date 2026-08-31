@@ -25,12 +25,21 @@
       "type": "page",
       "settings": {}
     },
-    "contact-us":{
-      "type":"contact-us",
-      "settings":{}
+    "contact-us": {
+      "type": "contact-us",
+      "settings": {}
+    },
+    "internal_page_banner_jhjBEq": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "banner_link": "",
+        "open_in_new_tab": false
+      }
     }
   },
   "order": [
+    "internal_page_banner_jhjBEq",
     "title",
     "breadcrumb_WrJrMP",
     "main",
