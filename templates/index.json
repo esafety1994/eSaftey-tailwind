@@ -16,7 +16,7 @@
           "type": "slider_item",
           "settings": {
             "background": "shopify://shop_images/september-web-banner.jpg",
-            "mobile_background": "shopify://shop_images/September-social-media-1080x1350.jpg",
+            "mobile_background": "shopify://shop_images/september-ccb-pos-screen.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
