@@ -132,9 +132,18 @@
         "primary_color": "#222222",
         "accent_color": "#ffffff"
       }
+    },
+    "internal_page_banner_TdadcX": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "banner_link": "",
+        "open_in_new_tab": false
+      }
     }
   },
   "order": [
+    "internal_page_banner_TdadcX",
     "main"
   ]
 }
