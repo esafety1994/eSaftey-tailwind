@@ -1,9 +1,10 @@
 {% comment %} Preload first carousel image — one hint per <source> breakpoint so the URL always matches {% endcomment %}
 {% for block in section.blocks %}
   {% if block.type == 'slider_item' and block.settings.background %}
+    {% assign preload_mobile = block.settings.mobile_background | default: block.settings.background %}
     <link rel="preload" as="image"
-      href="{{ block.settings.background | image_url: width: 400, format: 'webp' }}"
-      imagesrcset="{{ block.settings.background | image_url: width: 400, format: 'webp' }} 400w, {{ block.settings.background | image_url: width: 800, format: 'webp' }} 800w"
+      href="{{ preload_mobile | image_url: width: 400, format: 'webp' }}"
+      imagesrcset="{{ preload_mobile | image_url: width: 400, format: 'webp' }} 400w, {{ preload_mobile | image_url: width: 800, format: 'webp' }} 800w"
       imagesizes="100vw"
       media="(max-width: 640px)"
       fetchpriority="high"
@@ -27,27 +28,24 @@
 {% endfor %}
 
 <style>
-  /* Mobile: full-width banner at natural aspect ratio (no crop) */
+  /* Critical: give LCP image container explicit dimensions before async CSS loads */
   .hero-banner .glide__slide > div {
     position: relative;
-    width: 100%;
-    aspect-ratio: 1920 / 900;
-    height: auto;
+    height: 46vh;
+    min-height: 220px;
     overflow: hidden;
+  }
+  @media (min-width: 1024px) {
+    .hero-banner .glide__slide > div { height: 50vh; min-height: 0; }
   }
   .hero-banner .glide__slide img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
     display: block;
-  }
-  /* Desktop keeps the cropped hero look */
-  @media (min-width: 1024px) {
-    .hero-banner .glide__slide > div { aspect-ratio: auto; height: 50vh; }
-    .hero-banner .glide__slide img { object-fit: cover; }
   }
   /* Show first slide immediately before Glide.js initialises */
   .hero-banner:not(.glide--mounted) .glide__slide:not(:first-child) {
@@ -107,14 +105,15 @@
         {% case block.type %}
           {% when 'slider_item' %}
             <li class="glide__slide relative w-full">
-              <div class="relative w-full lg:h-[50vh] overflow-hidden bg-gray-100">
+              <div class="relative w-full h-[46vh] lg:h-[50vh] overflow-hidden" style="min-height:220px">
                 {% assign img = block.settings.background %}
-                {% if img and img != blank %}
+                {% assign mobile_img = block.settings.mobile_background | default: img %}
+                {% if img %}
                   <picture>
                     <source
                       type="image/webp"
                       media="(max-width: 640px)"
-                      srcset="{{ img | image_url: width: 400, format: 'webp' }} 400w, {{ img | image_url: width: 800, format: 'webp' }} 800w"
+                      srcset="{{ mobile_img | image_url: width: 400, format: 'webp' }} 400w, {{ mobile_img | image_url: width: 800, format: 'webp' }} 800w"
                       sizes="100vw"
                     />
                     <source
@@ -133,8 +132,7 @@
                       srcset="{{ img | image_url: width:1024 }} 1024w, {{ img | image_url: width:1920 }} 1920w"
                       sizes="100vw"
                       alt="{{ img.alt | escape }}"
-                      loading="eager"
-                      {% if forloop.first %}fetchpriority="high"{% endif %}
+                      loading="eager" {% if forloop.first %}fetchpriority="high"{% endif %} decoding="async"
                       class="w-full h-full object-cover object-left sm:object-center block"
                       width="1920"
                       height="900"
@@ -241,6 +239,12 @@
           "id": "background",
           "label": "Image on desktop",
           "info": "1920 x 900px recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_background",
+          "label": "Image on mobile",
+          "info": "588 x 350px recommended. Falls back to desktop image if not set."
         },
         {
           "type": "checkbox",
