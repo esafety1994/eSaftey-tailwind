@@ -107,9 +107,9 @@
         {% case block.type %}
           {% when 'slider_item' %}
             <li class="glide__slide relative w-full">
-              <div class="relative w-full lg:h-[50vh] overflow-hidden">
+              <div class="relative w-full lg:h-[50vh] overflow-hidden bg-gray-100">
                 {% assign img = block.settings.background %}
-                {% if img %}
+                {% if img and img != blank %}
                   <picture>
                     <source
                       type="image/webp"
@@ -133,7 +133,8 @@
                       srcset="{{ img | image_url: width:1024 }} 1024w, {{ img | image_url: width:1920 }} 1920w"
                       sizes="100vw"
                       alt="{{ img.alt | escape }}"
-                      {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" decoding="async"{% endif %}
+                      loading="eager"
+                      {% if forloop.first %}fetchpriority="high"{% endif %}
                       class="w-full h-full object-cover object-left sm:object-center block"
                       width="1920"
                       height="900"
