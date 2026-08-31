@@ -24,17 +24,6 @@
             "button_link": "shopify://collections/super-sale"
           }
         },
-        "slider_item_6QW4TY": {
-          "type": "slider_item",
-          "settings": {
-            "single_image": false,
-            "content_position": "left",
-            "title": "New Collection",
-            "description": "<p>Tell your campaign through images</p>",
-            "button_text": "Shop now",
-            "button_link": ""
-          }
-        },
         "slider_item_i99mG7": {
           "type": "slider_item",
           "settings": {
@@ -50,7 +39,6 @@
       },
       "block_order": [
         "slider_item_wmYUEQ",
-        "slider_item_6QW4TY",
         "slider_item_i99mG7"
       ],
       "settings": {}
