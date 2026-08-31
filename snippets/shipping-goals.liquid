@@ -1,7 +1,9 @@
-<!-- Shipping goals snippet - Tailwind based -->
+<!-- Cart progress bar (shipping goals + active promos) -->
 {%- comment -%}
-  Displays a shipping progress bar and message. Replace the icon markup where needed.
-  Usage: {% render 'shipping-goals', current_amount: 25.00, free_shipping_threshold: 50.00 %}
+  Renders a cart-value progress bar for the current active promo.
+  Free shipping goal is disabled below (Evan / ticket #11968).
+  Active promo: Father's Day FAK Giveaway (2026-09-01 → 2026-09-06 AEST).
+  For a new promo, update the promo_start_ts, promo_end_ts, and messaging below.
 {%- endcomment -%}
 
 {%- assign current = cart.checkout_charge_amount | default: 0 | plus: 0 -%}
@@ -28,7 +30,7 @@
   {%- assign icon_text_class = 'text-emerald-700' -%}
 {%- endif -%}
 
-{%- comment -%} if cart contains any product tagged 'bulky', do not render shipping goals {%- endcomment -%}
+{%- comment -%} if cart contains any product tagged 'bulky', do not render {%- endcomment -%}
 {%- assign bulky = false -%}
 {%- for item in cart.items -%}
   {%- if item.product and item.product.tags and item.product.tags contains 'Bulky' -%}
@@ -36,6 +38,38 @@
     {%- break -%}
   {%- endif -%}
 {%- endfor -%}
+
+{%- comment -%} Father's Day FAK Giveaway banner — active 2026-09-01 → 2026-09-06 AEST {%- endcomment -%}
+{%- assign now_ts = 'now' | date: '%s' | plus: 0 -%}
+{%- assign promo_start_ts = '2026-09-01T00:00:00+10:00' | date: '%s' | plus: 0 -%}
+{%- assign promo_end_ts = '2026-09-07T00:00:00+10:00' | date: '%s' | plus: 0 -%}
+{%- if now_ts >= promo_start_ts and now_ts < promo_end_ts -%}
+{%- unless bulky -%}
+<div class="w-full my-4 p-4 bg-yellow-50 border border-yellow-300 rounded-lg">
+  <div class="flex items-start gap-3">
+    <div class="text-2xl leading-none flex-shrink-0" aria-hidden="true">🎁</div>
+    <div class="flex-1">
+      {%- if unlocked -%}
+        <p class="text-sm font-semibold text-emerald-700">You've unlocked a FREE Dad's First Aid Kit!</p>
+        <p class="text-xs text-gray-600 mt-1">Added to your cart at no extra cost.</p>
+      {%- else -%}
+        <p class="text-sm text-gray-800">
+          Spend <span class="font-semibold">{{ threshold | minus: current | money }}</span> more to unlock a <strong>FREE Dad's First Aid Kit</strong>
+        </p>
+      {%- endif -%}
+      <div class="mt-2">
+        <div class="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div
+            class="absolute inset-0 {{ fill_class }} rounded-full"
+            style="width: {{ pct }}%; transition: width 450ms cubic-bezier(.2,.9,.2,1);"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endunless -%}
+{%- endif -%}
 
 {%- comment -%} Free shipping progress bar hidden per Evan Gholab — removal of $499 FIS (ticket #11968) {%- endcomment -%}
 {%- if false -%}
