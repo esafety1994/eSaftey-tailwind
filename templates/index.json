@@ -28,7 +28,7 @@
           "type": "slider_item",
           "settings": {
             "background": "shopify://shop_images/Giveaway-Web-Banner_FAK.jpg",
-            "single_image": false,
+            "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
