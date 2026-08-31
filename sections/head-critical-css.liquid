@@ -1,6 +1,7 @@
 <style>
-.hero-banner .glide__slide>div{position:relative;height:35vh;overflow:hidden}
-@media(min-width:1024px){.hero-banner .glide__slide>div{height:45vh}}
+.hero-banner .glide__slide>div{position:relative;aspect-ratio:1920/900;overflow:hidden}
+@media(min-width:768px){.hero-banner .glide__slide>div{aspect-ratio:auto;height:46vh;min-height:220px}}
+@media(min-width:1024px){.hero-banner .glide__slide>div{height:50vh;min-height:0}}
 .hero-banner .glide__slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .hero-banner:not(.glide--slider) .glide__slide:not(:first-child){display:none}
 .hero-banner:not(.glide--slider) .glide__slides{overflow:visible;transform:translate3d(0,0,0);transition:none!important}
