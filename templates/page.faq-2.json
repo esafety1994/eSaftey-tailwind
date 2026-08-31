@@ -401,9 +401,18 @@
         "help_text": "Still Need Help?",
         "help_link": "shopify://pages/contact-us"
       }
+    },
+    "internal_page_banner_3mXc9w": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "banner_link": "",
+        "open_in_new_tab": false
+      }
     }
   },
   "order": [
+    "internal_page_banner_3mXc9w",
     "main",
     "faq_thiTjt"
   ]
