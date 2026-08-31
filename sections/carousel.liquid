@@ -47,11 +47,11 @@
     object-position: center;
     display: block;
   }
-  /* Show first slide immediately before Glide.js initialises */
-  .hero-banner:not(.glide--mounted) .glide__slide:not(:first-child) {
+  /* Show first slide immediately before Glide.js initialises (Glide adds .glide--slider on mount) */
+  .hero-banner:not(.glide--slider) .glide__slide:not(:first-child) {
     display: none;
   }
-  .hero-banner:not(.glide--mounted) .glide__slides {
+  .hero-banner:not(.glide--slider) .glide__slides {
     overflow: visible;
     transform: translate3d(0, 0, 0);
   }
