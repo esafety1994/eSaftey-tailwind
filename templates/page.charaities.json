@@ -44,9 +44,18 @@
         "button_url": "",
         "button_style": "primary-button"
       }
+    },
+    "internal_page_banner_9XFedm": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {
+        "banner_link": "",
+        "open_in_new_tab": false
+      }
     }
   },
   "order": [
+    "internal_page_banner_9XFedm",
     "main",
     "custom_liquid_aEGVQj",
     "custom_liquid_bi9cHN",
