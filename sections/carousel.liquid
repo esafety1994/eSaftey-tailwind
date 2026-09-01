@@ -28,21 +28,48 @@
 {% endfor %}
 
 <style>
-  /* Critical: give LCP image container explicit dimensions before async CSS loads */
-  .hero-banner .glide__slide > div {
+  /* Critical: aspect-ratio lives on the track so absolute-positioned slides have a sized parent (needed for fade effect) */
+  .hero-banner .glide__track {
     position: relative;
     aspect-ratio: 1920 / 900;
     overflow: hidden;
   }
   @media (min-width: 768px) {
-    .hero-banner .glide__slide > div {
+    .hero-banner .glide__track {
       aspect-ratio: auto;
       height: 46vh;
       min-height: 220px;
     }
   }
   @media (min-width: 1024px) {
-    .hero-banner .glide__slide > div { height: 50vh; min-height: 0; }
+    .hero-banner .glide__track { height: 50vh; min-height: 0; }
+  }
+  /* Fade effect: stack slides, cross-fade active in */
+  .hero-banner .glide__slides {
+    position: relative;
+    height: 100%;
+    transform: none !important;
+    transition: none !important;
+    overflow: visible;
+    white-space: normal;
+  }
+  .hero-banner .glide__slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
+    pointer-events: none;
+  }
+  .hero-banner .glide__slide.glide__slide--active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
+  .hero-banner .glide__slide > div {
+    height: 100%;
+    overflow: hidden;
   }
   .hero-banner .glide__slide img {
     position: absolute;
@@ -53,13 +80,10 @@
     object-position: center;
     display: block;
   }
-  /* Show first slide immediately before Glide.js initialises (Glide adds .glide--slider on mount) */
-  .hero-banner:not(.glide--slider) .glide__slide:not(:first-child) {
-    display: none;
-  }
-  .hero-banner:not(.glide--slider) .glide__slides {
-    overflow: visible;
-    transform: translate3d(0, 0, 0);
+  /* Before Glide mounts (adds .glide--slider or .glide--carousel), only show first slide + hide arrows */
+  .hero-banner:not(.glide--slider):not(.glide--carousel) .glide__slide:first-child {
+    opacity: 1;
+    pointer-events: auto;
   }
   .glide__bullet--active {
     background-color: transparent;
@@ -104,13 +128,16 @@
     }
   }
 </style>
-<div class="hero-banner glide relative">
+<div class="hero-banner glide relative"
+  data-autoplay="{% if section.settings.enable_autoplay %}true{% else %}false{% endif %}"
+  data-autoplay-delay="{{ section.settings.autoplay_delay | default: 5 | times: 1000 }}"
+>
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'slider_item' %}
-            <li class="glide__slide relative w-full">
+            <li class="glide__slide relative w-full{% if forloop.first %} glide__slide--active{% endif %}">
               <div class="relative w-full overflow-hidden">
                 {% assign img = block.settings.background %}
                 {% assign mobile_img = block.settings.mobile_background | default: img %}
@@ -234,7 +261,24 @@
 {% schema %}
 {
   "name": "Carousel",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable auto-play",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Seconds per slide",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    }
+  ],
   "blocks": [
     {
       "type": "slider_item",

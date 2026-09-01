@@ -32,11 +32,15 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener('DOMContentLoaded', function () {
   var heroBanner = document.querySelector('.hero-banner');
   if (heroBanner && typeof Glide !== 'undefined') {
+    var heroDelay = parseInt(heroBanner.getAttribute('data-autoplay-delay'), 10);
+    if (isNaN(heroDelay) || heroDelay < 1000) heroDelay = 5000;
+    var heroAutoplay = heroBanner.getAttribute('data-autoplay') === 'true';
     new Glide('.hero-banner', {
-      type: 'slider',
-      autoplay: false,
+      type: 'carousel',
+      autoplay: heroAutoplay ? heroDelay : false,
       hoverpause: true,
       perView: 1,
+      animationDuration: 500,
     }).mount();
   }
 
