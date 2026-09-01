@@ -4,31 +4,97 @@
   {%- assign banner_link = section.settings.banner_link | default: settings.internal_page_banner_link -%}
   {%- assign banner_new_tab = section.settings.open_in_new_tab | default: settings.internal_page_banner_new_tab -%}
 
+  {%- comment -%} 2-slide cross-fade only when both GLOBAL images set and section isn't overriding {%- endcomment -%}
+  {%- assign banner_image_2 = settings.internal_page_banner_image_2 -%}
+  {%- assign banner_link_2 = settings.internal_page_banner_link_2 -%}
+  {%- assign banner_new_tab_2 = settings.internal_page_banner_new_tab_2 -%}
+  {%- assign is_carousel = false -%}
+  {%- if section.settings.background == blank and banner_image != blank and banner_image_2 != blank -%}
+    {%- assign is_carousel = true -%}
+  {%- endif -%}
+
   {% if banner_image != blank %}
     <div class="hidden md:block">
       <div class="mx-auto px-4" style="max-width: 1220px;">
-        {% if banner_link != blank %}
-          <a href="{{ banner_link }}" {% if banner_new_tab %}target="_blank" rel="noopener"{% endif %}>
-        {% endif %}
-        <picture>
-          <img
-            src="{{ banner_image | image_url: width: banner_image.width }}"
-            width="{{ banner_image.width }}"
-            height="{{ banner_image.height }}"
-            alt="banner"
-            class="w-full block"
-            style="max-height: 85px; object-fit: cover;"
-            aria-hidden="true"
-          >
-        </picture>
-        {% if banner_link != blank %}
-          </a>
+        {% if is_carousel %}
+          {%- assign delay_ms = settings.internal_page_banner_autoplay_delay | default: 5 | times: 1000 -%}
+          <div class="internal-banner-carousel" data-autoplay-delay="{{ delay_ms }}">
+            {%- for i in (1..2) -%}
+              {%- if i == 1 -%}
+                {%- assign _img = banner_image -%}{%- assign _link = banner_link -%}{%- assign _tab = banner_new_tab -%}
+              {%- else -%}
+                {%- assign _img = banner_image_2 -%}{%- assign _link = banner_link_2 -%}{%- assign _tab = banner_new_tab_2 -%}
+              {%- endif -%}
+              {% if _link != blank %}
+                <a class="internal-banner-slide" href="{{ _link }}"{% if _tab %} target="_blank" rel="noopener"{% endif %}>
+              {% else %}
+                <div class="internal-banner-slide">
+              {% endif %}
+                <img
+                  src="{{ _img | image_url: width: _img.width }}"
+                  width="{{ _img.width }}"
+                  height="{{ _img.height }}"
+                  alt="banner"
+                  class="w-full block"
+                  style="max-height: 85px; object-fit: cover;"
+                  aria-hidden="true"
+                >
+              {% if _link != blank %}</a>{% else %}</div>{% endif %}
+            {%- endfor -%}
+          </div>
+        {% else %}
+          {% if banner_link != blank %}
+            <a href="{{ banner_link }}" {% if banner_new_tab %}target="_blank" rel="noopener"{% endif %}>
+          {% endif %}
+          <picture>
+            <img
+              src="{{ banner_image | image_url: width: banner_image.width }}"
+              width="{{ banner_image.width }}"
+              height="{{ banner_image.height }}"
+              alt="banner"
+              class="w-full block"
+              style="max-height: 85px; object-fit: cover;"
+              aria-hidden="true"
+            >
+          </picture>
+          {% if banner_link != blank %}
+            </a>
+          {% endif %}
         {% endif %}
       </div>
     </div>
   {% endif %}
 
 </section>
+
+{% if is_carousel %}
+<style>
+  .internal-banner-carousel { position: relative; overflow: hidden; }
+  .internal-banner-carousel .internal-banner-slide { display: block; transition: opacity 500ms ease-in-out; }
+  .internal-banner-carousel .internal-banner-slide:not(:first-child) { position: absolute; inset: 0; opacity: 0; }
+  .internal-banner-carousel .internal-banner-slide.is-active { opacity: 1; z-index: 2; }
+</style>
+<script>
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    var carousels = document.querySelectorAll('.internal-banner-carousel');
+    carousels.forEach(function(carousel){
+      var slides = carousel.querySelectorAll('.internal-banner-slide');
+      if (slides.length < 2) return;
+      var delay = parseInt(carousel.getAttribute('data-autoplay-delay'), 10);
+      if (isNaN(delay) || delay < 1000) delay = 5000;
+      var current = 0;
+      slides[0].classList.add('is-active');
+      setInterval(function(){
+        slides[current].classList.remove('is-active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('is-active');
+      }, delay);
+    });
+  });
+})();
+</script>
+{% endif %}
 
 {% schema %}
 {

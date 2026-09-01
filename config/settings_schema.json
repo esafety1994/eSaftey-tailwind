@@ -34,6 +34,10 @@
     "name": "Internal Page Banner",
     "settings": [
       {
+        "type": "header",
+        "content": "Banner 1"
+      },
+      {
         "type": "image_picker",
         "id": "internal_page_banner_image",
         "label": "Banner image (global)",
@@ -49,6 +53,37 @@
         "id": "internal_page_banner_new_tab",
         "label": "Open link in new tab",
         "default": false
+      },
+      {
+        "type": "header",
+        "content": "Banner 2 (optional — enables auto-rotating cross-fade)"
+      },
+      {
+        "type": "image_picker",
+        "id": "internal_page_banner_image_2",
+        "label": "Banner image 2",
+        "info": "Add a second image to auto-rotate. Leave empty for a single banner."
+      },
+      {
+        "type": "url",
+        "id": "internal_page_banner_link_2",
+        "label": "Banner 2 link (optional)"
+      },
+      {
+        "type": "checkbox",
+        "id": "internal_page_banner_new_tab_2",
+        "label": "Open Banner 2 link in new tab",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "internal_page_banner_autoplay_delay",
+        "label": "Seconds per slide",
+        "min": 3,
+        "max": 15,
+        "step": 1,
+        "unit": "s",
+        "default": 5
       }
     ]
   },
