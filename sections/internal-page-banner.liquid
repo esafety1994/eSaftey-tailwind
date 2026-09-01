@@ -1,8 +1,13 @@
 <section id="section-{{ section.id }}" class="internal-page-banner" style="margin-top: 16px;">
 
+  {%- comment -%}
+    Banner image can be overridden per template via section settings.
+    Banner link and new-tab always come from GLOBAL theme settings to avoid stale
+    per-template overrides pointing to the wrong URL when promos change.
+  {%- endcomment -%}
   {%- assign banner_image = section.settings.background | default: settings.internal_page_banner_image -%}
-  {%- assign banner_link = section.settings.banner_link | default: settings.internal_page_banner_link -%}
-  {%- assign banner_new_tab = section.settings.open_in_new_tab | default: settings.internal_page_banner_new_tab -%}
+  {%- assign banner_link = settings.internal_page_banner_link -%}
+  {%- assign banner_new_tab = settings.internal_page_banner_new_tab -%}
 
   {%- comment -%} 2-slide cross-fade only when both GLOBAL images set and section isn't overriding {%- endcomment -%}
   {%- assign banner_image_2 = settings.internal_page_banner_image_2 -%}
@@ -21,29 +26,29 @@
           <div class="internal-banner-carousel" data-autoplay-delay="{{ delay_ms }}">
             {%- for i in (1..2) -%}
               {%- if i == 1 -%}
-                {%- assign _img = settings.internal_page_banner_image -%}
-                {%- assign _link = settings.internal_page_banner_link -%}
-                {%- assign _tab = settings.internal_page_banner_new_tab -%}
+                {%- assign slide_img = settings.internal_page_banner_image -%}
+                {%- assign slide_link = settings.internal_page_banner_link -%}
+                {%- assign slide_tab = settings.internal_page_banner_new_tab -%}
               {%- else -%}
-                {%- assign _img = banner_image_2 -%}
-                {%- assign _link = banner_link_2 -%}
-                {%- assign _tab = banner_new_tab_2 -%}
+                {%- assign slide_img = banner_image_2 -%}
+                {%- assign slide_link = banner_link_2 -%}
+                {%- assign slide_tab = banner_new_tab_2 -%}
               {%- endif -%}
-              {% if _link != blank %}
-                <a class="internal-banner-slide" href="{{ _link }}"{% if _tab %} target="_blank" rel="noopener"{% endif %}>
+              {% if slide_link != blank %}
+                <a class="internal-banner-slide" href="{{ slide_link }}"{% if slide_tab %} target="_blank" rel="noopener"{% endif %}>
               {% else %}
                 <div class="internal-banner-slide">
               {% endif %}
                 <img
-                  src="{{ _img | image_url: width: _img.width }}"
-                  width="{{ _img.width }}"
-                  height="{{ _img.height }}"
+                  src="{{ slide_img | image_url: width: slide_img.width }}"
+                  width="{{ slide_img.width }}"
+                  height="{{ slide_img.height }}"
                   alt="banner"
                   class="w-full block"
                   style="max-height: 85px; object-fit: cover;"
                   aria-hidden="true"
                 >
-              {% if _link != blank %}</a>{% else %}</div>{% endif %}
+              {% if slide_link != blank %}</a>{% else %}</div>{% endif %}
             {%- endfor -%}
           </div>
         {% else %}
