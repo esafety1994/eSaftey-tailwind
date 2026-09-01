@@ -14,7 +14,7 @@
   {%- endif -%}
 
   {% if banner_image != blank %}
-    <div class="hidden md:block">
+    <div>
       <div class="mx-auto px-4" style="max-width: 1220px;">
         {% if is_carousel %}
           {%- assign delay_ms = settings.internal_page_banner_autoplay_delay | default: 5 | times: 1000 -%}
