@@ -79,9 +79,9 @@
 {% if is_carousel %}
 <style>
   .internal-banner-carousel { position: relative; overflow: hidden; }
-  .internal-banner-carousel .internal-banner-slide { display: block; transition: opacity 500ms ease-in-out; }
+  .internal-banner-carousel .internal-banner-slide { display: block; transition: opacity 500ms ease-in-out; pointer-events: none; }
   .internal-banner-carousel .internal-banner-slide:not(:first-child) { position: absolute; inset: 0; opacity: 0; }
-  .internal-banner-carousel .internal-banner-slide.is-active { opacity: 1; z-index: 2; }
+  .internal-banner-carousel .internal-banner-slide.is-active { opacity: 1; z-index: 2; pointer-events: auto; }
 </style>
 <script>
 (function(){
