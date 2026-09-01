@@ -21,9 +21,13 @@
           <div class="internal-banner-carousel" data-autoplay-delay="{{ delay_ms }}">
             {%- for i in (1..2) -%}
               {%- if i == 1 -%}
-                {%- assign _img = banner_image -%}{%- assign _link = banner_link -%}{%- assign _tab = banner_new_tab -%}
+                {%- assign _img = settings.internal_page_banner_image -%}
+                {%- assign _link = settings.internal_page_banner_link -%}
+                {%- assign _tab = settings.internal_page_banner_new_tab -%}
               {%- else -%}
-                {%- assign _img = banner_image_2 -%}{%- assign _link = banner_link_2 -%}{%- assign _tab = banner_new_tab_2 -%}
+                {%- assign _img = banner_image_2 -%}
+                {%- assign _link = banner_link_2 -%}
+                {%- assign _tab = banner_new_tab_2 -%}
               {%- endif -%}
               {% if _link != blank %}
                 <a class="internal-banner-slide" href="{{ _link }}"{% if _tab %} target="_blank" rel="noopener"{% endif %}>
