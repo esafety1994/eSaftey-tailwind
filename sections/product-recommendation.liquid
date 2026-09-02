@@ -11,6 +11,11 @@
     padding-bottom: 0 !important;
     height: 200px !important;
   }
+  /* Force all slides + cards to equal height (fixes uneven card sizing) */
+  .product-recommendation-section .glide__track { overflow: hidden; }
+  .product-recommendation-section .glide__slides { align-items: stretch; }
+  .product-recommendation-section .glide__slides > li { display: flex; height: auto; }
+  .product-recommendation-section .glide__slides > li > .product-card { width: 100%; height: 100%; }
 </style>
 
 <div

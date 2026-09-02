@@ -40,12 +40,10 @@ class ProductRecommendation extends HTMLElement {
         }
 
         window.productRecommendationGlideInstance = new Glide('#productRecommendationGlide', {
-          type: 'slider',
+          type: 'carousel',
           startAt: 0,
           perView: 4,
-          rewind: false,
           gap: 20,
-          bound: true,
           breakpoints: {
             1024: { perView: 3, gap: 16 },
             768: { perView: 2, gap: 16 },
