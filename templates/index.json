@@ -24,26 +24,15 @@
             "button_text": "",
             "button_link": "shopify://collections/super-sale"
           }
-        },
-        "slider_item_i99mG7": {
-          "type": "slider_item",
-          "settings": {
-            "background": "shopify://shop_images/Giveaway-Web-Banner_FAK.jpg",
-            "mobile_background": "shopify://shop_images/Giveaway-Web-Banner_FAK.jpg",
-            "single_image": true,
-            "content_position": "left",
-            "title": "",
-            "description": "",
-            "button_text": "",
-            "button_link": "shopify://blogs/esafety-blogs/happy-father-s-day-from-esafety-supplies"
-          }
         }
       },
       "block_order": [
-        "slider_item_wmYUEQ",
-        "slider_item_i99mG7"
+        "slider_item_wmYUEQ"
       ],
-      "settings": {}
+      "settings": {
+        "enable_autoplay": true,
+        "autoplay_delay": 5
+      }
     },
     "grid_collection_list_gNtHbb": {
       "type": "grid-collection-list",
