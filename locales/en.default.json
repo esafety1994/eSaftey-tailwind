@@ -484,7 +484,8 @@
       "order_summary": {
         "enter_shipping_address": "Please select a valid shipping address",
         "free_shipping_total_label": "$0",
-        "free_shipping_discount_label": "$0"
+        "free_shipping_discount_label": "$0",
+        "free_total_label": "$0"
       },
       "shipping": {
         "different_shipping_method_summary": "Please select a valid shipping address",
