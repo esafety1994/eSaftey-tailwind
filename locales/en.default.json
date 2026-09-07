@@ -101,6 +101,9 @@
       "video": {
         "notice": "Your browser does not support the video tag."
       }
+    },
+    "internal-page-banner": {
+      "title": "Single Banner"
     }
   },
   "blogs": {
@@ -476,10 +479,12 @@
         "title": "Please select a valid shipping address"
       },
       "delivery_options": {
-        "shipping_address": "Please select a valid shipping address"
+        "shipping_address": "Please select a valid shipping address",
+        "free_total_label": "TBC"
       },
       "order_summary": {
-        "enter_shipping_address": "Please select a valid shipping address"
+        "enter_shipping_address": "Please select a valid shipping address",
+        "free_total_label": "TBC"
       },
       "shipping": {
         "different_shipping_method_summary": "Please select a valid shipping address",
