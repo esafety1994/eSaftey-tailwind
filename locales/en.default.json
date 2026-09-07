@@ -487,7 +487,8 @@
       },
       "shipping": {
         "different_shipping_method_summary": "Please select a valid shipping address",
-        "invalid_shipping_method_summary": "Please select a valid shipping address"
+        "invalid_shipping_method_summary": "Please select a valid shipping address",
+        "free_rate_label": "$0"
       },
       "thank_you": {
         "shipping_address_title": "Please select a valid shipping address",
