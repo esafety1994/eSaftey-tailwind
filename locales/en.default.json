@@ -483,12 +483,13 @@
       },
       "order_summary": {
         "enter_shipping_address": "Please select a valid shipping address",
-        "free_shipping_total_label": "$0"
+        "free_shipping_total_label": "TBC"
       },
       "shipping": {
         "different_shipping_method_summary": "Please select a valid shipping address",
         "invalid_shipping_method_summary": "Please select a valid shipping address",
-        "free_rate_label": "$0"
+        "free_rate_label": "TBC",
+        "split_shipping_option_free": "TBC"
       },
       "thank_you": {
         "shipping_address_title": "Please select a valid shipping address",
