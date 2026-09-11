@@ -512,6 +512,9 @@
             "phone": "Please add an area code when entering a landline"
           }
         }
+      },
+      "payment_summary": {
+        "free_label": "$0"
       }
     }
   },
