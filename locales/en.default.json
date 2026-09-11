@@ -479,7 +479,8 @@
         "title": "Please select a valid shipping address"
       },
       "delivery_options": {
-        "shipping_address": "Please select a valid shipping address"
+        "shipping_address": "Please select a valid shipping address",
+        "free_total_label": "$0"
       },
       "order_summary": {
         "enter_shipping_address": "Please select a valid shipping address",
