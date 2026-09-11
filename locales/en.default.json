@@ -521,7 +521,8 @@
   "customer_accounts": {
     "order_details": {
       "shipping": {
-        "address": "Please select a valid shipping address"
+        "address": "Please select a valid shipping address",
+        "free": "$0"
       }
     },
     "addresses": {
