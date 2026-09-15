@@ -57,11 +57,11 @@
         "custom_field_7hVWUD": {
           "type": "custom_field",
           "settings": {
-            "title": "Custom Cut Length: (Price per metre)",
-            "field_type": "cuts_calculator",
-            "field_options": "",
-            "field_placeholder": "Example: (10m/3  = 1 x 5m + 2 x 2.5m)                                           List Your Cut Sizes & Total Qtys Needed",
-            "field_help_text": "Enter total metres needed, not number of pieces.",
+            "title": "Sticker Label",
+            "field_type": "select",
+            "field_options": "1.9M\n2.0M\n2.1M\n2.2M\n2.3M\n2.4M\n2.5M\n2.6M\n2.7M\n2.8M\n2.9M\n3.0M\n3.1M\n3.2M\n3.3M\n3.4M\n3.5M\n3.6M\n3.7M\n3.8M\n3.9M\n4.0M\n4.1M\n4.2M\n4.3M\n4.4M\n4.5M\n4.6M\n4.7M\n4.8M\n4.9M\n5.0M\nOther",
+            "field_placeholder": "Choose sticker label",
+            "field_help_text": "Select the height (in metres) you want printed on the sticker label.",
             "field_required": true,
             "show_at_checkout": true
           }
