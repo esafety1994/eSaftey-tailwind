@@ -60,56 +60,52 @@
           {%- assign has_other_option = true -%}
         {%- endif -%}
       {%- endfor -%}
+      <select
+        id="{{ block.id }}"
+        class="form-field form-field--input bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
+        name="properties[{{- field_name -}}]"
+        {% if has_other_option %}data-custom-select data-block-id="{{ block.id }}"{% endif %}
+        {% if field_required %}
+          required
+        {% endif %}
+        form="{{ product_form_id }}"
+      >
+        {% if field_placeholder != blank %}
+          <option value="">{{ field_placeholder }}</option>
+        {% endif %}
+        {% for option in options %}
+          {%- assign opt = option | strip -%}
+          <option value="{{ opt }}"{% if opt == 'Other' %} data-other-option{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
       {% if has_other_option %}
-        <select
-          id="{{ block.id }}"
-          class="form-field form-field--input bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
-          data-custom-select
-          data-block-id="{{ block.id }}"
-          {% if field_required %}required{% endif %}
-          form="{{ product_form_id }}"
-        >
-          {% if field_placeholder != blank %}
-            <option value="">{{ field_placeholder }}</option>
-          {% endif %}
-          {% for option in options %}
-            <option value="{{ option }}" label="{{ option }}">{{ option }}</option>
-          {% endfor %}
-        </select>
         <input
           type="text"
           class="form-field form-field--input text-sm bg-gray-50 w-full box-border px-4 py-3 focus:outline-none mt-2 hidden"
           placeholder="Please specify"
           data-custom-other-note
           data-block-id="{{ block.id }}"
-          form="{{ product_form_id }}"
-        >
-        <input
-          type="hidden"
-          name="properties[{{- field_name -}}]"
-          data-custom-property
-          data-block-id="{{ block.id }}"
-          form="{{ product_form_id }}"
         >
         <script>
           (function () {
             var id = {{ block.id | json }};
             var select = document.querySelector('[data-custom-select][data-block-id="' + id + '"]');
             var note = document.querySelector('[data-custom-other-note][data-block-id="' + id + '"]');
-            var hidden = document.querySelector('[data-custom-property][data-block-id="' + id + '"]');
-            if (!select || !note || !hidden || select.dataset.otherBound) return;
+            if (!select || !note || select.dataset.otherBound) return;
             select.dataset.otherBound = '1';
+            var otherOpt = select.querySelector('[data-other-option]');
+            if (!otherOpt) return;
+            var originalOtherValue = otherOpt.value;
             function sync() {
-              var selected = (select.value || '').trim();
-              if (selected === 'Other') {
+              if (otherOpt.selected) {
                 note.classList.remove('hidden');
                 {% if field_required %}note.setAttribute('required', 'required');{% endif %}
-                hidden.value = note.value;
+                otherOpt.value = note.value;
               } else {
                 note.classList.add('hidden');
                 note.removeAttribute('required');
                 note.value = '';
-                hidden.value = selected;
+                otherOpt.value = originalOtherValue;
               }
             }
             select.addEventListener('change', sync);
@@ -117,23 +113,6 @@
             sync();
           })();
         </script>
-      {% else %}
-        <select
-          id="{{ block.id }}"
-          class="form-field form-field--input bg-gray-50 w-full box-border px-4 py-3 focus:outline-none"
-          name="properties[{{- field_name -}}]"
-          {% if field_required %}
-            required
-          {% endif %}
-          form="{{ product_form_id }}"
-        >
-          {% if field_placeholder != blank %}
-            <option value="">{{ field_placeholder }}</option>
-          {% endif %}
-          {% for option in options %}
-            <option value="{{ option }}" label="{{ option }}">{{ option }}</option>
-          {% endfor %}
-        </select>
       {% endif %}
     {% when 'file' %}
       <div class="file-upload-control flex items-center gap-3 flex-wrap">
