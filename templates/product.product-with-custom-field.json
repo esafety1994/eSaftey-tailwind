@@ -57,11 +57,11 @@
         "custom_field_7hVWUD": {
           "type": "custom_field",
           "settings": {
-            "title": "Meters",
+            "title": "Custom Cut Length (Price per metre)",
             "field_type": "cuts_calculator",
             "field_options": "",
             "field_placeholder": "Choose sticker label",
-            "field_help_text": "Select the height (in metres) you want printed on the sticker label.",
+            "field_help_text": "Enter total metres needed, not number of pieces.",
             "field_required": true,
             "show_at_checkout": true
           }
