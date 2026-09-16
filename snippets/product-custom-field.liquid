@@ -100,7 +100,8 @@
             if (!select || !note || !hidden || select.dataset.otherBound) return;
             select.dataset.otherBound = '1';
             function sync() {
-              if (select.value === 'Other') {
+              var selected = (select.value || '').trim();
+              if (selected === 'Other') {
                 note.classList.remove('hidden');
                 {% if field_required %}note.setAttribute('required', 'required');{% endif %}
                 hidden.value = note.value;
@@ -108,7 +109,7 @@
                 note.classList.add('hidden');
                 note.removeAttribute('required');
                 note.value = '';
-                hidden.value = select.value;
+                hidden.value = selected;
               }
             }
             select.addEventListener('change', sync);
