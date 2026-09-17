@@ -6,6 +6,12 @@
   - show_compare_price: {Boolean} Show compare at price (optional, default: true)
   - price_size: {String} Price font size (optional, default: '14px')
   - price_color: {String} Price color (optional, default: '#000000')
+
+  B2B tier pricing:
+  For B2B customers, computes min(tier_off_compare_at, current_price) using the
+  customer's `custom.b2b_tier_map` metafield (JSON) and the product's
+  `custom.b2b_category` metafield. Mirrors the logic in the bulk-discount
+  Function so PDP display matches cart/checkout charge.
 {% endcomment %}
 {% liquid
   assign show_compare_price = show_compare_price | default: true
@@ -14,12 +20,62 @@
   assign show_ex_gst = show_ex_gst | default: false
   assign layout = layout | default: 'standard'
   assign gst_text_size = gst_text_size | default: 'text-sm'
-  assign ex_price = product.selected_or_first_available_variant.price | divided_by: 1.1 | round
 %}
 {% comment %}Case-insensitive tag checks: join tags into a string and downcase it{% endcomment %}
-{% assign _tag_string = product.tags | join: ',' | downcase %}
+{% assign tag_string = product.tags | join: ',' | downcase %}
+{% assign customer_tags_lower = customer.tags | join: ',' | downcase %}
+{% assign is_b2b = false %}
+{% assign tier_type = nil %}
+{% if customer and customer_tags_lower contains 'b2b' %}
+  {% assign is_b2b = true %}
+  {% if customer_tags_lower contains 'trade account' %}
+    {% assign tier_type = 'trade' %}
+  {% elsif customer_tags_lower contains 'wholesale account' %}
+    {% assign tier_type = 'wholesale' %}
+  {% endif %}
+{% endif %}
 
-{% if _tag_string contains 'hide prices' %}
+{% comment %}
+  Compute the display price + compare-at, applying B2B tier logic if applicable.
+  All amounts remain in cents until the |money filter renders them.
+{% endcomment %}
+{% assign price_variant = product.selected_or_first_available_variant %}
+{% assign display_price = price_variant.price %}
+{% assign display_compare_at = price_variant.compare_at_price %}
+
+{% if is_b2b and tier_type %}
+  {% assign shop_tier_map = shop.metafields.custom.b2b_tier_map.value %}
+  {% assign tier_bucket = shop_tier_map[tier_type] %}
+  {% assign category_key = product.metafields.custom.b2b_category.value | default: 'default' %}
+  {% assign tier_pct = tier_bucket[category_key] | default: tier_bucket.default | default: 8 %}
+  {% comment %}Values > 1 are treated as percentages (8 = 8%). Values <= 1 as decimals.{% endcomment %}
+  {% if tier_pct > 1 %}
+    {% assign tier_multiplier = 100 | minus: tier_pct %}
+    {% assign tier_divisor = 100 %}
+  {% else %}
+    {% assign tier_multiplier = 1 | minus: tier_pct | times: 100 %}
+    {% assign tier_divisor = 100 %}
+  {% endif %}
+
+  {% if price_variant.compare_at_price and price_variant.compare_at_price > price_variant.price %}
+    {% comment %}On sale: target = min(tier off compare_at, current_price){% endcomment %}
+    {% assign tier_price = price_variant.compare_at_price | times: tier_multiplier | divided_by: tier_divisor %}
+    {% if tier_price < price_variant.price %}
+      {% assign display_price = tier_price %}
+    {% endif %}
+    {% comment %}Strike-through the original retail (compare_at) so B2B sees savings.{% endcomment %}
+    {% assign display_compare_at = price_variant.compare_at_price %}
+  {% else %}
+    {% comment %}Not on sale: apply tier % off retail (equivalent to old catalog){% endcomment %}
+    {% assign display_price = price_variant.price | times: tier_multiplier | divided_by: tier_divisor %}
+    {% comment %}Strike-through the retail price so B2B sees the tier discount visually.{% endcomment %}
+    {% assign display_compare_at = price_variant.price %}
+  {% endif %}
+{% endif %}
+
+{% assign ex_price = display_price | divided_by: 1.1 | round %}
+
+{% if tag_string contains 'hide prices' %}
   {% case layout %}
     {% when 'card', 'search' %}
       <div class="flex flex-col gap-1 text-lg">
@@ -40,12 +96,12 @@
     <div class="flex flex-col gap-1 text-lg">
       <span class="font-semibold flex gap-x-4 flex-col">
         <span>
-          <span>{{- product.selected_or_first_available_variant.price | money }}</span>
+          <span>{{- display_price | money }}</span>
         </span>
-        {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
+        {% if display_compare_at > display_price and show_compare_price %}
           <span>
             <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start items-center text-sm">
-              {{ product.selected_or_first_available_variant.compare_at_price | money }}
+              {{ display_compare_at | money }}
             </span>
           </span>
         {% endif %}
@@ -54,12 +110,12 @@
   {% when 'sticky' %}
     <div class="text-left">
       <span class="font-semibold">
-        <span>{{ product.selected_or_first_available_variant.price | money }}</span>
+        <span>{{ display_price | money }}</span>
 
-        {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
+        {% if display_compare_at > display_price and show_compare_price %}
           <span>
             <span class="text-gray-500 line-through mr-2">
-              {{ product.selected_or_first_available_variant.compare_at_price | money }}
+              {{ display_compare_at | money }}
             </span>
           </span>
         {% endif %}
@@ -69,27 +125,27 @@
     <div class="flex flex-col gap-1 text-xl">
       <span class="font-semibold flex gap-x-4 items-center">
         <span>
-          <span id="product-main-price">{{- product.selected_or_first_available_variant.price | money }}</span>
+          <span id="product-main-price">{{- display_price | money }}</span>
           <span class="ml-0.5 text-grey-text {{ gst_text_size }}">
-            {% if _tag_string contains 'gst-exempt' or _tag_string contains 'tactile' %}
+            {% if tag_string contains 'gst-exempt' or tag_string contains 'tactile' %}
               {{ 'general.taxes.exclude_tax_copy' | t }}
             {% else %}
               {{ 'general.taxes.include_tax_copy' | t }}
             {% endif %}
           </span>
         </span>
-        {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price and show_compare_price %}
+        {% if display_compare_at > display_price and show_compare_price %}
           <span>
             <span class="text-bg-light-red line-through flex flex-wrap ml-0.5 justify-start items-center text-sm">
-              {{ product.selected_or_first_available_variant.compare_at_price | money }}
+              {{ display_compare_at | money }}
             </span>
           </span>
           <span class="text-green-700 flex items-center justify-center text-base">
-            Save {{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}
+            Save {{ display_compare_at | minus: display_price | money }}
           </span>
         {% endif %}
       </span>
-      {% unless _tag_string contains 'gst-exempt' or _tag_string contains 'tactile' %}
+      {% unless tag_string contains 'gst-exempt' or tag_string contains 'tactile' %}
         <span class="text-lg text-grey-text">{{ ex_price | money }} (ex. GST)</span>
       {% endunless %}
 

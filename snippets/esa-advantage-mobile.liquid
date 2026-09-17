@@ -1,0 +1,22 @@
+{%- assign _customer_tags_lower = customer.tags | join: ',' | downcase -%}
+{%- assign _is_b2b = false -%}
+{%- if customer -%}
+  {%- if _customer_tags_lower contains 'b2b' -%}
+    {%- assign _is_b2b = true -%}
+  {%- elsif customer.company != blank -%}
+    {%- assign _is_b2b = true -%}
+  {%- elsif customer.company_available_locations.size > 0 -%}
+    {%- assign _is_b2b = true -%}
+  {%- endif -%}
+{%- endif -%}
+{%- if _is_b2b -%}
+  <div class="esa-adv-mobile-bar flex md:hidden items-center justify-between" style="background:#FEEB06;gap:12px;padding:10px 16px;line-height:1;">
+    <img src="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Advantage_Logo_10-2.png?v=1789436821" alt="eSafety Advantage" width="150" height="22" style="height:22px;width:auto;max-width:none;flex-shrink:0;display:block;">
+    <div style="display:flex;align-items:center;gap:8px;color:#000;font-weight:700;font-size:13px;letter-spacing:0.04em;white-space:nowrap;flex-shrink:0;">
+      <span>TRADE PRICING</span>
+      <span aria-hidden="true" style="display:inline-block;width:34px;height:18px;background:#000;border-radius:9px;position:relative;flex-shrink:0;">
+        <span style="position:absolute;top:2px;right:2px;width:14px;height:14px;background:#FEEB06;border-radius:50%;"></span>
+      </span>
+    </div>
+  </div>
+{%- endif -%}
