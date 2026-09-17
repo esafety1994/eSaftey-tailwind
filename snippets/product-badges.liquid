@@ -6,8 +6,51 @@
 
 {% assign prod_local = product %}
 
-{% assign compare_price = prod_local.compare_at_price_max | default: 0 %}
-{% assign selling_price = prod_local.price_max | default: prod_local.price | default: 0 %}
+{% assign badge_variant = prod_local.selected_or_first_available_variant %}
+{% assign selling_price = badge_variant.price | default: prod_local.price | default: 0 %}
+{% assign compare_price = badge_variant.compare_at_price | default: prod_local.compare_at_price_max | default: 0 %}
+
+{% comment %}
+  Mirror B2B tier logic from snippets/product-price.liquid so the discount %
+  badge matches the price the B2B customer actually sees.
+{% endcomment %}
+{% assign customer_tags_lower = customer.tags | join: ',' | downcase %}
+{% assign is_b2b = false %}
+{% assign tier_type = nil %}
+{% if customer and customer_tags_lower contains 'b2b' %}
+  {% assign is_b2b = true %}
+  {% if customer_tags_lower contains 'trade account' %}
+    {% assign tier_type = 'trade' %}
+  {% elsif customer_tags_lower contains 'wholesale account' %}
+    {% assign tier_type = 'wholesale' %}
+  {% endif %}
+{% endif %}
+
+{% if is_b2b and tier_type %}
+  {% assign shop_tier_map = shop.metafields.custom.b2b_tier_map.value %}
+  {% assign tier_bucket = shop_tier_map[tier_type] %}
+  {% assign category_key = prod_local.metafields.custom.b2b_category.value | default: 'default' %}
+  {% assign tier_pct = tier_bucket[category_key] | default: tier_bucket.default | default: 8 %}
+  {% if tier_pct > 1 %}
+    {% assign tier_multiplier = 100 | minus: tier_pct %}
+    {% assign tier_divisor = 100 %}
+  {% else %}
+    {% assign tier_multiplier = 1 | minus: tier_pct | times: 100 %}
+    {% assign tier_divisor = 100 %}
+  {% endif %}
+
+  {% if badge_variant.compare_at_price and badge_variant.compare_at_price > badge_variant.price %}
+    {% assign tier_price = badge_variant.compare_at_price | times: tier_multiplier | divided_by: tier_divisor %}
+    {% if tier_price < badge_variant.price %}
+      {% assign selling_price = tier_price %}
+    {% endif %}
+    {% assign compare_price = badge_variant.compare_at_price %}
+  {% else %}
+    {% assign selling_price = badge_variant.price | times: tier_multiplier | divided_by: tier_divisor %}
+    {% assign compare_price = badge_variant.price %}
+  {% endif %}
+{% endif %}
+
 {% assign show_discount = false %}
 {% assign discount_pct = 0 %}
 {% if compare_price > selling_price and compare_price > 0 %}
