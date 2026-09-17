@@ -83,6 +83,10 @@ class ShippingCalculator extends HTMLElement {
     }
     this.product = product;
 
+    // B2B-tagged customers get freight quoted separately via Odoo — the calc
+    // must never show a real rate for them, only the "$0 / freight TBC" card.
+    this.isB2B = this.getAttribute('data-is-b2b') === 'true';
+
     this.isLoading = false;
     this.shippingRates = [];
     this.errors = [];
@@ -234,6 +238,15 @@ class ShippingCalculator extends HTMLElement {
     this._lastPostcode = data.zip;
     this._lastQuantity = data.quantity;
 
+    if (this.isB2B) {
+      this.setLoading(true);
+      await new Promise(r => setTimeout(r, 400));
+      this.shippingRates = [{ total_price: 0 }];
+      this.renderResults(false);
+      this.setLoading(false);
+      return;
+    }
+
     if (this.isRemoteState(data.zip)) {
       // WA / NT / TAS — auto-inject state and suburb for exact Starshipit routing
       data.province = this.getStateCode(data.zip);
@@ -352,8 +365,15 @@ class ShippingCalculator extends HTMLElement {
     const productImage = this.product.image || '';
     const variantId = this.product.variant_id || '';
 
+    // B2B customers see the same "freight quoted separately" messaging as
+    // the checkout — no numeric rate, no ETA range, no C&C banner.
+    const shippingLabel = this.isB2B ? 'Courier – Freight to be confirmed' : 'Shipping';
+    const shippingDisplay = this.isB2B ? '$0.00' : `$${shippingCost.toFixed(2)}`;
+    const etaDisplay = this.isB2B ? 'Confirmed after order review' : etaDates;
+    const showCcBanner = isNSW && !this.isB2B;
+
     // C&C banner: separate yellow card shown above the green estimate card for NSW
-    const ccBanner = isNSW ? `
+    const ccBanner = showCcBanner ? `
       <div class="sc-cc-banner">
         <div class="sc-cc-icon-wrap">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
@@ -392,12 +412,12 @@ class ShippingCalculator extends HTMLElement {
             <span>Delivery to ${postcode}</span>
           </div>
           <div class="sc-delivery-row">
-            <span>Shipping</span>
-            <span>$${shippingCost.toFixed(2)}</span>
+            <span>${shippingLabel}</span>
+            <span>${shippingDisplay}</span>
           </div>
           <div class="sc-delivery-row">
             <span>Estimated delivery</span>
-            <span class="sc-delivery-date">${etaDates}</span>
+            <span class="sc-delivery-date">${etaDisplay}</span>
           </div>
         </div>
         <div class="sc-product-row">
@@ -413,8 +433,8 @@ class ShippingCalculator extends HTMLElement {
             <span>$${productTotal.toFixed(2)}</span>
           </div>
           <div class="sc-cost-row">
-            <span>Shipping</span>
-            <span>$${shippingCost.toFixed(2)}</span>
+            <span>${shippingLabel}</span>
+            <span>${shippingDisplay}</span>
           </div>
           <div class="sc-cost-divider"></div>
           <div class="sc-cost-row sc-cost-total">

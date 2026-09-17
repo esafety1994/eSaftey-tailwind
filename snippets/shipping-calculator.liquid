@@ -1,4 +1,4 @@
-{%- assign variant = product.variants.first | default: product.selected_or_first_available_variant -%}
+{%- assign variant = product.selected_or_first_available_variant | default: product.variants.first -%}
 
 {%- capture item_grams -%}
 {%- assign raw_weight = variant.weight | plus: 0 -%}
@@ -18,18 +18,64 @@
 {%- endif -%}
 {%- endcapture -%}
 
+{%- comment -%}
+  Mirror product-price.liquid so the shipping calc uses the same B2B-adjusted
+  price the customer sees on the PDP. Otherwise Product total on the shipping
+  panel doesn't match the PDP / cart.
+{%- endcomment -%}
+{%- assign sc_customer_tags = customer.tags | join: ',' | downcase -%}
+{%- assign sc_is_b2b = 'false' -%}
+{%- assign sc_tier_type = nil -%}
+{%- if customer -%}
+  {%- if sc_customer_tags contains 'b2b' -%}
+    {%- assign sc_is_b2b = 'true' -%}
+  {%- elsif customer.company != blank -%}
+    {%- assign sc_is_b2b = 'true' -%}
+  {%- elsif customer.company_available_locations.size > 0 -%}
+    {%- assign sc_is_b2b = 'true' -%}
+  {%- endif -%}
+  {%- if sc_customer_tags contains 'trade account' -%}
+    {%- assign sc_tier_type = 'trade' -%}
+  {%- elsif sc_customer_tags contains 'wholesale account' -%}
+    {%- assign sc_tier_type = 'wholesale' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign sc_display_price = variant.price -%}
+{%- if sc_is_b2b == 'true' and sc_tier_type -%}
+  {%- assign sc_tier_map = shop.metafields.custom.b2b_tier_map.value -%}
+  {%- assign sc_bucket = sc_tier_map[sc_tier_type] -%}
+  {%- assign sc_category_key = product.metafields.custom.b2b_category.value | default: 'default' -%}
+  {%- assign sc_tier_pct = sc_bucket[sc_category_key] | default: sc_bucket.default | default: 8 -%}
+  {%- if sc_tier_pct > 1 -%}
+    {%- assign sc_tier_mult = 100 | minus: sc_tier_pct -%}
+    {%- assign sc_tier_div = 100 -%}
+  {%- else -%}
+    {%- assign sc_tier_mult = 1 | minus: sc_tier_pct | times: 100 -%}
+    {%- assign sc_tier_div = 100 -%}
+  {%- endif -%}
+  {%- if variant.compare_at_price and variant.compare_at_price > variant.price -%}
+    {%- assign sc_tier_price = variant.compare_at_price | times: sc_tier_mult | divided_by: sc_tier_div -%}
+    {%- if sc_tier_price < variant.price -%}
+      {%- assign sc_display_price = sc_tier_price -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign sc_display_price = variant.price | times: sc_tier_mult | divided_by: sc_tier_div -%}
+  {%- endif -%}
+{%- endif -%}
+
 {%- capture required_product -%}
 {
   "title": {{ product.title | json }},
   "sku": {{ variant.sku | json }},
-  "price": {{ variant.price | default: product.price }},
+  "price": {{ sc_display_price | default: product.price }},
   "grams": {{ item_grams | strip }},
   "image": {{ variant.image | default: product.featured_image | image_url: width: 200 | json }},
   "variant_id": {{ variant.id }}
 }
 {%- endcapture -%}
 
-<shipping-calculator class="shipping-calculator" data-product='{{ required_product | strip }}'>
+<shipping-calculator class="shipping-calculator" data-product='{{ required_product | strip }}' data-is-b2b="{{ sc_is_b2b }}">
 
   <!-- Header -->
   <header class="m-cart-addon__title">
