@@ -10,13 +10,21 @@
   {%- endif -%}
 {%- endif -%}
 {%- comment -%}
-  Post-login routing is handled by the customer-account extension on the
-  account subdomain (not the theme):
-    - B2B customer → extension redirects them to /pages/dashboard
-    - D2C customer → stays on the default /account page
-  Non-logged-in visitors go through Shopify's standard NCA login flow.
+  Not-logged-in visitor → /account/login with return_url=/pages/dashboard so B2B
+  skips the extension's "Redirecting to your dashboard…" banner.
+    - B2B after login → dashboard renders directly
+    - D2C after login → template redirects to /account (brief dashboard flash is acceptable)
+  Logged-in customers get their direct link.
 {%- endcomment -%}
-{%- if _is_b2b -%}
+{%- comment -%}
+  Not-logged-in visitors go through login and are then routed to /pages/
+  dashboard. The dashboard template handles the B2B vs D2C split from there:
+    - B2B customer → sees the custom dashboard
+    - D2C customer → template redirects to /account (extension no longer loops)
+{%- endcomment -%}
+{%- if customer == blank -%}
+  {%- assign _account_url = '/account/login?return_url=%2Fpages%2Fdashboard%3Fview%3Ddashboard' -%}
+{%- elsif _is_b2b -%}
   {%- assign _account_url = '/pages/dashboard?view=dashboard' -%}
 {%- else -%}
   {%- assign _account_url = '/account' -%}
