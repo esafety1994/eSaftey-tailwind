@@ -423,4 +423,16 @@
   {% if field_help_text != blank %}
     <p class="text-xs text-gray-500 mt-1">{{ field_help_text }}</p>
   {% endif %}
+  {% if template.suffix == 'product-with-sticker-labe' %}
+    <label class="m-product-option--label sr-only" for="{{ block.id }}-length">Length</label>
+    <input
+      type="text"
+      id="{{ block.id }}-length"
+      class="form-field sr-only"
+      value="{{ product.selected_or_first_available_variant.title }}"
+      readonly
+      tabindex="-1"
+      aria-hidden="true"
+    >
+  {% endif %}
 </div>
