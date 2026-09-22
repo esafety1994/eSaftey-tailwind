@@ -55,6 +55,11 @@
     <input type="hidden" name="properties[_store]" value="e_safety_supplies-wetherill_park">
   {% endif %}
 <!-- End Rendr-Shopify Cart Liquid Snippet (v1.0.0) -->
+  {% if product.template_suffix == 'product-with-sticker-labe' %}
+    {% for option in product.options %}
+      <input type="hidden" name="properties[{{ option }}]" value="{{ current_variant.options[forloop.index0] }}">
+    {% endfor %}
+  {% endif %}
     {% endform %}
     {% endif %}
   </div>

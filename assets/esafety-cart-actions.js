@@ -348,6 +348,16 @@ if (!customElements.get("esafety-cart-action-button")) {
             const val = (t.value || '').trim();
             if (val) collected[key] = val;
           });
+
+          // hidden inputs with properties[...] name (e.g. variant-option echoes)
+          formEl.querySelectorAll('input[type="hidden"][name^="properties["]').forEach((h) => {
+            const name = h.name && h.name.trim();
+            if (!name) return;
+            const m = name.match(/^properties\[(.*)\]$/);
+            if (!m) return;
+            const val = (h.value || '').trim();
+            if (val) collected[m[1]] = val;
+          });
         }
 
         // also scan general swatch container outside the form
