@@ -56,9 +56,7 @@
   {% endif %}
 <!-- End Rendr-Shopify Cart Liquid Snippet (v1.0.0) -->
   {% if product.template_suffix == 'product-with-sticker-labe' %}
-    {% for option in product.options %}
-      <input type="hidden" name="properties[{{ option }}]" value="{{ current_variant.options[forloop.index0] }}">
-    {% endfor %}
+    <input type="hidden" name="properties[Length]" value="{{ current_variant.title }}">
   {% endif %}
     {% endform %}
     {% endif %}
