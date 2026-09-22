@@ -79,7 +79,12 @@
 {% endfor %}
 
 <div class="badges absolute top-3 left-3 z-40 flex flex-col items-start gap-2">
-  {% if show_discount %}
+  {% comment %}
+    Hide the discount % badge for B2B customers — their trade pricing is their
+    normal price, so a "-20%" callout is misleading (per ticket "Remove
+    percentage discount from products for B2B customers").
+  {% endcomment %}
+  {% if show_discount and is_b2b == false %}
     <div class="discount-badge bg-primary-yellow text-black rounded-full text-xs font-semibold size-12 flex items-center justify-center leading-none">-{{ discount_pct }}%</div>
   {% elsif is_new %}
     <div class="new-badge bg-black text-primary-yellow rounded-full text-xs font-semibold size-12 flex items-center justify-center leading-none">NEW</div>
