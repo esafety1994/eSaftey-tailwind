@@ -505,6 +505,12 @@
             "phone": "Please add an area code when entering a landline"
           }
         }
+      },
+      "local_pickup": {
+        "pickup_unavailable_banner_title_with_country": {
+          "one": "Your cart contains products from multiple warehouses, so your order is only eligible for courier from Sydney Warehouse.",
+          "other": "Your cart contains products from multiple warehouses, so your order is only eligible for courier from Sydney Warehouse."
+        }
       }
     }
   },
