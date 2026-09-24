@@ -12,15 +12,11 @@
     "title": {
       "type": "page-tittle",
       "name": "Page Title",
-      "settings": {
-        "container": "container mx-auto py-4"
-      }
+      "settings": {}
     },
     "main": {
       "type": "page",
-      "settings": {
-        "container": "container mx-auto py-4"
-      }
+      "settings": {}
     },
     "breadcrumb_WrJrMP": {
       "type": "breadcrumb",
@@ -28,5 +24,9 @@
       "settings": {}
     }
   },
-  "order": ["title", "breadcrumb_WrJrMP", "main"]
+  "order": [
+    "title",
+    "breadcrumb_WrJrMP",
+    "main"
+  ]
 }

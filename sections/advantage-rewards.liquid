@@ -1,0 +1,67 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<section class="advantage advantage-section advantage-section--dark" id="rewards">
+  <div class="advantage__container">
+    <div class="advantage-section__head">
+      <div>
+        <span class="advantage__eyebrow advantage__eyebrow--light advantage-section__eyebrow">
+          {{ section.settings.eyebrow | default: 'Rewards' }}
+        </span>
+        <h2 class="advantage__h2 advantage__h2--light">
+          {{ section.settings.title_line1 | default: 'Choose how your' }}
+          <br>
+          {{ section.settings.title_line2_prefix | default: 'loyalty' }}
+          <span class="advantage__accent">{{ section.settings.title_line2_accent | default: 'pays off.' }}</span>
+        </h2>
+        <p class="advantage__body advantage__body--muted" style="max-width: 480px; margin-top: 24px;">
+          {{ section.settings.intro | default: 'Every eligible dollar spent earns points. Select the reward that works best for your business.' }}
+        </p>
+      </div>
+      <div class="advantage-rewards__grid">
+        {%- for block in section.blocks -%}
+          <div class="advantage-reward" {{ block.shopify_attributes }}>
+            <span class="advantage-reward__badge">{{ block.settings.badge | default: forloop.index }}</span>
+            <div>
+              <h3 class="advantage-reward__title">{{ block.settings.title }}</h3>
+              <p class="advantage-reward__sub">{{ block.settings.sub }}</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Advantage Rewards",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Rewards" },
+    { "type": "text", "id": "title_line1", "label": "Title (line 1)", "default": "Choose how your" },
+    { "type": "text", "id": "title_line2_prefix", "label": "Title (line 2 prefix)", "default": "loyalty" },
+    { "type": "text", "id": "title_line2_accent", "label": "Title (line 2 accent, yellow)", "default": "pays off." },
+    { "type": "textarea", "id": "intro", "label": "Intro paragraph", "default": "Every eligible dollar spent earns points. Select the reward that works best for your business." }
+  ],
+  "blocks": [
+    {
+      "type": "option",
+      "name": "Reward option",
+      "settings": [
+        { "type": "text", "id": "badge", "label": "Badge (number)", "default": "1" },
+        { "type": "text", "id": "title", "label": "Title", "default": "1 point per $1" },
+        { "type": "text", "id": "sub", "label": "Subtitle", "default": "Towards a prepaid gift card." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Advantage Rewards",
+      "blocks": [
+        { "type": "option", "settings": { "badge": "1", "title": "1 point per $1", "sub": "Towards a prepaid gift card." } },
+        { "type": "option", "settings": { "badge": "2", "title": "2 points per $1", "sub": "As credit on your next eSafety order." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,43 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<section class="advantage advantage-terms" id="terms">
+  <div class="advantage__container">
+    <div class="advantage-terms__grid">
+      <div>
+        <span class="advantage__eyebrow advantage-section__eyebrow">
+          {{ section.settings.eyebrow | default: 'Terms and Conditions' }}
+        </span>
+        <h2 class="advantage__h2 advantage-terms__title">
+          {{ section.settings.title_line1 | default: 'Learn all there is' }}<br>
+          {{ section.settings.title_line2 | default: 'to know' }}
+        </h2>
+      </div>
+      <div>
+        <p class="advantage-terms__body">
+          {{ section.settings.body | default: 'Want to learn more about the eSafety Advantage loyalty program? The terms and conditions has everything you need to know.' }}
+        </p>
+        <a href="{{ section.settings.cta_link | default: '#' }}" class="advantage-btn advantage-btn--primary advantage-btn--wide">
+          {{ section.settings.cta_label | default: 'Read the Ts & Cs now' }}
+          <span class="advantage-btn__arrow" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Advantage Terms CTA",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Terms and Conditions" },
+    { "type": "text", "id": "title_line1", "label": "Title (line 1)", "default": "Learn all there is" },
+    { "type": "text", "id": "title_line2", "label": "Title (line 2)", "default": "to know" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Want to learn more about the eSafety Advantage loyalty program? The terms and conditions has everything you need to know." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Read the Ts & Cs now" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "presets": [
+    { "name": "Advantage Terms CTA", "settings": {} }
+  ]
+}
+{% endschema %}

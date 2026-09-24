@@ -1,0 +1,158 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<footer class="advantage advantage-footer">
+  <div class="advantage__container">
+
+    {%- comment -%} Top CTA row {%- endcomment -%}
+    <div class="advantage-footer__cta">
+      <div>
+        <span class="advantage-footer__eyebrow">{{ section.settings.cta_eyebrow | default: 'Ready to get more from every order?' }}</span>
+        <h3 class="advantage-footer__cta-title">{{ section.settings.cta_title | default: 'Make loyalty your advantage' }}</h3>
+      </div>
+      <a href="{{ section.settings.cta_link | default: '#' }}" class="advantage-btn advantage-btn--primary">
+        {{ section.settings.cta_label | default: 'Join eSafety Advantage' }}
+        <span class="advantage-btn__arrow" aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="advantage-footer__divider" aria-hidden="true"></div>
+
+    {%- comment -%} Main row: brand + 3 columns {%- endcomment -%}
+    <div class="advantage-footer__main">
+      <div class="advantage-footer__brand">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 300 | image_tag: alt: 'eSafety Advantage', class: 'advantage-footer__brand-logo' }}
+        {%- else -%}
+          <span class="advantage-footer__brand-logo-placeholder">eSafety Advantage</span>
+        {%- endif -%}
+        <p class="advantage-footer__tagline">
+          {{ section.settings.tagline | default: 'Better pricing, meaningful rewards and dedicated support for the businesses that keep Australia moving.' }}
+        </p>
+      </div>
+
+      <div class="advantage-footer__cols">
+        <div class="advantage-footer__col">
+          <h4 class="advantage-footer__col-title">{{ section.settings.col1_title | default: 'Program' }}</h4>
+          <ul class="advantage-footer__list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'link' and block.settings.column == '1' -%}
+                <li {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.link | default: '#' }}">{{ block.settings.label }}</a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+        <div class="advantage-footer__col">
+          <h4 class="advantage-footer__col-title">{{ section.settings.col2_title | default: 'Support' }}</h4>
+          <ul class="advantage-footer__list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'link' and block.settings.column == '2' -%}
+                <li {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.link | default: '#' }}">{{ block.settings.label }}</a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+
+        <div class="advantage-footer__col">
+          <h4 class="advantage-footer__col-title">{{ section.settings.col3_title | default: 'Talk to our team' }}</h4>
+          <ul class="advantage-footer__list">
+            {%- if section.settings.phone != blank -%}
+              <li>
+                <a class="advantage-footer__contact-item" href="tel:{{ section.settings.phone | replace: ' ', '' }}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  {{ section.settings.phone }}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if section.settings.email != blank -%}
+              <li>
+                <a class="advantage-footer__contact-item" href="mailto:{{ section.settings.email }}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+                  {{ section.settings.email }}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if section.settings.address != blank -%}
+              <li>
+                <span class="advantage-footer__contact-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  {{ section.settings.address }}
+                </span>
+              </li>
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="advantage-footer__copyright">
+      <span>{{ section.settings.copyright | default: '© 2026 eSafety Supplies. All rights reserved' }}</span>
+      <span class="adv-sep">|</span>
+      <span>{{ section.settings.disclaimer | default: 'eSafety Advantage rewards are subject to eligibility and program terms.' }}</span>
+    </div>
+
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Advantage Footer",
+  "settings": [
+    { "type": "header", "content": "Top CTA row" },
+    { "type": "text", "id": "cta_eyebrow", "label": "CTA eyebrow", "default": "Ready to get more from every order?" },
+    { "type": "text", "id": "cta_title", "label": "CTA title", "default": "Make loyalty your advantage" },
+    { "type": "text", "id": "cta_label", "label": "CTA button label", "default": "Join eSafety Advantage" },
+    { "type": "url", "id": "cta_link", "label": "CTA button link" },
+
+    { "type": "header", "content": "Brand" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "textarea", "id": "tagline", "label": "Tagline", "default": "Better pricing, meaningful rewards and dedicated support for the businesses that keep Australia moving." },
+
+    { "type": "header", "content": "Column titles" },
+    { "type": "text", "id": "col1_title", "label": "Column 1 title", "default": "Program" },
+    { "type": "text", "id": "col2_title", "label": "Column 2 title", "default": "Support" },
+    { "type": "text", "id": "col3_title", "label": "Column 3 title", "default": "Talk to our team" },
+
+    { "type": "header", "content": "Contact (Column 3)" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
+    { "type": "text", "id": "email", "label": "Email", "default": "advantage@esafetysupplies.com.au" },
+    { "type": "text", "id": "address", "label": "Address", "default": "396 Victoria St, Wetherill Park NSW 2164" },
+
+    { "type": "header", "content": "Copyright bar" },
+    { "type": "text", "id": "copyright", "label": "Copyright", "default": "© 2026 eSafety Supplies. All rights reserved" },
+    { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "eSafety Advantage rewards are subject to eligibility and program terms." }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Footer link",
+      "settings": [
+        { "type": "select", "id": "column", "label": "Column", "options": [
+          { "value": "1", "label": "Column 1 (Program)" },
+          { "value": "2", "label": "Column 2 (Support)" }
+        ], "default": "1" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Member benefits" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Advantage Footer",
+      "blocks": [
+        { "type": "link", "settings": { "column": "1", "label": "Member benefits", "link": "#benefits" } },
+        { "type": "link", "settings": { "column": "1", "label": "Rewards", "link": "#rewards" } },
+        { "type": "link", "settings": { "column": "1", "label": "Referral bonus", "link": "#referral" } },
+        { "type": "link", "settings": { "column": "1", "label": "How it works", "link": "#benefits" } },
+        { "type": "link", "settings": { "column": "2", "label": "FAQs", "link": "#faqs" } },
+        { "type": "link", "settings": { "column": "2", "label": "Register your interest", "link": "#" } },
+        { "type": "link", "settings": { "column": "2", "label": "Shop eSafety Supplies", "link": "/" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

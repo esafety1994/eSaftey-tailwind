@@ -1,4 +1,119 @@
 // Optional: Additional JavaScript for handling form submission or interactions can be added here.
+// helper: read AVP hidden refs (.apo_value) and return properties object
+function getAVPProperties(scope) {
+  const props = {};
+  try {
+    const root = scope || document;
+    const nodes = (root.querySelectorAll && root.querySelectorAll('.ap-options__file-container .apo_value, .apo_value, .ap-options__file-container input[type="hidden"][field-name]')) || document.querySelectorAll('.ap-options__file-container .apo_value, .apo_value, .ap-options__file-container input[type="hidden"][field-name]');
+    Array.from(nodes).forEach((h) => {
+      try {
+        const val = (h.value || '').trim();
+        if (!val) return;
+        let label = null;
+        try { if (h.getAttribute) label = h.getAttribute('field-name') || h.getAttribute('name') || h.getAttribute('temp-name') || null; } catch (e) {}
+        if (!label && h.dataset) label = h.dataset.fieldName || h.dataset.optionName || null;
+        if (!label) {
+          const container = h.closest && h.closest('.ap-options__file-container');
+          if (container) {
+            const lbl = container.querySelector('label') || container.querySelector('.ap-file-label') || container.querySelector('.ap-options__file-label');
+            if (lbl && (lbl.textContent || '').trim()) label = lbl.textContent.trim();
+          }
+        }
+        if (!label) label = 'Upload Design Reference';
+        const clean = String(label).replace(/[:\s]+$/,'').trim();
+        if (clean) props[clean] = val;
+      } catch (e) {}
+    });
+  } catch (e) {}
+  return props;
+}
+// Global capture-phase submit interceptor: convert legacy /cart/add form submits
+// into AJAX adds so the cart drawer opens and AVP properties are preserved.
+if (!window._esafety_cart_add_interceptor_installed) {
+  window._esafety_cart_add_interceptor_installed = true;
+  document.addEventListener('submit', function (e) {
+    try {
+      const form = e.target;
+      if (!form || !(form instanceof HTMLFormElement)) return;
+      const action = (form.getAttribute && (form.getAttribute('action') || '') || '').toLowerCase();
+      if (!action.includes('/cart/add')) return; // only handle cart add forms
+      // skip forms already handled by <esafety-cart-action-button> to avoid double-add
+      if (form.closest && form.closest('esafety-cart-action-button')) return;
+
+      // If any real File objects are present, allow native multipart submit
+      const fileInputs = form.querySelectorAll('input[type="file"]');
+      for (const fi of fileInputs) {
+        try {
+          if (fi.files && fi.files.length > 0) return; // let native submit proceed
+        } catch (err) {}
+      }
+
+      // prevent native navigation and perform AJAX add
+      e.preventDefault();
+
+      const idEl = form.querySelector('input[name="id"]');
+      const variantId = idEl && idEl.value ? idEl.value : null;
+      if (!variantId) {
+        // fallback to native submit when no id found
+        try { form.submit(); } catch (err) {}
+        return;
+      }
+
+      let qty = 1;
+      const qtyEl = form.querySelector('input[name="quantity"], input[name="qty"]');
+      try { if (qtyEl && qtyEl.value) qty = parseInt(qtyEl.value, 10) || 1; } catch (err) { qty = 1; }
+
+      // collect enabled properties[...] inputs inside the form
+      const properties = {};
+      try {
+        form.querySelectorAll('[name]').forEach((el) => {
+          const name = (el.getAttribute && el.getAttribute('name')) || '';
+          const m = name.match(/^properties\[(.*)\]$/);
+          if (!m) return;
+          if (el.disabled) return;
+          let val = '';
+          const tag = (el.tagName || '').toLowerCase();
+          if (tag === 'input') {
+            const type = (el.type || '').toLowerCase();
+            if (type === 'checkbox') val = el.checked ? (el.value || true) : '';
+            else val = el.value || '';
+          } else if (tag === 'textarea' || tag === 'select') val = el.value || '';
+          else val = (el.textContent || '').trim();
+          if (val !== '') properties[m[1]] = val;
+        });
+      } catch (err) {}
+
+      // merge AVP-derived properties (do not overwrite existing keys)
+      try {
+        const avp = getAVPProperties(form) || {};
+        Object.keys(avp).forEach((k) => { if (!properties[k]) properties[k] = avp[k]; });
+      } catch (err) {}
+
+      const payload = {
+        items: [ { id: variantId, quantity: qty, properties: properties } ],
+        sections: 'esaftey-cart-drawer,cart-count',
+      };
+
+      fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          try {
+            document.documentElement.dispatchEvent(
+              new CustomEvent('cart:render', { detail: data, bubbles: true })
+            );
+          } catch (e) {}
+        })
+        .catch((err) => {
+          console.error('Add to cart failed (interceptor)', err);
+          try { form.submit(); } catch (e) {}
+        });
+    } catch (err) {}
+  }, true);
+}
 if (!customElements.get("esafety-cart-action-button")) {
   class EsafetyCartActionButton extends HTMLElement {
     constructor() {
@@ -13,6 +128,7 @@ if (!customElements.get("esafety-cart-action-button")) {
 
     handleSubmit(event) {
       event.preventDefault();
+      if (this._submitting) return;
       const customFields = document.querySelector(".m-product-custom-field");
       if (customFields) {
         // remove any previous validation UI to avoid duplicates
@@ -141,7 +257,7 @@ if (!customElements.get("esafety-cart-action-button")) {
 
       let properties = {};
       if (customFields) {
-        const labels = customFields.querySelectorAll("label");
+        const labels = customFields.querySelectorAll("label.m-product-option--label");
         const pairs = Array.from(labels).map((label) => {
           let fieldEl = null;
           const forId = label.getAttribute && label.getAttribute("for");
@@ -186,6 +302,80 @@ if (!customElements.get("esafety-cart-action-button")) {
         });
       }
 
+      // Fallback: if no `.m-product-custom-field` was present or produced no properties,
+      // collect values from selects, checked radios and text inputs within the product form
+      // and from common swatch containers. This ensures older themes' option names
+      // like "Choose Material" or "Choose Size" are captured as cart properties.
+      try {
+        const formEl = (event.target && event.target.closest && event.target.closest('form')) || document.querySelector('#product-act-button form') || document.querySelector('form[action*="/cart/add"]');
+        const collected = {};
+        if (formEl) {
+          // selects (use visible option text)
+          formEl.querySelectorAll('select[name]').forEach((s) => {
+            const key = s.name && s.name.trim();
+            if (!key) return;
+            const opt = s.options && s.options[s.selectedIndex];
+            const val = opt ? (opt.textContent || opt.value || '').trim() : (s.value || '').trim();
+            if (val) collected[key] = val;
+          });
+
+          // checked radios
+          formEl.querySelectorAll('input[type="radio"][name]').forEach((r) => {
+            if (!r.checked) return;
+            const key = r.name && r.name.trim();
+            if (!key) return;
+            let val = (r.value || '').trim();
+            // prefer nearby swatch label text if present
+            const wrap = r.closest && r.closest('.avp-productoptionswatchwrapper');
+            if (wrap) {
+              const txt = (wrap.textContent || '').trim();
+              if (txt) val = txt;
+            } else {
+              // try label[for=]
+              const id = r.id;
+              if (id) {
+                const lbl = document.querySelector('label[for="' + id + '"]');
+                if (lbl && (lbl.textContent || '').trim()) val = lbl.textContent.trim();
+              }
+            }
+            if (val) collected[key] = val;
+          });
+
+          // text inputs and textareas
+          formEl.querySelectorAll('input[type="text"][name], textarea[name]').forEach((t) => {
+            const key = t.name && t.name.trim();
+            if (!key) return;
+            const val = (t.value || '').trim();
+            if (val) collected[key] = val;
+          });
+        }
+
+        // also scan general swatch container outside the form
+        const swatchContainer = document.querySelector('.ap-options__swatch-container');
+        if (swatchContainer) {
+          swatchContainer.querySelectorAll('input[type="radio"][name]').forEach((r) => {
+            if (!r.checked) return;
+            const key = r.name && r.name.trim();
+            if (!key) return;
+            const wrap = r.closest && r.closest('.avp-productoptionswatchwrapper');
+            let val = '';
+            if (wrap) val = (wrap.textContent || '').trim();
+            if (!val) val = (r.value || '').trim();
+            if (val) collected[key] = val;
+          });
+        }
+
+        // merge collected into properties for submission if properties is empty
+        if (Object.keys(properties).length === 0 && Object.keys(collected).length > 0) {
+          properties = collected;
+        } else {
+          // merge but don't overwrite explicit properties
+          Object.keys(collected).forEach((k) => { if (!properties[k]) properties[k] = collected[k]; });
+        }
+      } catch (e) {
+        // fail silently
+      }
+
       // derive the active form (supports cases where variant scripts replace the form)
       const form =
         (event.target &&
@@ -209,6 +399,7 @@ if (!customElements.get("esafety-cart-action-button")) {
         }
       };
 
+      this._submitting = true;
       setLoading(true);
 
       // Safely read quantity (default to 1 when no quantity input present)
@@ -222,6 +413,79 @@ if (!customElements.get("esafety-cart-action-button")) {
 
       var idEl = form.querySelector('input[name="id"]');
       var variantId = idEl && idEl.value ? idEl.value : null;
+
+      // merge AVP-derived properties (if any) so AVP file refs are sent
+      try {
+        const avpExtra = getAVPProperties(form) || {};
+        Object.keys(avpExtra).forEach((k) => { if (!properties[k]) properties[k] = avpExtra[k]; });
+      } catch (e) {}
+
+      // Detect file inputs anywhere relevant. The .m-product-custom-field container
+      // is often rendered OUTSIDE the form on this theme, and `product_form_id`
+      // is not always set, so file inputs end up orphaned (not in FormData(form)).
+      // We scan both the form and any custom-field containers.
+      const filesToUpload = [];
+      try {
+        const seen = new Set();
+        const collectFiles = (root) => {
+          if (!root || !root.querySelectorAll) return;
+          root.querySelectorAll('input[type="file"]').forEach((fi) => {
+            if (fi.files && fi.files.length > 0 && !seen.has(fi)) {
+              seen.add(fi);
+              filesToUpload.push(fi);
+            }
+          });
+        };
+        collectFiles(form);
+        document.querySelectorAll('.m-product-custom-field').forEach(collectFiles);
+      } catch (e) {}
+
+      if (filesToUpload.length > 0) {
+        // Native multipart form submit. Shopify's storefront /cart/add.js
+        // accepts file uploads only via classic form submission — AJAX
+        // multipart silently stores files as empty hashes ({}) instead of
+        // creating /uploads/cart/... URLs. The browser will navigate to /cart.
+        //
+        // The .m-product-custom-field container is rendered OUTSIDE the form
+        // and product_form_id is not set on this template, so its inputs are
+        // orphaned. We physically move all properties[...] inputs into the
+        // form right before submit so they're included. Setting the `form`
+        // attribute alone proved unreliable.
+        if (form) {
+          document.querySelectorAll('.m-product-custom-field [name^="properties["]').forEach((el) => {
+            try {
+              // Never move file inputs — appending them to a new parent resets
+              // their files list in all browsers, losing the selected file.
+              // File inputs are already form-associated via the form= attribute
+              // (set by product_form_id), so no move is needed.
+              if ((el.type || '').toLowerCase() === 'file') return;
+              // Remove the `form` attribute. Per HTML spec, an explicit (even
+              // empty) `form=""` attribute makes the element's form owner null,
+              // overriding the ancestor-form fallback. Without removing it,
+              // form.elements excludes the input even after appendChild.
+              el.removeAttribute('form');
+              // Hide visually so the page doesn't reflow during the brief
+              // moment before the navigation kicks in.
+              if (el.style) el.style.display = 'none';
+              form.appendChild(el);
+            } catch (e) {}
+          });
+        }
+
+        this._submitting = true;
+        setLoading(true);
+
+        try {
+          // form.submit() bypasses the submit event listener, so we don't
+          // re-enter handleSubmit. The browser performs a real multipart POST.
+          form.submit();
+        } catch (err) {
+          console.error('Native form submit failed', err);
+          this._submitting = false;
+          setLoading(false);
+        }
+        return;
+      }
 
       const formData = {
         items: [
@@ -243,15 +507,26 @@ if (!customElements.get("esafety-cart-action-button")) {
         },
         body: JSON.stringify(formData),
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          if (!response.ok) {
+            const body = await response.text().catch(() => "");
+            const err = new Error("Add to cart HTTP " + response.status);
+            err.status = response.status;
+            err.body = body;
+            throw err;
+          }
+          return response.json();
+        })
         .then((data) => {
           document.documentElement.dispatchEvent(
             new CustomEvent("cart:render", { detail: data, bubbles: true })
           );
+          this._submitting = false;
           setLoading(false);
         })
         .catch((err) => {
           console.error("Add to cart failed", err);
+          this._submitting = false;
           setLoading(false);
         });
     }
@@ -492,9 +767,12 @@ class EsafetyCartActionsAddToCartButton extends HTMLElement {
             }).then((r) => r.json());
           } else {
             // item not in cart: add with requested quantity
+            // include AVP properties when adding via AJAX
+            let avpProps = {};
+            try { avpProps = getAVPProperties() || {}; } catch (e) {}
             const formData = {
               items: [
-                { id: productId, quantity: qty },
+                { id: productId, quantity: qty, properties: avpProps },
               ],
               sections: 'esaftey-cart-drawer,cart-count',
             };

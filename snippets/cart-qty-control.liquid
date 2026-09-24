@@ -1,4 +1,4 @@
-<cart-qty-control data-key="{{ key }}" data-quantity="{{ qty }}" data-is-addon="{{ is_addon }}">
+<cart-qty-control data-key="{{ key }}" data-quantity="{{ qty }}" data-is-addon="{{ _is_addon }}">
   <div class="flex gap-1 items-center flex-wrap justify-center">
     <div
       class="inline-flex items-center space-x-2 cart-qty-component border p-1 rounded-lg shadow-lg"
@@ -17,7 +17,17 @@
           {% render 'icon-trash-svg', class: 'size-4' %}
         {% endif %}
       </button>
-      <span class="qty w-12 text-center border-0" aria-label="Quantity">{{ qty }}</span>
+      <input
+        type="number"
+        min="0"
+        class="qty w-12 text-center border-0 bg-transparent"
+        aria-label="Quantity"
+        value="{{ qty }}"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        data-quantity="{{ qty }}"
+        data-esinput
+      />
       <button
         type="button"
         class="inc w-8 h-8 flex items-center justify-center text-gray-700 hover:text-bg-light-red cursor-pointer"

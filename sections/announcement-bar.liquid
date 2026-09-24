@@ -41,27 +41,6 @@
     </div>
   </section>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      new Glide('.announcement-glide', {
-        type: 'slider',
-        autoplay: 8000,
-        animationDuration: 1000,
-        perView: 1,
-        hoverpause: true,
-      }).mount();
-
-      var closeBtn = document.getElementById('announcement-close');
-      var bar = document.getElementById('announcement-bar');
-      closeBtn.addEventListener('click', function () {
-        bar.classList.add('opacity-0', '-translate-y-full');
-        bar.classList.remove('opacity-100', 'translate-y-0');
-        setTimeout(function () {
-          bar.style.display = 'none';
-        }, 500); // matches transition duration
-      });
-    });
-  </script>
 {% endif %}
 
 {% schema %}

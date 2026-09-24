@@ -1,0 +1,86 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<section class="advantage advantage-hero" id="hero">
+  <div class="advantage__container">
+    <div class="advantage-hero__grid">
+      <div class="advantage-hero__copy">
+        <span class="advantage__eyebrow advantage__eyebrow--light advantage-hero__eyebrow">
+          {{ section.settings.eyebrow | default: 'Introducing eSafety Advantage' }}
+        </span>
+        <h1 class="advantage__h1 advantage__h2--light advantage-hero__title">
+          {{ section.settings.title_line1 | default: 'More Value.' }}
+          <br>
+          <span class="advantage__accent">{{ section.settings.title_line2 | default: 'Every Order.' }}</span>
+        </h1>
+        <p class="advantage__body advantage-hero__desc">
+          {{ section.settings.description | default: 'A loyalty program built for the businesses that build, protect and keep Australia moving.' }}
+        </p>
+        <div class="advantage-hero__actions">
+          <a href="{{ section.settings.cta_primary_link | default: '#' }}" class="advantage-btn advantage-btn--primary advantage-btn--wide">
+            {{ section.settings.cta_primary_label | default: 'Join and start earning' }}
+            <span class="advantage-btn__arrow" aria-hidden="true"></span>
+          </a>
+          <a href="{{ section.settings.cta_secondary_link | default: '#benefits' }}" class="advantage-link">
+            {{ section.settings.cta_secondary_label | default: 'See how it works' }}
+            <span class="advantage-link__arrow" aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="advantage-hero__note">
+          {{ section.settings.note | default: 'Designed for eligible eSafety Supplies business customers' }}
+        </div>
+      </div>
+
+      <div class="advantage-hero__visual" aria-hidden="true">
+        {%- assign has_image = false -%}
+        {%- if section.settings.card_image != blank or section.settings.card_image_url != blank -%}{%- assign has_image = true -%}{%- endif -%}
+        <div class="advantage-hero__card{% if has_image %} advantage-hero__card--has-image{% endif %}">
+          {%- if section.settings.card_image != blank -%}
+            {{ section.settings.card_image | image_url: width: 1200 | image_tag: alt: 'eSafety Advantage card' }}
+          {%- elsif section.settings.card_image_url != blank -%}
+            <img src="{{ section.settings.card_image_url }}" alt="eSafety Advantage card">
+          {%- else -%}
+            eSafety Advantage
+          {%- endif -%}
+        </div>
+        <div class="advantage-hero__chip advantage-hero__chip--points">
+          <strong>{{ section.settings.chip_points_value | default: '+240' }}</strong>
+          <span>{{ section.settings.chip_points_label | default: 'Points Earned' }}</span>
+        </div>
+        <div class="advantage-hero__chip advantage-hero__chip--reward">
+          <span class="advantage-hero__gift" aria-hidden="true"></span>
+          <span class="adv-reward-text">
+            <small>{{ section.settings.chip_reward_label | default: 'Next Reward' }}</small>
+            <strong>{{ section.settings.chip_reward_value | default: '$100 credit' }}</strong>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Advantage Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Introducing eSafety Advantage" },
+    { "type": "text", "id": "title_line1", "label": "Title (line 1)", "default": "More Value." },
+    { "type": "text", "id": "title_line2", "label": "Title (line 2, yellow)", "default": "Every Order." },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "A loyalty program built for the businesses that build, protect and keep Australia moving." },
+    { "type": "text", "id": "cta_primary_label", "label": "Primary CTA label", "default": "Join and start earning" },
+    { "type": "url", "id": "cta_primary_link", "label": "Primary CTA link" },
+    { "type": "text", "id": "cta_secondary_label", "label": "Secondary CTA label", "default": "See how it works" },
+    { "type": "url", "id": "cta_secondary_link", "label": "Secondary CTA link" },
+    { "type": "text", "id": "note", "label": "Footer note", "default": "Designed for eligible eSafety Supplies business customers" },
+    { "type": "image_picker", "id": "card_image", "label": "Card image (overrides URL below)" },
+    { "type": "url", "id": "card_image_url", "label": "Card image URL (GIF supported)" },
+    { "type": "header", "content": "Chips" },
+    { "type": "text", "id": "chip_points_value", "label": "Points value", "default": "+240" },
+    { "type": "text", "id": "chip_points_label", "label": "Points label", "default": "Points Earned" },
+    { "type": "text", "id": "chip_reward_label", "label": "Reward label", "default": "Next Reward" },
+    { "type": "text", "id": "chip_reward_value", "label": "Reward value", "default": "$100 credit" }
+  ],
+  "presets": [
+    { "name": "Advantage Hero", "settings": {} }
+  ]
+}
+{% endschema %}

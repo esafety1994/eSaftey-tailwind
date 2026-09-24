@@ -1,4 +1,90 @@
+{% comment %} Preload first carousel image — one hint per <source> breakpoint so the URL always matches {% endcomment %}
+{% for block in section.blocks %}
+  {% if block.type == 'slider_item' and block.settings.background %}
+    {% assign preload_mobile = block.settings.mobile_background | default: block.settings.background %}
+    <link rel="preload" as="image"
+      href="{{ preload_mobile | image_url: width: 400, format: 'webp' }}"
+      imagesrcset="{{ preload_mobile | image_url: width: 400, format: 'webp' }} 400w, {{ preload_mobile | image_url: width: 800, format: 'webp' }} 800w"
+      imagesizes="100vw"
+      media="(max-width: 640px)"
+      fetchpriority="high"
+    >
+    <link rel="preload" as="image"
+      href="{{ block.settings.background | image_url: width: 768, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background | image_url: width: 768, format: 'webp' }} 768w, {{ block.settings.background | image_url: width: 1536, format: 'webp' }} 1536w"
+      imagesizes="100vw"
+      media="(min-width: 641px) and (max-width: 1024px)"
+      fetchpriority="high"
+    >
+    <link rel="preload" as="image"
+      href="{{ block.settings.background | image_url: width: 1024, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background | image_url: width: 1024, format: 'webp' }} 1024w, {{ block.settings.background | image_url: width: 1920, format: 'webp' }} 1920w"
+      imagesizes="100vw"
+      media="(min-width: 1025px)"
+      fetchpriority="high"
+    >
+    {% break %}
+  {% endif %}
+{% endfor %}
+
 <style>
+  /* Critical: aspect-ratio lives on the track so absolute-positioned slides have a sized parent (needed for fade effect) */
+  .hero-banner .glide__track {
+    position: relative;
+    aspect-ratio: 1920 / 900;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .hero-banner .glide__track {
+      aspect-ratio: auto;
+      height: 46vh;
+      min-height: 220px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .hero-banner .glide__track { height: 50vh; min-height: 0; }
+  }
+  /* Fade effect: stack slides, cross-fade active in */
+  .hero-banner .glide__slides {
+    position: relative;
+    height: 100%;
+    transform: none !important;
+    transition: none !important;
+    overflow: visible;
+    white-space: normal;
+  }
+  .hero-banner .glide__slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
+    pointer-events: none;
+  }
+  .hero-banner .glide__slide.glide__slide--active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
+  .hero-banner .glide__slide > div {
+    height: 100%;
+    overflow: hidden;
+  }
+  .hero-banner .glide__slide img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  /* Before Glide mounts (adds .glide--slider or .glide--carousel), only show first slide + hide arrows */
+  .hero-banner:not(.glide--slider):not(.glide--carousel) .glide__slide:first-child {
+    opacity: 1;
+    pointer-events: auto;
+  }
   .glide__bullet--active {
     background-color: transparent;
     border: 1px solid;
@@ -9,13 +95,21 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 94%;
+    width: 92%;
     max-width: 600px;
     margin-right: auto;
-    margin-left: 20px;
+    margin-left: 16px;
   }
   .carousel-content-wrapper p {
-    font-size: 34px;
+    font-size: 22px;
+  }
+  @media (min-width: 640px) {
+    .carousel-content-wrapper {
+      margin-left: 20px;
+    }
+    .carousel-content-wrapper p {
+      font-size: 34px;
+    }
   }
   .carousel-content-right .carousel-content-wrapper {
     align-items: flex-end;
@@ -34,34 +128,45 @@
     }
   }
 </style>
-<div class="hero-banner glide relative">
+<div class="hero-banner glide relative"
+  data-autoplay="{% if section.settings.enable_autoplay %}true{% else %}false{% endif %}"
+  data-autoplay-delay="{{ section.settings.autoplay_delay | default: 5 | times: 1000 }}"
+>
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'slider_item' %}
-            <li class="glide__slide relative w-full">
-              <div class="relative w-full h-[35vh] lg:h-[55vh] overflow-hidden">
+            <li class="glide__slide relative w-full{% if forloop.first %} glide__slide--active{% endif %}">
+              <div class="relative w-full overflow-hidden">
                 {% assign img = block.settings.background %}
+                {% assign mobile_img = block.settings.mobile_background | default: img %}
                 {% if img %}
                   <picture>
                     <source
+                      type="image/webp"
                       media="(max-width: 640px)"
-                      srcset="{{ img | image_url: width:1200 }} 720w"
+                      srcset="{{ mobile_img | image_url: width: 400, format: 'webp' }} 400w, {{ mobile_img | image_url: width: 800, format: 'webp' }} 800w"
                       sizes="100vw"
                     />
                     <source
+                      type="image/webp"
                       media="(max-width: 1024px)"
-                      srcset="{{ img | image_url: width:768 }} 768w, {{ img | image_url: width:1536 }} 1536w"
+                      srcset="{{ img | image_url: width: 768, format: 'webp' }} 768w, {{ img | image_url: width: 1536, format: 'webp' }} 1536w"
+                      sizes="100vw"
+                    />
+                    <source
+                      type="image/webp"
+                      srcset="{{ img | image_url: width: 1024, format: 'webp' }} 1024w, {{ img | image_url: width: 1920, format: 'webp' }} 1920w"
                       sizes="100vw"
                     />
                     <img
                       src="{{ img | image_url: width:1024 }}"
                       srcset="{{ img | image_url: width:1024 }} 1024w, {{ img | image_url: width:1920 }} 1920w"
                       sizes="100vw"
-                      alt="{{ block.settings.title | strip_html | escape }}"
-                      loading="lazy"
-                      class="w-full h-full object-cover object-center block"
+                      alt="{{ img.alt | escape }}"
+                      loading="eager" {% if forloop.first %}fetchpriority="high"{% endif %} decoding="async"
+                      class="w-full h-full object-cover object-left sm:object-center block"
                       width="1920"
                       height="900"
                     />
@@ -79,7 +184,7 @@
                         {% endif %}
 
                         {% if block.settings.description != blank %}
-                          <div class="text-4xl mb-6 font-semibold">{{ block.settings.description }}</div>
+                          <div class="text-2xl md:text-4xl mb-4 md:mb-6 font-semibold leading-tight">{{ block.settings.description }}</div>
                         {% endif %}
 
                         {% if block.settings.button_text != blank and block.settings.button_link != blank %}
@@ -104,8 +209,10 @@
       <button
         class="hidden md:block glide__arrow glide__arrow--left absolute left-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
         data-glide-dir="<"
+        aria-label="Previous slide"
       >
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -119,8 +226,10 @@
       <button
         class="hidden md:block glide__arrow glide__arrow--right absolute right-5 text-slate-800 cursor-pointer hover:text-slate-900 hover:scale-105 transition-all"
         data-glide-dir=">"
+        aria-label="Next slide"
       >
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -142,26 +251,34 @@
         <button
           class="glide__bullet bg-black w-2.5 h-2.5 rounded-full cursor-pointer transition-all hover:bg-transparent hover:border"
           data-glide-dir="={{ i }}"
+          aria-label="Go to slide {{ i | plus: 1 }} of {{ block_count }}"
         ></button>
       {% endfor %}
     </div>
   {% endif %}
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    new Glide('.hero-banner', {
-      type: 'slider',
-      autoplay: false,
-      hoverpause: true,
-      perView: 1,
-    }).mount();
-  });
-</script>
 {% schema %}
 {
   "name": "Carousel",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable auto-play",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Seconds per slide",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    }
+  ],
   "blocks": [
     {
       "type": "slider_item",
@@ -174,9 +291,15 @@
           "info": "1920 x 900px recommended"
         },
         {
+          "type": "image_picker",
+          "id": "mobile_background",
+          "label": "Image on mobile",
+          "info": "588 x 350px recommended. Falls back to desktop image if not set."
+        },
+        {
           "type": "checkbox",
           "id": "single_image",
-          "label": "Is Single Image",
+          "label": "Make slide fully clickable",
           "default": false
         },
         {

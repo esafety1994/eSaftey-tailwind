@@ -1,0 +1,99 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<section class="advantage advantage-section" id="referral">
+  <div class="advantage__container">
+    <div class="advantage-referral__grid">
+      <div class="advantage-referral__intro">
+        <span class="advantage__eyebrow advantage-section__eyebrow">
+          {{ section.settings.eyebrow | default: 'Referral Bonus' }}
+        </span>
+        <h2 class="advantage__h2 advantage-referral__intro-title">
+          {{ section.settings.title_line1 | default: 'Good business' }}<br>
+          {{ section.settings.title_line2 | default: 'deserves to be' }}<br>
+          <span class="advantage-referral__highlight">{{ section.settings.title_highlight | default: 'shared.' }}</span>
+        </h2>
+        <p class="advantage-referral__intro-body">
+          {{ section.settings.body | default: 'Introduce another business to eSafety Advantage. When they successfully join, both businesses can receive cash back. It’s our way of rewarding a valuable connection.' }}
+        </p>
+        <a href="{{ section.settings.cta_link | default: '#' }}" class="advantage-btn advantage-btn--dark">
+          {{ section.settings.cta_label | default: 'Refer a business' }}
+          <span class="advantage-btn__arrow" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="advantage-referral__card">
+        <div class="advantage-referral__badge" aria-hidden="true">
+          <span class="advantage-referral__badge-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><rect x="4" y="8" width="16" height="12" rx="1"/><path d="M2 8h20M12 8v14M8 8s-2-4 0-5 4 3 4 5m0 0s2-6 4-5-0 5 0 5"/></svg>
+          </span>
+          <span class="advantage-referral__badge-text">
+            <small>{{ section.settings.badge_small | default: 'Reward both sides' }}</small>
+            <strong>{{ section.settings.badge_big | default: 'Cash Back' }}</strong>
+          </span>
+        </div>
+
+        <div class="advantage-referral__inner">
+          {%- for block in section.blocks -%}
+            <div class="advantage-referral__step" {{ block.shopify_attributes }}>
+              <span class="advantage-referral__icon">
+                {%- case forloop.index -%}
+                  {%- when 1 -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h10M14 12l-4-4M14 12l-4 4M20 4v16"/></svg>
+                  {%- when 2 -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="10" width="18" height="10"/><path d="M3 10l9-6 9 6M8 20V14h8v6"/></svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                {%- endcase -%}
+              </span>
+              <div>
+                <span class="advantage-referral__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                <h3 class="advantage-referral__title">{{ block.settings.title }}</h3>
+                <p class="advantage-referral__body">{{ block.settings.body }}</p>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <p class="advantage-referral__footnote">{{ section.settings.footnote | default: 'Referral rewards are subject to eligibility and program terms.' }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Advantage Referral",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Referral Bonus" },
+    { "type": "text", "id": "title_line1", "label": "Title (line 1)", "default": "Good business" },
+    { "type": "text", "id": "title_line2", "label": "Title (line 2)", "default": "deserves to be" },
+    { "type": "text", "id": "title_highlight", "label": "Title (highlight)", "default": "shared." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Introduce another business to eSafety Advantage. When they successfully join, both businesses can receive cash back. It’s our way of rewarding a valuable connection." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Refer a business" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "text", "id": "badge_small", "label": "Badge small text", "default": "Reward both sides" },
+    { "type": "text", "id": "badge_big", "label": "Badge big text", "default": "Cash Back" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "Referral rewards are subject to eligibility and program terms." }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Make an introduction" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Share the details of a business that could benefit from eSafety Advantage." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Advantage Referral",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Make an introduction", "body": "Share the details of a business that could benefit from eSafety Advantage." } },
+        { "type": "step", "settings": { "title": "They successfully join", "body": "Our team confirms their eligibility and helps set up their new account." } },
+        { "type": "step", "settings": { "title": "You both benefit", "body": "Once the referral qualifies, cash back is available to both businesses." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

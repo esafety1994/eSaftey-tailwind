@@ -1,167 +1,173 @@
 <!-- BEGIN Expert Installation Services Section -->
 <div class="cwww-container">
-    <h2 class="section-title">Companies We Work With</h2>
-    <div class="cwww-logos">
-        <div class="cwww-logo">
-            <img
-                    srcset="{{ section.settings.company-image1 | img_url: "original" }}, {{ section.settings.company-image1 | img_url: 'medium' }} 1.5x"
-                    src="{{ section.settings.company-image1 | img_url: "original" }}"
-                    alt="Company Image 1"/>
-        </div>
-        <div class="cwww-logo">
-            <img
-                    srcset="{{ section.settings.company-image2 | img_url: "original" }}, {{ section.settings.company-image2 | img_url: 'medium' }} 1.5x"
-                    src="{{ section.settings.company-image2 | img_url: "original" }}"
-                    alt="Company Image 2"/>
-        </div>
-        <div class="cwww-logo">
-            <img
-                    srcset="{{ section.settings.company-image3 | img_url: "original" }}, {{ section.settings.company-image3 | img_url: 'medium' }} 1.5x"
-                    src="{{ section.settings.company-image3 | img_url: "original" }}"
-                    alt="Company Image 3"/>
-        </div>
-        <div class="cwww-logo">
-            <img
-                    srcset="{{ section.settings.company-image4 | img_url: "original" }}, {{ section.settings.company-image4 | img_url: 'medium' }} 1.5x"
-                    src="{{ section.settings.company-image4 | img_url: "original" }}"
-                    alt="Company Image 4"/>
-        </div>
-        <div class="cwww-logo">
-            <img
-                    srcset="{{ section.settings.company-image5 | img_url: "original" }}, {{ section.settings.company-image5 | img_url: 'medium' }} 1.5x"
-                    src="{{ section.settings.company-image5 | img_url: "original" }}"
-                    alt="Company Image 5"/>
-        </div>
-        <div class="cwww-logo">
-            <img
-                    srcset="{{ section.settings.company-image6 | img_url: "original" }}, {{ section.settings.company-image6 | img_url: 'medium' }} 1.5x"
-                    src="{{ section.settings.company-image6 | img_url: "original" }}"
-                    alt="Company Image 6"/>
-        </div>
+  <h2 class="section-title">Companies We Work With</h2>
+  <div class="cwww-logos">
+    <div class="cwww-logo">
+      <img
+        srcset="{{ section.settings.company-image1 | img_url: "original" }}, {{ section.settings.company-image1 | img_url: 'medium' }} 1.5x"
+        src="{{ section.settings.company-image1 | img_url: "original" }}"
+        alt="Company Image 1"
+      >
     </div>
+    <div class="cwww-logo">
+      <img
+        srcset="{{ section.settings.company-image2 | img_url: "original" }}, {{ section.settings.company-image2 | img_url: 'medium' }} 1.5x"
+        src="{{ section.settings.company-image2 | img_url: "original" }}"
+        alt="Company Image 2"
+      >
+    </div>
+    <div class="cwww-logo">
+      <img
+        srcset="{{ section.settings.company-image3 | img_url: "original" }}, {{ section.settings.company-image3 | img_url: 'medium' }} 1.5x"
+        src="{{ section.settings.company-image3 | img_url: "original" }}"
+        alt="Company Image 3"
+      >
+    </div>
+    <div class="cwww-logo">
+      <img
+        srcset="{{ section.settings.company-image4 | img_url: "original" }}, {{ section.settings.company-image4 | img_url: 'medium' }} 1.5x"
+        src="{{ section.settings.company-image4 | img_url: "original" }}"
+        alt="Company Image 4"
+      >
+    </div>
+    <div class="cwww-logo">
+      <img
+        srcset="{{ section.settings.company-image5 | img_url: "original" }}, {{ section.settings.company-image5 | img_url: 'medium' }} 1.5x"
+        src="{{ section.settings.company-image5 | img_url: "original" }}"
+        alt="Company Image 5"
+      >
+    </div>
+    <div class="cwww-logo">
+      <img
+        srcset="{{ section.settings.company-image6 | img_url: "original" }}, {{ section.settings.company-image6 | img_url: 'medium' }} 1.5x"
+        src="{{ section.settings.company-image6 | img_url: "original" }}"
+        alt="Company Image 6"
+      >
+    </div>
+  </div>
 </div>
 <style>
-    .cwww-container {
-        border-top: 1px solid #DEDEDF;
-        border-bottom: 1px solid #DEDEDF;
-        padding: 40px 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 45px;
-        align-items: center;
-    }
+  .cwww-container {
+    border-top: 1px solid #dededf;
+    border-bottom: 1px solid #dededf;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+    align-items: center;
+  }
 
+  .section-title {
+    color: #131313;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+  }
+
+  .cwww-logos {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cwww-logo {
+  }
+
+  .cwww-logo img {
+    max-width: unset;
+  }
+
+  .cwww-logo:nth-child(1) img,
+  .cwww-logo:nth-child(3) img {
+    /*height: 40px;*/
+  }
+
+  @media (max-width: 1023px) {
+  }
+  @media (max-width: 991px) {
     .section-title {
-        color: #131313;
-        font-feature-settings: 'liga' off, 'clig' off;
-        font-size: 40px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-        text-align: center;
+      color: #131313;
+      font-feature-settings: 'liga' off, 'clig' off;
+      font-size: 40px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-align: center;
+      padding-right: 40px;
     }
-
+    .cwww-container {
+      padding-right: 0;
+    }
     .cwww-logos {
-        display: flex;
-        width: 100%;
-        max-width: 1400px;
-        justify-content: space-between;
-        align-items: center;
+      justify-content: flex-start;
+      gap: 85px;
+      overflow-x: scroll;
     }
-
-    .cwww-logo {}
-
-    .cwww-logo img {
-        max-width: unset;
+    .cwww-logo:last-child {
+      margin-right: 20px;
+      padding-right: 20px;
     }
-
-    .cwww-logo:nth-child(1) img, .cwww-logo:nth-child(3) img {
-        /*height: 40px;*/
+  }
+  @media (max-width: 767px) {
+    .cwww-logos {
+      gap: 45px;
     }
-
-    @media (max-width: 1023px){
-
+    .section-title {
+      font-size: 20px;
     }
-    @media (max-width: 991px){
-        .section-title {
-            color: #131313;
-            font-feature-settings: 'liga' off, 'clig' off;
-            font-size: 40px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: normal;
-            text-align: center;
-            padding-right: 40px;
-        }
-        .cwww-container {
-            padding-right: 0;
-        }
-        .cwww-logos {
-            justify-content: flex-start;
-            gap: 85px;
-            overflow-x: scroll;
-        }
-        .cwww-logo:last-child {
-            margin-right: 20px;
-            padding-right: 20px;
-        }
-    }
-    @media (max-width: 767px){
-        .cwww-logos {
-            gap: 45px;
-        }
-        .section-title {
-            font-size: 20px;
-        }
-    }
+  }
 </style>
 <!-- END Expert Installation Services Section -->
 
 {% schema %}
 {
-"name": "Companies List",
-"settings": [
-{
-"type": "header",
-"content": "Texts"
-},
-{
-"type": "image_picker",
-"id": "company-image1",
-"label": "Upload Image"
-},
-{
-"type": "image_picker",
-"id": "company-image2",
-"label": "Upload Image"
-},
-{
-"type": "image_picker",
-"id": "company-image3",
-"label": "Upload Image"
-},
-{
-"type": "image_picker",
-"id": "company-image4",
-"label": "Upload Image"
-},
-{
-"type": "image_picker",
-"id": "company-image5",
-"label": "Upload Image"
-},
-{
-"type": "image_picker",
-"id": "company-image6",
-"label": "Upload Image"
+  "name": "Companies List",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Texts"
+    },
+    {
+      "type": "image_picker",
+      "id": "company-image1",
+      "label": "Upload Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "company-image2",
+      "label": "Upload Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "company-image3",
+      "label": "Upload Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "company-image4",
+      "label": "Upload Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "company-image5",
+      "label": "Upload Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "company-image6",
+      "label": "Upload Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Companies List",
+      "settings": {}
+    }
+  ]
 }
-],
-"presets": [
-{
-"name": "Companies List",
-"settings": {}
-}
-]
-}
-
 {% endschema %}

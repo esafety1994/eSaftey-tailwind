@@ -1,19 +1,47 @@
-{% comment %}
-  Section: Hero Full Background
-  - Full-width background image
-  - Section-level button text/url
-  - Up to 2 blocks rendered as columns with gap-16
-{% endcomment %}
+{% comment %} Preload first block image for faster LCP {% endcomment %}
+{% for block in section.blocks %}
+  {% if block.settings.background_image != blank %}
+    <link
+      rel="preload"
+      as="image"
+      href="{{ block.settings.background_image | image_url: width: 400, format: 'webp' }}"
+      imagesrcset="{{ block.settings.background_image | image_url: width: 400, format: 'webp' }} 400w, {{ block.settings.background_image | image_url: width: 800, format: 'webp' }} 800w, {{ block.settings.background_image | image_url: width: 1200, format: 'webp' }} 1200w"
+      imagesizes="(max-width: 768px) 100vw, 50vw"
+      fetchpriority="high"
+    >
+    {% break %}
+  {% endif %}
+{% endfor %}
 
 <section id="hero-full-bg-{{ section.id }}" class="hero-full-bg relative w-full my-6">
   <div class="relative z-20 container mx-auto px-4 py-12">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
       {% for block in section.blocks %}
-        {% assign img_url = block.settings.background_image | img_url: '800x' %}
+        {% assign bg_image = block.settings.background_image %}
         <div
           class="block-content text-white relative overflow-hidden"
-          style="background-image: url('{{ img_url }}'); background-size: cover; background-position: center; min-height: 240px;"
+          style="min-height: 240px;"
         >
+          {%- if bg_image != blank -%}
+            <picture>
+              <source
+                type="image/webp"
+                srcset="{{ bg_image | image_url: width: 400, format: 'webp' }} 400w, {{ bg_image | image_url: width: 800, format: 'webp' }} 800w, {{ bg_image | image_url: width: 1200, format: 'webp' }} 1200w"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              >
+              <img
+                src="{{ bg_image | image_url: width: 800 }}"
+                srcset="{{ bg_image | image_url: width: 400 }} 400w, {{ bg_image | image_url: width: 800 }} 800w, {{ bg_image | image_url: width: 1200 }} 1200w"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                alt="{{ bg_image.alt | escape }}"
+                loading="eager"
+                {% if forloop.first %}fetchpriority="high"{% endif %}
+                width="{{ bg_image.width }}"
+                height="{{ bg_image.height }}"
+                class="absolute inset-0 w-full h-full object-cover"
+              >
+            </picture>
+          {%- endif -%}
           <div class="relative p-8 h-full flex flex-col justify-center">
             {% if block.settings.button_text != blank %}
               <div class="text-center">

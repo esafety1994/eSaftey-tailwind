@@ -15,6 +15,7 @@
     },
     "connect_stay_eD9yjL": {
       "type": "connect-stay",
+      "disabled": true,
       "name": "Connect / Stay in touch",
       "settings": {
         "follow_title": "Follow us",

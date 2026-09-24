@@ -1,48 +1,143 @@
 [
-    {
-        "name": "Typography",
-        "settings": [
-            {
-                "type": "font_picker",
-                "id": "type_base_font",
-                "label": "Font",
-                "default": "helvetica_n4"
-              }
-        ]
-        
-    },
-    {
-        "name": "Cart",
-        "settings": [
-            {
-                "type": "image_picker",
-                "id": "cart_trust_badge",
-                "label": "Cart trust badge",
-                "info": "Image shown in the cart (trust badge)"
-            },
-            {
-                "type": "header",
-                "content": "Cart Drawer Settings"
-            },
-            {
-                "type": "product",
-                "id": "cart_drawer_upsell_product",
-                "label": "Select product for cart drawer upsell",
-            }
-
-        ]
-    }
-,
-    {
-        "name": "Performance",
-        "settings": [
-            {
-                "type": "checkbox",
-                "id": "use_minified_assets",
-                "label": "Use minified JS assets",
-                "default": false,
-                "info": "When enabled the theme will load *.min.js files if present. Useful for production builds."
-            }
-        ]
-    }
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_base_font",
+        "label": "Font",
+        "default": "helvetica_n4"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "cart_trust_badge",
+        "label": "Cart trust badge",
+        "info": "Image shown in the cart (trust badge)"
+      },
+      {
+        "type": "header",
+        "content": "Cart Drawer Settings"
+      },
+      {
+        "type": "product",
+        "id": "cart_drawer_upsell_product",
+        "label": "Select product for cart drawer upsell"
+      }
+    ]
+  },
+  {
+    "name": "Internal Page Banner",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Banner 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "internal_page_banner_image",
+        "label": "Banner image (global)",
+        "info": "Applies to all product, collection, and search pages. 1920 x 85px recommended."
+      },
+      {
+        "type": "url",
+        "id": "internal_page_banner_link",
+        "label": "Banner link (optional)"
+      },
+      {
+        "type": "checkbox",
+        "id": "internal_page_banner_new_tab",
+        "label": "Open link in new tab",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Banner 2 (optional — enables auto-rotating cross-fade)"
+      },
+      {
+        "type": "image_picker",
+        "id": "internal_page_banner_image_2",
+        "label": "Banner image 2",
+        "info": "Add a second image to auto-rotate. Leave empty for a single banner."
+      },
+      {
+        "type": "url",
+        "id": "internal_page_banner_link_2",
+        "label": "Banner 2 link (optional)"
+      },
+      {
+        "type": "checkbox",
+        "id": "internal_page_banner_new_tab_2",
+        "label": "Open Banner 2 link in new tab",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "internal_page_banner_autoplay_delay",
+        "label": "Seconds per slide",
+        "min": 3,
+        "max": 15,
+        "step": 1,
+        "unit": "s",
+        "default": 5
+      }
+    ]
+  },
+  {
+    "name": "General",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Favicon"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_favicon",
+        "label": "Use favicon icon (32px x 32px)",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Image favicon",
+        "info": "Will be scaled down to 32 x 32px"
+      },
+      {
+        "type": "header",
+        "content": "Bulky Shipping Note"
+      },
+      {
+        "type": "textarea",
+        "id": "bulky_shipping_note",
+        "label": "Bulky shipping note",
+        "default": "This item is a bulky product and may incur additional freight charges."
+      },
+      {
+        "type": "header",
+        "content": "Header Contact Details"
+      },
+      {
+        "type": "text",
+        "id": "header_contact_email",
+        "label": "Header contact email",
+        "default": "email@esafetysupplies.com.au"
+      }
+    ]
+  },
+  {
+    "name": "Performance",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_minified_assets",
+        "label": "Use minified JS assets",
+        "default": false,
+        "info": "When enabled the theme will load *.min.js files if present. Useful for production builds."
+      }
+    ]
+  }
 ]

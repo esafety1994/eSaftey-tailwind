@@ -1,0 +1,68 @@
+{{ 'return-ready.css' | asset_url | stylesheet_tag }}
+
+<section class="rr rr-section--white" id="faqs" style="border-top:1px solid var(--rr-border-soft)">
+  <div class="rr-faqs">
+    <h2 class="rr__h2">{{ section.settings.title | default: 'Questions' }}</h2>
+
+    <div class="rr-faqs__list">
+      {%- for block in section.blocks -%}
+        <div class="rr-faq" data-rr-faq aria-expanded="false" {{ block.shopify_attributes }}>
+          <button type="button" class="rr-faq__btn" aria-expanded="false">
+            <span class="rr-faq__q">{{ block.settings.q }}</span>
+            <span class="rr-faq__sign" aria-hidden="true">+</span>
+          </button>
+          <div class="rr-faq__body">
+            <p class="rr-faq__answer">{{ block.settings.a }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-rr-faq]').forEach(function (item) {
+    var btn = item.querySelector('.rr-faq__btn');
+    var sign = item.querySelector('.rr-faq__sign');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var expanded = item.getAttribute('aria-expanded') === 'true';
+      item.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      if (sign) sign.textContent = expanded ? '+' : '−';
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Return Ready FAQs",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Questions" }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question", "default": "What condition does the gear need to be in?" },
+        { "type": "textarea", "id": "a", "label": "Answer", "default": "Re-saleable condition. Normal job wear — scuffs, dust, honest use — is fine. If you are not sure whether something still qualifies, check with your account manager before you send it back." }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [
+    {
+      "name": "Return Ready FAQs",
+      "blocks": [
+        { "type": "faq", "settings": { "q": "What condition does the gear need to be in?", "a": "Re-saleable condition. Normal job wear — scuffs, dust, honest use — is fine. If you are not sure whether something still qualifies, check with your account manager before you send it back." } },
+        { "type": "faq", "settings": { "q": "How do I get paid?", "a": "Cash back at 25% is processed to the account on file. Store credit at 30% is applied instantly and can be used on your next order." } },
+        { "type": "faq", "settings": { "q": "What's the time limit?", "a": "12 months from the purchase date on your invoice." } },
+        { "type": "faq", "settings": { "q": "Which products are eligible?", "a": "The full list is in the section above. More ranges follow — your account manager will let you know as they come online." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,103 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb_GHt96W": {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "settings": {}
+    },
+    "internal_page_banner": {
+      "type": "internal-page-banner",
+      "name": "Single Banner",
+      "settings": {}
+    },
+    "main": {
+      "type": "custom-sign-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description"
+      ],
+      "settings": {}
+    },
+    "product_info_tabs": {
+      "type": "product-info-tabs",
+      "settings": {
+        "shipping_content": "",
+        "buyer_guide_content": "<h3>Buyer's Guide</h3>\n<p><strong>Important information for custom cut to length products.</strong></p>"
+      }
+    },
+    "product_recommendation_a4TCDB": {
+      "type": "product-recommendation",
+      "name": "Product recommendation",
+      "settings": {
+        "title": "You may also like",
+        "product_count": 10,
+        "show_ex_gst": false
+      }
+    },
+    "1768442681216c6726": {
+      "type": "apps",
+      "settings": {
+        "heading": "",
+        "custom_class": "container"
+      }
+    },
+    "shipping_calculator_f6crqN": {
+      "type": "shipping-calculator",
+      "name": "Shipping calculator",
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumb_GHt96W",
+    "internal_page_banner",
+    "main",
+    "product_info_tabs",
+    "1768442681216c6726",
+    "product_recommendation_a4TCDB",
+    "shipping_calculator_f6crqN"
+  ]
+}

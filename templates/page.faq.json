@@ -14,13 +14,13 @@
       "name": "Page Title",
       "settings": {}
     },
-    "main": {
-      "type": "page",
-      "settings": {}
-    },
     "breadcrumb_WrJrMP": {
       "type": "breadcrumb",
       "name": "Breadcrumb",
+      "settings": {}
+    },
+    "main": {
+      "type": "page",
       "settings": {}
     }
   },

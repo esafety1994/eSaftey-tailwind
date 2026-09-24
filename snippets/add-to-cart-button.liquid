@@ -2,6 +2,9 @@
 {% if button_small %}
   {% assign small_classes = ' !p-2 !text-xs' %}
 {% endif %}
+{%- capture cart_icon -%}
+<svg class="atc-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h2.5l2 12.5a2 2 0 0 0 2 1.7h8.9a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.5" fill="currentColor" stroke="none"/></svg>
+{%- endcapture -%}
 {% if status == 'Out of Stock' %}
   <button
     type="submit"
@@ -12,9 +15,9 @@
     Out of Stock
   </button>
 {% elsif status == 'Back Order' %}
-  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}{{ small_classes }}">{% if showPlus %}{% render 'icon-svg-circle-plus', classes: 'inline-block mr-2 size-6' %}{% endif %}Back Order</button>
+  <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}{{ small_classes }}">{% if showPlus %}{{ cart_icon }}{% endif %}<span class="ml-2">Back Order</span></button>
 {% else %}
   <button type="submit" class="primary-cart-button w-full m-auto justify-center {{ button_classes }}{{ small_classes }}">
-    {% if showPlus %}{% render 'icon-svg-circle-plus', classes: 'inline-block mr-2 size-6' %}{% endif %}Add to Cart
+    {% if showPlus %}{{ cart_icon }}{% endif %}<span class="ml-2">Add to Cart</span>
   </button>
 {% endif %}

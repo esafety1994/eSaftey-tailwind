@@ -24,27 +24,9 @@
       </button>
     </div>
 
-    <div id="cart-drawer-content" class="p-4 overflow-y-auto flex-1">
+    <div class="relative flex-1 flex flex-col overflow-hidden">
+    <div id="cart-drawer-content" class="p-4 overflow-y-auto flex-1 cart-drawer-scroll">
       {% render 'shipping-goals', cart: cart %}
-      <div class="gradient-bg">
-        <div class="content">
-          <div>
-            {% render 'icon-svg-marker' %}
-            <span>Free Shipping for orders over $499</span>
-          </div>
-          <div>
-            {% render 'icon-svg-package' %}
-            <span>Click & Collect From our Wetherill Park Warehouse</span>
-          </div>
-        </div>
-      </div>
-      {% assign upsell = settings.cart_drawer_upsell_product %}
-      {% assign upsell_in_cart = false %}
-      {% for item_check in cart.items %}
-        {% if upsell and item_check.product and item_check.product.id == upsell.id %}
-          {% assign upsell_in_cart = true %}
-        {% endif %}
-      {% endfor %}
 
       {% if cart.item_count == 0 %}
         <div id="cart-items" class="space-y-4 overflow-auto"></div>
@@ -53,15 +35,10 @@
         <div id="cart-items" class="space-y-4 overflow-auto">
           {%- assign parent_index = 0 -%}
           {% for item in cart.items %}
-            {% unless item.properties.is_addon == 'true' %}
+            {% unless item.properties._is_addon == 'true' %}
               {%- assign parent_index = parent_index | plus: 1 -%}
 
               {% render 'cart-line-item-drawer', item: item, index: forloop.index %}
-              {% if parent_index == 1 %}
-                {% if upsell and upsell_in_cart != true %}
-                  {% render 'cart-upsell-product' %}
-                {% endif %}
-              {% endif %}
             {% endunless %}
           {% endfor %}
         </div>
@@ -121,30 +98,169 @@
         })();
       </script>
     </div>
+      <div id="cart-drawer-scrolltrack" aria-hidden="true" style="position:absolute;top:8px;bottom:8px;right:4px;width:8px;background:#e5e7eb;border-radius:4px;opacity:0;transition:opacity 0.15s;pointer-events:none;">
+        <div id="cart-drawer-scrollthumb" style="position:absolute;left:0;right:0;background:#6b7280;border-radius:4px;min-height:24px;"></div>
+      </div>
+    </div>
+
+    <style>
+      /* Hide native scrollbar — we render our own persistent indicator */
+      .cart-drawer-scroll { scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; }
+      .cart-drawer-scroll::-webkit-scrollbar { display: none; width: 0; height: 0; }
+    </style>
+
+    <script>
+      (function () {
+        var scroller = document.getElementById('cart-drawer-content');
+        var track = document.getElementById('cart-drawer-scrolltrack');
+        var thumb = document.getElementById('cart-drawer-scrollthumb');
+        if (!scroller || !track || !thumb) return;
+
+        function updateThumb() {
+          var sh = scroller.scrollHeight;
+          var ch = scroller.clientHeight;
+          if (sh <= ch + 1) {
+            track.style.opacity = '0';
+            return;
+          }
+          track.style.opacity = '1';
+          var trackH = track.clientHeight;
+          var ratio = ch / sh;
+          var thumbH = Math.max(24, Math.round(trackH * ratio));
+          var maxTop = trackH - thumbH;
+          var top = Math.round((scroller.scrollTop / (sh - ch)) * maxTop);
+          thumb.style.height = thumbH + 'px';
+          thumb.style.top = top + 'px';
+        }
+
+        scroller.addEventListener('scroll', updateThumb, { passive: true });
+        window.addEventListener('resize', updateThumb);
+
+        if (window.MutationObserver) {
+          new MutationObserver(function () { setTimeout(updateThumb, 30); })
+            .observe(scroller, { childList: true, subtree: true });
+        }
+
+        setTimeout(updateThumb, 50);
+      })();
+    </script>
 
     <div class="p-4">
-      <form action="{{ routes.cart_url }}" method="post" class="mb-3">
-        <label for="drawer-note" class="block text-sm font-medium mb-1">Order note</label>
-        <textarea id="drawer-note" name="note" class="w-full border rounded p-2 mb-3" rows="2"></textarea>
-        <div class="flex items-center mb-3">
-          <input id="drawer-authority" type="checkbox" name="attributes[Authority to leave]" value="Yes" class="mr-2">
-          <label for="drawer-authority" class="text-sm">Authority to leave</label>
-        </div>
-        <!-- Save button removed: attributes are saved on checkout click -->
-      </form>
+      <!-- Note toggle button and sliding panel -->
+      <button id="drawer-note-toggle" type="button" class="hidden md:flex items-center gap-2 btn outline-button-rounded mb-3 !px-4 !py-2">
+        {% render 'icon-svg-pen', class: 'size-4' %}
+        <span>Note</span>
+      </button>
+
+      <div id="drawer-note-panel" class="overflow-hidden max-h-0 transition-all duration-300 mb-3">
+        <form id="drawer-note-form" action="{{ routes.cart_url }}" method="post">
+          <label for="drawer-note" class="block text-sm font-medium mb-1">Add note for seller</label>
+          <textarea id="drawer-note" name="note" placeholder="Special instruction for seller" class="w-full border rounded p-2 mb-3" rows="3"></textarea>
+          <div class="flex gap-2">
+            <button type="submit" class="btn primary-checkout-button !px-4 !py-2">Save</button>
+            <button type="button" id="drawer-note-cancel" class="btn outline-button-rounded !px-4 !py-2">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <script>
+        (function () {
+          var toggle = document.getElementById('drawer-note-toggle');
+          var panel = document.getElementById('drawer-note-panel');
+          var cancel = document.getElementById('drawer-note-cancel');
+          var form = document.getElementById('drawer-note-form');
+
+          function openPanel() {
+            try {
+              panel.style.maxHeight = panel.scrollHeight + 'px';
+              panel.classList.add('open');
+            } catch (e) {}
+          }
+
+          function closePanel() {
+            try {
+              panel.style.maxHeight = '0';
+              panel.classList.remove('open');
+            } catch (e) {}
+          }
+
+          if (toggle) toggle.addEventListener('click', function () {
+            if (panel.classList.contains('open')) closePanel();
+            else openPanel();
+          });
+
+          if (cancel) cancel.addEventListener('click', function () {
+            closePanel();
+          });
+
+          if (form) form.addEventListener('submit', function () {
+            // Let the form submit normally; close the panel for UX
+            setTimeout(function () {
+              closePanel();
+            }, 200);
+          });
+        })();
+      </script>
 
       <div class="flex items-center justify-between mb-3">
-        <span id="cart-subtotal-label" class="font-medium">Subtotal (<span data-item-count-drawer>0</span> items)</span>
-        <span id="cart-subtotal" data-cart-total-drawer class="font-semibold">$0.00</span>
+        <span id="cart-subtotal-label" class="font-medium">Subtotal (<span data-item-count-drawer>{{ cart.item_count }}</span> items)</span>
+        <span id="cart-subtotal" data-cart-total-drawer class="font-semibold">{{ cart.total_price | money }}</span>
       </div>
       <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
-      <div class="py-4 flex gap-3">
-        <a href="/cart" class="w-full text-center border py-2 rounded">View cart</a>
+      <div class="flex items-center gap-3 border border-gray-200 rounded-lg px-4 py-3 mt-2">
+        <span class="text-lg leading-none">🚚</span>
+        <span class="text-sm text-gray-700">Estimated delivery <strong id="cart-drawer-eta">–</strong></span>
+      </div>
+      <script>
+        (function () {
+          function addBizDays(d, n) {
+            var r = new Date(d);
+            for (var i = 0; i < n; ) {
+              r.setDate(r.getDate() + 1);
+              var dow = r.getDay();
+              if (dow !== 0 && dow !== 6) i++;
+            }
+            return r;
+          }
+          var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+          function fmt(d) { return d.getDate() + ' ' + months[d.getMonth()]; }
+          var today = new Date();
+          var el = document.getElementById('cart-drawer-eta');
+          if (el) el.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 4));
+        })();
+      </script>
+      <div class="hidden md:grid" style="grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;margin-bottom:4px">
+        <div
+          style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563;position:relative;cursor:default"
+          onmouseenter="this.querySelector('.cc-drawer-tip').style.display='block'"
+          onmouseleave="this.querySelector('.cc-drawer-tip').style.display='none'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;flex-shrink:0;color:#3b82f6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016 2.993 2.993 0 0 0 2.25-1.016 3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" /></svg>
+          Click &amp; Collect
+          <div class="cc-drawer-tip" style="display:none;position:absolute;bottom:calc(100% + 6px);left:0;width:200px;background:#1f2937;color:#fff;font-size:11px;line-height:1.4;border-radius:8px;padding:8px 10px;pointer-events:none;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.2)">
+            Click &amp; Collect from our Wetherill Park HQ in under 24 hours — simply select Pickup at checkout.
+            <div style="position:absolute;top:100%;left:16px;border:5px solid transparent;border-top-color:#1f2937"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;flex-shrink:0;color:#8b5cf6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" /></svg>
+          Easy returns
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;flex-shrink:0;color:#22c55e" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+          Fast Dispatch
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+          <svg xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;flex-shrink:0;color:#16a34a" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+          Secure checkout
+        </div>
+      </div>
+      <div class="py-4">
         <a
           id="cart-drawer-checkout-btn"
           href="/checkout"
-          class="block w-full text-center bg-black text-primary-light py-3 rounded uppercase"
-          >Checkout</a
+          class="btn primary-checkout-button w-full flex items-center justify-center gap-2"
+          >{%render 'icon-svg-lock-keyhole' %}Secure Checkout</a
         >
       </div>
     </div>

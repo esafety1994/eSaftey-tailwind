@@ -1,0 +1,117 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rr_hero": {
+      "type": "return-ready-hero",
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "value": "25%", "label": "cash back" } },
+        "s2": { "type": "stat", "settings": { "value": "30%", "label": "store credit" } },
+        "s3": { "type": "stat", "settings": { "value": "12", "label": "months to return" } },
+        "s4": { "type": "stat", "settings": { "value": "$0", "label": "bond" } },
+        "i1": { "type": "calc_item", "settings": { "label": "Light duty temporary fence — per metre", "price": 36.90, "rate": 12, "unit": "m" } },
+        "i2": { "type": "calc_item", "settings": { "label": "Water filled barrier — per unit", "price": 325, "rate": 15, "unit": "ea" } },
+        "i3": { "type": "calc_item", "settings": { "label": "NoiseBlock acoustic curtain — per unit", "price": 325, "rate": 30, "unit": "ea" } },
+        "i4": { "type": "calc_item", "settings": { "label": "Orange crowd control barrier — per metre", "price": 26, "rate": 10, "unit": "m" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "i1", "i2", "i3", "i4"],
+      "settings": {
+        "eyebrow": "Return Ready · Buy-back program",
+        "title_line1": "Buy it. Use it.",
+        "title_line2": "Return it.",
+        "description": "Buy the fencing and site gear you need at trade price. Use it for as long as the job runs. Send it back within 12 months for cash or store credit — instead of paying hire fees on equipment you'll never own.",
+        "cta_primary_label": "See what you'd save",
+        "cta_secondary_label": "Talk to your account manager",
+        "cta_secondary_link": "#enquiry",
+        "calc_title": "Hire vs Return Ready",
+        "cash_pct": 25,
+        "credit_pct": 30
+      }
+    },
+    "rr_steps": {
+      "type": "return-ready-steps",
+      "blocks": {
+        "st1": { "type": "step", "settings": { "num": "01", "title": "Buy at trade price", "body": "No hire agreement. No bond. The gear is yours the day it lands on site." } },
+        "st2": { "type": "step", "settings": { "num": "02", "title": "Use it for the job", "body": "No daily rate creeping up when the job runs long. Move it to the next site if it doesn't." } },
+        "st3": { "type": "step", "settings": { "num": "03", "title": "Return within 12 months", "body": "Send it back in re-saleable condition for 25% cash back or 30% store credit." } }
+      },
+      "block_order": ["st1", "st2", "st3"],
+      "settings": {
+        "eyebrow": "How it works",
+        "title": "Three steps. No hire desk."
+      }
+    },
+    "rr_compare": {
+      "type": "return-ready-compare",
+      "blocks": {
+        "r1": { "type": "row", "settings": { "label": "Upfront", "a": "Bond, plus first invoice", "b": "Trade price, no bond" } },
+        "r2": { "type": "row", "settings": { "label": "Job runs long", "a": "Rate keeps ticking", "b": "Costs nothing extra" } },
+        "r3": { "type": "row", "settings": { "label": "Paperwork", "a": "Hire agreement, off-hire admin", "b": "A purchase order" } },
+        "r4": { "type": "row", "settings": { "label": "Wear and tear", "a": "Damage waiver charges", "b": "Normal job wear is fine" } },
+        "r5": { "type": "row", "settings": { "label": "Next job", "a": "Hire it again", "b": "Redeploy what you own" } },
+        "r6": { "type": "row", "settings": { "label": "End of job", "a": "You own nothing", "b": "25% cash or 30% credit back" } },
+        "e1": { "type": "example_row", "settings": { "label": "Hire at $12/m/wk", "value": "$14,400" } },
+        "e2": { "type": "example_row", "settings": { "label": "Buy at $36.90/m", "value": "$3,690" } },
+        "e3": { "type": "example_row", "settings": { "label": "Buy-back at 25% cash", "value": "−$923", "accent": true } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6", "e1", "e2", "e3"],
+      "settings": {
+        "eyebrow": "Side by side",
+        "title": "What changes on the invoice",
+        "example_title": "100m of temp fencing",
+        "example_subtitle": "12-week job",
+        "keep_value": "$11,633",
+        "example_foot": "Plus 100m of fencing still on the books for the next job."
+      }
+    },
+    "rr_products": {
+      "type": "return-ready-products",
+      "settings": {
+        "eyebrow": "Eligible products",
+        "title": "What's in the program",
+        "product_limit": 8,
+        "cta_label": "View product",
+        "show_price": true
+      }
+    },
+    "rr_faqs": {
+      "type": "return-ready-faqs",
+      "blocks": {
+        "f1": { "type": "faq", "settings": { "q": "What condition does the gear need to be in?", "a": "Re-saleable condition. Normal job wear — scuffs, dust, honest use — is fine. If you are not sure whether something still qualifies, check with your account manager before you send it back." } },
+        "f2": { "type": "faq", "settings": { "q": "How do I get paid?", "a": "Cash back at 25% is processed to the account on file. Store credit at 30% is applied instantly and can be used on your next order." } },
+        "f3": { "type": "faq", "settings": { "q": "What's the time limit?", "a": "12 months from the purchase date on your invoice." } },
+        "f4": { "type": "faq", "settings": { "q": "Which products are eligible?", "a": "The full list is in the section above. More ranges follow — your account manager will let you know as they come online." } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"],
+      "settings": { "title": "Questions" }
+    },
+    "rr_cta": {
+      "type": "return-ready-cta",
+      "settings": {
+        "title": "Contact our sales team to discuss your next project",
+        "description": "Tell us what the job needs and we'll come back with purchase price, buy-back value and the numbers side by side.",
+        "phone": "1300 291 700",
+        "email": "sales@esafetysupplies.com.au",
+        "hours": "Mon–Fri 7AM–5PM · Sat 8AM–12PM",
+        "form_title": "Project enquiry",
+        "email_subject": "Return Ready enquiry",
+        "submit_label": "Send enquiry"
+      }
+    }
+  },
+  "order": [
+    "rr_hero",
+    "rr_steps",
+    "rr_compare",
+    "rr_products",
+    "rr_faqs",
+    "rr_cta"
+  ]
+}

@@ -1,8 +1,8 @@
 {% comment %} Simplified breadcrumb using Tailwind utilities. {% endcomment %}
 
 {% unless template == 'index' %}
-  <nav role="navigation" aria-label="breadcrumbs" class="text-sm">
-    <div class="max-w-7xl mx-auto py-4">
+  <nav role="navigation" aria-label="breadcrumbs" class="text-sm hidden md:block">
+    <div class="container max-w-7xl mx-auto py-4 ">
       <div class="flex items-center gap-2">
         <a href="{{ routes.root_url }}" class=" hover:text-bg-light-red" title="Home">Home</a>
 
@@ -64,3 +64,50 @@
     </div>
   </nav>
 {% endunless %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ shop.url }}"
+    }
+
+    {% assign position = 2 %}
+
+    {% if template.name == 'product' %}
+      
+      {% assign current_collection = collection | default: product.collections.first %}
+
+      {% if current_collection %}
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ current_collection.title | json }},
+        "item": "{{ shop.url }}/collections/{{ current_collection.handle }}"
+      }
+      {% assign position = position | plus: 1 %}
+      {% endif %}
+
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ product.title | json }},
+        "item": "{{ shop.url }}{{ product.url }}"
+      }
+
+    {% elsif template.name == 'collection' and collection.handle %}
+      ,{
+        "@type": "ListItem",
+        "position": {{ position }},
+        "name": {{ collection.title | json }},
+        "item": "{{ shop.url }}{{ collection.url }}"
+      }
+
+    {% endif %}
+  ]
+}
+</script>

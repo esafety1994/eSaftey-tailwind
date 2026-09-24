@@ -1,0 +1,274 @@
+{% comment %}
+  Section: Product — Why Choose
+  Renders a dark "Why choose [brand]?" card with yellow checkmark bullets,
+  optional product image and a yellow corner badge. Mobile-only by default
+  (toggle in section settings).
+
+  Data source order for bullets:
+    1) product metafield `custom.why_choose` (multi-line text)
+    2) bullets parsed from product.description under "Features"/"Benefits"
+{% endcomment %}
+
+{%- assign why_choose_mf = product.metafields.custom.why_choose -%}
+{%- assign why_items = '' | split: '' -%}
+
+{% if why_choose_mf and why_choose_mf != blank %}
+  {%- assign why_items = why_choose_mf | newline_to_br | split: '<br />' -%}
+{% else %}
+  {%- assign desc_wc = product.description | default: '' -%}
+  {%- assign desc_wc_down = desc_wc | downcase -%}
+  {%- assign after_wc = '' -%}
+  {%- if desc_wc_down contains 'features' -%}
+    {%- assign after_wc = desc_wc_down | split: 'features' | last -%}
+  {%- elsif desc_wc_down contains 'benefits' -%}
+    {%- assign after_wc = desc_wc_down | split: 'benefits' | last -%}
+  {%- endif -%}
+  {%- if after_wc != '' -%}
+    {%- assign normalized_wc = after_wc
+      | replace: '</p>', '\n'
+      | replace: '<br>', '\n'
+      | replace: '<br/>', '\n'
+      | replace: '</li>', '\n'
+      | strip_html
+    -%}
+    {%- if normalized_wc contains '\n' -%}
+      {%- assign why_items = normalized_wc | split: '\n' -%}
+    {%- elsif normalized_wc contains '•' -%}
+      {%- assign why_items = normalized_wc | split: '•' -%}
+    {%- else -%}
+      {%- assign why_items = normalized_wc | split: '-' -%}
+    {%- endif -%}
+  {%- endif -%}
+{% endif %}
+
+{%- assign max_bullets = section.settings.max_bullets | default: 5 -%}
+{%- assign wc_shown = 0 -%}
+{% capture wc_bullets_html %}
+  {% for line in why_items %}
+    {%- assign wc_item = line | strip | replace_first: '&bull;', '' | replace_first: '•', '' | replace_first: '>', '' | replace_first: ':', '' | replace_first: '\t', '' | strip -%}
+    {% if wc_item != '' and wc_item.size > 2 and wc_shown < max_bullets %}
+      <li class="pwc-bullet">
+        <svg class="pwc-check" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>{{ wc_item }}</span>
+      </li>
+      {%- assign wc_shown = wc_shown | plus: 1 -%}
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+
+{% if wc_shown > 0 %}
+  {%- assign heading_brand = section.settings.brand_override -%}
+  {%- if heading_brand == blank -%}
+    {%- assign heading_brand = product.vendor | default: product.title | truncate: 20 -%}
+  {%- endif -%}
+  {%- assign badge_text = product.metafields.custom.why_choose_badge | default: section.settings.badge_text -%}
+  {%- assign show_image = section.settings.show_image -%}
+  {%- assign visibility_class = 'pwc-visibility-' | append: section.settings.visibility -%}
+
+  <section class="product-why-choose {{ visibility_class }} px-4 my-5">
+    <div class="pwc-card">
+      <div class="pwc-inner">
+        <div class="pwc-text">
+          <h2 class="pwc-heading">
+            {{ section.settings.heading_prefix }} {{ heading_brand }}{{ section.settings.heading_suffix }}
+          </h2>
+          <ul class="pwc-list">
+            {{ wc_bullets_html }}
+          </ul>
+        </div>
+        {% if show_image and product.featured_image %}
+          <div class="pwc-image-wrap">
+            <img
+              src="{{ product.featured_image | image_url: width: 240, height: 240, crop: 'center' }}"
+              alt="{{ product.title | escape }}"
+              class="pwc-image"
+              width="96"
+              height="96"
+              loading="lazy"
+            >
+          </div>
+        {% endif %}
+      </div>
+      {% if badge_text != blank %}
+        <div class="pwc-badge">
+          <span>{{ badge_text }}</span>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <style>
+    .product-why-choose { max-width: 100%; }
+    .pwc-visibility-mobile { display: block; }
+    @media (min-width: 768px) { .pwc-visibility-mobile { display: none; } }
+    .pwc-visibility-desktop { display: none; }
+    @media (min-width: 768px) { .pwc-visibility-desktop { display: block; } }
+    .pwc-visibility-both { display: block; }
+
+    .pwc-card {
+      position: relative;
+      background: {{ section.settings.bg_color }};
+      color: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      overflow: hidden;
+    }
+    .pwc-inner {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      position: relative;
+      z-index: 2;
+    }
+    .pwc-text { flex: 1 1 auto; min-width: 0; }
+    .pwc-heading {
+      color: {{ section.settings.accent_color }};
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      line-height: 1.25;
+    }
+    .pwc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .pwc-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      color: #fff;
+    }
+    .pwc-check {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: {{ section.settings.accent_color }};
+    }
+    .pwc-image-wrap {
+      flex-shrink: 0;
+      width: 96px;
+      height: 96px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.06);
+      margin-top: 2px;
+    }
+    .pwc-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pwc-badge {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      z-index: 3;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: {{ section.settings.accent_color }};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .pwc-badge span {
+      font-size: 9px;
+      font-weight: 900;
+      color: #111827;
+      text-align: center;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 380px) {
+      .pwc-image-wrap { width: 80px; height: 80px; }
+      .pwc-badge { width: 56px; height: 56px; }
+      .pwc-badge span { font-size: 8px; }
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product — Why choose",
+  "tag": "section",
+  "class": "section-product-why-choose",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading_prefix",
+      "label": "Heading prefix",
+      "default": "Why choose"
+    },
+    {
+      "type": "text",
+      "id": "heading_suffix",
+      "label": "Heading suffix",
+      "default": "?"
+    },
+    {
+      "type": "text",
+      "id": "brand_override",
+      "label": "Brand override (blank = use product vendor)",
+      "info": "Falls back to product vendor, then product title."
+    },
+    {
+      "type": "range",
+      "id": "max_bullets",
+      "label": "Max bullets",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Corner badge text",
+      "default": "STRONG & RELIABLE",
+      "info": "Per-product override via metafield custom.why_choose_badge."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show product image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (heading, checks, badge)",
+      "default": "#FDDC14"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Visible on",
+      "options": [
+        { "value": "mobile", "label": "Mobile only" },
+        { "value": "desktop", "label": "Desktop only" },
+        { "value": "both", "label": "Both" }
+      ],
+      "default": "mobile"
+    }
+  ],
+  "presets": [
+    { "name": "Product — Why choose" }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

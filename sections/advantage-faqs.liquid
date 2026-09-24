@@ -1,0 +1,85 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<section class="advantage advantage-faqs" id="faqs">
+  <div class="advantage__container">
+    <div class="advantage-faqs__inner">
+      <div>
+        <span class="advantage__eyebrow advantage-section__eyebrow">
+          {{ section.settings.eyebrow | default: 'Frequently Asked Questions' }}
+        </span>
+        <h2 class="advantage__h2 advantage-faqs__title">
+          {{ section.settings.title | default: 'Good to know.' }}
+        </h2>
+        <p class="advantage-faqs__contact">
+          {{ section.settings.contact_pre | default: 'Need more help? Call' }}
+          <strong>{{ section.settings.contact_phone | default: '1300 291 700' }}</strong>
+          {{ section.settings.contact_mid | default: 'or email' }}
+          <strong>{{ section.settings.contact_email | default: 'advantage@esafetysupplies.com.au' }}</strong>.
+        </p>
+      </div>
+
+      <div class="advantage-faqs__list">
+        {%- for block in section.blocks -%}
+          <div class="advantage-faq" data-adv-faq {{ block.shopify_attributes }}>
+            <button class="advantage-faq__btn" type="button" aria-expanded="false">
+              <span class="advantage-faq__q">{{ block.settings.q }}</span>
+              <span class="advantage-faq__sign" aria-hidden="true">+</span>
+            </button>
+            <div class="advantage-faq__body">
+              <p>{{ block.settings.a }}</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-adv-faq]').forEach(function (item) {
+      var btn = item.querySelector('.advantage-faq__btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var expanded = item.getAttribute('aria-expanded') === 'true';
+        item.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Advantage FAQs",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Frequently Asked Questions" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Good to know." },
+    { "type": "text", "id": "contact_pre", "label": "Contact prefix", "default": "Need more help? Call" },
+    { "type": "text", "id": "contact_phone", "label": "Phone", "default": "1300 291 700" },
+    { "type": "text", "id": "contact_mid", "label": "Contact middle", "default": "or email" },
+    { "type": "text", "id": "contact_email", "label": "Email", "default": "advantage@esafetysupplies.com.au" }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question", "default": "Who can join eSafety Advantage?" },
+        { "type": "textarea", "id": "a", "label": "Answer", "default": "The program is available to eligible eSafety Supplies business customers. Submit your details and our team will confirm your account." }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Advantage FAQs",
+      "blocks": [
+        { "type": "faq", "settings": { "q": "Who can join eSafety Advantage?", "a": "The program is available to eligible eSafety Supplies business customers. Submit your details and our team will confirm your account." } },
+        { "type": "faq", "settings": { "q": "How do I earn and redeem points?", "a": "Every eligible dollar spent earns points. Redeem them as prepaid gift cards or as credit on your next eSafety order." } },
+        { "type": "faq", "settings": { "q": "What rewards can I choose?", "a": "Choose between prepaid gift cards or credit on your next eSafety Supplies order." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

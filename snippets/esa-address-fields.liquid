@@ -1,0 +1,61 @@
+{% comment %}
+  Renders address form fields for use inside {% form 'customer_address' %}.
+  Accepts:
+    - address: address object (customer.new_address or an existing address)
+    - form_id: unique id (e.g. 'new' or the address.id) to namespace field ids
+{% endcomment %}
+<div class="esa-form-row">
+  <div class="esa-form-field">
+    <label for="esa-addr-fn-{{ form_id }}">First name</label>
+    <input type="text" id="esa-addr-fn-{{ form_id }}" name="address[first_name]" value="{{ address.first_name }}">
+  </div>
+  <div class="esa-form-field">
+    <label for="esa-addr-ln-{{ form_id }}">Last name</label>
+    <input type="text" id="esa-addr-ln-{{ form_id }}" name="address[last_name]" value="{{ address.last_name }}">
+  </div>
+</div>
+<div class="esa-form-field">
+  <label for="esa-addr-co-{{ form_id }}">Company</label>
+  <input type="text" id="esa-addr-co-{{ form_id }}" name="address[company]" value="{{ address.company }}">
+</div>
+<div class="esa-form-field">
+  <label for="esa-addr-a1-{{ form_id }}">Address 1</label>
+  <input type="text" id="esa-addr-a1-{{ form_id }}" name="address[address1]" value="{{ address.address1 }}">
+</div>
+<div class="esa-form-field">
+  <label for="esa-addr-a2-{{ form_id }}">Address 2</label>
+  <input type="text" id="esa-addr-a2-{{ form_id }}" name="address[address2]" value="{{ address.address2 }}">
+</div>
+<div class="esa-form-row">
+  <div class="esa-form-field">
+    <label for="esa-addr-city-{{ form_id }}">City</label>
+    <input type="text" id="esa-addr-city-{{ form_id }}" name="address[city]" value="{{ address.city }}">
+  </div>
+  <div class="esa-form-field">
+    <label for="esa-addr-zip-{{ form_id }}">Postcode</label>
+    <input type="text" id="esa-addr-zip-{{ form_id }}" name="address[zip]" value="{{ address.zip }}">
+  </div>
+</div>
+<div class="esa-form-row">
+  <div class="esa-form-field">
+    <label for="esa-addr-country-{{ form_id }}">Country</label>
+    <select id="esa-addr-country-{{ form_id }}" name="address[country]" data-esa-country-select data-form-id="{{ form_id }}" data-selected="{{ address.country }}">
+      {{ country_option_tags }}
+    </select>
+  </div>
+  <div class="esa-form-field" data-esa-province-wrap="{{ form_id }}">
+    <label for="esa-addr-province-{{ form_id }}">State / Province</label>
+    <select id="esa-addr-province-{{ form_id }}" name="address[province]" data-esa-province-select data-form-id="{{ form_id }}" data-selected="{{ address.province }}"></select>
+  </div>
+</div>
+<div class="esa-form-field">
+  <label for="esa-addr-phone-{{ form_id }}">Phone</label>
+  <input type="tel" id="esa-addr-phone-{{ form_id }}" name="address[phone]" value="{{ address.phone }}">
+</div>
+<div class="esa-form-field esa-checkbox-field">
+  <label>
+    <input type="hidden" name="address[default]" value="0">
+    <input type="checkbox" name="address[default]" value="1" {% if address.default %}checked{% endif %}>
+    <span>Set as default address</span>
+  </label>
+</div>

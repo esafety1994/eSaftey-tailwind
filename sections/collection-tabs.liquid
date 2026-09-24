@@ -5,7 +5,7 @@
 {% endcomment %}
 <section id="collection-tabs-{{ section.id }}" class="section-collection-tabs py-8 mt-6">
   <div class="container mx-auto px-4">
-    <div class="tabs mb-6 flex gap-3 sm:gap-6 lg:gap-12 justify-between" role="tablist">
+    <div class="tabs mb-6 flex gap-3 mx-auto max-w-4xl sm:gap-6 lg:gap-12 justify-between" role="tablist">
       {% assign collections_list = '' | split: ',' %}
       {% for i in (1..3) %}
         {% assign key = 'collection_' | append: i %}
@@ -54,7 +54,9 @@
             {% assign col = collections[col_setting] %}
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-y-12">
               {% for product in col.products limit: 8 %}
-                <div>{% render 'product-card', product: product %}</div>
+                {% assign preload_card = false %}
+                {% if forloop.index <= 3 %}{% assign preload_card = true %}{% endif %}
+                <div>{% render 'product-card', product: product, enable_preload: preload_card %}</div>
               {% endfor %}
             </div>
             <div class="pt-16 text-center">

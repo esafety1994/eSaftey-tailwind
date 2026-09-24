@@ -1,0 +1,120 @@
+{{ 'return-ready.css' | asset_url | stylesheet_tag }}
+
+<section class="rr rr-section rr-section--dark" id="enquiry">
+  <div class="rr__container">
+    <div class="rr-cta">
+
+      <div style="position:relative">
+        <h2 class="rr-cta__title">
+          {{ section.settings.title | default: 'Contact our sales team to discuss your next project' }}
+        </h2>
+        <p class="rr-cta__desc">
+          {{ section.settings.description | default: "Tell us what the job needs and we'll come back with purchase price, buy-back value and the numbers side by side." }}
+        </p>
+        <div class="rr-cta__contact">
+          {%- if section.settings.phone != blank -%}
+            <a href="tel:{{ section.settings.phone | replace: ' ', '' }}">{{ section.settings.phone }}</a>
+          {%- endif -%}
+          {%- if section.settings.email != blank -%}
+            <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+          {%- endif -%}
+          {%- if section.settings.hours != blank -%}
+            <span>{{ section.settings.hours }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="rr-form" id="rr-enquiry">
+        <h3 class="rr-form__title">{{ section.settings.form_title | default: 'Project enquiry' }}</h3>
+
+        {% form 'contact', id: 'rr-enquiry-form' %}
+          {%- if form.posted_successfully? -%}
+            <div class="rr-form__success">
+              {{ section.settings.success_message | default: "Thanks — a sales rep will be in touch within one business day." }}
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="rr-form__errors">
+              <strong>Please check the form:</strong>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <input type="hidden" name="contact[subject]" value="{{ section.settings.email_subject | default: 'Return Ready enquiry' }}">
+          <input type="hidden" name="contact[source]" value="Return Ready landing page">
+
+          <div class="rr-form__grid">
+            <div class="rr-pair">
+              <div class="rr-field">
+                <label class="rr-field__label" for="rr-name">Name</label>
+                <input type="text" id="rr-name" class="rr-field__input" name="contact[name]" placeholder="Full name" required>
+              </div>
+              <div class="rr-field">
+                <label class="rr-field__label" for="rr-company">Company</label>
+                <input type="text" id="rr-company" class="rr-field__input" name="contact[company]" placeholder="Business name">
+              </div>
+            </div>
+
+            <div class="rr-pair">
+              <div class="rr-field">
+                <label class="rr-field__label" for="rr-email">Email</label>
+                <input type="email" id="rr-email" class="rr-field__input" name="contact[email]" placeholder="you@company.com.au" required>
+              </div>
+              <div class="rr-field">
+                <label class="rr-field__label" for="rr-phone">Phone</label>
+                <input type="tel" id="rr-phone" class="rr-field__input" name="contact[phone]" placeholder="04...">
+              </div>
+            </div>
+
+            <div class="rr-field">
+              <label class="rr-field__label" for="rr-detail">What does the job need?</label>
+              <textarea id="rr-detail" class="rr-field__textarea" name="contact[body]" rows="3" placeholder="Product, quantity, site location and how long you need it" required></textarea>
+            </div>
+
+            {%- if section.settings.show_consent -%}
+              <label class="rr-form__consent">
+                <input type="checkbox" name="contact[consent]" required>
+                <span>{{ section.settings.consent_text | default: 'I agree to be contacted about this enquiry.' }}</span>
+              </label>
+            {%- endif -%}
+
+            <button type="submit" class="rr-btn rr-btn--full rr-btn--sm">
+              {{ section.settings.submit_label | default: 'Send enquiry' }}
+            </button>
+
+            <p class="rr-form__note">
+              {{ section.settings.form_note | default: 'We reply within one business day. No obligation.' }}
+            </p>
+          </div>
+        {% endform %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Return Ready CTA",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Contact our sales team to discuss your next project" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Tell us what the job needs and we'll come back with purchase price, buy-back value and the numbers side by side." },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
+    { "type": "text", "id": "email", "label": "Email", "default": "sales@esafetysupplies.com.au" },
+    { "type": "text", "id": "hours", "label": "Hours", "default": "Mon–Fri 7AM–5PM · Sat 8AM–12PM" },
+
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_title", "label": "Form title", "default": "Project enquiry" },
+    { "type": "text", "id": "email_subject", "label": "Notification email subject", "default": "Return Ready enquiry", "info": "Appears in the subject line of emails sent to your store contact email." },
+    { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send enquiry" },
+    { "type": "textarea", "id": "form_note", "label": "Footnote", "default": "We reply within one business day. No obligation." },
+    { "type": "textarea", "id": "success_message", "label": "Success message", "default": "Thanks — a sales rep will be in touch within one business day." },
+    { "type": "checkbox", "id": "show_consent", "label": "Show consent checkbox", "default": false },
+    { "type": "text", "id": "consent_text", "label": "Consent text", "default": "I agree to be contacted about this enquiry." }
+  ],
+  "presets": [
+    { "name": "Return Ready CTA", "settings": {} }
+  ]
+}
+{% endschema %}

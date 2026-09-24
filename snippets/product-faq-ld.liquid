@@ -1,0 +1,11 @@
+{% if faq_items != blank %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{ faq_items }}
+  ]
+}
+</script>
+{% endif %}

@@ -1,0 +1,82 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<section class="advantage advantage-section" id="benefits">
+  <div class="advantage__container">
+    <div class="advantage-section__head">
+      <div>
+        <span class="advantage__eyebrow advantage-section__eyebrow">
+          {{ section.settings.eyebrow | default: 'Member Benefits' }}
+        </span>
+        <h2 class="advantage__h2">
+          {{ section.settings.title_line1 | default: 'Business rewards,' }}
+          <br>
+          {{ section.settings.title_line2_prefix | default: 'done' }}
+          <span class="advantage__accent">{{ section.settings.title_line2_accent | default: 'better.' }}</span>
+        </h2>
+      </div>
+      <p class="advantage__body advantage-section__intro">
+        {{ section.settings.intro | default: 'eSafety Advantage gives our most valued customers more support, sharper pricing and meaningful rewards with every eligible order.' }}
+      </p>
+    </div>
+
+    <div class="advantage-benefits__grid">
+      {%- for block in section.blocks -%}
+        {%- assign highlight = '' -%}
+        {%- if block.settings.highlight -%}{%- assign highlight = ' advantage-benefit--highlight' -%}{%- endif -%}
+        <article class="advantage-benefit{{ highlight }}" {{ block.shopify_attributes }}>
+          <span class="advantage-benefit__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <div>
+            <span class="advantage-benefit__icon">
+              {%- if block.settings.icon != blank -%}
+                {{ block.settings.icon | image_url: width: 100 | image_tag: alt: block.settings.title }}
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6 19c1-3 4-4 6-4s5 1 6 4"/></svg>
+              {%- endif -%}
+            </span>
+          </div>
+          <div>
+            <h3 class="advantage-benefit__title">{{ block.settings.title }}</h3>
+            <p class="advantage-benefit__body">{{ block.settings.body }}</p>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Advantage Benefits",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Member Benefits" },
+    { "type": "text", "id": "title_line1", "label": "Title (line 1)", "default": "Business rewards," },
+    { "type": "text", "id": "title_line2_prefix", "label": "Title (line 2 prefix)", "default": "done" },
+    { "type": "text", "id": "title_line2_accent", "label": "Title (line 2 accent, yellow)", "default": "better." },
+    { "type": "textarea", "id": "intro", "label": "Intro paragraph", "default": "eSafety Advantage gives our most valued customers more support, sharper pricing and meaningful rewards with every eligible order." }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit card",
+      "settings": [
+        { "type": "image_picker", "id": "icon", "label": "Icon" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Dedicated Account Manager" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "A single point of contact who understands your needs and helps secure the best outcome." },
+        { "type": "checkbox", "id": "highlight", "label": "Highlight (yellow background)", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Advantage Benefits",
+      "blocks": [
+        { "type": "benefit", "settings": { "title": "Dedicated Account Manager", "body": "A single point of contact who understands your needs and helps secure the best outcome." } },
+        { "type": "benefit", "settings": { "title": "Exclusive Trade Pricing", "body": "Unlock discounted, account-only pricing tailored to your business." } },
+        { "type": "benefit", "settings": { "title": "Earn While You Spend", "body": "Turn everyday eSafety Supplies orders into points and valuable rewards.", "highlight": true } },
+        { "type": "benefit", "settings": { "title": "Discounted Freight & Priority Dispatch", "body": "Save on delivery costs and get your essential supplies dispatched sooner." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

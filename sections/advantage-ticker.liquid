@@ -1,0 +1,35 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<section class="advantage advantage-ticker" aria-label="Program highlights">
+  <ul class="advantage-ticker__list">
+    {%- for block in section.blocks -%}
+      <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Advantage Ticker",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ticker item",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Built for long-term partnerships" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Advantage Ticker",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Built for long-term partnerships" } },
+        { "type": "item", "settings": { "text": "Exclusive member value" } },
+        { "type": "item", "settings": { "text": "Earn rewards while you spend" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

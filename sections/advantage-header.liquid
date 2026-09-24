@@ -1,0 +1,61 @@
+{{ 'advantage.css' | asset_url | stylesheet_tag }}
+
+<header class="advantage advantage-header">
+  <div class="advantage__container advantage-header__inner">
+    <a href="{{ section.settings.logo_link | default: '/' }}" class="advantage-header__logo">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 300 | image_tag: alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        <span class="advantage-header__logo-placeholder">LOGO</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="advantage-header__nav" aria-label="eSafety Advantage">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link' -%}
+          <a href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+
+    <a href="{{ section.settings.cta_link | default: '#' }}" class="advantage-btn advantage-btn--primary advantage-btn--header">
+      {{ section.settings.cta_label | default: 'Join eSafety Advantage' }}
+      <span class="advantage-btn__arrow" aria-hidden="true"></span>
+    </a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Advantage Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "url", "id": "logo_link", "label": "Logo link" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Join eSafety Advantage" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Nav link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Benefits" },
+        { "type": "text", "id": "link", "label": "Anchor or URL", "default": "#benefits" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Advantage Header",
+      "blocks": [
+        { "type": "link", "settings": { "label": "Benefits", "link": "#benefits" } },
+        { "type": "link", "settings": { "label": "Rewards", "link": "#rewards" } },
+        { "type": "link", "settings": { "label": "Referral", "link": "#referral" } },
+        { "type": "link", "settings": { "label": "FAQs", "link": "#faqs" } },
+        { "type": "link", "settings": { "label": "Terms & Conditions", "link": "#terms" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
