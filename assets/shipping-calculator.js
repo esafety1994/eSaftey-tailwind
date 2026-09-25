@@ -382,34 +382,39 @@ class ShippingCalculator extends HTMLElement {
 
     let ccBanner = '';
     if (ccInfo && ccInfo.status === 'available') {
+      // Uses the theme's original sc-cc-* CSS classes — no inline overrides.
       ccBanner = `
-      <div class="sc-cc-banner sc-cc-banner--available" style="background:#FDF8C4;border:1px solid #F4E20D;color:#231F20;">
+      <div class="sc-cc-banner">
         <div class="sc-cc-icon-wrap">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#92400e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
         </div>
         <div class="sc-cc-content">
-          <strong class="sc-cc-title" style="color:#231F20;font-size:inherit;display:block;margin:0 0 6px 0;">${ccInfo.cityLabel} postcode detected</strong>
-          <span class="sc-cc-badge" style="display:inline-block;background:#dcfce7;color:#15803d;font-size:12px;font-weight:600;padding:2px 8px;border-radius:12px;margin-bottom:6px;">Click &amp; collect available</span>
-          <p class="sc-cc-desc" style="color:#231F20;font-size:inherit;margin:0 0 6px 0;font-weight:normal;">Click &amp; collect available from our ${ccInfo.cityLabel} warehouse.</p>
-          <a href="/pages/click-collect" class="sc-cc-link" style="color:#231F20;font-size:inherit;text-decoration:underline;">View pickup details <span aria-hidden="true">›</span></a>
+          <div class="sc-cc-title-row">
+            <strong class="sc-cc-title">${ccInfo.cityLabel} postcode detected</strong>
+            <span class="sc-cc-badge">Click &amp; collect available</span>
+          </div>
+          <p class="sc-cc-desc">Click &amp; collect available from our ${ccInfo.cityLabel} warehouse.</p>
+          <a href="/pages/click-collect" class="sc-cc-link">View pickup details <span aria-hidden="true">›</span></a>
         </div>
-        <svg class="sc-cc-chevron" width="16" height="16" fill="none" viewBox="0 0 24 24" style="flex-shrink:0;align-self:center;">
-          <path d="M9 18l6-6-6-6" stroke="#231F20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg class="sc-cc-chevron" width="16" height="16" fill="none" viewBox="0 0 24 24">
+          <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>`;
     } else if (ccInfo && ccInfo.status === 'unavailable') {
+      // Same base class + modifier so the theme can style differently if
+      // desired; falls back to the base .sc-cc-banner look otherwise.
       ccBanner = `
-      <div class="sc-cc-banner sc-cc-banner--unavailable" style="background:#FDF8C4;border:1px solid #F4E20D;color:#231F20;">
+      <div class="sc-cc-banner sc-cc-banner--unavailable">
         <div class="sc-cc-icon-wrap">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#92400e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
         </div>
         <div class="sc-cc-content">
-          <strong class="sc-cc-title" style="color:#231F20;font-size:inherit;display:block;margin:0 0 4px 0;">Click &amp; Collect not available</strong>
-          <p class="sc-cc-desc" style="color:#231F20;font-size:inherit;margin:0;font-weight:normal;">Your cart contains stock from multiple warehouses, so your order will be sent by courier from our Sydney warehouse.</p>
+          <strong class="sc-cc-title">Click &amp; Collect not available</strong>
+          <p class="sc-cc-desc">Your cart contains stock from multiple warehouses, so your order will be sent by courier from our Sydney warehouse.</p>
         </div>
       </div>`;
     }
