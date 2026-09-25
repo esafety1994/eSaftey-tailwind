@@ -390,10 +390,8 @@ class ShippingCalculator extends HTMLElement {
           </svg>
         </div>
         <div class="sc-cc-content">
-          <div class="sc-cc-title-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:4px;">
-            <strong class="sc-cc-title" style="color:#231F20;font-size:inherit;">${ccInfo.cityLabel} postcode detected</strong>
-            <span class="sc-cc-badge" style="background:#dcfce7;color:#15803d;font-size:12px;font-weight:600;padding:2px 8px;border-radius:12px;">Click &amp; collect available</span>
-          </div>
+          <strong class="sc-cc-title" style="color:#231F20;font-size:inherit;display:block;margin:0 0 6px 0;">${ccInfo.cityLabel} postcode detected</strong>
+          <span class="sc-cc-badge" style="display:inline-block;background:#dcfce7;color:#15803d;font-size:12px;font-weight:600;padding:2px 8px;border-radius:12px;margin-bottom:6px;">Click &amp; collect available</span>
           <p class="sc-cc-desc" style="color:#231F20;font-size:inherit;margin:0 0 6px 0;font-weight:normal;">Click &amp; collect available from our ${ccInfo.cityLabel} warehouse.</p>
           <a href="/pages/click-collect" class="sc-cc-link" style="color:#231F20;font-size:inherit;text-decoration:underline;">View pickup details <span aria-hidden="true">›</span></a>
         </div>
