@@ -98,15 +98,19 @@
       // available/unavailable flag.
       row.dataset.stockQuantity = String(qty);
 
-      // Sydney HQ bypass — always show "Available" regardless of the actual
-      // per-warehouse inventory. Sydney fulfills any order via source or
-      // backorder, so the badge mirrors the product-level availability
-      // rather than the warehouse-specific stock count. Same rule that
-      // checkout-routing pickup-filter uses (Odoo task "For Sydney
-      // Warehouse the stock status must match the product's stock status",
-      // Satbar 2026-09-25).
+      // Sydney HQ bypass — badge mirrors the PRODUCT-level in-stock status
+      // (the same "In Stock"/"Out of Stock" flag shown at top-right of the
+      // PDP), not Sydney's per-warehouse inventory. This is what Satbar
+      // asked for in "For Sydney Warehouse the stock status must match the
+      // product's stock status" (2026-09-25). Sydney fulfills via source /
+      // backorder so its badge reflects whether the product is sellable at
+      // all, not whether it's physically in the Sydney warehouse.
+      // Fallback to true if the flag isn't injected (older PDP layouts).
       var isSydney = (code === 'W1');
-      var showAvailable = isSydney || (entry && qty > 0);
+      var productAvailable = config.productAvailable !== false;
+      var showAvailable = isSydney
+        ? productAvailable
+        : (entry && qty > 0);
 
       if (showAvailable) {
         if (countEl) countEl.textContent = isSydney ? '' : qty;

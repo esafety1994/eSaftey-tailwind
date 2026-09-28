@@ -684,7 +684,11 @@
     token: 'ff94938c36bdbce10e11a53d1839d04a',
     apiVersion: '2025-10',
     productHandle: {{ product.handle | json }},
-    initialVariantId: {{ product.selected_or_first_available_variant.id | json }}
+    initialVariantId: {{ product.selected_or_first_available_variant.id | json }},
+    // Product-level in-stock flag. Sydney (HQ) mirrors this rather than
+    // its own warehouse inventory (Odoo "For Sydney Warehouse the stock
+    // status must match the product's stock status", Satbar 2026-09-25).
+    productAvailable: {{ product.available | json }}
   };
 </script>
 <script src="{{ 'pickup-locations.js' | asset_url }}" defer></script>
