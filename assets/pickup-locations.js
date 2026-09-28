@@ -97,8 +97,19 @@
       // can compare against the shopper's ordered quantity, not just the
       // available/unavailable flag.
       row.dataset.stockQuantity = String(qty);
-      if (entry && qty > 0) {
-        if (countEl) countEl.textContent = qty;
+
+      // Sydney HQ bypass — always show "Available" regardless of the actual
+      // per-warehouse inventory. Sydney fulfills any order via source or
+      // backorder, so the badge mirrors the product-level availability
+      // rather than the warehouse-specific stock count. Same rule that
+      // checkout-routing pickup-filter uses (Odoo task "For Sydney
+      // Warehouse the stock status must match the product's stock status",
+      // Satbar 2026-09-25).
+      var isSydney = (code === 'W1');
+      var showAvailable = isSydney || (entry && qty > 0);
+
+      if (showAvailable) {
+        if (countEl) countEl.textContent = isSydney ? '' : qty;
         if (badgeEl) {
           badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-available';
           badgeEl.textContent = 'Available';
