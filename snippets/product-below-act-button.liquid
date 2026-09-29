@@ -14,7 +14,19 @@
   {%- if _eta_variant.metafields.custom.stock_status -%}
     {%- assign _eta_status = _eta_variant.metafields.custom.stock_status.value | default: _eta_variant.metafields.custom.stock_status -%}
   {%- elsif product.metafields.inventory.stock_status -%}
-    {%- assign _eta_status = product.metafields.inventory.stock_status.value | default: product.metafields.inventory.stock_status -%}
+    {%- comment -%}
+      inventory.stock_status is defined as a Choice-list (see Shopify metafield
+      definition), so .value returns an array like ["In Stock"]. Unwrap to the
+      first entry — without this the JSON-serialised config sends an array to
+      pickup-locations.js, which then throws on .trim() and aborts the panel
+      render (Odoo 30179, 2026-09-29).
+    {%- endcomment -%}
+    {%- assign _eta_status_raw = product.metafields.inventory.stock_status.value | default: product.metafields.inventory.stock_status -%}
+    {%- if _eta_status_raw.size and _eta_status_raw.first -%}
+      {%- assign _eta_status = _eta_status_raw | first -%}
+    {%- else -%}
+      {%- assign _eta_status = _eta_status_raw -%}
+    {%- endif -%}
   {%- endif -%}
 
   <!-- Estimated Delivery Header -->
