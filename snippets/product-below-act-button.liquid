@@ -4,8 +4,17 @@
   {%- comment -%} Hide ETA when variant is on backorder — the backorder note already carries the real delivery date {%- endcomment -%}
   {%- assign _eta_variant = product.selected_or_first_available_variant -%}
   {%- assign _eta_status = '' -%}
+  {%- comment -%}
+    Mirror the fallback used by product-stock-badge.liquid: variant-level
+    custom.stock_status wins, but many products only set the product-level
+    inventory.stock_status (e.g. Guru Driveway Ramp — Satbar 2026-09-29).
+    Without the product-level fallback Sydney's C&C badge would show
+    "Not available" while the top-of-PDP stock pill shows "In Stock".
+  {%- endcomment -%}
   {%- if _eta_variant.metafields.custom.stock_status -%}
     {%- assign _eta_status = _eta_variant.metafields.custom.stock_status.value | default: _eta_variant.metafields.custom.stock_status -%}
+  {%- elsif product.metafields.inventory.stock_status -%}
+    {%- assign _eta_status = product.metafields.inventory.stock_status.value | default: product.metafields.inventory.stock_status -%}
   {%- endif -%}
 
   <!-- Estimated Delivery Header -->
