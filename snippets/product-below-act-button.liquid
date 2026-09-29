@@ -685,10 +685,13 @@
     apiVersion: '2025-10',
     productHandle: {{ product.handle | json }},
     initialVariantId: {{ product.selected_or_first_available_variant.id | json }},
-    // Product-level in-stock flag. Sydney (HQ) mirrors this rather than
-    // its own warehouse inventory (Odoo "For Sydney Warehouse the stock
-    // status must match the product's stock status", Satbar 2026-09-25).
-    productAvailable: {{ product.available | json }}
+    // Sydney (HQ) mirrors the variant's Stock Status metafield text
+    // verbatim (Satbar 2026-09-29): the badge on Sydney's row must show
+    // the same wording as the stock badge at the top of the PDP (e.g.
+    // "1-2 Days", "In Stock", "Out of Stock"). Reads `_eta_status`
+    // already computed at the top of this snippet from
+    // custom.stock_status on the selected variant.
+    stockStatus: {{ _eta_status | json }}
   };
 </script>
 <script src="{{ 'pickup-locations.js' | asset_url }}" defer></script>

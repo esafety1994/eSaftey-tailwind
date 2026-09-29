@@ -98,25 +98,26 @@
       // available/unavailable flag.
       row.dataset.stockQuantity = String(qty);
 
-      // Sydney HQ bypass — badge mirrors the PRODUCT-level in-stock status
-      // (the same "In Stock"/"Out of Stock" flag shown at top-right of the
-      // PDP), not Sydney's per-warehouse inventory. This is what Satbar
-      // asked for in "For Sydney Warehouse the stock status must match the
-      // product's stock status" (2026-09-25). Sydney fulfills via source /
-      // backorder so its badge reflects whether the product is sellable at
-      // all, not whether it's physically in the Sydney warehouse.
-      // Fallback to true if the flag isn't injected (older PDP layouts).
+      // Sydney HQ bypass — badge shows the variant's Stock Status metafield
+      // verbatim (e.g. "1-2 Days", "In Stock", "Out of Stock"), so it
+      // matches the stock badge at the top-right of the PDP. Satbar's rule
+      // (Odoo 30179, 2026-09-29): "for sydney warehouse stock status of
+      // warehouse must be same as products stock status. If product has
+      // 1-2 Days as stock status; the Sydney warehouse should show 1-2
+      // Days too." Any status other than "Out of Stock" (and non-empty)
+      // styles as available; Out of Stock / empty styles as unavailable.
       var isSydney = (code === 'W1');
-      var productAvailable = config.productAvailable !== false;
+      var stockStatus = (config.stockStatus || '').trim();
+      var sydneyAvailable = stockStatus !== '' && stockStatus.toLowerCase() !== 'out of stock';
       var showAvailable = isSydney
-        ? productAvailable
+        ? sydneyAvailable
         : (entry && qty > 0);
 
       if (showAvailable) {
         if (countEl) countEl.textContent = isSydney ? '' : qty;
         if (badgeEl) {
           badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-available';
-          badgeEl.textContent = 'Available';
+          badgeEl.textContent = isSydney ? stockStatus : 'Available';
         }
         row.dataset.stockState = 'available';
         stockedStateCount++;
@@ -124,7 +125,7 @@
         if (countEl) countEl.textContent = '';
         if (badgeEl) {
           badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-unavailable';
-          badgeEl.textContent = 'Not available';
+          badgeEl.textContent = isSydney && stockStatus ? stockStatus : 'Not available';
         }
         row.dataset.stockState = 'unavailable';
       }
