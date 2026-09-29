@@ -678,10 +678,12 @@
 <script>
   window.pickupLocationsConfig = {
     shopDomain: {{ shop.permanent_domain | json }},
-    // DEV store Storefront token (esafetysuppliesdev.myshopify.com).
-    // From the checkout-routing Custom App. Before prod deploy, swap for
-    // a valid token for esafetysupplies.myshopify.com.
-    token: 'ff94938c36bdbce10e11a53d1839d04a',
+    // PROD Storefront token (esafetysupplies.myshopify.com).
+    // From the "Storefront API" legacy custom app, created 5 Feb 2024.
+    // If you need to test against the DEV store (esafetysuppliesdev), swap
+    // in the DEV token from the checkout-routing Custom App:
+    //   ff94938c36bdbce10e11a53d1839d04a
+    token: 'f8e9e16040ed99ad8ea5e1bf3ab83e56',
     apiVersion: '2025-10',
     productHandle: {{ product.handle | json }},
     initialVariantId: {{ product.selected_or_first_available_variant.id | json }},
