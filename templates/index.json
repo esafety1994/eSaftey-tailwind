@@ -15,6 +15,20 @@
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
+            "background": "shopify://shop_images/Install_Banner_1.webp",
+            "mobile_background": "shopify://shop_images/Install_Banner_1.webp",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "shopify://collections/super-sale"
+          }
+        },
+        "slider_item_zMnACx": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
             "background": "shopify://shop_images/september-web-banner.jpg",
             "mobile_background": "shopify://shop_images/september-web-banner.jpg",
             "single_image": true,
@@ -27,7 +41,8 @@
         }
       },
       "block_order": [
-        "slider_item_wmYUEQ"
+        "slider_item_wmYUEQ",
+        "slider_item_zMnACx"
       ],
       "settings": {
         "enable_autoplay": true,
