@@ -11,8 +11,13 @@
   "current": {
     "type_base_font": "poppins_n4",
     "cart_trust_badge": "shopify://shop_images/trust-badge.webp",
-    "cart_drawer_upsell_product": "the-air-duster-2000",
-    "use_minified_assets": false,
+    "cart_drawer_upsell_product": "esafety-straw-hat",
+    "internal_page_banner_image": "shopify://shop_images/july-ccb-slim-banner_2.jpg",
+    "internal_page_banner_link": "shopify://products/crowd-control-barrier-2-3m-x-1-1m-2-pins-feet",
+    "internal_page_banner_new_tab": true,
+    "favicon": "shopify://shop_images/favicon_2097d34f-cf85-4770-9102-9fb7ac0c0d99.png",
+    "header_contact_email": "sales@esafetysupplies.com.au",
+    "use_minified_assets": true,
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
@@ -22,17 +27,10 @@
             "settings": {
               "content": "Welcome to our Store"
             }
-          },
-          "announcement_content_c6xnPn": {
-            "type": "announcement_content",
-            "settings": {
-              "content": "Free shipping over 499"
-            }
           }
         },
         "block_order": [
-          "announcement_content_EXRXzY",
-          "announcement_content_c6xnPn"
+          "announcement_content_EXRXzY"
         ],
         "settings": {
           "show-announcement": true
@@ -46,7 +44,7 @@
             "settings": {
               "title": "eSafety Supplies",
               "image_max": "301px",
-              "description": "<p>ABN – 78 630 262 789</p><p><a href=\"tel:1300 291 700\">1300 291 700</a></p><p>Monday to Friday: 7AM - 5PM</p><p>Saturday: 8AM - 12PM</p><p><a href=\"mailto:sales@esafetysupplies.com.au\">sales@esafetysupplies.com.au</a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">37 Bentley St, </a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">Wetherill Park NSW 2164</a></p>"
+              "description": "<p>ABN – 78 630 262 789</p><p><a href=\"tel:1300 291 700\">1300 291 700</a></p><p>Monday to Friday: 7AM - 5PM</p><p>Saturday: 8AM - 12PM</p><p><a href=\"mailto:sales@esafetysupplies.com.au\">sales@esafetysupplies.com.au</a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">396 Victoria St, </a></p><p><a href=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\" target=\"_blank\" title=\"https://maps.app.goo.gl/H2bLNbmpJk1ZcRc18\">Wetherill Park NSW 2164</a></p>"
             }
           },
           "menu_WX87bJ": {
@@ -94,15 +92,49 @@
       "esaftey-cart-drawer": {
         "type": "esaftey-cart-drawer",
         "settings": {}
+      },
+      "promo-popup": {
+        "type": "promo-popup",
+        "settings": {
+          "enable_popup": true,
+          "popup_image": "shopify://shop_images/website-pop-up_July.jpg",
+          "popup_link": "shopify://blogs/esafety-blogs/july-blowout-sale-crowd-control-barriers",
+          "open_in_new_tab": false,
+          "popup_delay": 3,
+          "cookie_days": 30,
+          "popup_version": "JULY-BLOWOUT-SALE-2026"
+        }
+      },
+      "head-critical-css": {
+        "type": "head-critical-css",
+        "settings": {}
       }
     },
     "content_for_index": [],
     "blocks": {
-      "6868439170666289573": {
-        "type": "shopify://apps/foxkit-aio-upsell/blocks/foxkit-theme-helper/13f41957-6b79-47c1-99a2-e52431f06fff",
+      "7974659707553285070": {
+        "type": "shopify://apps/quotify/blocks/app-embed/e72a6125-4dd6-4154-a361-ca94e10e6d52",
+        "disabled": false,
+        "settings": {}
+      },
+      "15562191488504292397": {
+        "type": "shopify://apps/quotify/blocks/sticky-cart-button/e72a6125-4dd6-4154-a361-ca94e10e6d52",
+        "disabled": true,
+        "settings": {
+          "floating_quote_cart_button_text": "Show Quote Cart",
+          "floating_quote_cart_button_background_color": "#ffffff",
+          "floating_quote_cart_button_text_color": "#000000",
+          "floating_quote_cart_button_border_color": "#000000",
+          "floating_quote_cart_button_padding": 10,
+          "floating_quote_cart_button_border_radius": 4,
+          "floating_quote_cart_button_css": ""
+        }
+      },
+      "10605408327587305396": {
+        "type": "shopify://apps/eg-auto-add-to-cart/blocks/app-embed/0f7d4f74-1e89-4820-aec4-6564d7e535d2",
         "disabled": false,
         "settings": {
-          "enable_ajax_atc": true
+          "version": "v3"
         }
       }
     }
