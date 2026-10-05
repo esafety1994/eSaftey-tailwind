@@ -508,11 +508,6 @@
             "phone": "Please add an area code when entering a landline"
           }
         }
-      },
-      "local_pickup": {
-        "pickup_unavailable_banner_title_with_country": {
-          "other": "hel"
-        }
       }
     }
   },
