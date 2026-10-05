@@ -151,8 +151,20 @@
         </div>
 
         <ul class="pdp-cc-notes">
-          <li>Collect your whole order from one location. If it&rsquo;s not all in stock there, we&rsquo;ll ship it from Sydney instead.</li>
-          <li>Your full pickup address and collection instructions will be included in your order confirmation email.</li>
+          <li>
+            <svg class="pdp-cc-note-icon" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 16v-4m0-4h.01" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Collect your whole order from one location. If it&rsquo;s not all in stock there, we&rsquo;ll ship it from Sydney instead.</span>
+          </li>
+          <li>
+            <svg class="pdp-cc-note-icon" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Your full pickup address and collection instructions will be included in your order confirmation email.</span>
+          </li>
         </ul>
       </div>
 
@@ -499,25 +511,33 @@
   .pdp-cc-loc-ready-line {
     font-family: Poppins, 'M-Body-Font', sans-serif;
     font-size: 10px;
-    font-weight: 600;
-    color: #15803d;
+    font-weight: 500;
+    color: #374151;
     margin: 2px 0 0;
     line-height: 1.3;
   }
 
   .pdp-cc-notes {
-    list-style: disc;
-    padding-left: 18px;
+    list-style: none;
+    padding: 0;
     margin: 10px 0 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
   }
   .pdp-cc-notes li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
     font-family: Poppins, 'M-Body-Font', sans-serif;
     font-size: 10.5px;
     color: #6b7280;
     line-height: 1.4;
+  }
+  .pdp-cc-note-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #d97706;
   }
 
   .pdp-cc-loc-stock {
