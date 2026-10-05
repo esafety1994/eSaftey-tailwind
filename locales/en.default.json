@@ -512,6 +512,11 @@
       "local_pickup": {
         "pickup_unavailable_banner_title_with_country": {
           "one": "hello"
+        },
+        "pickup_unavailable_banner_body": {
+          "search_elsewhere": "hello",
+          "search_elsewhere_standalone": "hello",
+          "ship_items_or_search_elsewhere": "hello"
         }
       }
     }
