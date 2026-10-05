@@ -482,8 +482,7 @@
         "shipping_address": "Please select a valid shipping address"
       },
       "order_summary": {
-        "enter_shipping_address": "Please select a valid shipping address",
-        "no_pickup_location": "Hello!"
+        "enter_shipping_address": "Please select a valid shipping address"
       },
       "shipping": {
         "different_shipping_method_summary": "Please select a valid shipping address",
