@@ -1,11 +1,21 @@
-<script defer src="{{ 'collection-filter.js' | asset_url }}"></script>
+<script defer src="{{ 'collection-filter.min.js' | asset_url }}"></script>
 
 <section id="collection-section-{{ section.id }}" class="container mx-auto px-4 py-8 max-w-7xl">
   <div class="mb-6">
-    <h1 class="text-4xl font-semibold text-center">{{ collection.title }}</h1>
+    <h1 class="text-4xl font-semibold text-center">
+  {{ collection.title }}
+  {% if current_page > 1 %}
+    <span style="display:none;">Page {{ current_page }}</span>
+  {% endif %}
+</h1>
     {% if collection.metafields.custom.description_below_the_title != blank %}
       <p class="text-center my-4 text-base leading-loose">
         {{ collection.metafields.custom.description_below_the_title | newline_to_br }}
+      </p>
+    {% endif %}
+    {% if collection.handle == 'eofy-2026' %}
+      <p class="text-right text-sm text-gray-500 mt-2">
+        *Sale conditions apply — <a href="/pages/eofy-2026-terms-conditions" class="underline font-medium" style="color:#dc2626;">view the full terms and conditions</a>
       </p>
     {% endif %}
   </div>
@@ -79,7 +89,16 @@
     </aside>
 
     <div class="md:col-span-9">
-      {% render 'sort-dropdown', base_url: collection.url, section_id: section.id %}
+      <div class="flex items-center justify-between">
+        <div
+          class="md:hidden"
+          data-action="toggle-filter"
+        >
+          <div class="mb-4 border rounded-lg p-2">{% render 'icon-svg-funnel-plus' %}</div>
+        </div>
+        {% render 'sort-dropdown', base_url: collection.url, section_id: section.id %}
+      </div>
+
       {% if collection.products_count == 0 %}
         <div class="text-center py-24">
           <div class="mx-auto w-24 h-24 flex items-center justify-center mb-6">
@@ -88,7 +107,7 @@
               <path fill="{{ fill | default: '#9a9a9a' }}" d="M.99 8.21c0 6.534-.066 7.59-.495 7.59S0 18.341 0 36.821c0 20.394.033 21.054.66 22.341.363.759 1.089 1.65 1.584 2.013.858.66 1.485.66 30.36.759L62.106 62l1.287-.726c.825-.462 1.518-1.221 1.947-2.079.627-1.32.66-2.046.66-22.374 0-18.48-.066-21.021-.495-21.021s-.495-1.056-.495-7.59V.62H.99v7.59zm5.676-2.739l2.871 2.904-2.805 3.696C5.214 14.117 3.795 15.8 3.63 15.8c-.198 0-.33-2.508-.33-6.6 0-3.63.099-6.6.264-6.6.132 0 1.551 1.287 3.102 2.871zm49.665-.264L53.79 7.814V15.8H12.21V7.814L9.669 5.207 7.161 2.6h51.678l-2.508 2.607zM62.7 9.2c0 4.092-.132 6.6-.33 6.6-.165 0-1.584-1.683-3.102-3.729l-2.805-3.696 2.871-2.904c1.551-1.584 2.97-2.871 3.102-2.871.165 0 .264 2.97.264 6.6zM9.9 13.82v1.98H8.415c-.825 0-1.485-.066-1.485-.165 0-.231 2.673-3.795 2.838-3.795.066 0 .132.891.132 1.98zm47.817-.165c.726.99 1.353 1.881 1.353 1.98 0 .099-.66.165-1.485.165H56.1v-1.98c0-1.089.066-1.98.132-1.98s.726.825 1.485 1.815zm5.973 24.387v19.965l-.792.924-.792.924H3.894l-.792-.924-.792-.924V18.11h61.38v19.932z"/>
               <path fill="{{ fill | default: '#9a9a9a' }}" d="M17.589 22.07c-1.782 1.089-2.706 3.696-1.584 4.62.627.528 1.089.165 1.716-1.353.891-2.211 3.267-2.211 4.158 0 .627 1.518 1.089 1.881 1.716 1.353 1.155-.957.066-3.828-1.782-4.785-1.353-.66-2.937-.627-4.224.165zM43.989 22.07c-1.782 1.089-2.706 3.696-1.584 4.62.627.528 1.056.198 1.683-1.254.561-1.386.957-1.716 2.178-1.716 1.056 0 1.881.759 2.145 2.013.33 1.716 2.079 1.452 2.079-.33 0-3.003-3.828-4.983-6.501-3.333z"/>
               <path fill="{{ fill | default: '#9a9a9a' }}" d="M18.942 25.172c-.099.264-.132 2.838-.066 5.742l.099 5.214 1.221 2.475c2.772 5.577 8.844 8.844 14.718 7.92 4.884-.759 8.943-3.795 11.088-8.283 1.023-2.145 1.023-2.178 1.023-7.755v-5.61h-1.65l-.198 4.95c-.231 5.016-.396 6.072-1.452 8.118-2.046 3.927-6.336 6.567-10.758 6.567-3.465 0-7.788-2.178-9.636-4.851-1.98-2.871-2.31-4.191-2.508-9.669-.198-4.983-.231-5.115-.957-5.214-.429-.066-.792.099-.924.396z"/>
-            </svg> 
+            </svg>
           </div>
           <p class="text-gray-600">Sorry, there are no products in this collection</p>
         </div>
@@ -106,14 +125,12 @@
             {% assign col_class = 'md:grid-cols-4' %}
           {% endif %}
 
-          <div class="grid grid-cols-2 {{ col_class }} gap-6">
+          <div class="grid sm:grid-cols-2 {{ col_class }} gap-6">
             {% for p in collection.products %}
-              {% assign prod = p %}
-              {% if p.handle and all_products[p.handle] %}
-                {% assign prod = all_products[p.handle] %}
-              {% endif %}
+              {% assign preload_card = false %}
+              {% if forloop.index <= 3 %}{% assign preload_card = true %}{% endif %}
               <div class="w-full">
-                {% render 'product-card', product: prod, max_tags: 2 %}
+                {% render 'product-card', product: p, max_tags: 2, enable_preload: preload_card %}
               </div>
             {% endfor %}
           </div>
@@ -126,9 +143,15 @@
 
         {% render 'collection-faq', faq_data: collection.metafields.custom.faq_content_1.value %}
 
-        <div class="my-12 shopify-content-box">
-          {{ collection.metafields.custom.collection_description | metafield_tag }}
-        </div>
+        {% if collection.metafields.custom.collection_description != blank %}
+          <div class="my-12">
+            <div class="collection-seo-scroll">
+              <div class="collection-seo-scroll__inner shopify-content-box">
+                {{ collection.metafields.custom.collection_description | metafield_tag }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -168,3 +191,38 @@
   "presets": [{ "name": "Main Collection", "category": "Collection" }]
 }
 {% endschema %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"CollectionPage",
+      "@id":"{{ shop.url }}{{ collection.url }}#collection",
+      "url":"{{ shop.url }}{{ collection.url }}",
+      "name": {{ collection.title | json }}
+    },
+    {
+      "@type":"Product",
+      "@id":"{{ shop.url }}{{ collection.url }}#product",
+      "name": {{ collection.title | json }},
+      "description": {{ collection.description | strip_html | truncate: 160 | json }},
+      "brand":{
+        "@type":"Brand",
+        "name":"eSafety Supplies"
+      },
+      "review": {
+      "@type": "Review",
+      "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": 5,
+      "bestRating": 5
+      },
+      "author": {
+      "@type": "Person",
+      "name": "Kelvin Jones"
+      }
+      }
+    }
+  ]
+}
+</script>

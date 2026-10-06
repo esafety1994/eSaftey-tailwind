@@ -1,20 +1,57 @@
 {% comment %}
   sticky-product-cart.liquid
-  A compact sticky product cart that sits below the header on product pages.
-  Shows product image, title, reviews, SKU, price, quantity and an Add to Cart button.
-  This snippet expects `product` in scope when rendered.
+  Mobile: compact bar with image, title, price + cart button (pinned bottom).
+  Desktop: full bar with image, title, reviews, SKU, price, qty, Add to Cart.
 {% endcomment %}
+
+{% assign img = product.selected_or_first_available_variant.featured_image | default: product.images.first %}
 
 <div
   data-sticky-cart
-  class="hidden md:block fixed left-0 right-0 z-50 transition-transform duration-200 sticky-cart"
+  class="block fixed left-0 right-0 z-50 transition-transform duration-200 sticky-cart"
   aria-hidden="false"
 >
-  <div class="bg-white">
-    <div class="container m-auto p-3 grid lg:grid-cols-2 gap-4">
-      <div class="items-start gap-2 hidden lg:flex">
+  <div class="bg-white border-t border-gray-200" style="box-shadow: 0 -4px 10px rgba(0,0,0,0.07);">
+
+    {% comment %} Mobile layout (< lg) {% endcomment %}
+    <div class="flex items-center justify-between gap-3 px-3 py-2 lg:hidden">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        <div class="w-10 h-10 flex-shrink-0 rounded overflow-hidden bg-gray-100">
+          {% if img %}
+            <img
+              src="{{ img | image_url: '100x' }}"
+              alt="{{ product.title }}"
+              class="sticky-image w-full h-full object-cover"
+              width="40"
+              height="40"
+            >
+          {% else %}
+            <div class="bg-gray-100 w-full h-full"></div>
+          {% endif %}
+        </div>
+        <div class="min-w-0">
+          <div class="text-xs font-semibold truncate text-gray-800 max-w-[160px]">{{ product.title }}</div>
+          <div class="text-sm font-bold" id="sticky-price">
+            {% render 'product-price',
+              product: product,
+              show_compare_price: false,
+              price_size: '14px',
+              layout: 'sticky',
+              show_ex_gst: true
+            %}
+          </div>
+        </div>
+      </div>
+      <div class="flex-shrink-0 flex items-center gap-2">
+        <input type="hidden" name="sticky-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+        {% render 'act-button', product: product, layout: 'sticky', hide_qty: true %}
+      </div>
+    </div>
+
+    {% comment %} Desktop layout (lg+) {% endcomment %}
+    <div class="hidden lg:grid lg:grid-cols-2 gap-4 max-w-4xl m-auto p-3">
+      <div class="flex items-start gap-2">
         <div class="size-16">
-          {% assign img = product.selected_or_first_available_variant.featured_image | default: product.images.first %}
           {% if img %}
             <img
               src="{{ img | image_url: '200x' }}"
@@ -42,37 +79,25 @@
           </div>
         </div>
       </div>
-
       <div class="flex justify-between items-center gap-4">
         <div class="text-right ml-4">
-          <div class="text-lg font-semibold" id="sticky-price">
+          <div class="text-lg font-semibold">
             {% render 'product-price',
               product: product,
               show_compare_price: false,
               price_size: '14px',
-              req_from: 'sticky',
+              layout: 'sticky',
               show_ex_gst: true
             %}
           </div>
         </div>
-
         <div class="max-w-sm">
-          {% render 'act-button', product: product %}
+          {% render 'act-button', product: product, layout: 'sticky' %}
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
 <script src="{{ 'sticky-cart.js' | asset_url }}" defer></script>
-<style>
-  @media (max-width: 610px) {
-    .sticky-cart .qty-selector {
-      display: none;
-    }
-    .sticky-cart .primary-cart-button {
-      padding: 10px;
-      font-size: 14px;
-    }
-  }
-</style>

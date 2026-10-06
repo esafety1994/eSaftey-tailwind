@@ -1,0 +1,385 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "adv_header": {
+      "type": "advantage-header",
+      "blocks": {
+        "n1": {
+          "type": "link",
+          "settings": {
+            "label": "Benefits",
+            "link": "#benefits"
+          }
+        },
+        "n2": {
+          "type": "link",
+          "settings": {
+            "label": "Rewards",
+            "link": "#rewards"
+          }
+        },
+        "n3": {
+          "type": "link",
+          "settings": {
+            "label": "Referral",
+            "link": "#referral"
+          }
+        },
+        "n4": {
+          "type": "link",
+          "settings": {
+            "label": "FAQs",
+            "link": "#faqs"
+          }
+        },
+        "n5": {
+          "type": "link",
+          "settings": {
+            "label": "Terms & Conditions",
+            "link": "#terms"
+          }
+        }
+      },
+      "block_order": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/Advantage_Logo_2-2_9722e1e1-cee0-4dd1-a87e-0a3cdd092e1c.png",
+        "logo_link": "",
+        "cta_label": "Join eSafety Advantage",
+        "cta_link": "https://esafetysupplies.applyeasy.com.au/Credit/introduction"
+      }
+    },
+    "adv_hero": {
+      "type": "advantage-hero",
+      "settings": {
+        "eyebrow": "Introducing eSafety Advantage",
+        "title_line1": "More Value.",
+        "title_line2": "Every Order.",
+        "description": "A loyalty program built for the businesses that build, protect and keep Australia moving.",
+        "cta_primary_label": "Join and start earning",
+        "cta_primary_link": "https://esafetysupplies.applyeasy.com.au/Credit/introduction",
+        "cta_secondary_label": "See how it works",
+        "cta_secondary_link": "#benefits",
+        "note": "Designed for eligible eSafety Supplies business customers",
+        "card_image_url": "https://cdn.shopify.com/s/files/1/0638/5175/7736/files/eSafety_Advantage_Card_ANIMATION.gif?v=1787535608",
+        "chip_points_value": "+240",
+        "chip_points_label": "Points Earned",
+        "chip_reward_label": "Next Reward",
+        "chip_reward_value": "$100 credit"
+      }
+    },
+    "adv_ticker": {
+      "type": "advantage-ticker",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "text": "Built for long-term partnerships"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "text": "Exclusive member value"
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "text": "Earn rewards while you spend"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {}
+    },
+    "adv_benefits": {
+      "type": "advantage-benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "title": "Dedicated Account Manager",
+            "body": "A single point of contact who understands your needs and helps secure the best outcome.",
+            "highlight": false
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "title": "Exclusive Trade Pricing",
+            "body": "Unlock discounted, account-only pricing tailored to your business.",
+            "highlight": false
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "title": "Earn While You Spend",
+            "body": "Turn everyday eSafety Supplies orders into points and valuable rewards.",
+            "highlight": false
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "title": "Discounted Freight & Priority Dispatch",
+            "body": "Save on delivery costs and get your essential supplies dispatched sooner.",
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "eyebrow": "Member Benefits",
+        "title_line1": "Business rewards,",
+        "title_line2_prefix": "done",
+        "title_line2_accent": "better.",
+        "intro": "eSafety Advantage gives our most valued customers more support, sharper pricing and meaningful rewards with every eligible order."
+      }
+    },
+    "adv_rewards": {
+      "type": "advantage-rewards",
+      "blocks": {
+        "r1": {
+          "type": "option",
+          "settings": {
+            "badge": "1",
+            "title": "1 point per $1",
+            "sub": "Towards a prepaid gift card."
+          }
+        },
+        "r2": {
+          "type": "option",
+          "settings": {
+            "badge": "2",
+            "title": "2 points per $1",
+            "sub": "As credit on your next eSafety order."
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2"
+      ],
+      "settings": {
+        "eyebrow": "Rewards",
+        "title_line1": "Choose how your",
+        "title_line2_prefix": "loyalty",
+        "title_line2_accent": "pays off.",
+        "intro": "Every eligible dollar spent earns points. Select the reward that works best for your business."
+      }
+    },
+    "adv_referral": {
+      "type": "advantage-referral",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Make an introduction",
+            "body": "Share the details of a business that could benefit from eSafety Advantage."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "They successfully join",
+            "body": "Our team confirms their eligibility and helps set up their new account."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "You both benefit",
+            "body": "Once the referral qualifies, cash back is available to both businesses."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "eyebrow": "Referral Bonus",
+        "title_line1": "Good business",
+        "title_line2": "deserves to be",
+        "title_highlight": "shared.",
+        "body": "Introduce another business to eSafety Advantage. When they successfully join, both businesses can receive cash back. It’s our way of rewarding a valuable connection.",
+        "cta_label": "Refer a business",
+        "cta_link": "https://account.esafetysupplies.com.au/",
+        "badge_small": "Reward both sides",
+        "badge_big": "Cash Back",
+        "footnote": "Referral rewards are subject to eligibility and program terms."
+      }
+    },
+    "adv_faqs": {
+      "type": "advantage-faqs",
+      "blocks": {
+        "f1": {
+          "type": "faq",
+          "settings": {
+            "q": "Who can join eSafety Advantage?",
+            "a": "The program is available to eligible eSafety Supplies business customers. Submit your details and our team will confirm your account."
+          }
+        },
+        "f2": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I earn and redeem points?",
+            "a": "Every eligible dollar spent earns points. Redeem them as prepaid gift cards or as credit on your next eSafety order."
+          }
+        },
+        "f3": {
+          "type": "faq",
+          "settings": {
+            "q": "What rewards can I choose?",
+            "a": "Choose between prepaid gift cards or credit on your next eSafety Supplies order."
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "settings": {
+        "eyebrow": "Frequently Asked Questions",
+        "title": "Good to know.",
+        "contact_pre": "Need more help? Call",
+        "contact_phone": "1300 291 700",
+        "contact_mid": "or email",
+        "contact_email": "advantage@esafetysupplies.com.au"
+      }
+    },
+    "adv_terms": {
+      "type": "advantage-terms-cta",
+      "settings": {
+        "eyebrow": "Terms and Conditions",
+        "title_line1": "Learn all there is",
+        "title_line2": "to know",
+        "body": "Want to learn more about the eSafety Advantage loyalty program? The terms and conditions has everything you need to know.",
+        "cta_label": "Read the Ts & Cs now",
+        "cta_link": "/pages/esafety-advantage-terms"
+      }
+    },
+    "adv_footer": {
+      "type": "advantage-footer",
+      "blocks": {
+        "p1": {
+          "type": "link",
+          "settings": {
+            "column": "1",
+            "label": "Member benefits",
+            "link": "#benefits"
+          }
+        },
+        "p2": {
+          "type": "link",
+          "settings": {
+            "column": "1",
+            "label": "Rewards",
+            "link": "#rewards"
+          }
+        },
+        "p3": {
+          "type": "link",
+          "settings": {
+            "column": "1",
+            "label": "Referral bonus",
+            "link": "#referral"
+          }
+        },
+        "p4": {
+          "type": "link",
+          "settings": {
+            "column": "1",
+            "label": "How it works",
+            "link": "#benefits"
+          }
+        },
+        "s1": {
+          "type": "link",
+          "settings": {
+            "column": "2",
+            "label": "FAQs",
+            "link": "#faqs"
+          }
+        },
+        "s2": {
+          "type": "link",
+          "settings": {
+            "column": "2",
+            "label": "Register your interest",
+            "link": "https://esafetysupplies.applyeasy.com.au/Credit/introduction"
+          }
+        },
+        "s3": {
+          "type": "link",
+          "settings": {
+            "column": "2",
+            "label": "Shop eSafety Supplies",
+            "link": "/"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "cta_eyebrow": "Ready to get more from every order?",
+        "cta_title": "Make loyalty your advantage",
+        "cta_label": "Join eSafety Advantage",
+        "cta_link": "https://esafetysupplies.applyeasy.com.au/Credit/introduction",
+        "tagline": "Better pricing, meaningful rewards and dedicated support for the businesses that keep Australia moving.",
+        "col1_title": "Program",
+        "col2_title": "Support",
+        "col3_title": "Talk to our team",
+        "phone": "1300 291 700",
+        "email": "advantage@esafetysupplies.com.au",
+        "address": "396 Victoria St, Wetherill Park NSW 2164",
+        "copyright": "© 2026 eSafety Supplies. All rights reserved",
+        "disclaimer": "eSafety Advantage rewards are subject to eligibility and program terms."
+      }
+    }
+  },
+  "order": [
+    "adv_header",
+    "adv_hero",
+    "adv_ticker",
+    "adv_benefits",
+    "adv_rewards",
+    "adv_referral",
+    "adv_faqs",
+    "adv_terms",
+    "adv_footer"
+  ]
+}

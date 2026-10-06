@@ -1,0 +1,101 @@
+{%- comment -%}
+  Renders all collections in a styled grid for /collections page.
+  Auto-iterates the `collections` global, paginated.
+{%- endcomment -%}
+
+<section class="container mx-auto px-4 py-8">
+  {% if section.settings.heading != blank %}
+    <h1 class="text-3xl md:text-4xl font-semibold mb-6 text-center">{{ section.settings.heading }}</h1>
+  {% endif %}
+
+  {% if section.settings.subheading != blank %}
+    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">{{ section.settings.subheading }}</p>
+  {% endif %}
+
+  {% paginate collections by section.settings.collections_per_page %}
+    {% if collections.size == 0 %}
+      <p class="text-center py-12 text-gray-600">No collections found.</p>
+    {% else %}
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        {% for coll in collections %}
+          <a
+            href="{{ coll.url }}"
+            class="group block border border-gray-200 rounded-md overflow-hidden bg-white hover:shadow-md transition-all"
+          >
+            <div class="aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
+              {% if coll.image %}
+                <img
+                  src="{{ coll.image | image_url: width: 600 }}"
+                  alt="{{ coll.title | escape }}"
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="600"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                >
+              {% elsif coll.products.first.featured_image %}
+                <img
+                  src="{{ coll.products.first.featured_image | image_url: width: 600 }}"
+                  alt="{{ coll.title | escape }}"
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="600"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                >
+              {% else %}
+                <span class="text-gray-300 text-sm">No image</span>
+              {% endif %}
+            </div>
+            <div class="p-3 md:p-4 text-center">
+              <p class="font-semibold text-sm md:text-base text-gray-900 group-hover:text-black mb-1">
+                {{ coll.title }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ coll.products_count }} {{ coll.products_count | pluralize: 'product', 'products' }}
+              </p>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <div class="mt-10">
+          {% render 'pagination', paginate: paginate, base_url: '/collections' %}
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endpaginate %}
+</section>
+
+{% schema %}
+{
+  "name": "All Collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Product Collections"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Browse our full range of safety product collections."
+    },
+    {
+      "type": "range",
+      "id": "collections_per_page",
+      "label": "Collections per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ],
+  "presets": [
+    { "name": "All Collections" }
+  ]
+}
+{% endschema %}

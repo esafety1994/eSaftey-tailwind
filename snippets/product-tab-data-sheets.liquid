@@ -10,30 +10,62 @@
     align-items: center;
   }
 </style>
+
 <div class="datasheet-section py-4">
-  {% if product.tags contains 'Modular Handrails' %}
-    <ol class="list-none p-0 m-0">
-      <li>
-        <a
-          class="datasheet-link"
-          href="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Cope_Modolar_Brochure_eSafetySupplies2025.pdf"
-          target="_blank"
-          >Download Brochure</a
-        >
-      </li>
+  {%- assign has_modular = false -%}
+  {%- if product.tags contains 'Modular Handrails' -%}
+    {%- assign has_modular = true -%}
+  {%- endif -%}
+
+  {%- assign metafield_raw = product.metafields.custom.product_tabs_product_data_sheet -%}
+  {%- assign has_metafield = false -%}
+  {%- if metafield_raw != blank -%}
+    {%- assign has_metafield = true -%}
+  {%- endif -%}
+
+  {%- if has_modular or has_metafield -%}
+    <ol class="flex flex-wrap gap-4 p-0 m-0 list-none">
+
+      {%- if has_modular -%}
+        <li>
+          <a
+            class="datasheet-link"
+            href="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Cope_Modular_Brochure_eSafetySupplies2025.pdf"
+            target="_blank"
+            rel="noopener"
+          >
+            Download Brochure
+          </a>
+        </li>
+      {%- endif -%}
+
+      {%- if has_metafield -%}
+        {%- assign pdf_links = metafield_raw | split: '|' -%}
+        {%- for item in pdf_links -%}
+          {%- assign clean_item = item | strip -%}
+          {%- if clean_item != blank -%}
+
+            {%- assign parts = clean_item | split: '~' -%}
+            {%- assign pdf_url = parts[0] | strip -%}
+
+            {%- if parts.size > 1 and parts[1] != blank -%}
+              {%- assign pdf_label = parts[1] | strip -%}
+            {%- else -%}
+              {%- assign pdf_label = 'View Data Sheet (PDF)' -%}
+            {%- endif -%}
+
+            <li>
+              <a class="datasheet-link" href="{{ pdf_url }}" target="_blank" rel="noopener">
+                {{ pdf_label }}
+              </a>
+            </li>
+
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
     </ol>
-  {% else %}
-    {% if product.metafields.custom.data_sheet %}
-      {% assign pdf_links = product.metafields.custom.data_sheet | split: '|' %}
-      <ol class="flex flex-wrap gap-4 p-0 m-0 list-none">
-        {% for pdf in pdf_links %}
-          <li>
-            <a class="datasheet-link" href="{{ pdf | strip }}" target="_blank">View Data Sheet (PDF)</a>
-          </li>
-        {% endfor %}
-      </ol>
-    {% else %}
-      <p class="text-sm text-gray-600">Data Sheet coming soon!</p>
-    {% endif %}
-  {% endif %}
+  {%- else -%}
+    <p class="text-sm text-gray-600">Data Sheet coming soon!</p>
+  {%- endif -%}
 </div>

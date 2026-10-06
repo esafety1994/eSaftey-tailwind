@@ -1,135 +1,137 @@
-<div class="container mx-auto px-4 py-8">
-  {% assign first = section.settings.first_column_width | default: 50 %}
+<div class="container mx-auto px-4 py-6" {{ section.shopify_attributes }}>
   {% assign gap = section.settings.gap | default: 16 %}
-  {% assign rem = 100 | minus: first %}
-  {% assign other = rem | divided_by: 2 %}
+  {% assign first = section.settings.first_column_width | default: 50 %}
 
-  <div class="flex flex-col md:flex-row items-stretch" style="gap: {{ gap }}px;">
-    <!-- First column -->
-    <div class="w-full md:flex-shrink-0" style="flex: 0 0 {{ first }}%;">
-      {% if section.settings.image_1 %}
-        {% if section.settings.collection_1 %}
-          <a
-            href="{{ section.settings.collection_1.url }}"
-            class="block w-full overflow-hidden relative h-[220px] md:h-full"
-            style="background-color: {{ section.settings.bg_color_img_1 }}"
-          >
-        {% else %}
-          <div
-            class="block w-full overflow-hidden relative h-[220px] md:h-full"
-            style="background-color: {{ section.settings.bg_color_img_1 }}"
-          >
-        {% endif %}
-        {% render 'responsive-image', image: section.settings.image_1, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain' %}
-        {% if section.settings.button_text_1 != blank %}
-          <span class="absolute  w-full text-center bottom-4">
-            <span class="inline-block btn primary-button transition">
-              {{ section.settings.button_text_1 }}
-            </span>
-          </span>
-        {% endif %}
-        {% if section.settings.collection_1 %}
-          </a>
-        {% else %}
-          </div>
-        {% endif %}
-      {% endif %}
-    </div>
+  <div class="gcl-grid" style="--gcl-gap: {{ gap }}px; --gcl-first: {{ first }}%;">
 
-    <!-- Second column (stacked top & bottom) -->
-    <div
-      class="w-full md:flex-shrink-0 flex flex-col"
-      style="flex: 0 0 {{ other }}%; gap: {{ gap }}px;"
-    >
-      {% if section.settings.image_2 %}
-        {% if section.settings.collection_2 %}
-          <a
-            href="{{ section.settings.collection_2.url }}"
-            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_2 }};"
-          >
-        {% else %}
-          <div
-            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_2 }};"
-          >
-        {% endif %}
-        {% render 'responsive-image', image: section.settings.image_2, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain' %}
-        {% if section.settings.button_text_2 != blank %}
-          <span class="absolute w-full text-center bottom-4">
-            <span class="inline-block btn primary-button transition">
-              {{ section.settings.button_text_2 }}
-            </span>
-          </span>
-        {% endif %}
-        {% if section.settings.collection_2 %}
-          </a>
-        {% else %}
-          </div>
-        {% endif %}
-      {% endif %}
+    {%- for i in (1..4) -%}
+      {%- assign img_key = 'image_' | append: i -%}
+      {%- assign col_key = 'collection_' | append: i -%}
+      {%- assign btn_key = 'button_text_' | append: i -%}
+      {%- assign bg_key = 'bg_color_img_' | append: i -%}
 
-      {% if section.settings.image_3 %}
-        {% if section.settings.collection_3 %}
-          <a
-            href="{{ section.settings.collection_3.url }}"
-            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_3 }};"
-          >
-        {% else %}
-          <div
-            class="block overflow-hidden relative h-[220px] md:flex-1 md:h-auto"
-            style="background-color: {{ section.settings.bg_color_img_3 }};"
-          >
-        {% endif %}
-        {% render 'responsive-image', image: section.settings.image_3, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain' %}
-        {% if section.settings.button_text_3 != blank %}
-          <span class="absolute  w-full text-center bottom-4">
-            <span class="inline-block btn primary-button transition">
-              {{ section.settings.button_text_3 }}
-            </span>
-          </span>
-        {% endif %}
-        {% if section.settings.collection_3 %}
-          </a>
-        {% else %}
-          </div>
-        {% endif %}
-      {% endif %}
-    </div>
+      {%- assign img = section.settings[img_key] -%}
+      {%- assign col = section.settings[col_key] -%}
+      {%- assign btn_text = section.settings[btn_key] -%}
+      {%- assign bg_color = section.settings[bg_key] -%}
 
-    <!-- Third column -->
-    <div class="w-full md:flex-shrink-0" style="flex: 0 0 {{ other }}%;">
-      {% if section.settings.image_4 %}
-        {% if section.settings.collection_4 %}
-          <a
-            href="{{ section.settings.collection_4.url }}"
-            class="block w-full overflow-hidden relative h-[220px] sm:h-[420px] md:h-full"
-            style="background-color: {{ section.settings.bg_color_img_4 }};"
-          >
-        {% else %}
-          <div
-            class="block w-full overflow-hidden relative h-[220px] sm:h-[420px] md:h-full"
-            style="background-color: {{ section.settings.bg_color_img_4 }};"
-          >
-        {% endif %}
-        {% render 'responsive-image', image: section.settings.image_4, wrapper_class: 'flex items-center justify-center w-full h-full', image_class: 'max-w-full max-h-full object-center object-contain',max_width:80 %}
-        {% if section.settings.button_text_4 != blank %}
-          <span class="absolute  w-full text-center bottom-4">
-            <span class="inline-block btn primary-button transition">
-              {{ section.settings.button_text_4 }}
-            </span>
-          </span>
-        {% endif %}
-        {% if section.settings.collection_4 %}
-          </a>
-        {% else %}
-          </div>
-        {% endif %}
-      {% endif %}
-    </div>
+      {%- if img -%}
+        {%- assign item_class = 'gcl-item gcl-item--' | append: i -%}
+        {%- if btn_text == blank -%}{%- assign item_class = item_class | append: ' no-btn' -%}{%- endif -%}
+
+        {%- if col -%}
+          <a href="{{ col.url }}" class="{{ item_class }}" style="background-color: {{ bg_color }}">
+        {%- else -%}
+          <div class="{{ item_class }}" style="background-color: {{ bg_color }}">
+        {%- endif -%}
+          {% render 'responsive-image', image: img, wrapper_class: 'gcl-img-wrap', image_class: 'gcl-img' %}
+          {%- if btn_text != blank -%}
+            <span class="gcl-btn-wrap"><span class="btn primary-button">{{ btn_text }}</span></span>
+          {%- endif -%}
+        {%- if col -%}</a>{%- else -%}</div>{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
   </div>
 </div>
+
+<style>
+  /* === Mobile: uniform 2×2 square grid === */
+  .gcl-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+  }
+  .gcl-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    aspect-ratio: 1 / 1;               /* all tiles are square on mobile */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  /* === Desktop: magazine layout === */
+  @media (min-width: 768px) {
+    .gcl-grid {
+      grid-template-columns: var(--gcl-first, 50%) 1fr 1fr;
+      grid-template-rows: 210px 210px;
+      grid-template-areas:
+        "one two four"
+        "one three four";
+    }
+    .gcl-item { aspect-ratio: auto; }
+    .gcl-item--1 { grid-area: one; }
+    .gcl-item--2 { grid-area: two; }
+    .gcl-item--3 { grid-area: three; }
+    .gcl-item--4 { grid-area: four; }
+  }
+  @media (min-width: 1024px) {
+    .gcl-grid { grid-template-rows: 215px 215px; }
+  }
+
+  /* === Image wrapper: reserves top area, leaves fixed strip at bottom for label === */
+  .gcl-img-wrap {
+    position: absolute;
+    inset: 0;
+    bottom: 44px;                       /* reserve consistent space for label pill */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+  }
+  .gcl-item.no-btn .gcl-img-wrap { bottom: 12px; }
+
+  .gcl-img {
+    max-width: 100% !important;         /* fill wrapper — padding controls breathing room */
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;     /* preserves original aspect ratio */
+    transition: transform 0.3s ease;
+  }
+  .gcl-item:hover .gcl-img { transform: scale(1.06); }
+
+  /* === Label pill: centered, compact, doesn't overflow === */
+  .gcl-btn-wrap {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .gcl-btn-wrap .btn {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 6px 12px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .gcl-img-wrap { bottom: 60px; padding: 14px; }
+    .gcl-item.no-btn .gcl-img-wrap { bottom: 14px; }
+    .gcl-btn-wrap { bottom: 16px; left: 16px; right: 16px; }
+    .gcl-btn-wrap .btn {
+      font-size: 13px !important;
+      padding: 9px 16px !important;
+      white-space: normal;
+    }
+  }
+</style>
 
 {% schema %}
 {
@@ -142,7 +144,7 @@
     {
       "type": "range",
       "id": "first_column_width",
-      "label": "First column width",
+      "label": "First column width (desktop)",
       "min": 30,
       "max": 70,
       "step": 5,
@@ -152,7 +154,7 @@
     {
       "type": "range",
       "id": "gap",
-      "label": "Gap between images",
+      "label": "Gap between panels",
       "min": 0,
       "max": 40,
       "step": 4,
@@ -161,7 +163,7 @@
     },
     {
       "type": "header",
-      "content": "First column"
+      "content": "Panel 1"
     },
     {
       "type": "color",
@@ -177,7 +179,7 @@
     {
       "type": "text",
       "id": "button_text_1",
-      "label": "Button text (first column)"
+      "label": "Button label"
     },
     {
       "type": "collection",
@@ -186,7 +188,7 @@
     },
     {
       "type": "header",
-      "content": "Second column top"
+      "content": "Panel 2"
     },
     {
       "type": "color",
@@ -202,7 +204,7 @@
     {
       "type": "text",
       "id": "button_text_2",
-      "label": "Button text (second column top)"
+      "label": "Button label"
     },
     {
       "type": "collection",
@@ -211,9 +213,8 @@
     },
     {
       "type": "header",
-      "content": "Second column bottom"
+      "content": "Panel 3"
     },
-
     {
       "type": "color",
       "id": "bg_color_img_3",
@@ -228,7 +229,7 @@
     {
       "type": "text",
       "id": "button_text_3",
-      "label": "Button text (second column bottom)"
+      "label": "Button label"
     },
     {
       "type": "collection",
@@ -237,9 +238,8 @@
     },
     {
       "type": "header",
-      "content": "Third column"
+      "content": "Panel 4"
     },
-
     {
       "type": "color",
       "id": "bg_color_img_4",
@@ -254,7 +254,7 @@
     {
       "type": "text",
       "id": "button_text_4",
-      "label": "Button text (third column)"
+      "label": "Button label"
     },
     {
       "type": "collection",

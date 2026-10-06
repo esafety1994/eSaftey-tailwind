@@ -19,16 +19,16 @@
           <div class="w-full">
             <!-- header -->
             <div class="hidden md:grid grid-cols-4 gap-4 text-left border-b border-grey py-2">
-              <div class="font-medium text-base uppercase">Product</div>
-              <div class="font-medium text-base uppercase">Price</div>
-              <div class="font-medium text-base uppercase">Quantity</div>
-              <div class="font-medium text-base uppercase">Total</div>
+              <div class="font-medium text-base uppercase text-center">Product</div>
+              <div class="font-medium text-base uppercase text-center">Price</div>
+              <div class="font-medium text-base uppercase text-center">Quantity</div>
+              <div class="font-medium text-base uppercase text-center">Total</div>
             </div>
 
             <div class="divide-y">
               {% comment %} Render parent items (non-addon) as rows using divs {% endcomment %}
               {% for item in cart.items %}
-                {% unless item.properties.is_addon == 'true' %}
+                {% unless item.properties._is_addon == 'true' %}
                   {% render 'cart-line-item', item: item, index: forloop.index %}
                 {% endunless %}
               {% endfor %}
@@ -127,8 +127,8 @@
             </div>
             <div class="flex text-sm text-gray-600">{{ 'cart.general.taxes_included_shipping_at_checkout' | t }}</div>
           </div>
-          <a id="cart-checkout-btn" href="/checkout" class="block w-full text-center bg-black text-white py-3 rounded"
-            >Checkout</a
+          <a id="cart-checkout-btn" href="/checkout" class="btn primary-checkout-button"
+            >{%render 'icon-svg-lock-keyhole' %}Secure Checkout</a
           >
           {% if settings.cart_trust_badge %}
             <div class="my-4 flex justify-center w-4/5 m-auto">

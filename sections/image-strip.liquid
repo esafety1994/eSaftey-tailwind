@@ -17,7 +17,7 @@
           {% if img != blank %}
             <img
               src="{{ img | img_url: '350x' }}"
-              alt="{{ block.settings.title | escape }}"
+              alt="{{ img.alt | escape }}"
               class="w-full h-full object-cover"
               style="height:var(--img-height);"
               loading="lazy"

@@ -3,67 +3,146 @@
   Two-column product page: left (info), right (image carousel with Glide.js)
 {% endcomment %}
 
-<div class="container mx-auto px-4 py-8 max-w-7xl">
-  <div class="product-container grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+
+<div class="container mx-auto md:px-4 pt-8 max-w-7xl" data-has-custom-variant="{% if product.tags contains 'requires-custom-variant' %}true{% else %}false{% endif %}">
+  <div class="product-container grid grid-cols-1 md:grid-cols-2 md:gap-8 items-start">
     <div>
       {% render 'product-media-gallery' %}
-      {% render 'product-quotify-button', product: product %}
-      {% render 'product-faq-preview', product: product %}
-
+      <div class="px-4 md:px-0">
+        <script
+          src="https://widget.shopassistant-ai.com/preguide_ai.js"
+          data-tenantid="tnt_VIostKRn5lTpaXD"
+          data-app-type="pdp"
+          defer
+        ></script>
+        <div class="mt-6 border-t border-grey hidden md:block">
+          {% render 'product-faq-preview', product: product %}
+        </div>
+      </div>
     </div>
     <!-- Product Info (Right) -->
-    <div>
-      <h1 class="text-3xl font-semibold mb-4">{{ product.title }}</h1>
+    <div class="px-4 md:px-0 pt-2 md:pt-0">
+      <h1 class="pdp-mobile-title md:text-3xl md:font-semibold mb-2 md:mb-4">{{ product.title }}</h1>
       {% render 'product-tags', product: product %}
-      {% render 'product-review', product: product %}
+      <div class="flex items-center gap-2 flex-wrap">
+        {% render 'product-review', product: product, layout:"PDP" %}
+        <span class="text-xs text-gray-400 hidden md:inline">|</span>
+        <span class="text-xs text-gray-500">Trusted by Aussie contractors</span>
+      </div>
       {% assign current_variant = product.selected_or_first_available_variant %}
-      <div class="flex gap-4 items-center">
-        <div id="product-sku">
-        {% assign current_variant = product.selected_or_first_available_variant %}
-        {% if current_variant and current_variant.sku %}
-          <div class="text-sm text-gray-600 my-4">
-            SKU: <span class="sku-value">{{ current_variant.sku }}</span>
+      <div class="pdp-buy-header mb-4">
+        <div class="pdp-sku-slot">
+          <div id="product-sku">
+            {% if current_variant and current_variant.sku %}
+              <div class="text-sm text-gray-600">
+                SKU: <span class="sku-value">{{ current_variant.sku }}</span>
+              </div>
+            {% endif %}
           </div>
-        {% endif %}
+        </div>
+        <div class="pdp-stock-slot">
+          {% render 'product-stock-badge', product: product %}
+        </div>
+        <div class="pdp-price-slot">
+          <div id="product-price" class="text-xl font-semibold">
+            {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
+          </div>
+        </div>
       </div>
-      {% render 'product-stock-badge', product: product %}
-      </div>
-      <div id="product-price" class="mb-4 text-xl font-semibold">
-        {% render 'product-price', product: product, show_compare_price: true, price_size: 20, show_ex_gst: true %}
-      </div>
-      <spark-pdp parent-id="{{ product.id }}"></spark-pdp>
 
-      <div class="my-6 border-gray-300 border-y-1 py-6">
+      <div class="my-6 border-gray-300 border-y-1 py-6 hidden md:block">
         {% render 'product-features', product: product %}
       </div>
 
       {% render 'variant_picker' %}
-      {%- comment -%}
-        Optional fixing/add-on UI. Use product metafields in namespace `fixing`.
-        Supported metafields (product-level):
-        - `fixing.variant_ids` (comma-separated variant IDs)
-        - `fixing.labels` (comma-separated labels)
-        - `fixing.prices` (comma-separated display prices)
-        OR
-        - `fixing.products` (product reference(s) selected in admin)
-        The UI is rendered by the `snippets/product-fixing.liquid` snippet.
-      {%- endcomment -%}
+
       {% render 'product-fixing', product: product %}
       {% assign custom_block = section.blocks | where: 'type', 'custom_field' | first %}
-      {% if product.template_suffix == 'product-with-custom-field' and custom_block %}
-        {% render 'product-custom-field', block: custom_block, product: product %}
+      {% assign product_form_id = 'product-form-' | append: product.id %}
+      {% comment %} {% if product.template_suffix == 'product-with-custom-field' and custom_block %} {% endcomment %}
+      {% if custom_block %}
+        {% render 'product-custom-field', block: custom_block, product: product, product_form_id: product_form_id %}
       {% endif %}
+
+      {% render 'bulk-discount', product: product %}
       {% render 'backorder-text', product: product %}
-      {% render 'act-button', product: product, showPlus:true %}
+      {% render 'act-button', product: product, showPlus: true %}
+
       {% render 'product-below-act-button', product: product %}
-      
+
+      <script>
+        window.productVariants = {{ product.variants | json }};
+      </script>
     </div>
   </div>
 </div>
 
 {% comment %} Sticky product cart (fixed under header) {% endcomment %}
 {% render 'sticky-product-cart', product: product %}
-{% render 'shipping-calculator', product: product %}
+{% comment %} {% render 'no-reviews-enhancer' %} — snippet missing, commented out to suppress Liquid error {% endcomment %}
+
+{% render 'product-json-ld', product: product %}
+
+{% assign faq = product.metafields.custom.rich_text %}
+
+{% if faq and faq != blank %}
+
+  {% capture faq_html %}
+    {{ faq | metafield_tag }}
+  {% endcapture %}
+
+  {% assign parts = faq_html | split: '<p>' %}
+  {% assign has_faq = false %}
+
+  {% capture faq_items %}
+    {% assign first = true %}
+
+    {% for part in parts %}
+
+      {% if part contains '<strong>' %}
+
+        {% assign question = part
+          | split: '<strong>'
+          | last
+          | split: '</strong>'
+          | first
+          | strip
+        %}
+
+        {% assign next_index = forloop.index %}
+        {% assign answer_part = parts[next_index] | strip %}
+
+        {% assign answer = answer_part
+          | remove: '</p>'
+          | strip_html
+          | strip
+        %}
+
+        {% if question != blank and answer != blank %}
+          {% assign has_faq = true %}
+
+          {% unless first %},{% endunless %}
+          {
+            "@type": "Question",
+            "name": {{ question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ answer | json }}
+            }
+          }
+          {% assign first = false %}
+        {% endif %}
+
+      {% endif %}
+
+    {% endfor %}
+  {% endcapture %}
+
+  {% if has_faq %}
+    {% render 'product-faq-ld', faq_items: faq_items %}
+  {% endif %}
+
+{% endif %}
 {% schema %}
 {
   "name": "Main Product",
@@ -129,6 +208,14 @@
             {
               "label": "Select",
               "value": "select"
+            },
+            {
+              "label": "File upload",
+              "value": "file"
+            },
+            {
+              "label": "Cut-to-length calculator (price per metre)",
+              "value": "cuts_calculator"
             }
           ]
         },
@@ -144,11 +231,17 @@
           "id": "field_placeholder"
         },
         {
+          "type": "text",
+          "label": "Helper note",
+          "id": "field_help_text",
+          "info": "Optional. Shown in small grey text below the field to clarify what the customer should enter."
+        },
+        {
           "type": "checkbox",
           "label": "Required",
           "id": "field_required",
           "default": false,
-          "info": "If you use “Required” with a checkbox, then the checkbox will need to be checked for the customer to add the item to the cart."
+          "info": "If you use \"Required\" with a checkbox, then the checkbox will need to be checked for the customer to add the item to the cart."
         },
         {
           "type": "checkbox",
@@ -163,3 +256,64 @@
   "presets": [{ "name": "Main product", "category": "Products" }]
 }
 {% endschema %}
+
+{% comment %} Custom variant / custom field logic {% endcomment %}
+<script>
+  window.productVariants = {{ product.variants | json }};
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const customField = document.querySelector('[data-custom-field]');
+    if (!customField) return;
+
+    const container = document.querySelector('[data-has-custom-variant]');
+    const hasVariantGate = container?.dataset.hasCustomVariant === 'true';
+
+    const inputs = customField.querySelectorAll('input, textarea, select');
+
+    // Products WITHOUT custom variant → always show
+    if (!hasVariantGate) {
+      customField.style.display = '';
+      inputs.forEach(el => {
+        el.disabled = false;
+      });
+      return;
+    }
+
+    function toggleCustomFieldByVariantId() {
+      const variantIdInput = document.querySelector('input[name="id"]');
+      if (!variantIdInput || !window.productVariants) return;
+
+      const variantId = Number(variantIdInput.value);
+      const variant = window.productVariants.find(v => v.id === variantId);
+
+      if (!variant) return;
+
+      const isCustom = variant.title.toLowerCase().includes('custom');
+
+      if (isCustom) {
+        customField.style.display = '';
+        inputs.forEach(el => {
+          el.disabled = false;
+          el.required = true;
+        });
+      } else {
+        customField.style.display = 'none';
+        inputs.forEach(el => {
+          el.disabled = true;
+          el.required = false;
+          el.value = '';
+        });
+      }
+    }
+
+    // Run on load
+    toggleCustomFieldByVariantId();
+
+    // Watch variant changes (hidden input updates)
+    document.addEventListener('change', event => {
+      if (event.target.name === 'id') {
+        toggleCustomFieldByVariantId();
+      }
+    });
+  });
+</script>
