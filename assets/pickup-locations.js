@@ -6,15 +6,22 @@
   if (!config.token || !config.productHandle) return;
 
   // Shopify location name → warehouse code used in the HTML markup.
-  // "Click & Collect" and "Sydney Warehouse" both resolve to W1 during the
-  // Shopify admin location rename (Odoo task "Change Click & Collect to
-  // Sydney Warehouse", Satbar 2026-09-25). Once rename is fully deployed
-  // the "Click & Collect" key can be removed.
+  // Each location has gone through two renames so historical names are kept
+  // as fallbacks until the admin rename is fully live on prod:
+  //   1. "Click & Collect"      → "Sydney Warehouse" (Satbar 2026-09-25)
+  //   2. "Sydney Warehouse"     → "Sydney"           (Karan 2026-10-06)
+  //   3. "Queensland Warehouse" → "Brisbane"         (Karan 2026-10-06)
+  //   4. "Victoria Warehouse"   → "Melbourne"        (Karan 2026-10-06)
+  // Once prod is renamed, the "...Warehouse" and "Click & Collect" keys can
+  // be removed.
   var LOCATION_TO_CODE = {
     'Click & Collect': 'W1',
     'Sydney Warehouse': 'W1',
+    'Sydney': 'W1',
     'Queensland Warehouse': 'QW',
-    'Victoria Warehouse': 'VW'
+    'Brisbane': 'QW',
+    'Victoria Warehouse': 'VW',
+    'Melbourne': 'VW'
   };
 
   var stateCountEl = document.querySelector('[data-cc-state-count]');
