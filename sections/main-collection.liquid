@@ -128,7 +128,7 @@
           <div class="grid sm:grid-cols-2 {{ col_class }} gap-6">
             {% for p in collection.products %}
               <div class="w-full">
-                {% render 'product-card', product: p, max_tags: 2, enable_preload: forloop.index <= 3 %}
+                {% render 'product-card', product: p, max_tags: 2, enable_preload: forloop.index %}
               </div>
             {% endfor %}
           </div>
@@ -223,4 +223,15 @@
     }
   ]
 }
-</script>
+</script>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'product-card', product: p, max_tags: 2, enable_preload: forloop.index
+    <= 3 %}"
+  to: "{% render 'product-card', product: p, max_tags: 2, enable_preload: forloop.index
+    %}"
+  position: 7943..8026
+{%- endcomment -%}
