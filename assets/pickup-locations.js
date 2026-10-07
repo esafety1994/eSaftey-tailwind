@@ -121,15 +121,20 @@
       if (isSydney) {
         if (countEl) countEl.textContent = '';
         if (stockEl) {
-          if (qty > 0) {
+          // Suppress the status pill when it would be "Out of Stock" —
+          // that conflicts visually with the "Available" primary badge.
+          // Karan's call on the 2026-10-07 standup: "Yes, that would be
+          // conflicting... just don't show out of stock then, just say
+          // available." Still show the pill for any other status
+          // (1-2 Days, Back Order, 3-5 Days etc.).
+          var hideStatusPill = !stockStatus || stockStatus.toLowerCase() === 'out of stock';
+          if (qty > 0 || hideStatusPill) {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
           } else {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>' +
-              (stockStatus
-                ? '<span class="pdp-cc-loc-badge pdp-cc-badge-status">' + stockStatus + '</span>'
-                : '');
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-status">' + stockStatus + '</span>';
           }
         }
         row.dataset.stockState = 'available';
