@@ -121,20 +121,25 @@
       if (isSydney) {
         if (countEl) countEl.textContent = '';
         if (stockEl) {
-          // Suppress the status pill when it would be "Out of Stock" —
-          // that conflicts visually with the "Available" primary badge.
-          // Karan's call on the 2026-10-07 standup: "Yes, that would be
-          // conflicting... just don't show out of stock then, just say
-          // available." Still show the pill for any other status
-          // (1-2 Days, Back Order, 3-5 Days etc.).
-          var hideStatusPill = !stockStatus || stockStatus.toLowerCase() === 'out of stock';
-          if (qty > 0 || hideStatusPill) {
+          // Sydney badge rules (Karan 2026-10-07 standup, confirmed 2026-10-08):
+          //   qty > 0  → single "Available" pill
+          //              (Sydney has stock, no delivery-time pill needed)
+          //   qty <= 0 → "Available" + status pill from the Stock Status
+          //              metafield (so the shopper sees "1-2 Days",
+          //              "Back Order", etc. because we're backordering)
+          //              EXCEPT when the metafield is empty or literally
+          //              "Out of Stock" — then skip the pill because it
+          //              conflicts with the primary "Available" badge.
+          if (qty > 0) {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
-          } else {
+          } else if (stockStatus && stockStatus.toLowerCase() !== 'out of stock') {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>' +
               '<span class="pdp-cc-loc-badge pdp-cc-badge-status">' + stockStatus + '</span>';
+          } else {
+            stockEl.innerHTML =
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
           }
         }
         row.dataset.stockState = 'available';
