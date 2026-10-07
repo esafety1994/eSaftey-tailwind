@@ -105,36 +105,53 @@
       // available/unavailable flag.
       row.dataset.stockQuantity = String(qty);
 
-      // Sydney HQ bypass — badge shows the variant's Stock Status metafield
-      // verbatim (e.g. "1-2 Days", "In Stock", "Out of Stock"), so it
-      // matches the stock badge at the top-right of the PDP. Satbar's rule
-      // (Odoo 30179, 2026-09-29): "for sydney warehouse stock status of
-      // warehouse must be same as products stock status. If product has
-      // 1-2 Days as stock status; the Sydney warehouse should show 1-2
-      // Days too." Any status other than "Out of Stock" (and non-empty)
-      // styles as available; Out of Stock / empty styles as unavailable.
+      // Sydney HQ — always shows "Available" (HQ can fulfil via backorder).
+      // When Sydney stock is 0 or negative (oversold), ALSO show the
+      // variant's Stock Status metafield as a secondary status pill so the
+      // customer sees the real delivery timing (e.g. "1-2 Days", "Back
+      // Order"). Satbar's original rule (Odoo 30179, 2026-09-29) was to
+      // mirror the metafield as the sole badge; Karan 2026-10-08 split it
+      // so the primary badge is always "Available" and the status pill only
+      // appears when stock is low/oversold.
+      // For QLD/VIC we still use the simple Storefront-API-driven qty check.
       var isSydney = (code === 'W1');
       var stockStatus = (config.stockStatus || '').trim();
-      var sydneyAvailable = stockStatus !== '' && stockStatus.toLowerCase() !== 'out of stock';
-      var showAvailable = isSydney
-        ? sydneyAvailable
-        : (entry && qty > 0);
+      var stockEl = row.querySelector('.pdp-cc-loc-stock');
 
-      if (showAvailable) {
-        if (countEl) countEl.textContent = isSydney ? '' : qty;
-        if (badgeEl) {
-          badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-available';
-          badgeEl.textContent = isSydney ? stockStatus : 'Available';
+      if (isSydney) {
+        if (countEl) countEl.textContent = '';
+        if (stockEl) {
+          if (qty > 0) {
+            stockEl.innerHTML =
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
+          } else {
+            stockEl.innerHTML =
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>' +
+              (stockStatus
+                ? '<span class="pdp-cc-loc-badge pdp-cc-badge-status">' + stockStatus + '</span>'
+                : '');
+          }
         }
         row.dataset.stockState = 'available';
         stockedStateCount++;
       } else {
-        if (countEl) countEl.textContent = '';
-        if (badgeEl) {
-          badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-unavailable';
-          badgeEl.textContent = isSydney && stockStatus ? stockStatus : 'Not available';
+        var showAvailable = entry && qty > 0;
+        if (showAvailable) {
+          if (countEl) countEl.textContent = qty;
+          if (badgeEl) {
+            badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-available';
+            badgeEl.textContent = 'Available';
+          }
+          row.dataset.stockState = 'available';
+          stockedStateCount++;
+        } else {
+          if (countEl) countEl.textContent = '';
+          if (badgeEl) {
+            badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-unavailable';
+            badgeEl.textContent = 'Not available';
+          }
+          row.dataset.stockState = 'unavailable';
         }
-        row.dataset.stockState = 'unavailable';
       }
     });
 

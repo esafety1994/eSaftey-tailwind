@@ -544,6 +544,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 4px;
+    flex-wrap: wrap;
     min-width: 68px;
   }
   .pdp-cc-loc-badge {
@@ -566,6 +568,10 @@
   .pdp-cc-badge-unavailable {
     background: #f3f4f6;
     color: #6b7280;
+  }
+  .pdp-cc-badge-status {
+    background: #fef3c7;
+    color: #92400e;
   }
 
   /* When a location is not available, hide the "Ready same or next day" text */
@@ -659,12 +665,13 @@
 <script>
   window.pickupLocationsConfig = {
     shopDomain: {{ shop.permanent_domain | json }},
-    // PROD Storefront token (esafetysupplies.myshopify.com).
-    // From the "Storefront API" legacy custom app, created 5 Feb 2024.
-    // If you need to test against the DEV store (esafetysuppliesdev), swap
-    // in the DEV token from the checkout-routing Custom App:
-    //   ff94938c36bdbce10e11a53d1839d04a
-    token: 'f8e9e16040ed99ad8ea5e1bf3ab83e56',
+    // Auto-select Storefront token based on current shop so dev and prod
+    // both authenticate against their own API without manual swaps:
+    //   DEV  (esafetysuppliesdev.myshopify.com) — from checkout-routing Custom App
+    //   PROD (esafetysupplies.myshopify.com)    — from Storefront API legacy custom app, 5 Feb 2024
+    // Without this, PDP pickup rows for QLD/VIC silently fall back to
+    // "Not available" when loaded on the wrong store (token 401s on fetch).
+    token: {% if shop.permanent_domain contains 'esafetysuppliesdev' %}'ff94938c36bdbce10e11a53d1839d04a'{% else %}'f8e9e16040ed99ad8ea5e1bf3ab83e56'{% endif %},
     apiVersion: '2025-10',
     productHandle: {{ product.handle | json }},
     initialVariantId: {{ product.selected_or_first_available_variant.id | json }},
