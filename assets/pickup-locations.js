@@ -121,26 +121,15 @@
       if (isSydney) {
         if (countEl) countEl.textContent = '';
         if (stockEl) {
-          // Sydney badge rules (Karan 2026-10-07 standup, confirmed 2026-10-08):
-          //   qty > 0  → single "Available" pill
-          //              (Sydney has stock, no delivery-time pill needed)
-          //   qty <= 0 → "Available" + status pill from the Stock Status
-          //              metafield (so the shopper sees "1-2 Days",
-          //              "Back Order", etc. because we're backordering)
-          //              EXCEPT when the metafield is empty or literally
-          //              "Out of Stock" — then skip the pill because it
-          //              conflicts with the primary "Available" badge.
-          if (qty > 0) {
-            stockEl.innerHTML =
-              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
-          } else if (stockStatus && stockStatus.toLowerCase() !== 'out of stock') {
-            stockEl.innerHTML =
-              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>' +
-              '<span class="pdp-cc-loc-badge pdp-cc-badge-status">' + stockStatus + '</span>';
-          } else {
-            stockEl.innerHTML =
-              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
-          }
+          // Sydney HQ always shows a single "Available" pill
+          // (user 2026-10-08: "if product has stocks in sydney warehouse
+          // only available badge display"). Sydney either has on-hand stock
+          // or backorders from the HQ, so we never surface the stock-status
+          // metafield as a secondary pill here — that was adding noise even
+          // for products with on-hand stock whose metafield reads e.g.
+          // "9 Days".
+          stockEl.innerHTML =
+            '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
         }
         row.dataset.stockState = 'available';
         stockedStateCount++;
