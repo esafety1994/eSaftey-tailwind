@@ -1,0 +1,22 @@
+{%- liquid
+  assign class = class | default: 'size-10'
+  assign stroke_width = stroke_width | default: 1.5
+-%}
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="{{ stroke_width }}"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="{{ class }}"
+  aria-hidden="true"
+>
+  <circle cx="12" cy="12" r="9.25" />
+  <line x1="15.5" y1="8.5" x2="8.5" y2="15.5" />
+  <circle cx="9.25" cy="9.25" r="1.5" fill="currentColor" stroke="none" />
+  <circle cx="14.75" cy="14.75" r="1.5" fill="currentColor" stroke="none" />
+</svg>

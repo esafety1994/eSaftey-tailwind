@@ -12,6 +12,7 @@
   assign button_classes = button_classes | default: 'btn primary-cart-button'
   assign hide_qty = hide_qty | default: false
   assign button_small = button_small | default: false
+  assign layout = layout | default: 'base'
 %}
 {% if button_small %}
   {% assign small_classes = ' !p-2 !text-xs' %}
@@ -27,7 +28,7 @@
       Select an option
     </a>
   {% else %}
-    {% render 'act-button', product: product, mobile_hide_qty: mobile_hide_qty, hide_qty: hide_qty, button_classes:"quick-add-btn", button_small: button_small %}
+    {% render 'act-button', product: product, mobile_hide_qty: mobile_hide_qty, hide_qty: hide_qty, button_classes:"quick-add-btn", button_small: button_small, layout:layout %}
   {% endif %}
 {% else %}
   <button

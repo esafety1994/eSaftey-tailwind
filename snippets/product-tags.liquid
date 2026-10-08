@@ -53,7 +53,7 @@
     {% comment %} Best Sellers {% endcomment %}
     {% if product.tags contains 'Best Sellers' %}
       {% if display_limit == 0 or tag_count < display_limit %}
-        <span class="bg-yellow-200 text-yellow-800">Best Sellers</span>
+        <span class="bg-yellow-200 text-yellow-800">Best Seller</span>
         {% assign tag_count = tag_count | plus: 1 %}
       {% endif %}
     {% endif %}
