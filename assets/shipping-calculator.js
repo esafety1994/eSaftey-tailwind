@@ -403,9 +403,37 @@ class ShippingCalculator extends HTMLElement {
         </svg>
       </div>`;
     } else if (ccInfo && ccInfo.status === 'unavailable') {
-      // Same base class + modifier so the theme can style differently if
-      // desired; falls back to the base .sc-cc-banner look otherwise.
-      ccBanner = `
+      // Two sub-cases (Karan 2026-10-07, Odoo 30183):
+      //   VIC/QLD short-stock → show how many units the local warehouse CAN
+      //     cover and offer a one-click "Collect N from <city> instead"
+      //     button that drops the qty to what the local 3PL can fulfil, so
+      //     the customer stays in the C&C flow instead of bouncing.
+      //   WA/SA/TAS/NT/ACT (no local warehouse) → keep the original generic
+      //     "ships from Sydney" message — no availableQty to display.
+      if (ccInfo.cityLabel) {
+        const availableQty = Math.max(0, ccInfo.availableQty || 0);
+        const canCollectSome = availableQty > 0 && availableQty < quantity;
+        const localStockLine = availableQty > 0
+          ? `Our ${ccInfo.cityLabel} warehouse has ${availableQty} in stock.`
+          : `Our ${ccInfo.cityLabel} warehouse is out of stock.`;
+        const collectBtn = canCollectSome
+          ? `<button type="button" class="sc-cc-collect-btn" data-collect-qty="${availableQty}">Collect ${availableQty} from ${ccInfo.cityLabel} instead</button>`
+          : '';
+        ccBanner = `
+      <div class="sc-cc-banner sc-cc-banner--unavailable">
+        <div class="sc-cc-icon-wrap">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#92400e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="sc-cc-content">
+          <strong class="sc-cc-title">Click &amp; Collect unavailable for ${quantity} units</strong>
+          <p class="sc-cc-desc">${localStockLine} We'll send all ${quantity} by courier, arriving ${etaDates}.</p>
+          ${collectBtn}
+        </div>
+      </div>`;
+      } else {
+        ccBanner = `
       <div class="sc-cc-banner sc-cc-banner--unavailable">
         <div class="sc-cc-icon-wrap">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
@@ -417,6 +445,7 @@ class ShippingCalculator extends HTMLElement {
           <p class="sc-cc-desc">Your cart contains stock from multiple warehouses, so your order will be sent by courier from our Sydney warehouse.</p>
         </div>
       </div>`;
+      }
     }
 
     const productImgHtml = productImage
@@ -586,8 +615,24 @@ class ShippingCalculator extends HTMLElement {
         if (closeBtn) closeBtn.click();
       });
     }
+    const collectBtn = this.resultsEl && this.resultsEl.querySelector('.sc-cc-collect-btn');
+    if (collectBtn) {
+      // Button click must not also trigger the banner-wide navigation handler
+      // below (which would send the shopper to /pages/click-collect instead of
+      // re-running the calculator with the reduced qty).
+      collectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newQty = parseInt(collectBtn.dataset.collectQty, 10);
+        if (!newQty || newQty < 1) return;
+        if (this.fieldQuantity) this.fieldQuantity.value = String(newQty);
+        this.handleCalculate();
+      });
+    }
     if (ccBanner) {
-      ccBanner.addEventListener('click', () => { window.location.href = '/pages/click-collect'; });
+      ccBanner.addEventListener('click', (e) => {
+        if (e.target.closest('.sc-cc-collect-btn')) return;
+        window.location.href = '/pages/click-collect';
+      });
     }
   }
 
