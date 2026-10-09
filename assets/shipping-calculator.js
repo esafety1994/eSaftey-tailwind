@@ -628,10 +628,19 @@ class ShippingCalculator extends HTMLElement {
         this.handleCalculate();
       });
     }
-    if (ccBanner) {
+    // Satbar 2026-10-09 (Odoo 30561):
+    //   Banner body / chevron arrow → add to cart + go to checkout
+    //   "View pickup details" link   → C&C info page (as before)
+    // Only applies to the "available" banner — the unavailable variant has
+    // its own "Collect N from <city> instead" action and shouldn't fire a
+    // checkout redirect on body clicks.
+    if (ccBanner && !ccBanner.classList.contains('sc-cc-banner--unavailable')) {
+      const pickupLink = ccBanner.querySelector('.sc-cc-link');
+      if (pickupLink) pickupLink.addEventListener('click', (e) => e.stopPropagation());
+
       ccBanner.addEventListener('click', (e) => {
-        if (e.target.closest('.sc-cc-collect-btn')) return;
-        window.location.href = '/pages/click-collect';
+        if (e.target.closest('.sc-cc-link')) return;
+        this._addToCartAndGo(variantId, quantity, '/checkout');
       });
     }
   }
