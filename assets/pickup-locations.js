@@ -92,11 +92,18 @@
       var code = row.dataset.location;
       var countEl = row.querySelector('[data-stock-count]');
       var badgeEl = row.querySelector('[data-stock-badge]');
-      var shopifyName = Object.keys(LOCATION_TO_CODE).find(function (name) {
+      // A single warehouse code (e.g. 'W1' for Sydney) maps to several
+      // possible Shopify location names because the location has been renamed
+      // historically. Match against ANY of them — using only the first key
+      // caused Sydney to resolve as "Click & Collect", which hasn't matched
+      // the admin location name since the 2026-09-25 rename and silently
+      // made qty = 0 (which then triggered the "oversold" status pill even
+      // when real stock was positive).
+      var namesForCode = Object.keys(LOCATION_TO_CODE).filter(function (name) {
         return LOCATION_TO_CODE[name] === code;
       });
       var entry = (availability || []).find(function (a) {
-        return a.location && a.location.name === shopifyName;
+        return a.location && namesForCode.indexOf(a.location.name) !== -1;
       });
 
       var qty = entry ? (entry.quantityAvailable || 0) : 0;
@@ -121,15 +128,24 @@
       if (isSydney) {
         if (countEl) countEl.textContent = '';
         if (stockEl) {
-          // Sydney HQ always shows a single "Available" pill
-          // (user 2026-10-08: "if product has stocks in sydney warehouse
-          // only available badge display"). Sydney either has on-hand stock
-          // or backorders from the HQ, so we never surface the stock-status
-          // metafield as a secondary pill here — that was adding noise even
-          // for products with on-hand stock whose metafield reads e.g.
-          // "9 Days".
-          stockEl.innerHTML =
-            '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
+          // Sydney badge rules (Satbar 2026-10-08, Odoo 30189):
+          //   qty > 0  → single "Available" pill
+          //   qty <= 0 → "Available" + the Stock Status metafield as a
+          //              secondary pill (shopper sees "1-2 Days", "Back
+          //              Order", "Out of Stock" etc. because we're
+          //              backordering from HQ). If the metafield is empty
+          //              we fall back to a single "Available" pill.
+          if (qty > 0) {
+            stockEl.innerHTML =
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
+          } else if (stockStatus) {
+            stockEl.innerHTML =
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>' +
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-status">' + stockStatus + '</span>';
+          } else {
+            stockEl.innerHTML =
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
+          }
         }
         row.dataset.stockState = 'available';
         stockedStateCount++;
