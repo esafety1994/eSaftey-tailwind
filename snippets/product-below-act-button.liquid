@@ -442,7 +442,7 @@
     display: flex;
     gap: 12px;
     padding: 14px;
-    align-items: center;
+    align-items: flex-start;
   }
   .pdp-cc-left {
     flex: 1;
@@ -597,10 +597,12 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: center;
     gap: 8px;
     flex-shrink: 0;
     width: 160px;
+    /* Push buttons down so the first one lines up with the top of the
+       Sydney row, not with the "Choose where to collect" heading above it. */
+    padding-top: 30px;
   }
   .pdp-cc-btn-primary {
     padding: 10px 8px;
