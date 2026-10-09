@@ -15,14 +15,14 @@
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/Install_Banner_1.webp",
+            "background": "shopify://shop_images/image_1061a4c0-850e-46a2-bba1-988dd56c937f.jpg",
             "mobile_background": "shopify://shop_images/Install_Banner_1.webp",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": "shopify://pages/new-installation-page"
+            "button_link": ""
           }
         },
         "slider_item_zMnACx": {
