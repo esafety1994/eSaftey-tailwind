@@ -298,7 +298,7 @@ if (!customElements.get("esafety-cart-action-button")) {
 
         // build a properties object suitable for Shopify cart properties
         pairs.forEach((p) => {
-          properties[p.label] = p.value || true;
+          if (p.value) properties[p.label] = p.value;
         });
       }
 
