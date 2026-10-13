@@ -1,0 +1,596 @@
+{%- liquid
+  assign hero_bg = section.settings.hero_bg
+  assign hero_title_pre = section.settings.hero_title_pre
+  assign hero_title_highlight1 = section.settings.hero_title_highlight1
+  assign hero_title_mid = section.settings.hero_title_mid
+  assign hero_title_highlight2 = section.settings.hero_title_highlight2
+  assign hero_title_post = section.settings.hero_title_post
+  assign hero_subtitle = section.settings.hero_subtitle
+  assign hero_fine = section.settings.hero_fine
+  assign hero_cta_text = section.settings.hero_cta_text
+  assign hero_cta_url = section.settings.hero_cta_url
+  assign retail_video_url = section.settings.retail_video_url
+  assign retail_video_poster = section.settings.retail_video_poster
+  assign howitworks_video_url = section.settings.howitworks_video_url
+  assign howitworks_video_poster = section.settings.howitworks_video_poster
+-%}
+
+<section class="cc-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}');"{% endif %}>
+  <div class="cc-hero__overlay"></div>
+  <div class="cc-hero__inner">
+    <h1 class="cc-hero__title">
+      <span class="cc-hero__highlight">{{ hero_title_pre }}</span>
+      <span class="cc-hero__white">{{ hero_title_mid }}</span>
+      <span class="cc-hero__highlight">{{ hero_title_highlight1 }}</span>
+      <span class="cc-hero__white">{{ hero_title_highlight2 }}</span>
+      <span class="cc-hero__white">{{ hero_title_post }}</span>
+    </h1>
+    {% if hero_subtitle != blank %}
+      <p class="cc-hero__subtitle">{{ hero_subtitle }}</p>
+    {% endif %}
+    {% if hero_fine != blank %}
+      <p class="cc-hero__fine">{{ hero_fine }}</p>
+    {% endif %}
+    {% if hero_cta_text != blank %}
+      <a href="{{ hero_cta_url | default: '/collections/all' }}" class="cc-hero__cta">{{ hero_cta_text }}</a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="cc-locations">
+  <div class="cc-container">
+    <h2 class="cc-section-title">{{ section.settings.locations_heading | default: 'Pickup Locations' }}</h2>
+    <div class="cc-locations__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'location' %}
+          {%- liquid
+            assign is_active = block.settings.is_active
+          -%}
+          <div class="cc-loc-card{% unless is_active %} cc-loc-card--inactive{% endunless %}" {{ block.shopify_attributes }}>
+            <h3 class="cc-loc-card__name">{{ block.settings.name }}</h3>
+            <div class="cc-loc-card__tags">
+              {% if block.settings.tag1 != blank %}
+                <span class="cc-tag cc-tag--{{ block.settings.tag1_color | default: 'blue' }}">{{ block.settings.tag1 }}</span>
+              {% endif %}
+              {% if block.settings.tag2 != blank %}
+                <span class="cc-tag cc-tag--{{ block.settings.tag2_color | default: 'yellow' }}">{{ block.settings.tag2 }}</span>
+              {% endif %}
+            </div>
+            <p class="cc-loc-card__address">{{ block.settings.address }}</p>
+            <ul class="cc-loc-card__details">
+              <li>
+                <span class="cc-loc-card__icon">{% render 'icon-svg-clock' %}</span>
+                <span>{{ block.settings.hours }}</span>
+              </li>
+              <li>
+                <span class="cc-loc-card__icon">{% render 'icon-svg-phone-call' %}</span>
+                <a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a>
+              </li>
+            </ul>
+            <div class="cc-loc-card__divider"></div>
+            {% if is_active and block.settings.directions_url != blank %}
+              <a href="{{ block.settings.directions_url }}" target="_blank" rel="noopener" class="cc-loc-card__btn">
+                {{ block.settings.btn_text | default: 'Get Direction' }}
+                <span class="cc-loc-card__btn-arrow">{% render 'icon-svg-arrow-right' %}</span>
+              </a>
+            {% else %}
+              <span class="cc-loc-card__btn cc-loc-card__btn--disabled">
+                {{ block.settings.btn_text | default: 'Get Direction' }}
+                <span class="cc-loc-card__btn-arrow">{% render 'icon-svg-arrow-right' %}</span>
+              </span>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% if section.settings.locations_note != blank %}
+      <p class="cc-locations__note">{{ section.settings.locations_note }}</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="cc-how">
+  <div class="cc-container">
+    <h2 class="cc-section-title">{{ section.settings.how_heading | default: 'How It Works' }}</h2>
+    <div class="cc-how__grid">
+      <div class="cc-how__steps">
+        {% for block in section.blocks %}
+          {% if block.type == 'step' %}
+            <div class="cc-step" {{ block.shopify_attributes }}>
+              <div class="cc-step__icon">
+                {% case block.settings.icon %}
+                  {% when 'cart' %}{% render 'icon-svg-shopping-cart' %}
+                  {% when 'package' %}{% render 'icon-svg-package' %}
+                  {% when 'mail' %}{% render 'icon-svg-mail' %}
+                  {% when 'shield' %}{% render 'icon-svg-shield-check' %}
+                  {% else %}{% render 'icon-svg-shopping-cart' %}
+                {% endcase %}
+              </div>
+              <div class="cc-step__number">{{ forloop.index }}</div>
+              <div class="cc-step__text">
+                <h3 class="cc-step__title">{{ block.settings.title }}</h3>
+                <p class="cc-step__desc">{{ block.settings.description }}</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="cc-how__video">
+        {% if howitworks_video_url != blank %}
+          <a href="{{ howitworks_video_url }}" target="_blank" rel="noopener" class="cc-video" {% if howitworks_video_poster %}style="background-image: url('{{ howitworks_video_poster | image_url: width: 1200 }}');"{% endif %}>
+            <span class="cc-video__play" aria-label="Play video"></span>
+          </a>
+        {% else %}
+          <div class="cc-video cc-video--placeholder">
+            <span class="cc-video__play" aria-label="Play video"></span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cc-retail">
+  <div class="cc-container cc-retail__inner">
+    <div class="cc-retail__video">
+      {% if retail_video_url != blank %}
+        <a href="{{ retail_video_url }}" target="_blank" rel="noopener" class="cc-video" {% if retail_video_poster %}style="background-image: url('{{ retail_video_poster | image_url: width: 1200 }}');"{% endif %}>
+          <span class="cc-video__play" aria-label="Play video"></span>
+        </a>
+      {% else %}
+        <div class="cc-video cc-video--placeholder">
+          <span class="cc-video__play" aria-label="Play video"></span>
+        </div>
+      {% endif %}
+    </div>
+    <div class="cc-retail__body">
+      {% if section.settings.retail_badge != blank %}
+        <span class="cc-retail__badge">{{ section.settings.retail_badge }}</span>
+      {% endif %}
+      <h2 class="cc-retail__title">{{ section.settings.retail_title | default: 'Take a look inside our Wetherill Park Retail Store' }}</h2>
+      <p class="cc-retail__desc">{{ section.settings.retail_desc }}</p>
+      <div class="cc-retail__tags">
+        {% if section.settings.retail_tag1 != blank %}
+          <span class="cc-pill">
+            <span class="cc-pill__icon">{% render 'icon-svg-marker' %}</span>
+            {{ section.settings.retail_tag1 }}
+          </span>
+        {% endif %}
+        {% if section.settings.retail_tag2 != blank %}
+          <span class="cc-pill">
+            <span class="cc-pill__icon">{% render 'icon-svg-store' %}</span>
+            {{ section.settings.retail_tag2 }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cc-faq">
+  <div class="cc-container cc-faq__inner">
+    <div class="cc-faq__head">
+      <h2 class="cc-faq__title">{{ section.settings.faq_title | default: 'COMMON QUESTIONS' }}</h2>
+      {% if section.settings.faq_help != blank %}
+        <p class="cc-faq__help">{{ section.settings.faq_help }}</p>
+      {% endif %}
+    </div>
+    <div class="cc-faq__list">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq' %}
+          <details class="cc-faq__item" {{ block.shopify_attributes }}>
+            <summary class="cc-faq__q">
+              <span>{{ block.settings.question }}</span>
+              <span class="cc-faq__caret" aria-hidden="true"></span>
+            </summary>
+            <div class="cc-faq__a">{{ block.settings.answer }}</div>
+          </details>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cc-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .cc-section-title {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700; font-size: 40px; line-height: 1.2;
+    text-align: center; text-transform: uppercase; color: #000;
+    margin: 0 0 32px;
+  }
+
+  /* Hero */
+  .cc-hero {
+    position: relative;
+    min-height: 400px;
+    background: #000 center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .cc-hero__overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,.1) 100%);
+  }
+  .cc-hero__inner {
+    position: relative; z-index: 1;
+    padding: 72px 24px;
+    max-width: 980px; margin: 0 auto;
+  }
+  .cc-hero__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 48px; line-height: .95;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px;
+    color: #fff;
+  }
+  .cc-hero__highlight { color: #FFDC06; }
+  .cc-hero__white { color: #fff; }
+  .cc-hero__subtitle {
+    color: #fff; font-weight: 400; font-size: 16px; line-height: 1.4;
+    margin: 0 0 12px;
+  }
+  .cc-hero__fine {
+    color: #fff; font-weight: 700; font-size: 16px; line-height: 1.4;
+    margin: 0 0 24px;
+  }
+  .cc-hero__cta {
+    display: inline-block;
+    background: #FDDC14; color: #1E1E1E;
+    font-weight: 700; font-size: 16px;
+    padding: 12px 28px; border-radius: 26px;
+    text-decoration: none;
+    transition: transform .2s ease;
+  }
+  .cc-hero__cta:hover { transform: scale(1.04); }
+
+  /* Pickup Locations */
+  .cc-locations { padding: 72px 0 48px; background: #fff; }
+  .cc-locations__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .cc-loc-card {
+    background: #F0F0F0;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex; flex-direction: column;
+    gap: 12px;
+  }
+  .cc-loc-card__name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 22px; line-height: 1.2;
+    color: #1E1E1E; margin: 0;
+  }
+  .cc-loc-card__tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cc-tag {
+    display: inline-block;
+    padding: 5px 10px; border-radius: 26px;
+    font-size: 11px; font-weight: 400; color: #1E1E1E;
+  }
+  .cc-tag--blue { background: #B3D7F5; }
+  .cc-tag--yellow { background: #FFE89E; }
+  .cc-tag--red { background: #FFC0B5; }
+  .cc-loc-card__address {
+    font-size: 16px; line-height: 1.2; color: #1E1E1E;
+    margin: 0;
+  }
+  .cc-loc-card__details {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .cc-loc-card__details li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 16px; color: #1E1E1E; line-height: 1.2;
+  }
+  .cc-loc-card__details a { color: #1E1E1E; text-decoration: none; }
+  .cc-loc-card__icon { display: inline-flex; width: 16px; height: 16px; }
+  .cc-loc-card__icon svg { width: 100%; height: 100%; }
+  .cc-loc-card__divider { height: 1px; background: #AFAFAF; margin: 4px 0; }
+  .cc-loc-card__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 24px; border-radius: 41px;
+    background: #FDDC14; color: #1E1E1E;
+    font-weight: 700; font-size: 16px; text-decoration: none;
+    transition: transform .2s ease;
+  }
+  .cc-loc-card__btn:hover { transform: scale(1.02); }
+  .cc-loc-card__btn-arrow { display: inline-flex; width: 14px; height: 14px; }
+  .cc-loc-card__btn-arrow svg { width: 100%; height: 100%; }
+  .cc-loc-card__btn--disabled { background: #DBDBDB; color: #9A9A9A; cursor: not-allowed; }
+  .cc-loc-card__btn--disabled .cc-loc-card__btn-arrow svg { color: #9A9A9A; }
+  .cc-locations__note {
+    text-align: center; margin: 32px auto 0;
+    max-width: 760px; color: #000; font-size: 16px; line-height: 1.4;
+  }
+
+  /* How It Works */
+  .cc-how { padding: 72px 0; background: #fff; border-top: 1px solid #AFAFAF; }
+  .cc-how__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .cc-how__steps { position: relative; display: flex; flex-direction: column; gap: 24px; }
+  .cc-how__steps::before {
+    content: ''; position: absolute;
+    left: 65px; top: 51px; bottom: 51px;
+    width: 3px; background: #1E1E1E;
+    border-radius: 2px;
+  }
+  .cc-step {
+    position: relative;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .cc-step__icon {
+    width: 102px; height: 102px; flex-shrink: 0;
+    background: #FDDC14; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .cc-step__icon svg { width: 48px; height: 48px; color: #1E1E1E; }
+  .cc-step__number {
+    position: absolute; z-index: 2;
+    left: 51px; transform: translateX(-50%);
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #1E1E1E; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; font-family: 'Poppins', sans-serif;
+  }
+  .cc-step__text { flex: 1; }
+  .cc-step__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 16px; line-height: 1.3; color: #000;
+    margin: 0 0 4px;
+  }
+  .cc-step__desc {
+    font-size: 15px; line-height: 1.3; color: #4a4a4a; margin: 0;
+  }
+
+  /* Video blocks shared */
+  .cc-video {
+    display: block; position: relative;
+    width: 100%; aspect-ratio: 1 / 1;
+    background: #AFAFAF center/cover no-repeat;
+    border: 5px solid #DBDBDB; border-radius: 20px;
+    text-decoration: none;
+  }
+  .cc-video__play {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 110px; height: 110px; border-radius: 50%;
+    border: 7px solid #fff;
+    display: block;
+  }
+  .cc-video__play::after {
+    content: ''; position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-40%, -50%);
+    width: 0; height: 0;
+    border-left: 28px solid #fff;
+    border-top: 18px solid transparent;
+    border-bottom: 18px solid transparent;
+  }
+
+  /* Retail Store section */
+  .cc-retail { padding: 72px 0; background: #fff; border-top: 1px solid #AFAFAF; }
+  .cc-retail__inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    max-width: 1100px;
+  }
+  .cc-retail__video .cc-video { aspect-ratio: 500 / 333; }
+  .cc-retail__badge {
+    display: inline-block;
+    background: #FDDC14; color: #1E1E1E;
+    font-weight: 700; font-size: 14px;
+    padding: 8px 18px; border-radius: 26px;
+    margin-bottom: 16px;
+  }
+  .cc-retail__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 32px; line-height: 1.2; color: #000;
+    margin: 0 0 12px;
+  }
+  .cc-retail__desc {
+    font-size: 15px; line-height: 1.4; color: #333; margin: 0 0 20px;
+  }
+  .cc-retail__tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cc-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #F2F2F2; color: #1E1E1E;
+    padding: 10px 18px; border-radius: 18px;
+    font-size: 15px;
+  }
+  .cc-pill__icon { display: inline-flex; width: 14px; height: 14px; }
+  .cc-pill__icon svg { width: 100%; height: 100%; }
+
+  /* FAQ */
+  .cc-faq { padding: 72px 0; background: #fff; border-top: 1px solid #AFAFAF; }
+  .cc-faq__inner {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 48px;
+    max-width: 1100px;
+  }
+  .cc-faq__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 40px; line-height: 1.1; color: #000;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+  }
+  .cc-faq__help {
+    font-size: 15px; color: #333; line-height: 1.5; margin: 0;
+  }
+  .cc-faq__list { display: flex; flex-direction: column; }
+  .cc-faq__item {
+    border-bottom: 1px solid #E5E5E5;
+    padding: 18px 0;
+  }
+  .cc-faq__q {
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; list-style: none;
+    font-weight: 500; font-size: 16px; color: #000;
+  }
+  .cc-faq__q::-webkit-details-marker { display: none; }
+  .cc-faq__caret {
+    width: 12px; height: 12px;
+    border-right: 2px solid #000; border-bottom: 2px solid #000;
+    transform: rotate(45deg);
+    transition: transform .2s ease;
+    flex-shrink: 0; margin-left: 16px;
+  }
+  .cc-faq__item[open] .cc-faq__caret { transform: rotate(-135deg); }
+  .cc-faq__a {
+    padding-top: 12px;
+    font-size: 15px; line-height: 1.5; color: #4a4a4a;
+  }
+
+  /* Tablet */
+  @media (max-width: 900px) {
+    .cc-section-title { font-size: 32px; }
+    .cc-hero__title { font-size: 36px; }
+    .cc-locations__grid { grid-template-columns: 1fr; max-width: 420px; }
+    .cc-how__grid, .cc-retail__inner, .cc-faq__inner { grid-template-columns: 1fr; gap: 32px; }
+    .cc-retail__video .cc-video { aspect-ratio: 16 / 10; }
+    .cc-video__play { width: 80px; height: 80px; border-width: 5px; }
+    .cc-video__play::after { border-left-width: 20px; border-top-width: 13px; border-bottom-width: 13px; }
+    .cc-faq__title { font-size: 32px; }
+    .cc-retail__title { font-size: 24px; }
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .cc-hero__inner { padding: 48px 20px; }
+    .cc-hero__title { font-size: 28px; }
+    .cc-section-title { font-size: 26px; }
+    .cc-step__icon { width: 72px; height: 72px; border-radius: 14px; }
+    .cc-step__icon svg { width: 34px; height: 34px; }
+    .cc-step__number { left: 36px; width: 24px; height: 24px; font-size: 14px; }
+    .cc-how__steps::before { left: 36px; top: 36px; bottom: 36px; }
+    .cc-step__title { font-size: 15px; }
+    .cc-step__desc { font-size: 13px; }
+    .cc-locations { padding: 48px 0 32px; }
+    .cc-how, .cc-retail, .cc-faq { padding: 48px 0; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Click & Collect V2",
+  "settings": [
+    { "type": "header", "content": "Hero Banner" },
+    { "type": "image_picker", "id": "hero_bg", "label": "Hero background image" },
+    { "type": "text", "id": "hero_title_pre", "label": "Hero title - part 1 (yellow)", "default": "Click & Collect," },
+    { "type": "text", "id": "hero_title_mid", "label": "Hero title - part 2 (white)", "default": "now in" },
+    { "type": "text", "id": "hero_title_highlight1", "label": "Hero title - highlight 1 (yellow)", "default": "QLD" },
+    { "type": "text", "id": "hero_title_highlight2", "label": "Hero title - part 3 (white 'and')", "default": "and" },
+    { "type": "text", "id": "hero_title_post", "label": "Hero title - part 4 (yellow)", "default": "VIC too" },
+    { "type": "text", "id": "hero_subtitle", "label": "Hero subtitle", "default": "Pick up from our Sydney warehouse, with selected products also available for pickup in QLD and VIC." },
+    { "type": "text", "id": "hero_fine", "label": "Hero fine print", "default": "Free pickup · Usually ready within 24 to 48 hours" },
+    { "type": "text", "id": "hero_cta_text", "label": "CTA button text", "default": "Shop Now" },
+    { "type": "url", "id": "hero_cta_url", "label": "CTA button link" },
+
+    { "type": "header", "content": "Pickup Locations" },
+    { "type": "text", "id": "locations_heading", "label": "Heading", "default": "Pickup Locations" },
+    { "type": "text", "id": "locations_note", "label": "Note under cards", "default": "Pickup details for QLD and VIC orders are sent after checkout in your order pickup email." },
+
+    { "type": "header", "content": "How It Works" },
+    { "type": "text", "id": "how_heading", "label": "Heading", "default": "How It Works" },
+    { "type": "url", "id": "howitworks_video_url", "label": "Video link (right side)" },
+    { "type": "image_picker", "id": "howitworks_video_poster", "label": "Video poster image" },
+
+    { "type": "header", "content": "Retail Store Video" },
+    { "type": "text", "id": "retail_badge", "label": "Badge text", "default": "New Retail Store" },
+    { "type": "text", "id": "retail_title", "label": "Title", "default": "Take a look inside our Wetherill Park Retail Store" },
+    { "type": "textarea", "id": "retail_desc", "label": "Description", "default": "Watch a quick walkthrough of our Sydney Head Office retail store. See what to expect when you visit." },
+    { "type": "text", "id": "retail_tag1", "label": "Pill 1", "default": "Wetherill Park, NSW" },
+    { "type": "text", "id": "retail_tag2", "label": "Pill 2", "default": "In-store pickup" },
+    { "type": "url", "id": "retail_video_url", "label": "Video link" },
+    { "type": "image_picker", "id": "retail_video_poster", "label": "Video poster image" },
+
+    { "type": "header", "content": "Common Questions" },
+    { "type": "text", "id": "faq_title", "label": "Title", "default": "COMMON QUESTIONS" },
+    { "type": "richtext", "id": "faq_help", "label": "Help text", "default": "<p>Need More Help? Call <strong>1300 291 700</strong> or email <strong>sales@esafetysupplies.com.au</strong></p>" }
+  ],
+  "blocks": [
+    {
+      "type": "location",
+      "name": "Pickup Location",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Location name", "default": "Sydney Head Office" },
+        { "type": "text", "id": "tag1", "label": "Tag 1 text", "default": "Retail Store" },
+        { "type": "select", "id": "tag1_color", "label": "Tag 1 color",
+          "options": [
+            { "value": "blue", "label": "Blue" },
+            { "value": "yellow", "label": "Yellow" },
+            { "value": "red", "label": "Red" }
+          ],
+          "default": "blue"
+        },
+        { "type": "text", "id": "tag2", "label": "Tag 2 text", "default": "Pickup & dispatch" },
+        { "type": "select", "id": "tag2_color", "label": "Tag 2 color",
+          "options": [
+            { "value": "blue", "label": "Blue" },
+            { "value": "yellow", "label": "Yellow" },
+            { "value": "red", "label": "Red" }
+          ],
+          "default": "yellow"
+        },
+        { "type": "textarea", "id": "address", "label": "Address", "default": "396 Victoria St, Wetherill Park NSW 2164" },
+        { "type": "text", "id": "hours", "label": "Hours", "default": "Mon-Fri 7AM-5PM, Sat 8AM-12PM" },
+        { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
+        { "type": "text", "id": "btn_text", "label": "Button text", "default": "Get Direction" },
+        { "type": "url", "id": "directions_url", "label": "Get Direction URL" },
+        { "type": "checkbox", "id": "is_active", "label": "Enabled (yellow button)", "default": true }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "How It Works Step",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon",
+          "options": [
+            { "value": "cart", "label": "Shopping cart" },
+            { "value": "package", "label": "Package" },
+            { "value": "mail", "label": "Mail" },
+            { "value": "shield", "label": "Shield check" }
+          ],
+          "default": "cart"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Order Online" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Browse, add to cart and choose Click & Collect at checkout" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Click & Collect V2",
+      "blocks": [
+        { "type": "location", "settings": { "name": "Sydney Head Office", "tag1": "Retail Store", "tag1_color": "blue", "tag2": "Pickup & dispatch", "tag2_color": "yellow", "address": "396 Victoria St, Wetherill Park NSW 2164", "hours": "Mon-Fri 7AM-5PM, Sat 8AM-12PM", "phone": "1300 291 700", "btn_text": "Get Direction", "is_active": true } },
+        { "type": "location", "settings": { "name": "Brisbane", "tag1": "Selected items only", "tag1_color": "red", "tag2": "Pickup & dispatch", "tag2_color": "yellow", "address": "Darra, QLD 4076", "hours": "Mon-Fri 6AM-4PM", "phone": "1300 291 700", "btn_text": "Get Direction", "is_active": false } },
+        { "type": "location", "settings": { "name": "Melbourne", "tag1": "Selected items only", "tag1_color": "red", "tag2": "Pickup & dispatch", "tag2_color": "yellow", "address": "Altona, VIC 3018", "hours": "Mon-Fri 7AM-4PM", "phone": "1300 291 700", "btn_text": "Get Direction", "is_active": false } },
+        { "type": "step", "settings": { "icon": "cart", "title": "Order Online", "description": "Browse, add to cart and choose Click & Collect at checkout" } },
+        { "type": "step", "settings": { "icon": "package", "title": "We pick & pack", "description": "Our team picks and packs your order with care" } },
+        { "type": "step", "settings": { "icon": "mail", "title": "Get your ready-for-pickup email", "description": "We'll email you when your order is ready to collect" } },
+        { "type": "step", "settings": { "icon": "shield", "title": "Collect with confidence", "description": "Bring your order number and suitable vehicle to collect" } },
+        { "type": "faq", "settings": { "question": "What if there isn't enough stock at my location?", "answer": "<p>If stock isn't available at your preferred pickup location, our team will transfer it from another warehouse or contact you with options.</p>" } },
+        { "type": "faq", "settings": { "question": "Can I walk in and buy at Brisbane or Melbourne?", "answer": "<p>Our Brisbane and Melbourne sites are pickup-only. Please order online first, then collect once you receive the ready-for-pickup email.</p>" } },
+        { "type": "faq", "settings": { "question": "Can every product be picked up in Brisbane or Melbourne?", "answer": "<p>Only selected items are available at Brisbane and Melbourne. Our Sydney warehouse holds the full range.</p>" } },
+        { "type": "faq", "settings": { "question": "Is pickup free?", "answer": "<p>Yes, Click & Collect is free at all three locations.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

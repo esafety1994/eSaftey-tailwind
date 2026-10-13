@@ -1,0 +1,175 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "title": {
+      "type": "page-tittle",
+      "disabled": true,
+      "name": "Page Title",
+      "settings": {}
+    },
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {}
+    },
+    "content": {
+      "type": "click-collect-content-v2",
+      "name": "Click & Collect V2",
+      "blocks": {
+        "loc_sydney": {
+          "type": "location",
+          "settings": {
+            "name": "Sydney Head Office",
+            "tag1": "Retail Store",
+            "tag1_color": "blue",
+            "tag2": "Pickup & dispatch",
+            "tag2_color": "yellow",
+            "address": "396 Victoria St, Wetherill Park NSW 2164",
+            "hours": "Mon-Fri 7AM-5PM, Sat 8AM-12PM",
+            "phone": "1300 291 700",
+            "btn_text": "Get Direction",
+            "directions_url": "https://www.google.com/maps/dir/?api=1&destination=396+Victoria+St+Wetherill+Park+NSW+2164",
+            "is_active": true
+          }
+        },
+        "loc_brisbane": {
+          "type": "location",
+          "settings": {
+            "name": "Brisbane",
+            "tag1": "Selected items only",
+            "tag1_color": "red",
+            "tag2": "Pickup & dispatch",
+            "tag2_color": "yellow",
+            "address": "Darra, QLD 4076",
+            "hours": "Mon-Fri 6AM-4PM",
+            "phone": "1300 291 700",
+            "btn_text": "Get Direction",
+            "is_active": false
+          }
+        },
+        "loc_melbourne": {
+          "type": "location",
+          "settings": {
+            "name": "Melbourne",
+            "tag1": "Selected items only",
+            "tag1_color": "red",
+            "tag2": "Pickup & dispatch",
+            "tag2_color": "yellow",
+            "address": "Altona, VIC 3018",
+            "hours": "Mon-Fri 7AM-4PM",
+            "phone": "1300 291 700",
+            "btn_text": "Get Direction",
+            "is_active": false
+          }
+        },
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "icon": "cart",
+            "title": "Order Online",
+            "description": "Browse, add to cart and choose Click & Collect at checkout"
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "icon": "package",
+            "title": "We pick & pack",
+            "description": "Our team picks and packs your order with care"
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "icon": "mail",
+            "title": "Get your ready-for-pickup email",
+            "description": "We'll email you when your order is ready to collect"
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "icon": "shield",
+            "title": "Collect with confidence",
+            "description": "Bring your order number and suitable vehicle to collect"
+          }
+        },
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "What if there isn't enough stock at my location?",
+            "answer": "<p>If stock isn't available at your preferred pickup location, our team will transfer it from another warehouse or contact you with options before your order is ready.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I walk in and buy at Brisbane or Melbourne?",
+            "answer": "<p>Brisbane and Melbourne are pickup-only locations. Please order online first, then collect once you receive the ready-for-pickup email.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Can every product be picked up in Brisbane or Melbourne?",
+            "answer": "<p>Only selected items are available for pickup at Brisbane and Melbourne. Our Sydney warehouse holds the full range.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq",
+          "settings": {
+            "question": "Is pickup free?",
+            "answer": "<p>Yes, Click & Collect is free at all three locations.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "loc_sydney",
+        "loc_brisbane",
+        "loc_melbourne",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4"
+      ],
+      "settings": {
+        "hero_title_pre": "Click & Collect,",
+        "hero_title_mid": "now in",
+        "hero_title_highlight1": "QLD",
+        "hero_title_highlight2": "and",
+        "hero_title_post": "VIC too",
+        "hero_subtitle": "Pick up from our Sydney warehouse, with selected products also available for pickup in QLD and VIC.",
+        "hero_fine": "Free pickup · Usually ready within 24 to 48 hours",
+        "hero_cta_text": "Shop Now",
+        "hero_cta_url": "/collections/all",
+        "locations_heading": "Pickup Locations",
+        "locations_note": "Pickup details for QLD and VIC orders are sent after checkout in your order pickup email.",
+        "how_heading": "How It Works",
+        "retail_badge": "New Retail Store",
+        "retail_title": "Take a look inside our Wetherill Park Retail Store",
+        "retail_desc": "Watch a quick walkthrough of our Sydney Head Office retail store. See what to expect when you visit.",
+        "retail_tag1": "Wetherill Park, NSW",
+        "retail_tag2": "In-store pickup",
+        "faq_title": "COMMON QUESTIONS",
+        "faq_help": "<p>Need More Help? Call <strong>1300 291 700</strong> or email <strong>sales@esafetysupplies.com.au</strong></p>"
+      }
+    }
+  },
+  "order": [
+    "title",
+    "main",
+    "content"
+  ]
+}
