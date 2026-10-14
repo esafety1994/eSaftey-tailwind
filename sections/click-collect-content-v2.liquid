@@ -117,7 +117,7 @@
       </div>
       <div class="cc-how__video">
         {% if howitworks_video != blank %}
-          <video class="cc-video cc-video--player" controls playsinline preload="metadata"
+          <video class="cc-video cc-video--player" autoplay muted loop playsinline preload="metadata"
             {% if howitworks_video.preview_image %}poster="{{ howitworks_video.preview_image | image_url: width: 1200 }}"{% endif %}>
             {% for source in howitworks_video.sources %}
               <source src="{{ source.url }}" type="{{ source.mime_type }}">
@@ -137,7 +137,7 @@
   <div class="cc-container cc-retail__inner">
     <div class="cc-retail__video">
       {% if retail_video != blank %}
-        <video class="cc-video cc-video--player" controls playsinline preload="metadata"
+        <video class="cc-video cc-video--player" autoplay muted loop playsinline preload="metadata"
           {% if retail_video.preview_image %}poster="{{ retail_video.preview_image | image_url: width: 1200 }}"{% endif %}>
           {% for source in retail_video.sources %}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
