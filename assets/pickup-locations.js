@@ -127,24 +127,25 @@
 
       if (isSydney) {
         if (countEl) countEl.textContent = '';
-        // Sydney badge rules (user 2026-10-14, Odoo 30562):
-        //   Driven entirely by the Stock Status metafield — ignore live qty.
-        //   Reason: the metafield is the single source of truth for what
-        //   the shopper is told; if a product is marked "Out of Stock" we
-        //   must not say "Available" on the Sydney row even if live stock
-        //   is briefly positive.
+        // Sydney badge rules (Satbar 2026-10-14, Odoo 30562):
+        //   Live Sydney qty wins when positive — covers human-error cases
+        //   where the metafield still says "Out of Stock" but Sydney
+        //   actually has stock. We never want to tell a shopper the item
+        //   is unavailable when it physically isn't.
         //
-        //   "In Stock" or blank  → "Available" only.
-        //   "Out of Stock"       → "Not Available" only (red, no Available).
-        //   Any other status (Low Stock, Pre order, Back Order, 1-2 Days,
-        //   2-3 Days, 4-5 Days, 5-7 Days, 9 Days, Lead Times Apply,
-        //   2-3 weeks, While Stock Lasts, etc.) → "Available" + status pill.
+        //   qty > 0 → "Available" only (metafield ignored).
+        //   qty <= 0 → metafield drives the badge:
+        //     "In Stock" or blank → "Available" only.
+        //     "Out of Stock"      → "Not Available" only (red).
+        //     Anything else (Low Stock, Pre order, Back Order, 1-2 Days,
+        //       2-3 Days, 4-5 Days, 5-7 Days, 9 Days, Lead Times Apply,
+        //       2-3 weeks, While Stock Lasts, etc.) → "Available" + pill.
         var statusLower = stockStatus.toLowerCase();
         var isOutOfStock = statusLower === 'out of stock';
         var isInStockOrBlank = !stockStatus || statusLower === 'in stock';
         var sydneyAvailable = true;
         if (stockEl) {
-          if (isInStockOrBlank) {
+          if (qty > 0 || isInStockOrBlank) {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
           } else if (isOutOfStock) {
