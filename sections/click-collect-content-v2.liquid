@@ -15,7 +15,7 @@
   assign howitworks_video_poster = section.settings.howitworks_video_poster
 -%}
 
-<section class="cc-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}');"{% endif %}>
+<section class="cc-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}'); background-position: center {{ section.settings.hero_bg_position_y | default: 50 }}%;"{% endif %}>
   <div class="cc-hero__overlay" style="background: rgba(0, 0, 0, {{ section.settings.hero_overlay_opacity | default: 60 | divided_by: 100.0 }});"></div>
   <div class="cc-hero__inner">
     <h1 class="cc-hero__title">
@@ -493,6 +493,7 @@
     { "type": "header", "content": "Hero Banner" },
     { "type": "image_picker", "id": "hero_bg", "label": "Hero background image" },
     { "type": "range", "id": "hero_overlay_opacity", "label": "Hero overlay darkness", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 60 },
+    { "type": "range", "id": "hero_bg_position_y", "label": "Hero image vertical position (0 = top, 100 = bottom)", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
     { "type": "text", "id": "hero_title_pre", "label": "Hero title - part 1 (yellow)", "default": "Click & Collect," },
     { "type": "text", "id": "hero_title_mid", "label": "Hero title - part 2 (white)", "default": "now in" },
     { "type": "text", "id": "hero_title_highlight1", "label": "Hero title - highlight 1 (yellow)", "default": "QLD" },
