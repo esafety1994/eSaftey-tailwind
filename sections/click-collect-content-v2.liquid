@@ -17,11 +17,13 @@
   <div class="cc-hero__overlay" style="background: rgba(0, 0, 0, {{ section.settings.hero_overlay_opacity | default: 60 | divided_by: 100.0 }});"></div>
   <div class="cc-hero__inner">
     <h1 class="cc-hero__title">
-      <span class="cc-hero__highlight">{{ hero_title_pre }}</span>
-      <span class="cc-hero__white">{{ hero_title_mid }}</span>
-      <span class="cc-hero__highlight">{{ hero_title_highlight1 }}</span>
-      <span class="cc-hero__white">{{ hero_title_highlight2 }}</span>
-      <span class="cc-hero__white">{{ hero_title_post }}</span>
+      <span class="cc-hero__line cc-hero__highlight">{{ hero_title_pre }}</span>
+      <span class="cc-hero__line">
+        <span class="cc-hero__white">{{ hero_title_mid }}</span>
+        <span class="cc-hero__highlight">{{ hero_title_highlight1 }}</span>
+        <span class="cc-hero__white">{{ hero_title_highlight2 }}</span>
+        <span class="cc-hero__white">{{ hero_title_post }}</span>
+      </span>
     </h1>
     {% if hero_subtitle != blank %}
       <p class="cc-hero__subtitle">{{ hero_subtitle }}</p>
@@ -225,20 +227,22 @@
   }
   .cc-hero__title {
     font-family: 'Poppins', sans-serif;
-    font-weight: 700; font-size: 48px; line-height: .95;
-    letter-spacing: -0.02em;
-    margin: 0 0 24px;
+    font-weight: 700; font-size: 56px; line-height: .9;
+    letter-spacing: -0.03em;
+    margin: 0 0 20px;
     color: #fff;
   }
+  .cc-hero__line { display: block; }
+  .cc-hero__line + .cc-hero__line { margin-top: 6px; }
   .cc-hero__highlight { color: #FFDC06; }
   .cc-hero__white { color: #fff; }
   .cc-hero__subtitle {
     color: #fff; font-weight: 400; font-size: 16px; line-height: 1.4;
-    margin: 0 0 12px;
+    margin: 0 auto 14px; max-width: 820px;
   }
   .cc-hero__fine {
     color: #fff; font-weight: 700; font-size: 16px; line-height: 1.4;
-    margin: 0 0 24px;
+    margin: 0 0 28px;
   }
   .cc-hero__cta {
     display: inline-block;
@@ -464,7 +468,7 @@
   /* Tablet */
   @media (max-width: 900px) {
     .cc-section-title { font-size: 32px; }
-    .cc-hero__title { font-size: 36px; }
+    .cc-hero__title { font-size: 42px; }
     .cc-locations__grid { grid-template-columns: 1fr; max-width: 420px; }
     .cc-how__grid, .cc-retail__inner, .cc-faq__inner { grid-template-columns: 1fr; gap: 32px; }
     .cc-retail__video .cc-video { aspect-ratio: 16 / 10; }
