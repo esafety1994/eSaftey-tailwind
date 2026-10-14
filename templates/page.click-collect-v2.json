@@ -106,28 +106,28 @@
           "type": "faq",
           "settings": {
             "question": "What if there isn't enough stock at my location?",
-            "answer": "<p>If stock isn't available at your preferred pickup location, our team will transfer it from another warehouse or contact you with options before your order is ready.</p>"
+            "answer": "<p>If your chosen location doesn't have everything in your cart, we'll ship your full order from Sydney instead. You'll see this before you pay, and you can reduce the quantity to what's available if you'd rather collect from your preferred location.</p>"
           }
         },
         "faq_2": {
           "type": "faq",
           "settings": {
             "question": "Can I walk in and buy at Brisbane or Melbourne?",
-            "answer": "<p>Brisbane and Melbourne are pickup-only locations. Please order online first, then collect once you receive the ready-for-pickup email.</p>"
+            "answer": "<p>No. Our Brisbane and Melbourne locations are for pickup and dispatch only, with no retail counter. Place your order online, choose Click & Collect at checkout, and wait for your \"Ready for pickup\" email before heading over.</p>"
           }
         },
         "faq_3": {
           "type": "faq",
           "settings": {
             "question": "Can every product be picked up in Brisbane or Melbourne?",
-            "answer": "<p>Only selected items are available for pickup at Brisbane and Melbourne. Our Sydney warehouse holds the full range.</p>"
+            "answer": "<p>Not every product. Check the Click & Collect section on the product page. It shows which locations have that item available for pickup. If a product isn't available near you, we'll deliver it instead.</p>"
           }
         },
         "faq_4": {
           "type": "faq",
           "settings": {
             "question": "Is pickup free?",
-            "answer": "<p>Yes, Click & Collect is free at all three locations.</p>"
+            "answer": "<p>Yes. Click & Collect is free from Sydney, Brisbane and Melbourne. Most orders are ready same or next business day.</p>"
           }
         }
       },
