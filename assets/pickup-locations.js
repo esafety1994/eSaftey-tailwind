@@ -128,18 +128,17 @@
       if (isSydney) {
         if (countEl) countEl.textContent = '';
         // Sydney badge rules (user 2026-10-14, Odoo 30562):
-        //   Rule is driven by the Stock Status metafield, not live qty —
-        //   a product with 15 units but a "Low Stock" status still needs
-        //   the "Low Stock" pill shown so the shopper sees it's running out.
+        //   Driven entirely by the Stock Status metafield — ignore live qty.
+        //   Reason: the metafield is the single source of truth for what
+        //   the shopper is told; if a product is marked "Out of Stock" we
+        //   must not say "Available" on the Sydney row even if live stock
+        //   is briefly positive.
         //
-        //   Stock Status "In Stock" or blank → "Available" only.
-        //   Stock Status "Out of Stock":
-        //     qty >  0 → "Available" only (HQ can still fulfil live stock).
-        //     qty <= 0 → "Not Available" only (red, no Available badge).
+        //   "In Stock" or blank  → "Available" only.
+        //   "Out of Stock"       → "Not Available" only (red, no Available).
         //   Any other status (Low Stock, Pre order, Back Order, 1-2 Days,
         //   2-3 Days, 4-5 Days, 5-7 Days, 9 Days, Lead Times Apply,
-        //   2-3 weeks, While Stock Lasts, etc.) → "Available" + status pill
-        //   so the shopper sees the real delivery timing regardless of qty.
+        //   2-3 weeks, While Stock Lasts, etc.) → "Available" + status pill.
         var statusLower = stockStatus.toLowerCase();
         var isOutOfStock = statusLower === 'out of stock';
         var isInStockOrBlank = !stockStatus || statusLower === 'in stock';
@@ -149,14 +148,9 @@
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
           } else if (isOutOfStock) {
-            if (qty > 0) {
-              stockEl.innerHTML =
-                '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
-            } else {
-              stockEl.innerHTML =
-                '<span class="pdp-cc-loc-badge pdp-cc-badge-unavailable" data-stock-badge>Not Available</span>';
-              sydneyAvailable = false;
-            }
+            stockEl.innerHTML =
+              '<span class="pdp-cc-loc-badge pdp-cc-badge-unavailable" data-stock-badge>Not Available</span>';
+            sydneyAvailable = false;
           } else {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>' +
