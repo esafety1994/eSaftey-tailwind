@@ -9,10 +9,8 @@
   assign hero_fine = section.settings.hero_fine
   assign hero_cta_text = section.settings.hero_cta_text
   assign hero_cta_url = section.settings.hero_cta_url
-  assign retail_video_url = section.settings.retail_video_url
-  assign retail_video_poster = section.settings.retail_video_poster
-  assign howitworks_video_url = section.settings.howitworks_video_url
-  assign howitworks_video_poster = section.settings.howitworks_video_poster
+  assign retail_video = section.settings.retail_video
+  assign howitworks_video = section.settings.howitworks_video
 -%}
 
 <section class="cc-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}'); background-position: center {{ section.settings.hero_bg_position_y | default: 50 }}%;"{% endif %}>
@@ -118,10 +116,13 @@
         {% endfor %}
       </div>
       <div class="cc-how__video">
-        {% if howitworks_video_url != blank %}
-          <a href="{{ howitworks_video_url }}" target="_blank" rel="noopener" class="cc-video" {% if howitworks_video_poster %}style="background-image: url('{{ howitworks_video_poster | image_url: width: 1200 }}');"{% endif %}>
-            <span class="cc-video__play" aria-label="Play video"></span>
-          </a>
+        {% if howitworks_video != blank %}
+          <video class="cc-video cc-video--player" controls playsinline preload="metadata"
+            {% if howitworks_video.preview_image %}poster="{{ howitworks_video.preview_image | image_url: width: 1200 }}"{% endif %}>
+            {% for source in howitworks_video.sources %}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {% endfor %}
+          </video>
         {% else %}
           <div class="cc-video cc-video--placeholder">
             <span class="cc-video__play" aria-label="Play video"></span>
@@ -135,10 +136,13 @@
 <section class="cc-retail">
   <div class="cc-container cc-retail__inner">
     <div class="cc-retail__video">
-      {% if retail_video_url != blank %}
-        <a href="{{ retail_video_url }}" target="_blank" rel="noopener" class="cc-video" {% if retail_video_poster %}style="background-image: url('{{ retail_video_poster | image_url: width: 1200 }}');"{% endif %}>
-          <span class="cc-video__play" aria-label="Play video"></span>
-        </a>
+      {% if retail_video != blank %}
+        <video class="cc-video cc-video--player" controls playsinline preload="metadata"
+          {% if retail_video.preview_image %}poster="{{ retail_video.preview_image | image_url: width: 1200 }}"{% endif %}>
+          {% for source in retail_video.sources %}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {% endfor %}
+        </video>
       {% else %}
         <div class="cc-video cc-video--placeholder">
           <span class="cc-video__play" aria-label="Play video"></span>
@@ -368,6 +372,7 @@
     border: 5px solid #DBDBDB; border-radius: 20px;
     text-decoration: none;
   }
+  .cc-video--player { object-fit: cover; background: #000; }
   .cc-video__play {
     position: absolute; left: 50%; top: 50%;
     transform: translate(-50%, -50%);
@@ -510,8 +515,7 @@
 
     { "type": "header", "content": "How It Works" },
     { "type": "text", "id": "how_heading", "label": "Heading", "default": "How It Works" },
-    { "type": "url", "id": "howitworks_video_url", "label": "Video link (right side)" },
-    { "type": "image_picker", "id": "howitworks_video_poster", "label": "Video poster image" },
+    { "type": "video", "id": "howitworks_video", "label": "Video (right side)" },
 
     { "type": "header", "content": "Retail Store Video" },
     { "type": "text", "id": "retail_badge", "label": "Badge text", "default": "New Retail Store" },
@@ -519,8 +523,7 @@
     { "type": "textarea", "id": "retail_desc", "label": "Description", "default": "Watch a quick walkthrough of our Sydney Head Office retail store. See what to expect when you visit." },
     { "type": "text", "id": "retail_tag1", "label": "Pill 1", "default": "Wetherill Park, NSW" },
     { "type": "text", "id": "retail_tag2", "label": "Pill 2", "default": "In-store pickup" },
-    { "type": "url", "id": "retail_video_url", "label": "Video link" },
-    { "type": "image_picker", "id": "retail_video_poster", "label": "Video poster image" },
+    { "type": "video", "id": "retail_video", "label": "Video" },
 
     { "type": "header", "content": "Common Questions" },
     { "type": "text", "id": "faq_title", "label": "Title", "default": "COMMON QUESTIONS" },
