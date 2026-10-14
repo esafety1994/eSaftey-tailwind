@@ -117,7 +117,7 @@
       </div>
       <div class="cc-how__video">
         {% if howitworks_video != blank %}
-          <video class="cc-video cc-video--player" autoplay muted loop playsinline preload="metadata"
+          <video class="cc-video cc-video--player" muted loop playsinline controls preload="metadata" data-cc-autoplay
             {% if howitworks_video.preview_image %}poster="{{ howitworks_video.preview_image | image_url: width: 1200 }}"{% endif %}>
             {% for source in howitworks_video.sources %}
               <source src="{{ source.url }}" type="{{ source.mime_type }}">
@@ -137,7 +137,7 @@
   <div class="cc-container cc-retail__inner">
     <div class="cc-retail__video">
       {% if retail_video != blank %}
-        <video class="cc-video cc-video--player" autoplay muted loop playsinline preload="metadata"
+        <video class="cc-video cc-video--player" muted loop playsinline controls preload="metadata" data-cc-autoplay
           {% if retail_video.preview_image %}poster="{{ retail_video.preview_image | image_url: width: 1200 }}"{% endif %}>
           {% for source in retail_video.sources %}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
@@ -490,6 +490,25 @@
     .cc-how, .cc-retail, .cc-faq { padding: 48px 0; }
   }
 </style>
+
+<script>
+  (function () {
+    var videos = document.querySelectorAll('video[data-cc-autoplay]');
+    if (!videos.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var v = entry.target;
+        if (entry.isIntersecting) {
+          var p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.5 });
+    videos.forEach(function (v) { io.observe(v); });
+  })();
+</script>
 
 {% schema %}
 {
