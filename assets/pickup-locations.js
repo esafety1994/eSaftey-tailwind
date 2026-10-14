@@ -127,28 +127,48 @@
 
       if (isSydney) {
         if (countEl) countEl.textContent = '';
+        // Sydney badge rules (user 2026-10-14, Odoo 30562):
+        //   Rule is driven by the Stock Status metafield, not live qty —
+        //   a product with 15 units but a "Low Stock" status still needs
+        //   the "Low Stock" pill shown so the shopper sees it's running out.
+        //
+        //   Stock Status "In Stock" or blank → "Available" only.
+        //   Stock Status "Out of Stock":
+        //     qty >  0 → "Available" only (HQ can still fulfil live stock).
+        //     qty <= 0 → "Not Available" only (red, no Available badge).
+        //   Any other status (Low Stock, Pre order, Back Order, 1-2 Days,
+        //   2-3 Days, 4-5 Days, 5-7 Days, 9 Days, Lead Times Apply,
+        //   2-3 weeks, While Stock Lasts, etc.) → "Available" + status pill
+        //   so the shopper sees the real delivery timing regardless of qty.
+        var statusLower = stockStatus.toLowerCase();
+        var isOutOfStock = statusLower === 'out of stock';
+        var isInStockOrBlank = !stockStatus || statusLower === 'in stock';
+        var sydneyAvailable = true;
         if (stockEl) {
-          // Sydney badge rules (Satbar 2026-10-08, Odoo 30189):
-          //   qty > 0  → single "Available" pill
-          //   qty <= 0 → "Available" + the Stock Status metafield as a
-          //              secondary pill (shopper sees "1-2 Days", "Back
-          //              Order", "Out of Stock" etc. because we're
-          //              backordering from HQ). If the metafield is empty
-          //              we fall back to a single "Available" pill.
-          if (qty > 0) {
+          if (isInStockOrBlank) {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
-          } else if (stockStatus) {
+          } else if (isOutOfStock) {
+            if (qty > 0) {
+              stockEl.innerHTML =
+                '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
+            } else {
+              stockEl.innerHTML =
+                '<span class="pdp-cc-loc-badge pdp-cc-badge-unavailable" data-stock-badge>Not Available</span>';
+              sydneyAvailable = false;
+            }
+          } else {
             stockEl.innerHTML =
               '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>' +
               '<span class="pdp-cc-loc-badge pdp-cc-badge-status">' + stockStatus + '</span>';
-          } else {
-            stockEl.innerHTML =
-              '<span class="pdp-cc-loc-badge pdp-cc-badge-available" data-stock-badge>Available</span>';
           }
         }
-        row.dataset.stockState = 'available';
-        stockedStateCount++;
+        if (sydneyAvailable) {
+          row.dataset.stockState = 'available';
+          stockedStateCount++;
+        } else {
+          row.dataset.stockState = 'unavailable';
+        }
       } else {
         var showAvailable = entry && qty > 0;
         if (showAvailable) {
