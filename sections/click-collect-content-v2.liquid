@@ -16,7 +16,7 @@
 -%}
 
 <section class="cc-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}');"{% endif %}>
-  <div class="cc-hero__overlay"></div>
+  <div class="cc-hero__overlay" style="background: rgba(0, 0, 0, {{ section.settings.hero_overlay_opacity | default: 60 | divided_by: 100.0 }});"></div>
   <div class="cc-hero__inner">
     <h1 class="cc-hero__title">
       <span class="cc-hero__highlight">{{ hero_title_pre }}</span>
@@ -213,7 +213,6 @@
   }
   .cc-hero__overlay {
     position: absolute; inset: 0;
-    background: rgba(0, 0, 0, 0.6);
   }
   .cc-hero__inner {
     position: relative; z-index: 1;
@@ -493,6 +492,7 @@
   "settings": [
     { "type": "header", "content": "Hero Banner" },
     { "type": "image_picker", "id": "hero_bg", "label": "Hero background image" },
+    { "type": "range", "id": "hero_overlay_opacity", "label": "Hero overlay darkness", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 60 },
     { "type": "text", "id": "hero_title_pre", "label": "Hero title - part 1 (yellow)", "default": "Click & Collect," },
     { "type": "text", "id": "hero_title_mid", "label": "Hero title - part 2 (white)", "default": "now in" },
     { "type": "text", "id": "hero_title_highlight1", "label": "Hero title - highlight 1 (yellow)", "default": "QLD" },
