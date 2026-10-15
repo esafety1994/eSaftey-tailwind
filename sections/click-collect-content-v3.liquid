@@ -85,17 +85,21 @@
           {%- assign step_num = step_num | plus: 1 -%}
           <div class="cc3-step" {{ block.shopify_attributes }}>
             <div class="cc3-step__badge">{{ step_num }}</div>
-            <div class="cc3-step__icon">
-              {% case block.settings.icon %}
-                {% when 'cart' %}{% render 'icon-svg-shopping-cart' %}
-                {% when 'package' %}{% render 'icon-svg-package' %}
-                {% when 'mail' %}{% render 'icon-svg-mail' %}
-                {% when 'shield' %}{% render 'icon-svg-shield-check' %}
-                {% else %}{% render 'icon-svg-shopping-cart' %}
-              {% endcase %}
+            <div class="cc3-step__card">
+              <div class="cc3-step__icon">
+                {% case block.settings.icon %}
+                  {% when 'cart' %}{% render 'icon-svg-shopping-cart' %}
+                  {% when 'package' %}{% render 'icon-svg-package' %}
+                  {% when 'mail' %}{% render 'icon-svg-mail' %}
+                  {% when 'shield' %}{% render 'icon-svg-shield-check' %}
+                  {% else %}{% render 'icon-svg-shopping-cart' %}
+                {% endcase %}
+              </div>
+              <div class="cc3-step__text">
+                <h3 class="cc3-step__title">{{ block.settings.title }}</h3>
+                <p class="cc3-step__desc">{{ block.settings.description }}</p>
+              </div>
             </div>
-            <h3 class="cc3-step__title">{{ block.settings.title }}</h3>
-            <p class="cc3-step__desc">{{ block.settings.description }}</p>
           </div>
         {% endif %}
       {% endfor %}
@@ -313,36 +317,44 @@
   }
   .cc3-step {
     position: relative;
-    display: flex; flex-direction: row; align-items: center; gap: 12px;
-    padding: 8px 10px;
+    display: flex; align-items: center; gap: 10px;
   }
   .cc3-step + .cc3-step::before {
     content: ''; position: absolute;
-    left: -14px; top: 50%;
-    width: 20px; height: 0;
+    right: 100%; top: 50%;
+    width: 18px; height: 0;
+    margin-right: 2px;
     border-top: 2px dashed #BFBFBF;
   }
   .cc3-step__badge {
-    width: 24px; height: 24px; border-radius: 50%;
+    width: 28px; height: 28px; border-radius: 50%;
     background: #FDDC14; color: #111;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 13px;
+    font-weight: 700; font-size: 14px;
     flex-shrink: 0;
-    position: absolute; top: -8px; left: 50px;
-    z-index: 2;
+  }
+  .cc3-step__card {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff;
+    border: 1px solid #EDEDED;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    flex: 1; min-width: 0;
   }
   .cc3-step__icon {
-    width: 56px; height: 56px; flex-shrink: 0;
+    width: 40px; height: 40px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     color: #111;
   }
-  .cc3-step__icon svg { width: 44px; height: 44px; }
+  .cc3-step__icon svg { width: 36px; height: 36px; }
+  .cc3-step__text { flex: 1; min-width: 0; }
   .cc3-step__title {
     font-family: 'Poppins', sans-serif;
     font-weight: 700; font-size: 14px; line-height: 1.25;
     color: #111; margin: 0 0 4px;
   }
-  .cc3-step__desc { font-size: 13px; line-height: 1.4; color: #4a4a4a; margin: 0; }
+  .cc3-step__desc { font-size: 12.5px; line-height: 1.4; color: #666; margin: 0; }
 
   /* Locations */
   .cc3-locations { padding: 32px 0 32px; background: #fff; }
@@ -452,11 +464,8 @@
     .cc3-hero__title { font-size: 34px; }
     .cc3-hero__subtitle { font-size: 14px; }
     .cc3-badge { font-size: 12px; padding: 8px 14px; }
-    .cc3-how__grid { grid-template-columns: 1fr; gap: 12px; }
-    .cc3-step { flex-direction: row; align-items: center; padding: 10px; border: 1px solid #F2F2F2; border-radius: 12px; }
-    .cc3-step__badge { position: static; }
-    .cc3-step__icon { width: 44px; height: 44px; }
-    .cc3-step__icon svg { width: 32px; height: 32px; }
+    .cc3-how__grid { grid-template-columns: 1fr; gap: 10px; }
+    .cc3-step + .cc3-step::before { display: none; }
     .cc3-retail__inner { padding: 16px; }
     .cc3-retail__title { font-size: 20px; }
     .cc3-video__play { width: 50px; height: 50px; }
