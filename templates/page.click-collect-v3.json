@@ -1,0 +1,152 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "title": {
+      "type": "page-tittle",
+      "disabled": true,
+      "name": "Page Title",
+      "settings": {}
+    },
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {}
+    },
+    "content": {
+      "type": "click-collect-content-v3",
+      "name": "Click & Collect V3",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "icon": "cart",
+            "title": "Order online",
+            "description": "Browse, add to cart and choose Click & Collect at checkout."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "icon": "package",
+            "title": "We pick & pack",
+            "description": "Our team picks and packs your order with care."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "icon": "mail",
+            "title": "Get your ready-for-pickup email",
+            "description": "We'll email you when your order is ready to collect."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "icon": "shield",
+            "title": "Collect with confidence",
+            "description": "Bring your order number and valid ID to collect."
+          }
+        },
+        "loc_nsw": {
+          "type": "location_full",
+          "settings": {
+            "name": "NSW",
+            "address": "396 Victoria St,\nWetherill Park NSW 2164",
+            "hours": "Mon-Fri 7AM-5PM, Sat 8AM-12PM",
+            "phone": "1300 291 700",
+            "btn_text": "Get directions",
+            "directions_url": "https://www.google.com/maps/dir/?api=1&destination=396+Victoria+St+Wetherill+Park+NSW+2164"
+          }
+        },
+        "loc_qld": {
+          "type": "location_chips",
+          "settings": {
+            "name": "QLD",
+            "tag": "Selected items only",
+            "description": "Pickup available in eligible postcodes when stock is available.",
+            "postcodes": "4XXX, 4XXX, 4XXX",
+            "footnote": "Postcodes only appear when this item is stocked in QLD."
+          }
+        },
+        "loc_vic": {
+          "type": "location_chips",
+          "settings": {
+            "name": "VIC",
+            "tag": "Selected items only",
+            "description": "Pickup available in eligible postcodes when stock is available.",
+            "postcodes": "3XXX, 3XXX, 3XXX",
+            "footnote": "Postcodes only appear when this item is stocked in VIC."
+          }
+        },
+        "faq_1": {
+          "type": "faq_card",
+          "settings": {
+            "icon": "clock",
+            "question": "When will my order be ready?",
+            "answer": "Most orders are ready the same day or next business day. You'll receive an email as soon as it's ready."
+          }
+        },
+        "faq_2": {
+          "type": "faq_card",
+          "settings": {
+            "icon": "clipboard",
+            "question": "What do I need to bring?",
+            "answer": "Bring your order number (from your confirmation email) and a valid photo ID."
+          }
+        },
+        "faq_3": {
+          "type": "faq_card",
+          "settings": {
+            "icon": "package",
+            "question": "Can every item be picked up interstate?",
+            "answer": "No. Only selected items are available for pickup in QLD and VIC when stock exists."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "loc_nsw",
+        "loc_qld",
+        "loc_vic",
+        "faq_1",
+        "faq_2",
+        "faq_3"
+      ],
+      "settings": {
+        "hero_title_top": "Click & Collect,",
+        "hero_title_bot": "made easy.",
+        "hero_subtitle": "Pick up from our Sydney warehouse, with selected products also available for pickup in QLD and VIC when stock is available.",
+        "hero_overlay_opacity": 20,
+        "hero_bg_position_y": 50,
+        "badge1_text": "Same day or next business day pickup",
+        "badge2_text": "Fast & free pickup",
+        "retail_badge": "NSW RETAIL STORE",
+        "retail_title": "Take a look inside our Wetherill Park retail store",
+        "retail_desc": "Watch a quick walkthrough of our NSW retail store and pickup area. See where to park, how pickup works, and what to expect when you visit.",
+        "retail_tag1": "Wetherill Park, NSW",
+        "retail_tag2": "In-store pickup",
+        "how_heading": "How it works",
+        "locations_heading": "Pickup locations",
+        "locations_note": "Pickup details for QLD and VIC orders are sent after checkout in your order confirmation email.",
+        "faq_heading": "Common questions"
+      }
+    }
+  },
+  "order": [
+    "title",
+    "main",
+    "content"
+  ]
+}

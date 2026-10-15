@@ -1,0 +1,579 @@
+{%- liquid
+  assign hero_bg = section.settings.hero_bg
+  assign retail_video = section.settings.retail_video
+  assign overlay = section.settings.hero_overlay_opacity | default: 20 | divided_by: 100.0
+  assign bg_pos = section.settings.hero_bg_position_y | default: 50
+-%}
+
+<section class="cc3-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}'); background-position: center {{ bg_pos }}%;"{% endif %}>
+  <div class="cc3-hero__overlay" style="background: linear-gradient(90deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,{{ overlay }}) 55%, rgba(255,255,255,0) 100%);"></div>
+  <div class="cc3-container cc3-hero__inner">
+    <h1 class="cc3-hero__title">
+      <span class="cc3-hero__title-top">{{ section.settings.hero_title_top | default: 'Click & Collect,' }}</span>
+      <span class="cc3-hero__title-bot">{{ section.settings.hero_title_bot | default: 'made easy.' }}</span>
+    </h1>
+    {% if section.settings.hero_subtitle != blank %}
+      <p class="cc3-hero__subtitle">{{ section.settings.hero_subtitle }}</p>
+    {% endif %}
+    <div class="cc3-hero__badges">
+      {% if section.settings.badge1_text != blank %}
+        <div class="cc3-badge">
+          <span class="cc3-badge__icon">{% render 'icon-svg-clock' %}</span>
+          <span>{{ section.settings.badge1_text }}</span>
+        </div>
+      {% endif %}
+      {% if section.settings.badge2_text != blank %}
+        <div class="cc3-badge">
+          <span class="cc3-badge__icon">{% render 'icon-svg-package' %}</span>
+          <span>{{ section.settings.badge2_text }}</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="cc3-retail">
+  <div class="cc3-container cc3-retail__inner">
+    <div class="cc3-retail__video">
+      {% if retail_video != blank %}
+        <video class="cc3-video cc3-video--player" muted loop playsinline controls preload="metadata" data-cc-autoplay
+          {% if retail_video.preview_image %}poster="{{ retail_video.preview_image | image_url: width: 1200 }}"{% endif %}>
+          {% for source in retail_video.sources %}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {% endfor %}
+        </video>
+      {% else %}
+        <div class="cc3-video cc3-video--placeholder">
+          <span class="cc3-video__label">Video placeholder</span>
+          <span class="cc3-video__play" aria-label="Play video"></span>
+        </div>
+      {% endif %}
+    </div>
+    <div class="cc3-retail__body">
+      {% if section.settings.retail_badge != blank %}
+        <span class="cc3-pill cc3-pill--yellow">{{ section.settings.retail_badge }}</span>
+      {% endif %}
+      <h2 class="cc3-retail__title">{{ section.settings.retail_title | default: 'Take a look inside our Wetherill Park retail store' }}</h2>
+      {% if section.settings.retail_desc != blank %}
+        <p class="cc3-retail__desc">{{ section.settings.retail_desc }}</p>
+      {% endif %}
+      <div class="cc3-retail__tags">
+        {% if section.settings.retail_tag1 != blank %}
+          <span class="cc3-pill cc3-pill--light">
+            <span class="cc3-pill__icon">{% render 'icon-svg-marker' %}</span>
+            {{ section.settings.retail_tag1 }}
+          </span>
+        {% endif %}
+        {% if section.settings.retail_tag2 != blank %}
+          <span class="cc3-pill cc3-pill--light">
+            <span class="cc3-pill__icon">{% render 'icon-svg-store' %}</span>
+            {{ section.settings.retail_tag2 }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cc3-how">
+  <div class="cc3-container">
+    <h2 class="cc3-section-title">{{ section.settings.how_heading | default: 'How it works' }}</h2>
+    <div class="cc3-how__grid">
+      {%- assign step_num = 0 -%}
+      {% for block in section.blocks %}
+        {% if block.type == 'step' %}
+          {%- assign step_num = step_num | plus: 1 -%}
+          <div class="cc3-step" {{ block.shopify_attributes }}>
+            <div class="cc3-step__badge">{{ step_num }}</div>
+            <div class="cc3-step__icon">
+              {% case block.settings.icon %}
+                {% when 'cart' %}{% render 'icon-svg-shopping-cart' %}
+                {% when 'package' %}{% render 'icon-svg-package' %}
+                {% when 'mail' %}{% render 'icon-svg-mail' %}
+                {% when 'shield' %}{% render 'icon-svg-shield-check' %}
+                {% else %}{% render 'icon-svg-shopping-cart' %}
+              {% endcase %}
+            </div>
+            <h3 class="cc3-step__title">{{ block.settings.title }}</h3>
+            <p class="cc3-step__desc">{{ block.settings.description }}</p>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cc3-locations">
+  <div class="cc3-container">
+    <h2 class="cc3-section-title">{{ section.settings.locations_heading | default: 'Pickup locations' }}</h2>
+    <div class="cc3-locations__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'location_full' %}
+          <div class="cc3-loc" {{ block.shopify_attributes }}>
+            <div class="cc3-loc__head">
+              <span class="cc3-loc__marker">{% render 'icon-svg-marker' %}</span>
+              <h3 class="cc3-loc__name">{{ block.settings.name }}</h3>
+            </div>
+            <p class="cc3-loc__address">{{ block.settings.address | newline_to_br }}</p>
+            <ul class="cc3-loc__list">
+              <li>
+                <span class="cc3-loc__icon">{% render 'icon-svg-clock' %}</span>
+                <span>{{ block.settings.hours | newline_to_br }}</span>
+              </li>
+              <li>
+                <span class="cc3-loc__icon">{% render 'icon-svg-phone-call' %}</span>
+                <a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a>
+              </li>
+            </ul>
+            <div class="cc3-loc__divider"></div>
+            {% if block.settings.directions_url != blank %}
+              <a href="{{ block.settings.directions_url }}" target="_blank" rel="noopener" class="cc3-loc__btn">
+                {{ block.settings.btn_text | default: 'Get directions' }}
+                <span class="cc3-loc__btn-arrow">{% render 'icon-svg-arrow-right' %}</span>
+              </a>
+            {% endif %}
+          </div>
+        {% elsif block.type == 'location_chips' %}
+          {%- assign chips = block.settings.postcodes | split: ',' -%}
+          <div class="cc3-loc" {{ block.shopify_attributes }}>
+            <div class="cc3-loc__head">
+              <span class="cc3-loc__marker">{% render 'icon-svg-marker' %}</span>
+              <h3 class="cc3-loc__name">{{ block.settings.name }}</h3>
+              {% if block.settings.tag != blank %}
+                <span class="cc3-pill cc3-pill--peach">{{ block.settings.tag }}</span>
+              {% endif %}
+            </div>
+            {% if block.settings.description != blank %}
+              <p class="cc3-loc__address">{{ block.settings.description }}</p>
+            {% endif %}
+            {% if chips.size > 0 %}
+              <div class="cc3-loc__chips">
+                {% for chip in chips %}
+                  {%- assign chip_val = chip | strip -%}
+                  {% if chip_val != blank %}
+                    <span class="cc3-chip">{{ chip_val }}</span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+            <div class="cc3-loc__divider"></div>
+            {% if block.settings.footnote != blank %}
+              <p class="cc3-loc__foot">{{ block.settings.footnote }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% if section.settings.locations_note != blank %}
+      <div class="cc3-note">
+        <span class="cc3-note__icon">{% render 'icon-svg-mail' %}</span>
+        <p>{{ section.settings.locations_note }}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="cc3-faq">
+  <div class="cc3-container">
+    <h2 class="cc3-section-title">{{ section.settings.faq_heading | default: 'Common questions' }}</h2>
+    <div class="cc3-faq__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_card' %}
+          <div class="cc3-faq-card" {{ block.shopify_attributes }}>
+            <div class="cc3-faq-card__icon">
+              {% case block.settings.icon %}
+                {% when 'clock' %}{% render 'icon-svg-clock' %}
+                {% when 'clipboard' %}{% render 'icon-svg-clipboard' %}
+                {% when 'package' %}{% render 'icon-svg-package' %}
+                {% when 'shield' %}{% render 'icon-svg-shield-check' %}
+                {% else %}{% render 'icon-svg-clock' %}
+              {% endcase %}
+            </div>
+            <div class="cc3-faq-card__body">
+              <h3 class="cc3-faq-card__q">{{ block.settings.question }}</h3>
+              <p class="cc3-faq-card__a">{{ block.settings.answer }}</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cc3-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .cc3-section-title {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700; font-size: 32px; line-height: 1.2; color: #111;
+    text-align: center; margin: 0 0 32px;
+  }
+
+  /* Hero */
+  .cc3-hero {
+    position: relative; overflow: hidden;
+    min-height: 460px;
+    background: #DEE4EB center/cover no-repeat;
+    display: flex; align-items: center;
+  }
+  .cc3-hero__overlay { position: absolute; inset: 0; }
+  .cc3-hero__inner { position: relative; z-index: 1; padding: 56px 24px; width: 100%; }
+  .cc3-hero__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 56px; line-height: 1.0;
+    margin: 0 0 20px; color: #111;
+    letter-spacing: -0.02em;
+  }
+  .cc3-hero__title-top, .cc3-hero__title-bot { display: block; }
+  .cc3-hero__title-bot { color: #FDDC14; font-style: italic; font-weight: 700; }
+  .cc3-hero__subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px; line-height: 1.45; color: #1E1E1E;
+    max-width: 440px; margin: 0 0 28px;
+  }
+  .cc3-hero__badges { display: flex; gap: 14px; flex-wrap: wrap; }
+  .cc3-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: #111;
+    padding: 10px 18px; border-radius: 999px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    font-weight: 600; font-size: 13px; line-height: 1.2;
+  }
+  .cc3-badge__icon {
+    display: inline-flex; width: 32px; height: 32px;
+    background: #F2F2F2; border-radius: 50%;
+    align-items: center; justify-content: center;
+    color: #111;
+  }
+  .cc3-badge__icon svg { width: 16px; height: 16px; }
+
+  /* Retail */
+  .cc3-retail { padding: 56px 0 32px; background: #fff; }
+  .cc3-retail__inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;
+    background: #FFF8E0; border-radius: 20px;
+    padding: 24px; max-width: 1100px;
+  }
+  .cc3-video {
+    position: relative; display: block;
+    width: 100%; aspect-ratio: 16 / 10;
+    background: #AFAFAF center/cover no-repeat;
+    border-radius: 14px; overflow: hidden;
+  }
+  .cc3-video--player { object-fit: cover; background: #000; }
+  .cc3-video__label {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,0,0,0.6); color: #fff;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px;
+  }
+  .cc3-video__play {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: 70px; height: 70px; border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    display: block;
+  }
+  .cc3-video__play::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    transform: translate(-40%, -50%);
+    border-left: 18px solid #111;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+  }
+  .cc3-retail__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 26px; line-height: 1.25;
+    color: #111; margin: 10px 0 10px;
+  }
+  .cc3-retail__desc {
+    font-size: 14px; line-height: 1.5; color: #333; margin: 0 0 16px;
+  }
+  .cc3-retail__tags { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+  .cc3-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 13px; font-weight: 500; line-height: 1;
+  }
+  .cc3-pill--yellow { background: #FDDC14; color: #111; font-weight: 700; }
+  .cc3-pill--light { background: #fff; color: #111; border: 1px solid #E5E5E5; }
+  .cc3-pill--peach { background: #FFE4D4; color: #B35A1A; font-weight: 600; }
+  .cc3-pill__icon { display: inline-flex; width: 14px; height: 14px; }
+  .cc3-pill__icon svg { width: 100%; height: 100%; }
+
+  /* How It Works - horizontal */
+  .cc3-how { padding: 48px 0; background: #fff; }
+  .cc3-how__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1100px; margin: 0 auto;
+    position: relative;
+  }
+  .cc3-step {
+    position: relative;
+    display: flex; flex-direction: row; align-items: center; gap: 12px;
+    padding: 8px 10px;
+  }
+  .cc3-step + .cc3-step::before {
+    content: ''; position: absolute;
+    left: -14px; top: 50%;
+    width: 20px; height: 0;
+    border-top: 2px dashed #BFBFBF;
+  }
+  .cc3-step__badge {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #FDDC14; color: #111;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+    position: absolute; top: -8px; left: 50px;
+    z-index: 2;
+  }
+  .cc3-step__icon {
+    width: 56px; height: 56px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #111;
+  }
+  .cc3-step__icon svg { width: 44px; height: 44px; }
+  .cc3-step__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 14px; line-height: 1.25;
+    color: #111; margin: 0 0 4px;
+  }
+  .cc3-step__desc { font-size: 13px; line-height: 1.4; color: #4a4a4a; margin: 0; }
+
+  /* Locations */
+  .cc3-locations { padding: 32px 0 32px; background: #fff; }
+  .cc3-locations__grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .cc3-loc {
+    background: #fff; border: 1px solid #E5E5E5; border-radius: 20px;
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .cc3-loc__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .cc3-loc__marker {
+    display: inline-flex; width: 32px; height: 32px; border-radius: 50%;
+    background: #FDDC14; align-items: center; justify-content: center;
+    color: #111; flex-shrink: 0;
+  }
+  .cc3-loc__marker svg { width: 16px; height: 16px; }
+  .cc3-loc__name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 18px; margin: 0; color: #111;
+  }
+  .cc3-loc__address { font-size: 14px; line-height: 1.45; color: #333; margin: 0; }
+  .cc3-loc__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .cc3-loc__list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #111; }
+  .cc3-loc__list a { color: #111; text-decoration: none; }
+  .cc3-loc__icon { display: inline-flex; width: 16px; height: 16px; color: #111; }
+  .cc3-loc__icon svg { width: 100%; height: 100%; }
+  .cc3-loc__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cc3-chip {
+    display: inline-block;
+    background: #FDDC14; color: #111;
+    padding: 6px 12px; border-radius: 6px;
+    font-size: 13px; font-weight: 600;
+  }
+  .cc3-loc__divider { height: 1px; background: #E5E5E5; margin-top: auto; }
+  .cc3-loc__foot { font-size: 12px; line-height: 1.4; color: #666; margin: 0; }
+  .cc3-loc__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: #FDDC14; color: #111;
+    padding: 10px 20px; border-radius: 999px;
+    font-weight: 700; font-size: 14px; text-decoration: none;
+    transition: transform .15s ease;
+  }
+  .cc3-loc__btn:hover { transform: scale(1.02); }
+  .cc3-loc__btn-arrow { display: inline-flex; width: 14px; height: 14px; }
+  .cc3-loc__btn-arrow svg { width: 100%; height: 100%; }
+
+  .cc3-note {
+    display: flex; align-items: center; gap: 14px;
+    background: #FFF8E0; border-radius: 12px;
+    padding: 14px 18px;
+    max-width: 1100px; margin: 20px auto 0;
+    justify-content: center;
+  }
+  .cc3-note__icon {
+    display: inline-flex; width: 32px; height: 32px;
+    align-items: center; justify-content: center;
+    background: #FDDC14; border-radius: 50%;
+    color: #111; flex-shrink: 0;
+  }
+  .cc3-note__icon svg { width: 16px; height: 16px; }
+  .cc3-note p { margin: 0; font-size: 14px; line-height: 1.4; color: #111; text-align: center; }
+
+  /* FAQ cards */
+  .cc3-faq { padding: 32px 0 56px; background: #fff; }
+  .cc3-faq__grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .cc3-faq-card {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: #fff; border: 1px solid #E5E5E5; border-radius: 14px;
+    padding: 18px;
+  }
+  .cc3-faq-card__icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #FDDC14; border-radius: 50%;
+    color: #111;
+  }
+  .cc3-faq-card__icon svg { width: 20px; height: 20px; }
+  .cc3-faq-card__q {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 14px; line-height: 1.3;
+    color: #111; margin: 0 0 6px;
+  }
+  .cc3-faq-card__a { font-size: 13px; line-height: 1.45; color: #4a4a4a; margin: 0; }
+
+  /* Tablet */
+  @media (max-width: 960px) {
+    .cc3-hero__title { font-size: 44px; }
+    .cc3-section-title { font-size: 26px; }
+    .cc3-how__grid { grid-template-columns: repeat(2, 1fr); }
+    .cc3-step + .cc3-step::before { display: none; }
+    .cc3-retail__inner { grid-template-columns: 1fr; }
+    .cc3-locations__grid, .cc3-faq__grid { grid-template-columns: 1fr; }
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .cc3-hero { min-height: 380px; }
+    .cc3-hero__overlay {
+      background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 60%, rgba(255,255,255,0.2) 100%) !important;
+    }
+    .cc3-hero__title { font-size: 34px; }
+    .cc3-hero__subtitle { font-size: 14px; }
+    .cc3-badge { font-size: 12px; padding: 8px 14px; }
+    .cc3-how__grid { grid-template-columns: 1fr; gap: 12px; }
+    .cc3-step { flex-direction: row; align-items: center; padding: 10px; border: 1px solid #F2F2F2; border-radius: 12px; }
+    .cc3-step__badge { position: static; }
+    .cc3-step__icon { width: 44px; height: 44px; }
+    .cc3-step__icon svg { width: 32px; height: 32px; }
+    .cc3-retail__inner { padding: 16px; }
+    .cc3-retail__title { font-size: 20px; }
+    .cc3-video__play { width: 50px; height: 50px; }
+    .cc3-video__play::after { border-left-width: 12px; border-top-width: 8px; border-bottom-width: 8px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var videos = document.querySelectorAll('video[data-cc-autoplay]');
+    if (!videos.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var v = entry.target;
+        if (entry.isIntersecting) {
+          var p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.5 });
+    videos.forEach(function (v) { io.observe(v); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Click & Collect V3",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_bg", "label": "Hero background image" },
+    { "type": "range", "id": "hero_overlay_opacity", "label": "Hero fade intensity", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 20 },
+    { "type": "range", "id": "hero_bg_position_y", "label": "Image vertical position", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "text", "id": "hero_title_top", "label": "Title line 1", "default": "Click & Collect," },
+    { "type": "text", "id": "hero_title_bot", "label": "Title line 2 (yellow italic)", "default": "made easy." },
+    { "type": "textarea", "id": "hero_subtitle", "label": "Subtitle", "default": "Pick up from our Sydney warehouse, with selected products also available for pickup in QLD and VIC when stock is available." },
+    { "type": "text", "id": "badge1_text", "label": "Badge 1", "default": "Same day or next business day pickup" },
+    { "type": "text", "id": "badge2_text", "label": "Badge 2", "default": "Fast & free pickup" },
+
+    { "type": "header", "content": "Retail store feature" },
+    { "type": "text", "id": "retail_badge", "label": "Yellow pill text", "default": "NSW RETAIL STORE" },
+    { "type": "text", "id": "retail_title", "label": "Title", "default": "Take a look inside our Wetherill Park retail store" },
+    { "type": "textarea", "id": "retail_desc", "label": "Description", "default": "Watch a quick walkthrough of our NSW retail store and pickup area. See where to park, how pickup works, and what to expect when you visit." },
+    { "type": "text", "id": "retail_tag1", "label": "Pill 1", "default": "Wetherill Park, NSW" },
+    { "type": "text", "id": "retail_tag2", "label": "Pill 2", "default": "In-store pickup" },
+    { "type": "video", "id": "retail_video", "label": "Video" },
+
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "how_heading", "label": "Heading", "default": "How it works" },
+
+    { "type": "header", "content": "Pickup locations" },
+    { "type": "text", "id": "locations_heading", "label": "Heading", "default": "Pickup locations" },
+    { "type": "text", "id": "locations_note", "label": "Note banner", "default": "Pickup details for QLD and VIC orders are sent after checkout in your order confirmation email." },
+
+    { "type": "header", "content": "Common questions" },
+    { "type": "text", "id": "faq_heading", "label": "Heading", "default": "Common questions" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "How it works step",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon",
+          "options": [
+            { "value": "cart", "label": "Cart" },
+            { "value": "package", "label": "Package" },
+            { "value": "mail", "label": "Mail" },
+            { "value": "shield", "label": "Shield" }
+          ],
+          "default": "cart"
+        },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "description", "label": "Description" }
+      ]
+    },
+    {
+      "type": "location_full",
+      "name": "Location (full)",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "NSW" },
+        { "type": "textarea", "id": "address", "label": "Address", "default": "396 Victoria St,\nWetherill Park NSW 2164" },
+        { "type": "textarea", "id": "hours", "label": "Hours", "default": "Mon-Fri 7AM-5PM, Sat 8AM-12PM" },
+        { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
+        { "type": "text", "id": "btn_text", "label": "Button text", "default": "Get directions" },
+        { "type": "url", "id": "directions_url", "label": "Directions URL" }
+      ]
+    },
+    {
+      "type": "location_chips",
+      "name": "Location (postcode chips)",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "QLD" },
+        { "type": "text", "id": "tag", "label": "Tag", "default": "Selected items only" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Pickup available in eligible postcodes when stock is available." },
+        { "type": "textarea", "id": "postcodes", "label": "Postcodes (comma-separated)", "default": "4XXX, 4XXX, 4XXX" },
+        { "type": "text", "id": "footnote", "label": "Footnote", "default": "Postcodes only appear when this item is stocked in QLD." }
+      ]
+    },
+    {
+      "type": "faq_card",
+      "name": "FAQ card",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon",
+          "options": [
+            { "value": "clock", "label": "Clock" },
+            { "value": "clipboard", "label": "Clipboard" },
+            { "value": "package", "label": "Package" },
+            { "value": "shield", "label": "Shield" }
+          ],
+          "default": "clock"
+        },
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Click & Collect V3" }
+  ]
+}
+{% endschema %}
