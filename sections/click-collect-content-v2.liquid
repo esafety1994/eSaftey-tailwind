@@ -60,7 +60,7 @@
             <ul class="cc-loc-card__details">
               <li>
                 <span class="cc-loc-card__icon">{% render 'icon-svg-clock' %}</span>
-                <span>{{ block.settings.hours }}</span>
+                <span>{{ block.settings.hours | newline_to_br }}</span>
               </li>
               <li>
                 <span class="cc-loc-card__icon">{% render 'icon-svg-phone-call' %}</span>
@@ -577,7 +577,7 @@
           "default": "yellow"
         },
         { "type": "textarea", "id": "address", "label": "Address", "default": "396 Victoria St, Wetherill Park NSW 2164" },
-        { "type": "text", "id": "hours", "label": "Hours", "default": "Mon-Fri 7AM-5PM, Sat 8AM-12PM" },
+        { "type": "textarea", "id": "hours", "label": "Hours (one line per day)", "default": "Mon-Fri 7AM-5PM\nSat 8AM-12PM" },
         { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
         { "type": "text", "id": "btn_text", "label": "Button text", "default": "Get Direction" },
         { "type": "url", "id": "directions_url", "label": "Get Direction URL" },
