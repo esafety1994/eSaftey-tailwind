@@ -411,13 +411,16 @@ class ShippingCalculator extends HTMLElement {
       //   WA/SA/TAS/NT/ACT (no local warehouse) → keep the original generic
       //     "ships from Sydney" message — no availableQty to display.
       if (ccInfo.cityLabel) {
+        // Satbar 2026-10-15 (Odoo 30672): simplified copy — drop the title
+        // and quantity count, use the static "<City> Warehouse" naming so
+        // admin renames don't affect what shoppers see.
         const availableQty = Math.max(0, ccInfo.availableQty || 0);
         const canCollectSome = availableQty > 0 && availableQty < quantity;
         const localStockLine = availableQty > 0
-          ? `Our ${ccInfo.cityLabel} warehouse has ${availableQty} in stock.`
-          : `Our ${ccInfo.cityLabel} warehouse is out of stock.`;
+          ? `Our ${ccInfo.cityLabel} Warehouse has ${availableQty} in stock.`
+          : `Our ${ccInfo.cityLabel} Warehouse is out of stock.`;
         const collectBtn = canCollectSome
-          ? `<button type="button" class="sc-cc-collect-btn" data-collect-qty="${availableQty}">Collect ${availableQty} from ${ccInfo.cityLabel} instead</button>`
+          ? `<button type="button" class="sc-cc-collect-btn" data-collect-qty="${availableQty}">Collect ${availableQty} from ${ccInfo.cityLabel} Warehouse instead</button>`
           : '';
         ccBanner = `
       <div class="sc-cc-banner sc-cc-banner--unavailable">
@@ -427,8 +430,7 @@ class ShippingCalculator extends HTMLElement {
           </svg>
         </div>
         <div class="sc-cc-content">
-          <strong class="sc-cc-title">Click &amp; Collect unavailable for ${quantity} units</strong>
-          <p class="sc-cc-desc">${localStockLine} We'll send all ${quantity} by courier, arriving ${etaDates}.</p>
+          <p class="sc-cc-desc">${localStockLine} We will send your selected quantity by courier, ETA ${etaDates}.</p>
           ${collectBtn}
         </div>
       </div>`;
