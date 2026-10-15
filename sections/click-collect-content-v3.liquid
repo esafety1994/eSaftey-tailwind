@@ -113,7 +113,7 @@
     <div class="cc3-locations__grid">
       {% for block in section.blocks %}
         {% if block.type == 'location_full' %}
-          <div class="cc3-loc" {{ block.shopify_attributes }}>
+          <div class="cc3-loc{% if block.settings.highlighted %} cc3-loc--highlighted{% endif %}" {{ block.shopify_attributes }}>
             <div class="cc3-loc__head">
               <span class="cc3-loc__marker">{% render 'icon-svg-marker' %}</span>
               <h3 class="cc3-loc__name">{{ block.settings.name }}</h3>
@@ -155,7 +155,7 @@
                 {% for chip in chips %}
                   {%- assign chip_val = chip | strip -%}
                   {% if chip_val != blank %}
-                    <span class="cc3-chip">{{ chip_val }}</span>
+                    <span class="cc3-chip{% unless block.settings.chips_available %} cc3-chip--muted{% endunless %}">{{ chip_val }}</span>
                   {% endif %}
                 {% endfor %}
               </div>
@@ -170,8 +170,9 @@
     </div>
     {% if section.settings.locations_note != blank %}
       <div class="cc3-note">
-        <span class="cc3-note__icon">{% render 'icon-svg-mail' %}</span>
+        <span class="cc3-note__i" aria-hidden="true">i</span>
         <p>{{ section.settings.locations_note }}</p>
+        <span class="cc3-note__mail" aria-hidden="true">{% render 'icon-svg-mail' %}</span>
       </div>
     {% endif %}
   </div>
@@ -367,6 +368,10 @@
     padding: 20px;
     display: flex; flex-direction: column; gap: 10px;
   }
+  .cc3-loc--highlighted {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px #FDDC14, 0 10px 24px rgba(253, 220, 20, 0.25);
+  }
   .cc3-loc__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .cc3-loc__marker {
     display: inline-flex; width: 32px; height: 32px; border-radius: 50%;
@@ -388,8 +393,13 @@
   .cc3-chip {
     display: inline-block;
     background: #FDDC14; color: #111;
-    padding: 6px 12px; border-radius: 6px;
+    padding: 6px 14px; border-radius: 8px;
     font-size: 13px; font-weight: 600;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
+  .cc3-chip--muted {
+    background: #F2F2F2; color: #999;
+    border-color: #E5E5E5;
   }
   .cc3-loc__divider { height: 1px; background: #E5E5E5; margin-top: auto; }
   .cc3-loc__foot { font-size: 12px; line-height: 1.4; color: #666; margin: 0; }
@@ -405,20 +415,26 @@
   .cc3-loc__btn-arrow svg { width: 100%; height: 100%; }
 
   .cc3-note {
-    display: flex; align-items: center; gap: 14px;
-    background: #FFF8E0; border-radius: 12px;
-    padding: 14px 18px;
+    display: flex; align-items: center; gap: 16px;
+    background: #FFF4C7; border-radius: 12px;
+    padding: 14px 20px;
     max-width: 1100px; margin: 20px auto 0;
-    justify-content: center;
   }
-  .cc3-note__icon {
+  .cc3-note__i {
     display: inline-flex; width: 32px; height: 32px;
     align-items: center; justify-content: center;
     background: #FDDC14; border-radius: 50%;
     color: #111; flex-shrink: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic; font-weight: 700; font-size: 18px;
   }
-  .cc3-note__icon svg { width: 16px; height: 16px; }
-  .cc3-note p { margin: 0; font-size: 14px; line-height: 1.4; color: #111; text-align: center; }
+  .cc3-note__mail {
+    display: inline-flex; width: 32px; height: 32px;
+    align-items: center; justify-content: center;
+    color: #FDDC14; flex-shrink: 0;
+  }
+  .cc3-note__mail svg { width: 24px; height: 24px; }
+  .cc3-note p { margin: 0; flex: 1; font-size: 15px; line-height: 1.4; color: #111; text-align: center; font-weight: 500; }
 
   /* FAQ cards */
   .cc3-faq { padding: 32px 0 56px; background: #fff; }
@@ -548,10 +564,11 @@
       "settings": [
         { "type": "text", "id": "name", "label": "Name", "default": "NSW" },
         { "type": "textarea", "id": "address", "label": "Address", "default": "396 Victoria St,\nWetherill Park NSW 2164" },
-        { "type": "textarea", "id": "hours", "label": "Hours", "default": "Mon-Fri 7AM-5PM, Sat 8AM-12PM" },
+        { "type": "textarea", "id": "hours", "label": "Hours", "default": "Mon-Fri 7AM-5PM • Sat 8AM-12PM" },
         { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
         { "type": "text", "id": "btn_text", "label": "Button text", "default": "Get directions" },
-        { "type": "url", "id": "directions_url", "label": "Directions URL" }
+        { "type": "url", "id": "directions_url", "label": "Directions URL" },
+        { "type": "checkbox", "id": "highlighted", "label": "Highlight with yellow glow", "default": true }
       ]
     },
     {
@@ -562,6 +579,7 @@
         { "type": "text", "id": "tag", "label": "Tag", "default": "Selected items only" },
         { "type": "textarea", "id": "description", "label": "Description", "default": "Pickup available in eligible postcodes when stock is available." },
         { "type": "textarea", "id": "postcodes", "label": "Postcodes (comma-separated)", "default": "4XXX, 4XXX, 4XXX" },
+        { "type": "checkbox", "id": "chips_available", "label": "Chips available (yellow). Uncheck for grey.", "default": true },
         { "type": "text", "id": "footnote", "label": "Footnote", "default": "Postcodes only appear when this item is stocked in QLD." }
       ]
     },
