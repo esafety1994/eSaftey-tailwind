@@ -127,7 +127,7 @@
       "settings": {
         "hero_bg": "shopify://shop_images/eSafety_new_warehouse_exterior_and_interior-56.jpg",
         "hero_overlay_opacity": 60,
-        "hero_bg_position_y": 50,
+        "hero_bg_position_y": 35,
         "hero_title_top": "Click & Collect,",
         "hero_title_bot": "made easy.",
         "hero_subtitle": "Pick up from our Sydney warehouse, with selected products also available for pickup in QLD and VIC when stock is available.",
