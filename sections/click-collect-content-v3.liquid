@@ -1,12 +1,12 @@
 {%- liquid
   assign hero_bg = section.settings.hero_bg
   assign retail_video = section.settings.retail_video
-  assign overlay = section.settings.hero_overlay_opacity | default: 20 | divided_by: 100.0
+  assign overlay = section.settings.hero_overlay_opacity | default: 55 | divided_by: 100.0
   assign bg_pos = section.settings.hero_bg_position_y | default: 50
 -%}
 
 <section class="cc3-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}'); background-position: center {{ bg_pos }}%;"{% endif %}>
-  <div class="cc3-hero__overlay" style="background: linear-gradient(90deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,{{ overlay }}) 55%, rgba(255,255,255,0) 100%);"></div>
+  <div class="cc3-hero__overlay" style="background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,{{ overlay }}) 55%, rgba(0,0,0,0.15) 100%);"></div>
   <div class="cc3-container cc3-hero__inner">
     <h1 class="cc3-hero__title">
       <span class="cc3-hero__title-top">{{ section.settings.hero_title_top | default: 'Click & Collect,' }}</span>
@@ -220,15 +220,17 @@
   .cc3-hero__title {
     font-family: 'Poppins', sans-serif;
     font-weight: 700; font-size: 56px; line-height: 1.0;
-    margin: 0 0 20px; color: #111;
+    margin: 0 0 20px; color: #fff;
     letter-spacing: -0.02em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
   }
   .cc3-hero__title-top, .cc3-hero__title-bot { display: block; }
   .cc3-hero__title-bot { color: #FDDC14; font-style: italic; font-weight: 700; }
   .cc3-hero__subtitle {
     font-family: 'Poppins', sans-serif;
-    font-size: 16px; line-height: 1.45; color: #1E1E1E;
+    font-size: 16px; line-height: 1.45; color: #fff;
     max-width: 440px; margin: 0 0 28px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
   }
   .cc3-hero__badges { display: flex; gap: 14px; flex-wrap: wrap; }
   .cc3-badge {
@@ -445,7 +447,7 @@
   @media (max-width: 600px) {
     .cc3-hero { min-height: 380px; }
     .cc3-hero__overlay {
-      background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 60%, rgba(255,255,255,0.2) 100%) !important;
+      background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.25) 100%) !important;
     }
     .cc3-hero__title { font-size: 34px; }
     .cc3-hero__subtitle { font-size: 14px; }
