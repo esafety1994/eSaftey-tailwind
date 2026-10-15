@@ -32,7 +32,7 @@
             "tag2": "Pickup & dispatch",
             "tag2_color": "yellow",
             "address": "396 Victoria St, Wetherill Park NSW 2164",
-            "hours": "Mon-Fri 7AM-5PM, Sat 8AM-12PM",
+            "hours": "Mon-Fri 7AM-5PM\nSat 8AM-12PM",
             "phone": "1300 291 700",
             "btn_text": "Get Direction",
             "directions_url": "https://www.google.com/maps/dir/?api=1&destination=396+Victoria+St+Wetherill+Park+NSW+2164",
