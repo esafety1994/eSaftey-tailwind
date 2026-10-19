@@ -528,13 +528,20 @@
 
   /* Mobile */
   @media (max-width: 600px) {
-    .cc3-hero { min-height: 380px; }
+    .cc3-hero { min-height: 340px; }
     .cc3-hero__overlay {
       background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.25) 100%) !important;
     }
-    .cc3-hero__title { font-size: 34px; }
-    .cc3-hero__subtitle { font-size: 14px; }
-    .cc3-badge { font-size: 12px; padding: 8px 14px; }
+    .cc3-hero__inner { padding: 32px 20px; }
+    .cc3-hero__title { font-size: 32px; margin-bottom: 12px; }
+    .cc3-hero__subtitle { font-size: 14px; margin-bottom: 18px; max-width: 100%; }
+    .cc3-hero__badges { gap: 8px; }
+    .cc3-badge {
+      font-size: 12px; padding: 6px 12px; gap: 8px;
+      width: 100%; justify-content: flex-start;
+    }
+    .cc3-badge__icon { width: 26px; height: 26px; }
+    .cc3-badge__icon svg { width: 14px; height: 14px; }
     .cc3-how__grid { grid-template-columns: 1fr; gap: 10px; }
     .cc3-step + .cc3-step::before { display: none; }
     .cc3-locations { padding: 40px 0 24px; }
