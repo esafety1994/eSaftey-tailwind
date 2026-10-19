@@ -390,7 +390,7 @@
     margin: auto;
     padding: 0; border: none; border-radius: 16px;
     background: #000; color: #fff;
-    width: auto; height: auto;
+    width: fit-content; height: fit-content;
     max-width: 92vw;
     max-height: 90vh;
     overflow: visible;
@@ -413,17 +413,14 @@
   .cc3-video-modal__media {
     position: relative;
     overflow: hidden; border-radius: 16px;
-    display: flex;
-    max-width: 92vw;
-    max-height: 90vh;
+    line-height: 0;
   }
   .cc3-video-modal__video {
     display: block;
+    height: 85vh;
+    width: auto;
     max-width: 92vw;
-    max-height: 90vh;
-    width: auto; height: auto;
     border: none; background: #000;
-    object-fit: contain;
   }
   .cc3-video-modal__iframe {
     display: block;
@@ -434,6 +431,7 @@
   }
   @media (max-width: 600px) {
     .cc3-video-modal__close { top: -14px; right: -8px; width: 36px; height: 36px; }
+    .cc3-video-modal__video { height: 75vh; }
   }
 
   /* Retail store feature */
