@@ -2,6 +2,7 @@
   assign hero_bg = section.settings.hero_bg
   assign overlay = section.settings.hero_overlay_opacity | default: 55 | divided_by: 100.0
   assign bg_pos = section.settings.hero_bg_position_y | default: 50
+  assign retail_video = section.settings.retail_video
 -%}
 
 <section class="cc3-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}'); background-position: center {{ bg_pos }}%;"{% endif %}>
@@ -118,6 +119,49 @@
         </a>
       </div>
     {% endif %}
+  </div>
+</section>
+
+<section class="cc3-retail">
+  <div class="cc3-container cc3-retail__inner">
+    <div class="cc3-retail__video">
+      {% if retail_video != blank %}
+        <video class="cc3-video cc3-video--player" muted loop playsinline controls preload="metadata" data-cc-autoplay
+          {% if retail_video.preview_image %}poster="{{ retail_video.preview_image | image_url: width: 1200 }}"{% endif %}>
+          {% for source in retail_video.sources %}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {% endfor %}
+        </video>
+      {% else %}
+        <div class="cc3-video cc3-video--placeholder">
+          <span class="cc3-video__label">Video placeholder</span>
+          <span class="cc3-video__play" aria-label="Play video"></span>
+        </div>
+      {% endif %}
+    </div>
+    <div class="cc3-retail__body">
+      {% if section.settings.retail_badge != blank %}
+        <span class="cc3-retail__badge">{{ section.settings.retail_badge }}</span>
+      {% endif %}
+      <h2 class="cc3-retail__title">{{ section.settings.retail_title | default: 'Take a look inside our Wetherill Park retail store' }}</h2>
+      {% if section.settings.retail_desc != blank %}
+        <p class="cc3-retail__desc">{{ section.settings.retail_desc }}</p>
+      {% endif %}
+      <div class="cc3-retail__tags">
+        {% if section.settings.retail_tag1 != blank %}
+          <span class="cc3-retail__pill">
+            <span class="cc3-retail__pill-icon">{% render 'icon-svg-marker' %}</span>
+            {{ section.settings.retail_tag1 }}
+          </span>
+        {% endif %}
+        {% if section.settings.retail_tag2 != blank %}
+          <span class="cc3-retail__pill">
+            <span class="cc3-retail__pill-icon">{% render 'icon-svg-store' %}</span>
+            {{ section.settings.retail_tag2 }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </section>
 
@@ -310,6 +354,62 @@
     margin-left: 2px;
   }
 
+  /* Retail store feature */
+  .cc3-retail { padding: 32px 0 48px; background: #fff; }
+  .cc3-retail__inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;
+    background: #FFF8E0; border-radius: 20px;
+    padding: 24px; max-width: 1100px;
+  }
+  .cc3-video {
+    position: relative; display: block;
+    width: 100%; aspect-ratio: 16 / 10;
+    background: #AFAFAF center/cover no-repeat;
+    border-radius: 14px; overflow: hidden;
+  }
+  .cc3-video--player { object-fit: cover; background: #000; }
+  .cc3-video__label {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(0,0,0,0.6); color: #fff;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px;
+  }
+  .cc3-video__play {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: 70px; height: 70px; border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    display: block;
+  }
+  .cc3-video__play::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    transform: translate(-40%, -50%);
+    border-left: 18px solid #111;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+  }
+  .cc3-retail__badge {
+    display: inline-block;
+    background: #FDDC14; color: #111;
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 13px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .cc3-retail__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; font-size: 26px; line-height: 1.25;
+    color: #111; margin: 0 0 10px;
+  }
+  .cc3-retail__desc { font-size: 14px; line-height: 1.5; color: #333; margin: 0 0 16px; }
+  .cc3-retail__tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cc3-retail__pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff; color: #111; border: 1px solid #E5E5E5;
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 13px;
+  }
+  .cc3-retail__pill-icon { display: inline-flex; width: 14px; height: 14px; }
+  .cc3-retail__pill-icon svg { width: 100%; height: 100%; }
+
   /* FAQ cards */
   .cc3-faq { padding: 32px 0 56px; background: #fff; }
   .cc3-faq__grid {
@@ -342,6 +442,8 @@
     .cc3-how__grid { grid-template-columns: repeat(2, 1fr); }
     .cc3-step + .cc3-step::before { display: none; }
     .cc3-locations__grid, .cc3-faq__grid { grid-template-columns: 1fr; max-width: 420px; }
+    .cc3-retail__inner { grid-template-columns: 1fr; padding: 16px; }
+    .cc3-retail__title { font-size: 20px; }
   }
 
   /* Mobile */
@@ -359,6 +461,25 @@
     .cc3-how { padding: 32px 0; }
   }
 </style>
+
+<script>
+  (function () {
+    var videos = document.querySelectorAll('video[data-cc-autoplay]');
+    if (!videos.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var v = entry.target;
+        if (entry.isIntersecting) {
+          var p = v.play();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.5 });
+    videos.forEach(function (v) { io.observe(v); });
+  })();
+</script>
 
 {% schema %}
 {
@@ -382,6 +503,14 @@
     { "type": "text", "id": "how_heading", "label": "Heading", "default": "How it works" },
     { "type": "text", "id": "how_video_label", "label": "Video link label", "default": "See how it works" },
     { "type": "url", "id": "how_video_url", "label": "Video link URL (YouTube / Vimeo / file)" },
+
+    { "type": "header", "content": "Retail store feature" },
+    { "type": "text", "id": "retail_badge", "label": "Yellow pill text", "default": "NSW RETAIL STORE" },
+    { "type": "text", "id": "retail_title", "label": "Title", "default": "Take a look inside our Wetherill Park retail store" },
+    { "type": "textarea", "id": "retail_desc", "label": "Description", "default": "Watch a quick walkthrough of our NSW retail store and pickup area. See where to park, how pickup works, and what to expect when you visit." },
+    { "type": "text", "id": "retail_tag1", "label": "Pill 1", "default": "Wetherill Park, NSW" },
+    { "type": "text", "id": "retail_tag2", "label": "Pill 2", "default": "In-store pickup" },
+    { "type": "video", "id": "retail_video", "label": "Video" },
 
     { "type": "header", "content": "Common questions" },
     { "type": "text", "id": "faq_heading", "label": "Heading", "default": "Common questions" }
