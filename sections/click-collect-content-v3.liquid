@@ -305,7 +305,7 @@
     max-width: 1100px; margin: 0 auto;
     position: relative;
   }
-  .cc3-step { position: relative; display: flex; align-items: center; gap: 10px; }
+  .cc3-step { position: relative; display: flex; align-items: stretch; gap: 10px; }
   .cc3-step + .cc3-step::before {
     content: ''; position: absolute;
     right: 100%; top: 50%;
@@ -319,6 +319,7 @@
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 14px;
     flex-shrink: 0;
+    align-self: center;
   }
   .cc3-step__card {
     display: flex; align-items: center; gap: 14px;
