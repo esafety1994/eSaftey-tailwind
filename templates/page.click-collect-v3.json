@@ -22,6 +22,7 @@
     },
     "content": {
       "type": "click-collect-content-v3",
+      "name": "Click & Collect V3",
       "blocks": {
         "loc_sydney": {
           "type": "location",
@@ -147,13 +148,12 @@
         "faq_3",
         "faq_4"
       ],
-      "name": "Click & Collect V3",
       "settings": {
-        "hero_overlay_opacity": 55,
-        "hero_bg_position_y": 50,
         "hero_title_top": "Click & Collect,",
         "hero_title_bot": "made easy.",
         "hero_subtitle": "Pick up from our Sydney warehouse, with selected products also available for pickup in QLD and VIC when stock is available.",
+        "hero_overlay_opacity": 55,
+        "hero_bg_position_y": 50,
         "badge1_text": "Same day or next business day pickup",
         "badge2_text": "Fast & free pickup",
         "locations_heading": "Pickup Locations",
@@ -161,6 +161,11 @@
         "how_heading": "How it works",
         "how_video_label": "See how it works",
         "how_video_url": "",
+        "retail_badge": "NSW RETAIL STORE",
+        "retail_title": "Take a look inside our Wetherill Park retail store",
+        "retail_desc": "Watch a quick walkthrough of our NSW retail store and pickup area. See where to park, how pickup works, and what to expect when you visit.",
+        "retail_tag1": "Wetherill Park, NSW",
+        "retail_tag2": "In-store pickup",
         "faq_heading": "Common questions"
       }
     }
