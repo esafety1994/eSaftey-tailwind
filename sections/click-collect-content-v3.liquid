@@ -528,17 +528,31 @@
 
   /* Mobile */
   @media (max-width: 600px) {
-    .cc3-hero { min-height: 340px; }
-    .cc3-hero__overlay {
-      background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.25) 100%) !important;
+    .cc3-hero {
+      min-height: 340px;
+      align-items: center;
+      justify-content: center;
     }
-    .cc3-hero__inner { padding: 32px 20px; }
-    .cc3-hero__title { font-size: 32px; margin-bottom: 12px; }
-    .cc3-hero__subtitle { font-size: 14px; margin-bottom: 18px; max-width: 100%; }
-    .cc3-hero__badges { gap: 8px; }
+    .cc3-hero__overlay {
+      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.55) 100%) !important;
+    }
+    .cc3-hero__inner {
+      padding: 40px 20px;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .cc3-hero__title { font-size: 32px; margin-bottom: 12px; text-align: center; }
+    .cc3-hero__subtitle {
+      font-size: 14px; margin: 0 auto 18px;
+      max-width: 320px; text-align: center;
+    }
+    .cc3-hero__badges {
+      gap: 8px; justify-content: center; align-items: center;
+      flex-direction: column; width: 100%;
+    }
     .cc3-badge {
-      font-size: 12px; padding: 6px 12px; gap: 8px;
-      width: 100%; justify-content: flex-start;
+      font-size: 12px; padding: 6px 14px; gap: 8px;
+      width: auto; justify-content: center;
     }
     .cc3-badge__icon { width: 26px; height: 26px; }
     .cc3-badge__icon svg { width: 14px; height: 14px; }
