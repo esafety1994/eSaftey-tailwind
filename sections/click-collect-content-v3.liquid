@@ -3,6 +3,12 @@
   assign overlay = section.settings.hero_overlay_opacity | default: 55 | divided_by: 100.0
   assign bg_pos = section.settings.hero_bg_position_y | default: 50
   assign retail_video = section.settings.retail_video
+  assign how_video = section.settings.how_video
+  assign how_video_url = section.settings.how_video_url
+  assign has_how_video = false
+  if how_video != blank or how_video_url != blank
+    assign has_how_video = true
+  endif
 -%}
 
 <section class="cc3-hero" {% if hero_bg %}style="background-image: url('{{ hero_bg | image_url: width: 2880 }}'); background-position: center {{ bg_pos }}%;"{% endif %}>
@@ -111,16 +117,34 @@
         {% endif %}
       {% endfor %}
     </div>
-    {% if section.settings.how_video_url != blank %}
+    {% if has_how_video %}
       <div class="cc3-how__video-link">
-        <a href="{{ section.settings.how_video_url }}" target="_blank" rel="noopener" class="cc3-how__link">
+        <button type="button" class="cc3-how__link" data-cc3-video-trigger="cc3-video-modal">
           <span class="cc3-how__link-icon" aria-hidden="true"></span>
           {{ section.settings.how_video_label | default: 'See how it works' }}
-        </a>
+        </button>
       </div>
     {% endif %}
   </div>
 </section>
+
+{% if has_how_video %}
+  <dialog id="cc3-video-modal" class="cc3-video-modal" aria-label="{{ section.settings.how_video_label | default: 'See how it works' }}">
+    <button type="button" class="cc3-video-modal__close" data-cc3-video-close aria-label="Close">&times;</button>
+    <div class="cc3-video-modal__media">
+      {% if how_video != blank %}
+        <video class="cc3-video-modal__video" controls playsinline preload="metadata" data-cc3-video-el
+          {% if how_video.preview_image %}poster="{{ how_video.preview_image | image_url: width: 1600 }}"{% endif %}>
+          {% for source in how_video.sources %}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {% endfor %}
+        </video>
+      {% elsif how_video_url != blank %}
+        <iframe class="cc3-video-modal__iframe" src="{{ how_video_url }}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen data-cc3-video-el></iframe>
+      {% endif %}
+    </div>
+  </dialog>
+{% endif %}
 
 <section class="cc3-retail">
   <div class="cc3-container cc3-retail__inner">
@@ -355,6 +379,43 @@
     border-bottom: 7px solid transparent;
     margin-left: 2px;
   }
+  button.cc3-how__link {
+    border: none; cursor: pointer; font-family: inherit;
+  }
+
+  /* Video modal */
+  .cc3-video-modal {
+    padding: 0; border: none; border-radius: 16px;
+    background: #000; color: #fff;
+    width: min(960px, 92vw);
+    max-width: 92vw;
+    overflow: visible;
+  }
+  .cc3-video-modal::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+  }
+  .cc3-video-modal__close {
+    position: absolute;
+    top: -16px; right: -16px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #FDDC14; color: #111;
+    border: none; cursor: pointer;
+    font-size: 24px; line-height: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+  }
+  .cc3-video-modal__close:hover { transform: scale(1.05); }
+  .cc3-video-modal__media { position: relative; overflow: hidden; border-radius: 16px; }
+  .cc3-video-modal__video,
+  .cc3-video-modal__iframe {
+    display: block; width: 100%; aspect-ratio: 16 / 9;
+    max-height: 80vh;
+    border: none; background: #000;
+  }
+  @media (max-width: 600px) {
+    .cc3-video-modal__close { top: -14px; right: -8px; width: 36px; height: 36px; }
+  }
 
   /* Retail store feature */
   .cc3-retail { padding: 32px 0 48px; background: #fff; }
@@ -467,19 +528,55 @@
 <script>
   (function () {
     var videos = document.querySelectorAll('video[data-cc-autoplay]');
-    if (!videos.length || !('IntersectionObserver' in window)) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var v = entry.target;
-        if (entry.isIntersecting) {
-          var p = v.play();
-          if (p && typeof p.catch === 'function') p.catch(function () {});
-        } else {
-          v.pause();
+    if (videos.length && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var v = entry.target;
+          if (entry.isIntersecting) {
+            var p = v.play();
+            if (p && typeof p.catch === 'function') p.catch(function () {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.5 });
+      videos.forEach(function (v) { io.observe(v); });
+    }
+
+    document.querySelectorAll('[data-cc3-video-trigger]').forEach(function (trigger) {
+      var modalId = trigger.getAttribute('data-cc3-video-trigger');
+      var modal = document.getElementById(modalId);
+      if (!modal) return;
+      var videoEl = modal.querySelector('[data-cc3-video-el]');
+      var closeBtn = modal.querySelector('[data-cc3-video-close]');
+
+      function openModal() {
+        if (typeof modal.showModal === 'function') modal.showModal();
+        else modal.setAttribute('open', '');
+        document.body.style.overflow = 'hidden';
+        if (videoEl && videoEl.tagName === 'VIDEO') {
+          try { videoEl.currentTime = 0; } catch (e) {}
+          var pp = videoEl.play();
+          if (pp && typeof pp.catch === 'function') pp.catch(function () {});
         }
-      });
-    }, { threshold: 0.5 });
-    videos.forEach(function (v) { io.observe(v); });
+      }
+      function closeModal() {
+        if (videoEl && videoEl.tagName === 'VIDEO') { try { videoEl.pause(); } catch (e) {} }
+        if (videoEl && videoEl.tagName === 'IFRAME') {
+          var src = videoEl.getAttribute('src');
+          videoEl.setAttribute('src', '');
+          videoEl.setAttribute('src', src);
+        }
+        if (typeof modal.close === 'function') modal.close();
+        else modal.removeAttribute('open');
+        document.body.style.overflow = '';
+      }
+
+      trigger.addEventListener('click', openModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+      modal.addEventListener('close', function () { closeModal(); });
+    });
   })();
 </script>
 
@@ -503,8 +600,9 @@
 
     { "type": "header", "content": "How it works" },
     { "type": "text", "id": "how_heading", "label": "Heading", "default": "How it works" },
-    { "type": "text", "id": "how_video_label", "label": "Video link label", "default": "See how it works" },
-    { "type": "url", "id": "how_video_url", "label": "Video link URL (YouTube / Vimeo / file)" },
+    { "type": "text", "id": "how_video_label", "label": "Video button label", "default": "See how it works" },
+    { "type": "video", "id": "how_video", "label": "Click & Collect video (upload)" },
+    { "type": "url", "id": "how_video_url", "label": "Or YouTube / Vimeo embed URL (used if no upload)" },
 
     { "type": "header", "content": "Retail store feature" },
     { "type": "text", "id": "retail_badge", "label": "Yellow pill text", "default": "NSW RETAIL STORE" },
