@@ -474,12 +474,12 @@ class ShippingCalculator extends HTMLElement {
   }
 
   _getETARange(postcode) {
-    return '1–5 business days';
+    return '1–4 business days';
   }
 
   _getETADates(postcode) {
     const start = this._addBusinessDays(new Date(), 1);
-    const end   = this._addBusinessDays(new Date(), 5);
+    const end   = this._addBusinessDays(new Date(), 4);
     return `${this._fmtDate(start)} – ${this._fmtDate(end)}`;
   }
 
