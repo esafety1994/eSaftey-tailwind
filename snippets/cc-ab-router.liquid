@@ -1,0 +1,36 @@
+{%- comment -%}
+  Click & Collect A/B router.
+  Fires only when the user arrives via the homepage banner (?ab=1).
+  30% assigned to V3 (/pages/click-collect-v3), 70% stay on V2/current.
+  Assignment persists via `cc_variant` cookie for 7 days.
+{%- endcomment -%}
+<script>
+(function () {
+  var SPLIT = 0.30;
+  var COOKIE = 'cc_variant';
+  var V3_PATH = '/pages/click-collect-v3';
+  var AB_PARAM = 'ab=1';
+
+  var qs = window.location.search || '';
+  var isBannerClick = qs.indexOf(AB_PARAM) !== -1;
+
+  function readCookie(name) {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? m[1] : null;
+  }
+  function writeCookie(name, val) {
+    var exp = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = name + '=' + val + '; path=/; expires=' + exp + '; samesite=lax';
+  }
+
+  var variant = readCookie(COOKIE);
+  if (isBannerClick && !variant) {
+    variant = Math.random() < SPLIT ? 'v3' : 'control';
+    writeCookie(COOKIE, variant);
+  }
+
+  if (variant === 'v3' && window.location.pathname !== V3_PATH) {
+    window.location.replace(V3_PATH + (qs ? qs : ''));
+  }
+})();
+</script>

@@ -12,6 +12,18 @@
     "carousel_kxG3tk": {
       "type": "carousel",
       "blocks": {
+        "slider_item_ccBanner": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/CNC-HomeBanner-5_1.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "/pages/click-collect?ab=1"
+          }
+        },
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
@@ -52,6 +64,7 @@
         }
       },
       "block_order": [
+        "slider_item_ccBanner",
         "slider_item_wmYUEQ",
         "slider_item_Y9N7BV",
         "slider_item_GK847N"

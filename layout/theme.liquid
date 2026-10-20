@@ -1,174 +1,160 @@
-<html>
+<!DOCTYPE html>
+<html lang="en-AU">
   <head>
-    <title>
-      {{- page_title -}}
-      {%- if current_tags -%}
-        {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
-      {%- endif -%}
-      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
-      {%- if template == 'password' -%}
-        {{- shop.name -}}
-      {%- else -%}
-        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
-      {%- endif -%}
-    </title>
-
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
+  <title>
+    {{ page_title }}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%}
+      &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
     {%- endif -%}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {%- unless template contains 'blog' or template contains 'article' -%}
+      &ndash; {{ shop.name }}
+    {%- endunless -%}
+  </title>
 
-    {{ content_for_header }}
+{% capture meta_desc %}
+  {{ page_description | strip }}
+  {% if current_page > 1 %}
+    - Page {{ current_page }}
+  {% endif %}
+{% endcapture %}
+
+<meta name="description" content="{{ meta_desc | strip | escape }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://widget.reviews.io">
+    <link rel="dns-prefetch" href="https://api.reviews.io">
+    <meta name="google-site-verification" content="8XLKOy2SDbX3fFsPtBxHwpJytlw3ic3tWVTBf80ZZlg">
+{% unless template contains 'product' %}
+    <script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": "LocalBusiness",
+"name": "eSafety Supplies",
+"image": "https://esafetysupplies.com.au/cdn/shop/files/pixelcut-export_7_b8ebcbee-2a58-4ceb-8009-1f0706b0c7a8.png?v=1736227958&width=500",
+"@id": "",
+"url": "https://esafetysupplies.com.au/",
+"telephone": "1300 291 700",
+"priceRange": "00",
+"address": {
+"@type": "PostalAddress",
+"streetAddress": "396 Victoria St",
+"addressLocality": "Wetherill Park NSW",
+"addressRegion": "NSW",
+"postalCode": "2164",
+"addressCountry": "AU"
+},
+
+"review": {
+"@type": "Review",
+"reviewRating": {
+"@type": "Rating",
+"ratingValue": 5,
+"bestRating": 5
+},
+"author": {
+"@type": "Person",
+"name": "Matthew Ryan"
+}
+},
+"geo": {
+"@type": "GeoCoordinates",
+"latitude": -33.8448213,
+"longitude": 150.8830471
+},
+"openingHoursSpecification": [
+{
+"@type": "OpeningHoursSpecification",
+"dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+"opens": "07:00",
+"closes": "18:00"
+},
+{
+"@type": "OpeningHoursSpecification",
+"dayOfWeek": ["Saturday", "Sunday"],
+"opens": "08:00",
+"closes": "12:00"
+}
+],
+"sameAs": [
+"https://www.facebook.com/eSafetySupplies/",
+"https://www.instagram.com/e.safetysupplies/",
+"https://www.youtube.com/channel/UCWuWMg_2P1z8ySlptMp5pMQ",
+"https://www.linkedin.com/company/esafetysupplies",
+"https://esafetysupplies.com.au/"
+]
+}
+</script>
+{% endunless %}
+    {%- if settings.use_favicon == true and settings.favicon != blank -%}
+      <link rel="shortcut icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- if tinyscript -%}{{ content_for_header }}{%- else -%}{% render 'tiny-script-control' %}{%- endif -%}
+
+    {% comment %} Critical CSS in <head> so carousel LCP element has dimensions before any script can block rendering {% endcomment %}
+    {% section 'head-critical-css' %}
+
+    {% comment %} Page-load overlay — covers unstyled content until async CSS is ready {% endcomment %}
+    <style>
+      #esf-loader{position:fixed;inset:0;z-index:2147483647;background:#fff;display:flex;align-items:center;justify-content:center}
+      @keyframes esf-spin{to{transform:rotate(360deg)}}
+      #esf-loader-ring{width:48px;height:48px;border-radius:50%;border:4px solid #fedc13;border-top-color:#1a1a1a;animation:esf-spin .75s linear infinite}
+    </style>
 
     {% comment %} Use the store-hosted font via Shopify CDN and set defaults {% endcomment %}
 
     {% render 'font-face' %}
-    {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
-    {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
-    {{ 'esafety-drawer.css' | asset_url | stylesheet_tag }}
-    {{ 'global.css' | asset_url | stylesheet_tag }}
+    <link rel="preload" href="{{ 'glide.core.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'glide.core.min.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'tailwind.output.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'tailwind.output.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'esafety-drawer.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'esafety-drawer.css' | asset_url }}"></noscript>
+    <link rel="preload" href="{{ 'global.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'global.css' | asset_url }}"></noscript>
     {%- if template == 'product' -%}
-      {{ 'product.css' | asset_url | stylesheet_tag: preload: true }}
+      <link rel="preload" href="{{ 'product.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="{{ 'product.css' | asset_url }}"></noscript>
     {%- endif -%}
-    {% render 'rapid-search-settings' %}
-  
-{%- if customer.metafields.sparklayer.authentication -%}
-<!-- SparkLayer brand variables — Block 1: inside auth conditional -->
-<style type="text/css">
-:root {
-  /* Brand */
-  --b2b-brand-color: #FDDC14;
-  --b2b-brand-color-hover: #d7bb11;
-  --b2b-brand-font: Poppins, sans-serif;
-  --b2b-brand-font-heading: Poppins, sans-serif;
-
-  /* Colours */
-  --spark-default-body-color: #555555;
-  --spark-primary-color: #000000;
-  --spark-secondary-color: var(--b2b-brand-color);
-  --spark-link-color: var(--b2b-brand-color);
-
-  /* Typefaces */
-  --spark-font-default: var(--b2b-brand-font);
-  --spark-font-highlight: var(--b2b-brand-font-heading);
-  --spark-font-weight-default: 400;
-  --spark-font-weight-medium: 500;
-  --spark-font-weight-heavy: 600;
-
-  /* General */
-  --spark-border-radius-default: 0; /* 4px if theme has rounded buttons, otherwise 0 */
-  --spark-drawer-max-width: 700px;
-  --spark-drawer-max-width-wide: 1000px;
-
-  /* Font sizes */
-  --spark-font-default-size: 14px;
-  --spark-font-default-size-small: 14px;
-  --spark-header-font: var(--b2b-brand-font-heading);
-  --spark-header-font-weight: 500;
-  --spark-h1-fontsize: 24px;
-  --spark-h2-fontsize: 22px;
-  --spark-h3-fontsize: 20px;
-  --spark-h4-fontsize: 16px;
-  --spark-h5-fontsize: 15px;
-  --spark-h6-fontsize: 14px;
-  --spark-pricing-fontsize: 20px;
-  --spark-pricing-font-weight: 500;
-  --spark-pricing-fontsize-small: 14px;
-  --spark-product-code-fontsize: 16px;
-  --spark-product-code-font-weight: 500;
-  --spark-product-code-fontsize-small: 14px;
-  --spark-product-stockstatus-align: flex-start;
-
-  /* Buttons */
-  --spark-button-font-family: var(--b2b-brand-font-heading);
-  --spark-button-color: var(--b2b-brand-color);
-  --spark-button-color-highlight: var(--b2b-brand-color-hover);
-  --spark-button-large-color: var(--b2b-brand-color);
-  --spark-button-large-color-highlight: var(--b2b-brand-color-hover);
-  --spark-border-radius-button: 0;
-  --spark-button-font-weight: 600;
-  --spark-button-text-transform: none;
-  --spark-button-text-letter-spacing: 0;
-  --spark-button-padding: 1em 2.75em;
-  --spark-button-small-font-size: 16px;
-
-  /* Tables */
-  --spark-table-border-color: #CCCCCC;
-  --spark-table-header-background-color: #F1F1F1;
-  --spark-table-header-text-color: #222222;
-  --spark-table-header-font-weight: 500;
-
-  /* Product Card */
-  --spark-product-card-button-radius: 0;
-  --spark-product-card-button-padding: 0.75em 1em;
-  --spark-product-card-pricing-font-size: 15px;
-  --spark-product-card-pricing-font-size-small: 14px;
-  --spark-product-card-select-min-height: 0;
-}
-</style>
-
-<!-- SparkLayer — disable automatic theme install (core script loaded via app embed) -->
-<script>
-window.sparkShopify = {
-  options: {
-    disableAutoInstall: true
-  }
-};
-</script>
-
-<style>
-  /* SparkLayer — B2C element hides */
-  .cart-count-bubble,
-  .card__badge,
-  .announcement-bar,
-  .announcement-bar-section,
-  cart-drawer,
-  #product-price,
-  variant-picker,
-  esafety-cart-action-button,
-  #product-act-button,
-  .product-card esafety-custom-add-to-cart-button,
-  esafety-custom-add-to-cart-button,
-  .foxkit-stock-countdown,
-  [data-sticky-cart],
-  .sticky-cart,
-  #product-sku,
-  .product-stock-badge,
-  spark-pdp::part(price-container) {
-    display: none !important;
-  }
-
-  /* SparkLayer — price wildcard (excludes containers with spark-product-card or spark-pdp) */
-  [class*="price"]:not(:has(spark-product-card)):not(:has(spark-pdp)) {
-    display: none !important;
-  }
-
-  /* SparkLayer — card layout */
-  spark-product-card {
-    display: block;
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    pointer-events: auto;
-  }
-
-  /* SparkLayer — prevent :empty hiding before JS hydration */
-  spark-pdp:empty,
-  spark-product-card:empty {
-    display: block !important;
-  }
-
-</style>
-{%- endif -%}
-
-<!-- SparkLayer redirect — always outside conditional -->
-<script async src="https://cdn.sparklayer.io/spark-redirect.js"></script>
-
-</head>
-  <body class="font-normal">
+    {%- if request.path == '/pages/click-collect' -%}
+      {% render 'cc-ab-router' %}
+    {%- endif -%}
+  </head>
+  <body class="font-normal static">
+    <div id="esf-loader"><div id="esf-loader-ring"></div></div>
+    <script>
+      (function(){
+        var maxWait=setTimeout(function(){var l=document.getElementById('esf-loader');if(l)l.style.display='none';},2000);
+        function check(){
+          var t=document.createElement('div');
+          t.className='hidden';
+          t.style.cssText='position:absolute;top:-9999px;pointer-events:none';
+          document.body.appendChild(t);
+          var ready=getComputedStyle(t).display==='none';
+          document.body.removeChild(t);
+          if(ready){
+            clearTimeout(maxWait);
+            requestAnimationFrame(function(){
+              var l=document.getElementById('esf-loader');
+              if(l) l.style.display='none';
+            });
+          } else {
+            setTimeout(check,30);
+          }
+        }
+        check();
+      })();
+    </script>
     {% render 'global-spinner' %}
-    <div class="relative">
+    {%- unless template.suffix == 'esafety-advantage' -%}
+    <div class="sticky top-0 z-50 bg-white">
       {% sections 'header-group' %}
       <section class="top-bar hidden container mx-auto px-4 md:flex py-1.5 transition-all duration-500">
         {% render 'top-navbar' %}
@@ -181,30 +167,32 @@ window.sparkShopify = {
             <div class="w-8">{% section 'cart-count' %}</div>
           </div>
         </div>
-        {% render 'navbar' %}
+        <div class="hidden md:block">{% render 'navbar' %}</div>
+        <div class="bg-primary md:hidden">{% render 'searchbox' %} </div>
+        {% render 'esa-advantage-mobile' %}
+        <!-- Mobile USP scroll strip (below search bar) -->
+        <div class="block md:hidden">
+          {% render 'header-upsell-section', mobile: true %}
+        </div>
       </header>
 
       <!-- spacer to prevent layout jump when header becomes fixed -->
       <div id="header-spacer" aria-hidden="true" style="display:none"></div>
     </div>
-    
+    {%- endunless -%}
+
     <main id="main" role="main">
       {{ content_for_layout }}
     </main>
 
     {% section 'esaftey-cart-drawer' %}
-    <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
     {% if settings.use_minified_assets %}
       {%- if template contains 'product' -%}
-        <script defer src="{{ 'product-details.min.js' | asset_url }}"></script>
+        <script defer src="{{ 'product-bundle.min.js' | asset_url }}"></script>
       {%- endif -%}
-      <script defer src="{{ 'esafety-drawer.min.js' | asset_url }}"></script>
-
-      <script defer src="{{ 'theme.min.js' | asset_url }}"></script>
-      <script defer src="{{ 'cart-item-control.min.js' | asset_url }}"></script>
-      <script defer src="{{ 'accordion-tab.min.js' | asset_url }}"></script>
-      <script defer src="{{ 'navigation.min.js' | asset_url }}"></script>
+      <script defer src="{{ 'theme-bundle.min.js' | asset_url }}"></script>
     {% else %}
+      <script defer src="{{ 'glide.min.js' | asset_url }}"></script>
       {%- if template contains 'product' -%}
         <script defer src="{{ 'product-details.js' | asset_url }}"></script>
       {%- endif -%}
@@ -214,7 +202,181 @@ window.sparkShopify = {
       <script defer src="{{ 'cart-item-control.js' | asset_url }}"></script>
       <script defer src="{{ 'accordion-tab.js' | asset_url }}"></script>
       <script defer src="{{ 'navigation.js' | asset_url }}"></script>
+      <script defer src="{{ 'predictive-search.js' | asset_url }}"></script>
     {% endif %}
-    {% sections 'footer-group' %}
+    {%- unless template.suffix == 'esafety-advantage' -%}
+    <footer>{% sections 'footer-group' %}</footer>
+{% render 'mobile-bottom-nav' %}
+    {%- endunless -%}
+
+    {% if template contains 'blog' and template != 'article' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ shop.url }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ blog.title | json }},
+        "item": "{{ shop.url }}{{ blog.url }}"
+      }
+    ]
+  }
+  </script>
+  {% endif %}
+
+  {% if template contains 'article' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ shop.url }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ blog.title | json }},
+        "item": "{{ shop.url }}{{ blog.url }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": {{ article.title | json }},
+        "item": "{{ shop.url }}{{ article.url }}"
+      }
+    ]
+  }
+  </script>
+  {% endif %}
+  {% if template contains 'article' %}
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ canonical_url }}",
+      "url": "{{ shop.url }}{{ article.url }}"
+    },
+    "headline": {{ article.title | json }},
+    "description": {{ article.excerpt | strip_html | default: article.content | strip_html | truncate: 160 | json }},
+    "image": [
+      {% if article.image %}
+        "{{ article.image | image_url: width: 1200 }}"
+      {% else %}
+        "{{ shop.brand.logo | image_url }}"
+      {% endif %}
+    ],
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ shop.brand.logo | image_url }}"
+      }
+    },
+    "datePublished": "{{ article.published_at | date: '%Y-%m-%d' }}",
+    "dateModified": "{{ article.updated_at | date: '%Y-%m-%d' }}"
+  }
+  </script>
+
+  {% endif %}
+  {%- section 'promo-popup' -%}
+
+  <script>
+    function loadGTM() {
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-WT8Q95B');
+    }
+    function loadHotjar() {
+      (function (h, o, t, j, a, r) {
+        h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments); };
+        h._hjSettings = { hjid: 2509798, hjsv: 6 };
+        a = o.getElementsByTagName('head')[0];
+        r = o.createElement('script');
+        r.async = 1;
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+        a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    }
+    function loadClarity() {
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "o0rr0feh4u");
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(function () { loadGTM(); });
+    } else {
+      setTimeout(function () { loadGTM(); }, 3000);
+    }
+    var _heatmapsLoaded = false;
+    function loadHeatmaps() {
+      if (_heatmapsLoaded) return;
+      _heatmapsLoaded = true;
+      loadHotjar();
+      loadClarity();
+    }
+    window.addEventListener('scroll', loadHeatmaps, { once: true });
+    window.addEventListener('click', loadHeatmaps, { once: true });
+  </script>
+
+  <script>
+    window.addEventListener('scroll', function loadPodiumWidget() {
+      if (window.scrollY > 300) {
+        window.removeEventListener('scroll', loadPodiumWidget);
+        var script = document.createElement('script');
+        script.src = 'https://connect.podium.com/widget.js#ORG_TOKEN=45d615a7-fd5b-4202-96bb-1a277644e6a7';
+        script.id = 'podium-widget';
+        script.setAttribute('data-organization-api-token', '45d615a7-fd5b-4202-96bb-1a277644e6a7');
+        script.setAttribute('data-styles', 'bottom: -10px;');
+        script.setAttribute('data-styles-phone', 'bottom: 75px;');
+        script.defer = true;
+        document.head.appendChild(script);
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const path = window.location.pathname;
+      if (path === '/PodiumWebChat.open' || path === '/chat') {
+        const tryOpenChat = () => {
+          if (window.PodiumWebChat && typeof PodiumWebChat.open === 'function') {
+            PodiumWebChat.open();
+          } else {
+            setTimeout(tryOpenChat, 500);
+          }
+        };
+        tryOpenChat();
+      }
+    });
+  </script>
   </body>
 </html>
