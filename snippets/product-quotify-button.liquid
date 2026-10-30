@@ -65,15 +65,32 @@
   .quotify-view-btn:hover { background: #f9fafb !important; }
   .quotify-add-icon { flex-shrink: 0; }
 
-  /* Mobile: stack, hide "View quote" */
+  /* Mobile: side by side */
   @media (max-width: 767px) {
     .quotify-btns {
-      flex-direction: column;
+      flex-direction: row;
       gap: 8px;
-      padding: 10px 0 6px;
+      padding: 10px 0 0;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
-    .quotify-add-btn { width: 100% !important; }
-    .quotify-view-btn { display: none !important; }
+    .quotify-btns button {
+      flex: 1 1 0 !important;
+      width: 0 !important;
+      min-width: 0 !important;
+      white-space: nowrap !important;
+      font-size: 13px !important;
+      padding: 12px 8px !important;
+      min-height: 48px !important;
+      box-sizing: border-box !important;
+      text-align: center !important;
+      justify-content: center !important;
+    }
+    /* Hide icon on mobile so "Add to quote" fits on one line */
+    .quotify-btns [data-quotify] svg,
+    .quotify-btns [data-quotify] .quotify-add-icon { display: none !important; }
+    .quotify-view-btn,
+    .quotify-btns [data-quotify-cart] { display: flex !important; }
   }
 </style>
 

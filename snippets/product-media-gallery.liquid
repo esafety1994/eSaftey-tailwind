@@ -26,6 +26,8 @@
     id="esProductGlide"
     data-start-index="{{ start_index }}"
     data-esProductGlideCount="{{ product.media.size }}"
+    data-product-id="{{ product.id }}"
+    data-product-handle="{{ product.handle }}"
   >
     <div class="glide__track" data-glide-el="track">
       <ul class="glide__slides">
@@ -108,6 +110,21 @@
         </svg>
       </button>
     </div>
+
+    <!-- Mobile overlaid pagination dots (only when multiple images) -->
+    {% if product.media.size > 1 %}
+      <div class="pdp-mobile-dots" data-glide-el="controls[nav]" aria-label="Image pagination">
+        {% for media in product.media %}
+          <button
+            type="button"
+            class="pdp-dot glide__bullet{% if forloop.index0 == start_index %} pdp-dot--active glide__bullet--active{% endif %}"
+            data-glide-dir="={{ forloop.index0 }}"
+            data-dot-index="{{ forloop.index0 }}"
+            aria-label="Go to image {{ forloop.index }}"
+          ></button>
+        {% endfor %}
+      </div>
+    {% endif %}
 
     <!-- Thumbnails carousel -->
     {% if show_thumbs != false %}
