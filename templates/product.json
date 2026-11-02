@@ -20,7 +20,7 @@
       "settings": {
         "background": "shopify://shop_images/Slim-Banner-1_1.jpg",
         "mobile_background": "shopify://shop_images/Slim-Banner-1_1.jpg",
-        "banner_link": "",
+        "banner_link": "shopify://pages/click-and-collect",
         "open_in_new_tab": false
       }
     },
