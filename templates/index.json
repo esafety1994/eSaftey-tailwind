@@ -15,6 +15,19 @@
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
+            "background": "shopify://shop_images/CNC-HomeBanner-5.jpg",
+            "mobile_background": "shopify://shop_images/CNC-HomeBanner-5.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": "https://esafetysupplies.com.au/pages/new-installation-page"
+          }
+        },
+        "slider_item_bnrjiK": {
+          "type": "slider_item",
+          "settings": {
             "background": "shopify://shop_images/Install_Banner_1.webp",
             "mobile_background": "shopify://shop_images/Install_Banner_1.webp",
             "single_image": true,
@@ -27,7 +40,8 @@
         }
       },
       "block_order": [
-        "slider_item_wmYUEQ"
+        "slider_item_wmYUEQ",
+        "slider_item_bnrjiK"
       ],
       "settings": {
         "enable_autoplay": true,
