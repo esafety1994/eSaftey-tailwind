@@ -17,7 +17,12 @@
     "internal_page_banner": {
       "type": "internal-page-banner",
       "name": "Single Banner",
-      "settings": {}
+      "settings": {
+        "background": "shopify://shop_images/Slim-Banner-1_1.jpg",
+        "mobile_background": "shopify://shop_images/Slim-Banner-1_1.jpg",
+        "banner_link": "shopify://pages/click-and-collect",
+        "open_in_new_tab": false
+      }
     },
     "main": {
       "type": "main-product",
@@ -58,6 +63,7 @@
             "field_type": "textarea",
             "field_options": "",
             "field_placeholder": "Enter your message for the custom sign",
+            "field_help_text": "",
             "field_required": true,
             "show_at_checkout": true
           }
