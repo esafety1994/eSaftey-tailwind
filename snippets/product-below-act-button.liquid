@@ -28,7 +28,7 @@
   <div class="pdp-info-grid">
 
     <!-- Click & Collect -->
-    <button type="button" class="pdp-info-box" id="pdp-cc-toggle" aria-expanded="true" aria-controls="pdp-cc-expand">
+    <button type="button" class="pdp-info-box" id="pdp-cc-toggle" aria-expanded="false" aria-controls="pdp-cc-expand">
       <div class="pdp-box-icon-wrap">
         {% render 'icon-svg-store', class: 'pdp-box-icon pdp-icon-gray', stroke_width: 1.25 %}
       </div>
@@ -66,7 +66,7 @@
   </div>
 
   <!-- C&C expandable section (inside the card) -->
-  <div class="pdp-cc-expand" id="pdp-cc-expand" data-pickup-panel>
+  <div class="pdp-cc-expand" id="pdp-cc-expand" data-pickup-panel hidden>
 
     <div class="pdp-cc-header">
       <div class="pdp-cc-header-left">
