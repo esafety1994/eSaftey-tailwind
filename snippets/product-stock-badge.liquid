@@ -17,6 +17,18 @@
     {%- assign status = product.metafields.inventory.stock_status.value | default: product.metafields.inventory.stock_status -%}
   {%- endif -%}
 
+  {%- comment -%}
+    Satbar 2026-10-14 (Odoo 30562): if the variant actually has stock on
+    hand (any warehouse), force the badge to "In Stock" regardless of what
+    the metafield says. This covers the human-error case where Sydney has
+    15 units but someone forgot to update the metafield from "Out of Stock".
+    Live stock is the source of truth when it's positive; the metafield
+    only drives the badge when live qty is 0 or negative.
+  {%- endcomment -%}
+  {%- if _variant and _variant.inventory_quantity and _variant.inventory_quantity > 0 -%}
+    {%- assign status = 'In Stock' -%}
+  {%- endif -%}
+
   {% if status %}
     <span class="flex py-1 text-sm gap-1 items-center ">
       {% if status == 'Back Order' or status == 'Out of Stock' or status == 'Low Stock' %}

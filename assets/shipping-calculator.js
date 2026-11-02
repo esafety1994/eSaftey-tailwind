@@ -361,7 +361,6 @@ class ShippingCalculator extends HTMLElement {
     const productTotal = (this.product.price / 100) * quantity;
     const estimatedTotal = productTotal + shippingCost;
     const etaDates = this._getETADates(postcode);
-    const isNSW = this._isNSW(postcode);
     const productImage = this.product.image || '';
     const variantId = this.product.variant_id || '';
 
@@ -370,10 +369,21 @@ class ShippingCalculator extends HTMLElement {
     const shippingLabel = this.isB2B ? 'Courier – Freight to be confirmed' : 'Shipping';
     const shippingDisplay = this.isB2B ? '$0.00' : `$${shippingCost.toFixed(2)}`;
     const etaDisplay = this.isB2B ? 'Confirmed after order review' : etaDates;
-    const showCcBanner = isNSW && !this.isB2B;
 
-    // C&C banner: separate yellow card shown above the green estimate card for NSW
-    const ccBanner = showCcBanner ? `
+    // Per-state banner rules. Two variants, same pale-yellow palette:
+    //   'available'   → "Click & Collect available"   + local warehouse note
+    //   'unavailable' → "Click & Collect not available" + multi-warehouse copy
+    // Sydney (NSW) always renders 'available' (HQ bypass).
+    // VIC/QLD render 'available' when local has enough stock, else 'unavailable'.
+    // Blocked provinces (WA/TAS/NT/ACT/SA) always render 'unavailable'.
+    // Palette locked per Satbar spec 2026-09-25:
+    //   bg #FDF8C4 / border #F4E20D / text #231F20
+    const ccInfo = this.isB2B ? null : this._getCcInfoForPostcode(postcode, quantity);
+
+    let ccBanner = '';
+    if (ccInfo && ccInfo.status === 'available') {
+      // Uses the theme's original sc-cc-* CSS classes — no inline overrides.
+      ccBanner = `
       <div class="sc-cc-banner">
         <div class="sc-cc-icon-wrap">
           <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
@@ -382,16 +392,63 @@ class ShippingCalculator extends HTMLElement {
         </div>
         <div class="sc-cc-content">
           <div class="sc-cc-title-row">
-            <strong class="sc-cc-title">Sydney postcode detected</strong>
+            <strong class="sc-cc-title">${ccInfo.cityLabel} postcode detected</strong>
             <span class="sc-cc-badge">Click &amp; collect available</span>
           </div>
-          <p class="sc-cc-desc">Click &amp; collect available from our Sydney warehouse.</p>
+          <p class="sc-cc-desc">Click &amp; collect available from our ${ccInfo.cityLabel} warehouse.</p>
           <a href="/pages/click-collect" class="sc-cc-link">View pickup details <span aria-hidden="true">›</span></a>
         </div>
         <svg class="sc-cc-chevron" width="16" height="16" fill="none" viewBox="0 0 24 24">
           <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-      </div>` : '';
+      </div>`;
+    } else if (ccInfo && ccInfo.status === 'unavailable') {
+      // Two sub-cases (Karan 2026-10-07, Odoo 30183):
+      //   VIC/QLD short-stock → show how many units the local warehouse CAN
+      //     cover and offer a one-click "Collect N from <city> instead"
+      //     button that drops the qty to what the local 3PL can fulfil, so
+      //     the customer stays in the C&C flow instead of bouncing.
+      //   WA/SA/TAS/NT/ACT (no local warehouse) → keep the original generic
+      //     "ships from Sydney" message — no availableQty to display.
+      if (ccInfo.cityLabel) {
+        // Satbar 2026-10-15 (Odoo 30672): simplified copy — drop the title
+        // and quantity count, use the static "<City> Warehouse" naming so
+        // admin renames don't affect what shoppers see.
+        const availableQty = Math.max(0, ccInfo.availableQty || 0);
+        const canCollectSome = availableQty > 0 && availableQty < quantity;
+        const localStockLine = availableQty > 0
+          ? `Our ${ccInfo.cityLabel} Warehouse has ${availableQty} in stock.`
+          : `Our ${ccInfo.cityLabel} Warehouse is out of stock.`;
+        const collectBtn = canCollectSome
+          ? `<button type="button" class="sc-cc-collect-btn" data-collect-qty="${availableQty}">Collect ${availableQty} from ${ccInfo.cityLabel} Warehouse instead</button>`
+          : '';
+        ccBanner = `
+      <div class="sc-cc-banner sc-cc-banner--unavailable">
+        <div class="sc-cc-icon-wrap">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#92400e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="sc-cc-content">
+          <p class="sc-cc-desc">${localStockLine} We will send your selected quantity by courier, ETA ${etaDates}.</p>
+          ${collectBtn}
+        </div>
+      </div>`;
+      } else {
+        ccBanner = `
+      <div class="sc-cc-banner sc-cc-banner--unavailable">
+        <div class="sc-cc-icon-wrap">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke="#92400e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="sc-cc-content">
+          <strong class="sc-cc-title">Click &amp; Collect not available</strong>
+          <p class="sc-cc-desc">Your cart contains stock from multiple warehouses, so your order will be sent by courier from our Sydney warehouse.</p>
+        </div>
+      </div>`;
+      }
+    }
 
     const productImgHtml = productImage
       ? `<img src="${productImage}" alt="" class="sc-product-img">`
@@ -473,13 +530,60 @@ class ShippingCalculator extends HTMLElement {
     return false;
   }
 
+  // Given a postcode and the ordered quantity, return the C&C banner state:
+  //   null                           → unknown postcode → silent
+  //   { status: 'available', ... }   → local warehouse can fulfill
+  //   { status: 'unavailable', ... } → ships from Sydney (multi-warehouse)
+  //
+  // Trigger rules (mirrors checkout-routing pickup-filter):
+  //   NSW    → 'available' (Sydney HQ ALWAYS fulfills, regardless of stock —
+  //            we source/backorder from HQ)
+  //   VIC    → 'available' if VIC stock ≥ ordered qty, else 'unavailable'
+  //   QLD    → 'available' if QLD stock ≥ ordered qty, else 'unavailable'
+  //   WA/TAS/NT/ACT/SA → 'unavailable' (no local warehouse; always Sydney)
+  //   Unknown → null (silent)
+  _getCcInfoForPostcode(postcode, quantity) {
+    const state = this.getStateCode(postcode);
+
+    // Sydney (HQ) bypass — always show "available" for NSW customers,
+    // even when Sydney warehouse stock is 0 or lower than ordered qty.
+    if (state === 'NSW') {
+      return { code: 'W1', cityLabel: 'Sydney', status: 'available' };
+    }
+
+    // Blocked provinces — always ship from Sydney.
+    const BLOCKED = ['WA', 'TAS', 'NT', 'ACT', 'SA'];
+    if (BLOCKED.indexOf(state) !== -1) {
+      return { status: 'unavailable' };
+    }
+
+    const map = {
+      VIC: { code: 'VW', cityLabel: 'Melbourne' },
+      QLD: { code: 'QW', cityLabel: 'Brisbane' },
+    };
+    const info = map[state];
+    if (!info) return null;
+
+    const row = document.querySelector('[data-pickup-panel] [data-location="' + info.code + '"]');
+    // Panel hasn't rendered yet — default to available (positive fallback,
+    // avoids scaring customers with a false "not available" during page load).
+    if (!row) return Object.assign({}, info, { status: 'available' });
+
+    const availableQty = parseInt(row.dataset.stockQuantity || '0', 10);
+    const orderedQty = parseInt(quantity, 10) || 1;
+    if (availableQty < orderedQty) {
+      return Object.assign({}, info, { status: 'unavailable', availableQty: availableQty });
+    }
+    return Object.assign({}, info, { status: 'available' });
+  }
+
   _getETARange(postcode) {
-    return '1–4 business days';
+    return '1–5 business days';
   }
 
   _getETADates(postcode) {
     const start = this._addBusinessDays(new Date(), 1);
-    const end   = this._addBusinessDays(new Date(), 4);
+    const end   = this._addBusinessDays(new Date(), 5);
     return `${this._fmtDate(start)} – ${this._fmtDate(end)}`;
   }
 
@@ -513,8 +617,33 @@ class ShippingCalculator extends HTMLElement {
         if (closeBtn) closeBtn.click();
       });
     }
-    if (ccBanner) {
-      ccBanner.addEventListener('click', () => { window.location.href = '/pages/click-collect'; });
+    const collectBtn = this.resultsEl && this.resultsEl.querySelector('.sc-cc-collect-btn');
+    if (collectBtn) {
+      // Button click must not also trigger the banner-wide navigation handler
+      // below (which would send the shopper to /pages/click-collect instead of
+      // re-running the calculator with the reduced qty).
+      collectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newQty = parseInt(collectBtn.dataset.collectQty, 10);
+        if (!newQty || newQty < 1) return;
+        if (this.fieldQuantity) this.fieldQuantity.value = String(newQty);
+        this.handleCalculate();
+      });
+    }
+    // Satbar 2026-10-09 (Odoo 30561):
+    //   Banner body / chevron arrow → add to cart + go to checkout
+    //   "View pickup details" link   → C&C info page (as before)
+    // Only applies to the "available" banner — the unavailable variant has
+    // its own "Collect N from <city> instead" action and shouldn't fire a
+    // checkout redirect on body clicks.
+    if (ccBanner && !ccBanner.classList.contains('sc-cc-banner--unavailable')) {
+      const pickupLink = ccBanner.querySelector('.sc-cc-link');
+      if (pickupLink) pickupLink.addEventListener('click', (e) => e.stopPropagation());
+
+      ccBanner.addEventListener('click', (e) => {
+        if (e.target.closest('.sc-cc-link')) return;
+        this._addToCartAndGo(variantId, quantity, '/checkout');
+      });
     }
   }
 
