@@ -15,8 +15,8 @@
         "slider_item_wmYUEQ": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/CNC-HomeBanner-5.jpg",
-            "mobile_background": "shopify://shop_images/CNC-HomeBanner-5.jpg",
+            "background": "shopify://shop_images/CNC-HomeBanner-5.webp",
+            "mobile_background": "shopify://shop_images/CNC-HomeBanner-5.webp",
             "single_image": true,
             "content_position": "left",
             "title": "",
