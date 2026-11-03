@@ -69,12 +69,12 @@
             <div class="cc3-loc__divider"></div>
             {% if is_active and block.settings.directions_url != blank %}
               <a href="{{ block.settings.directions_url }}" target="_blank" rel="noopener" class="cc3-loc__btn">
-                {{ block.settings.btn_text | default: 'Get Direction' }}
+                {{ block.settings.btn_text | default: 'Get Directions' }}
                 <span class="cc3-loc__btn-arrow">{% render 'icon-svg-arrow-right' %}</span>
               </a>
             {% else %}
               <span class="cc3-loc__btn cc3-loc__btn--disabled">
-                {{ block.settings.btn_text | default: 'Get Direction' }}
+                {{ block.settings.btn_text | default: 'Get Directions' }}
                 <span class="cc3-loc__btn-arrow">{% render 'icon-svg-arrow-right' %}</span>
               </span>
             {% endif %}
@@ -716,8 +716,8 @@
         { "type": "textarea", "id": "address", "label": "Address", "default": "396 Victoria St, Wetherill Park NSW 2164" },
         { "type": "textarea", "id": "hours", "label": "Hours (one line per day)", "default": "Mon-Fri 7AM-5PM\nSat 8AM-12PM" },
         { "type": "text", "id": "phone", "label": "Phone", "default": "1300 291 700" },
-        { "type": "text", "id": "btn_text", "label": "Button text", "default": "Get Direction" },
-        { "type": "url", "id": "directions_url", "label": "Get Direction URL" },
+        { "type": "text", "id": "btn_text", "label": "Button text", "default": "Get Directions" },
+        { "type": "url", "id": "directions_url", "label": "Get Directions URL" },
         { "type": "checkbox", "id": "is_active", "label": "Enabled (yellow button)", "default": true }
       ]
     },
