@@ -257,6 +257,20 @@
     document.addEventListener('DOMContentLoaded', moveMobileInfoTabs);
   })();
 
+  /* Force Glide to recalculate slide widths on mobile after layout settles.
+     display:contents on pdp-col causes Glide to initialize with wrong dimensions,
+     making images appear blank until scroll triggers a resize. */
+  (function () {
+    if (window.innerWidth >= 768) return;
+    document.addEventListener('DOMContentLoaded', function () {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          window.dispatchEvent(new Event('resize'));
+        });
+      });
+    });
+  })();
+
   (function () {
     /* On mobile, hide the review stars block when the reviews widget reports 0 reviews.
        The widget hydrates asynchronously, so we watch for text changes to re-check. */
