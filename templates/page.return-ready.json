@@ -174,14 +174,6 @@
             "b": "Normal job wear is fine"
           }
         },
-        "r5": {
-          "type": "row",
-          "settings": {
-            "label": "Next job",
-            "a": "Hire it again",
-            "b": "Redeploy what you own"
-          }
-        },
         "r6": {
           "type": "row",
           "settings": {
@@ -220,7 +212,6 @@
         "r2",
         "r3",
         "r4",
-        "r5",
         "r6",
         "e1",
         "e2",
