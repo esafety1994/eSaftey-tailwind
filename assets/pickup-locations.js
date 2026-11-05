@@ -165,7 +165,7 @@
           row.dataset.stockState = 'unavailable';
         }
       } else {
-        var showAvailable = entry && (qty > 0 || entry.available);
+        var showAvailable = entry && qty > 0;
         if (showAvailable) {
           if (countEl) countEl.textContent = qty;
           if (badgeEl) {
@@ -177,8 +177,8 @@
         } else {
           if (countEl) countEl.textContent = '';
           if (badgeEl) {
-            badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-delivery';
-            badgeEl.textContent = 'Delivery Only';
+            badgeEl.className = 'pdp-cc-loc-badge pdp-cc-badge-unavailable';
+            badgeEl.textContent = 'Not available';
           }
           row.dataset.stockState = 'unavailable';
         }
