@@ -165,7 +165,7 @@
           row.dataset.stockState = 'unavailable';
         }
       } else {
-        var showAvailable = entry && qty > 0;
+        var showAvailable = entry && (qty > 0 || entry.available);
         if (showAvailable) {
           if (countEl) countEl.textContent = qty;
           if (badgeEl) {
