@@ -22,7 +22,7 @@
   id="product-recommendation-{{ section.id }}"
   class="container mx-auto px-4 py-8 max-w-7xl product-recommendation-section my-8"
 >
-  <product-recommendations data-url="?product_id={{ product_id }}&section_id={{ section.id }}&&limit={{ section.settings.product_count | default: 4 }}&intent=related">
+  <product-recommendations data-url="?product_id={{ product_id }}&section_id={{ section.id }}&limit={{ section.settings.product_count | default: 4 }}&intent=related">
     {% if section.settings.title != blank %}
       <h4 class="text-3xl font-semibold mb-4">{{ section.settings.title }}</h4>
     {% endif %}
@@ -51,7 +51,7 @@
               <div class="glide__track" data-glide-el="track">
                 <ul class="glide__slides">
                   {%- for product in recommendations.products -%}
-                    <li>
+                    <li class="glide__slide">
                       {% render 'product-card', product: product, max_tags: 2 %}
                     </li>
                   {%- endfor -%}
