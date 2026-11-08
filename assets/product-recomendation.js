@@ -33,7 +33,7 @@ class ProductRecommendation extends HTMLElement {
       productRecommendationsSection.innerHTML = safe.innerHTML;
 
       const glideEl = document.getElementById('productRecommendationGlide');
-      if (glideEl && typeof Glide !== 'undefined') {
+      if (glideEl) {
         if (window.productRecommendationGlideInstance) {
           try { window.productRecommendationGlideInstance.destroy(); } catch (e) { /* ignore */ }
           window.productRecommendationGlideInstance = null;
@@ -43,7 +43,7 @@ class ProductRecommendation extends HTMLElement {
         const prevBtn = section && section.querySelector('[data-rec-arrow="prev"]');
         const nextBtn = section && section.querySelector('[data-rec-arrow="next"]');
 
-        setTimeout(() => {
+        const initGlide = () => {
           window.productRecommendationGlideInstance = new Glide('#productRecommendationGlide', {
             type: 'carousel',
             startAt: 0,
@@ -55,16 +55,24 @@ class ProductRecommendation extends HTMLElement {
               480: { perView: 1, gap: 12 },
             },
           });
-
           window.productRecommendationGlideInstance.mount();
-
           if (prevBtn) {
             prevBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('<'));
           }
           if (nextBtn) {
             nextBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('>'));
           }
-        }, 100);
+        };
+
+        const waitForGlide = (attempts = 0) => {
+          if (typeof Glide !== 'undefined') {
+            initGlide();
+          } else if (attempts < 20) {
+            setTimeout(() => waitForGlide(attempts + 1), 100);
+          }
+        };
+
+        waitForGlide();
       }
     } catch (err) {
       console.error('Failed to fetch recommendations', err);
