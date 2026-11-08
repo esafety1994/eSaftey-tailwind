@@ -39,30 +39,32 @@ class ProductRecommendation extends HTMLElement {
           window.productRecommendationGlideInstance = null;
         }
 
-        window.productRecommendationGlideInstance = new Glide('#productRecommendationGlide', {
-          type: 'carousel',
-          startAt: 0,
-          perView: 4,
-          gap: 20,
-          breakpoints: {
-            1024: { perView: 3, gap: 16 },
-            768: { perView: 2, gap: 16 },
-            480: { perView: 1, gap: 12 },
-          },
-        });
-
-        window.productRecommendationGlideInstance.mount();
-
-        // Wire external arrow buttons to Glide API
         const section = this.closest('.product-recommendation-section') || this.parentElement;
         const prevBtn = section && section.querySelector('[data-rec-arrow="prev"]');
         const nextBtn = section && section.querySelector('[data-rec-arrow="next"]');
-        if (prevBtn) {
-          prevBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('<'));
-        }
-        if (nextBtn) {
-          nextBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('>'));
-        }
+
+        requestAnimationFrame(() => {
+          window.productRecommendationGlideInstance = new Glide('#productRecommendationGlide', {
+            type: 'carousel',
+            startAt: 0,
+            perView: 4,
+            gap: 20,
+            breakpoints: {
+              1024: { perView: 3, gap: 16 },
+              768: { perView: 2, gap: 16 },
+              480: { perView: 1, gap: 12 },
+            },
+          });
+
+          window.productRecommendationGlideInstance.mount();
+
+          if (prevBtn) {
+            prevBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('<'));
+          }
+          if (nextBtn) {
+            nextBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('>'));
+          }
+        });
       }
     } catch (err) {
       console.error('Failed to fetch recommendations', err);
