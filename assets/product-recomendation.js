@@ -65,13 +65,10 @@ class ProductRecommendation extends HTMLElement {
         };
 
         const waitForGlide = (attempts = 0) => {
-          console.log('[rec] waitForGlide attempt', attempts, 'Glide defined:', typeof Glide !== 'undefined');
           if (typeof Glide !== 'undefined') {
             initGlide();
-          } else if (attempts < 20) {
-            setTimeout(() => waitForGlide(attempts + 1), 100);
-          } else {
-            console.error('[rec] Glide never loaded after 20 attempts');
+          } else if (attempts < 50) {
+            setTimeout(() => waitForGlide(attempts + 1), 200);
           }
         };
 

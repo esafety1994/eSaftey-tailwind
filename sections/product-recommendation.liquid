@@ -67,7 +67,8 @@
   </product-recommendations>
 </div>
 
-{{ 'product-recomendation.js' | asset_url | script_tag }}
+<script src="{{ 'glide.min.js' | asset_url }}" defer></script>
+<script src="{{ 'product-recomendation.js' | asset_url }}" defer></script>
 {% schema %}
 {
   "name": "Product recommendation",
