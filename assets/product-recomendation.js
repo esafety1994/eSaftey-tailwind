@@ -43,7 +43,7 @@ class ProductRecommendation extends HTMLElement {
         const prevBtn = section && section.querySelector('[data-rec-arrow="prev"]');
         const nextBtn = section && section.querySelector('[data-rec-arrow="next"]');
 
-        requestAnimationFrame(() => {
+        setTimeout(() => {
           window.productRecommendationGlideInstance = new Glide('#productRecommendationGlide', {
             type: 'carousel',
             startAt: 0,
@@ -64,7 +64,7 @@ class ProductRecommendation extends HTMLElement {
           if (nextBtn) {
             nextBtn.addEventListener('click', () => window.productRecommendationGlideInstance.go('>'));
           }
-        });
+        }, 100);
       }
     } catch (err) {
       console.error('Failed to fetch recommendations', err);
