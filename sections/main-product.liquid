@@ -260,26 +260,41 @@
     document.addEventListener('DOMContentLoaded', moveMobileInfoTabs);
   })();
 
-  /* Force Glide to recalculate slide widths on mobile after layout settles.
-     display:contents on pdp-col causes Glide to initialize with 0 track width,
-     making all slides stack at position 0 (blank images).
-     Poll until the Glide instance is mounted, then fire resize so it recalculates. */
+  /* Force Glide to recalculate slide widths + transforms on mobile after layout settles.
+     display:contents on pdp-col causes Glide to mount with 0 track width, so all slides
+     stack at position 0 (blank when swiped). Two steps are required:
+     1. window resize → triggers Sizes.setupSlides() so slide widths are correct.
+     2. glide.go('=N') → triggers Move.make() which re-reads the live slideWidth getter
+        and re-applies the translate3d transform. Resize alone doesn't update the transform. */
   (function () {
     if (window.innerWidth >= 768) return;
-    function fireResize() { window.dispatchEvent(new Event('resize')); }
+    function fixGlide(el, glide) {
+      window.dispatchEvent(new Event('resize'));
+      // Wait past Glide's throttle (10 ms default) before forcing navigation
+      // so Sizes.setupSlides() has already run when Move.make() reads slideWidth.
+      setTimeout(function () {
+        try {
+          var idx = typeof glide.index === 'number' ? glide.index : 0;
+          glide.go('=' + idx);
+        } catch (e) {}
+      }, 50);
+    }
     function waitForGlideAndFix() {
       var el = document.getElementById('esProductGlide');
       if (el && el._glideInstance) {
-        fireResize();
+        fixGlide(el, el._glideInstance);
         return;
       }
       var attempts = 0;
       var timer = setInterval(function () {
         attempts++;
         var el = document.getElementById('esProductGlide');
-        if ((el && el._glideInstance) || attempts > 60) {
+        if (el && el._glideInstance) {
           clearInterval(timer);
-          fireResize();
+          fixGlide(el, el._glideInstance);
+        } else if (attempts > 60) {
+          clearInterval(timer);
+          window.dispatchEvent(new Event('resize'));
         }
       }, 50);
     }
