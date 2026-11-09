@@ -213,20 +213,16 @@
       </div>
       <script>
         (function () {
-          function addBizDays(d, n) {
+          function addDays(d, n) {
             var r = new Date(d);
-            for (var i = 0; i < n; ) {
-              r.setDate(r.getDate() + 1);
-              var dow = r.getDay();
-              if (dow !== 0 && dow !== 6) i++;
-            }
+            r.setDate(r.getDate() + n);
             return r;
           }
           var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
           function fmt(d) { return d.getDate() + ' ' + months[d.getMonth()]; }
           var today = new Date();
           var el = document.getElementById('cart-drawer-eta');
-          if (el) el.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 4));
+          if (el) el.textContent = fmt(addDays(today, 1)) + ' – ' + fmt(addDays(today, 4));
         })();
       </script>
       <div class="hidden md:grid" style="grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;margin-bottom:4px">

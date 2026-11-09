@@ -578,23 +578,18 @@ class ShippingCalculator extends HTMLElement {
   }
 
   _getETARange(postcode) {
-    return '1–5 business days';
+    return '1–4 days';
   }
 
   _getETADates(postcode) {
-    const start = this._addBusinessDays(new Date(), 1);
-    const end   = this._addBusinessDays(new Date(), 5);
+    const start = this._addDays(new Date(), 1);
+    const end   = this._addDays(new Date(), 4);
     return `${this._fmtDate(start)} – ${this._fmtDate(end)}`;
   }
 
-  _addBusinessDays(date, n) {
+  _addDays(date, n) {
     const d = new Date(date);
-    let added = 0;
-    while (added < n) {
-      d.setDate(d.getDate() + 1);
-      const day = d.getDay();
-      if (day !== 0 && day !== 6) added++;
-    }
+    d.setDate(d.getDate() + n);
     return d;
   }
 

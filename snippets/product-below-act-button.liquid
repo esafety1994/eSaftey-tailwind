@@ -193,12 +193,9 @@
 
 <script>
   (function () {
-    function addBizDays(d, n) {
+    function addDays(d, n) {
       var r = new Date(d);
-      for (var i = 0; i < n;) {
-        r.setDate(r.getDate() + 1);
-        if (r.getDay() !== 0 && r.getDay() !== 6) i++;
-      }
+      r.setDate(r.getDate() + n);
       return r;
     }
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -207,7 +204,7 @@
       var etaEl = document.getElementById('pdp-eta-dates');
       if (!etaEl) return;
       var today = new Date();
-      etaEl.textContent = fmt(addBizDays(today, 1)) + ' – ' + fmt(addBizDays(today, 5));
+      etaEl.textContent = fmt(addDays(today, 1)) + ' – ' + fmt(addDays(today, 4));
     }
     window.esUpdateEta = populateEta;
     populateEta();
