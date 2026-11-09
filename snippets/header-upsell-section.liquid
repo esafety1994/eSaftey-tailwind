@@ -1,7 +1,7 @@
 {% if mobile %}
 <div class="usp-mobile-bar">
 {% else %}
-<div class="hidden md:flex justify-between w-full flex-wrap py-2 px-4 text-white text-xs xl:max-w-7xl xl:mx-auto">
+<div class="hidden md:flex justify-between w-full flex-wrap py-2 px-4 text-white xl:max-w-7xl xl:mx-auto usp-desktop-bar">
 {% endif %}
   <div class="usp-item-wrapper flex items-center">
     <div class="usp-item gird gap-1 xl:flex">
@@ -133,4 +133,13 @@
   .usp-mobile-bar .usp-item p { margin: 0; display: flex; align-items: center; gap: 4px; }
   .usp-mobile-bar .usp-item p strong { font-weight: 700; font-size: 11px; }
   .usp-mobile-bar .usp-item p span { font-weight: 400; color: rgba(255,255,255,0.75); font-size: 10px; }
+
+  /* Desktop bar: smaller font + dividers between the 4 items */
+  .usp-desktop-bar { font-size: 11px; }
+  .usp-desktop-bar .usp-item-wrapper + .usp-item-wrapper {
+    border-left: 1px solid rgba(255,255,255,0.25);
+    padding-left: 20px;
+  }
+  .usp-desktop-bar .usp-item-wrapper { padding-right: 20px; }
+  .usp-desktop-bar .usp-item-wrapper:last-child { padding-right: 0; }
 </style>
