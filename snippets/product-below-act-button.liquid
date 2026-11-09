@@ -217,6 +217,17 @@
     if (toggle)   toggle.addEventListener('click', function () { expand.hidden ? openCC() : closeCC(); });
     if (closeBtn) closeBtn.addEventListener('click', closeCC);
 
+    // A/B test: variant-a = C&C folded on load (default), variant-b = C&C expanded on load
+    var AB_KEY = 'pdp_cc_ab';
+    var ccVariant = sessionStorage.getItem(AB_KEY);
+    if (!ccVariant) {
+      ccVariant = Math.random() < 0.5 ? 'variant-a' : 'variant-b';
+      sessionStorage.setItem(AB_KEY, ccVariant);
+    }
+    if (ccVariant === 'variant-b' && expand) { openCC(); }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'pdp_cc_ab_assigned', cc_ab_variant: ccVariant });
+
     function trackBox(label) {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: 'pdp_info_box_click', box_label: label });
