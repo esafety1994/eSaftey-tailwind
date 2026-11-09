@@ -117,7 +117,7 @@
         {% for media in product.media %}
           <button
             type="button"
-            class="pdp-dot glide__bullet{% if forloop.index0 == start_index %} pdp-dot--active glide__bullet--active{% endif %}"
+            class="pdp-dot glide__bullet{% if forloop.index0 == start_index %} glide__bullet--active{% endif %}"
             data-glide-dir="={{ forloop.index0 }}"
             data-dot-index="{{ forloop.index0 }}"
             aria-label="Go to image {{ forloop.index }}"
