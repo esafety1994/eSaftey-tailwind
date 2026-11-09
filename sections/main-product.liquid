@@ -261,17 +261,35 @@
   })();
 
   /* Force Glide to recalculate slide widths on mobile after layout settles.
-     display:contents on pdp-col causes Glide to initialize with wrong dimensions,
-     making images appear blank until scroll triggers a resize.
-     rAF fires too early on some devices — 300ms setTimeout ensures Glide has fully mounted. */
+     display:contents on pdp-col causes Glide to initialize with 0 track width,
+     making all slides stack at position 0 (blank images).
+     Poll until the Glide instance is mounted, then fire resize so it recalculates. */
   (function () {
     if (window.innerWidth >= 768) return;
     function fireResize() { window.dispatchEvent(new Event('resize')); }
-    document.addEventListener('DOMContentLoaded', function () {
-      requestAnimationFrame(function () {
-        requestAnimationFrame(fireResize);
-      });
-      setTimeout(fireResize, 300);
+    function waitForGlideAndFix() {
+      var el = document.getElementById('esProductGlide');
+      if (el && el._glideInstance) {
+        fireResize();
+        return;
+      }
+      var attempts = 0;
+      var timer = setInterval(function () {
+        attempts++;
+        var el = document.getElementById('esProductGlide');
+        if ((el && el._glideInstance) || attempts > 60) {
+          clearInterval(timer);
+          fireResize();
+        }
+      }, 50);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', waitForGlideAndFix);
+    } else {
+      waitForGlideAndFix();
+    }
+    document.addEventListener('product:content:replaced', function () {
+      setTimeout(waitForGlideAndFix, 20);
     });
   })();
 
