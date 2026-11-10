@@ -20,7 +20,7 @@
             data-tab-index="{{ forloop.index0 }}"
             role="tab"
             aria-controls="collection-panel-{{ section.id }}-{{ forloop.index0 }}"
-            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-selected="{% if forloop.index0 == section.settings.default_tab %}true{% else %}false{% endif %}"
           >
             {{ col.title }}
           </button>
@@ -46,7 +46,7 @@
         {% assign panel_index = forloop.index0 %}
         <div
           id="collection-panel-{{ section.id }}-{{ panel_index }}"
-          class="tab-panel {% unless forloop.first %}hidden{% endunless %}"
+          class="tab-panel {% unless panel_index == section.settings.default_tab %}hidden{% endunless %}"
           role="tabpanel"
           aria-labelledby="tab-{{ section.id }}-{{ panel_index }}"
         >
@@ -83,6 +83,10 @@
       var tabs = root.querySelectorAll('.tab-btn');
       var panels = root.querySelectorAll('.tab-panel');
 
+      // Apply tab-active class to the default tab on load
+      var defaultIndex = {{ section.settings.default_tab | default: 0 }};
+      if (tabs[defaultIndex]) tabs[defaultIndex].classList.add('tab-active');
+
       tabs.forEach(function (tab, idx) {
         tab.addEventListener('click', function () {
           if (tab.disabled) return;
@@ -113,7 +117,8 @@
   "settings": [
     { "type": "collection", "id": "collection_1", "label": "Collection 1" },
     { "type": "collection", "id": "collection_2", "label": "Collection 2" },
-    { "type": "collection", "id": "collection_3", "label": "Collection 3" }
+    { "type": "collection", "id": "collection_3", "label": "Collection 3" },
+    { "type": "range", "id": "default_tab", "label": "Default active tab", "min": 0, "max": 2, "step": 1, "default": 0 }
   ],
   "presets": [{ "name": "Collection Tabs", "category": "Collections" }]
 }

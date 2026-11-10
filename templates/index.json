@@ -147,7 +147,8 @@
       "settings": {
         "collection_1": "new-arrivals",
         "collection_2": "best-sellers",
-        "collection_3": "cheap-deals"
+        "collection_3": "cheap-deals",
+        "default_tab": 1
       }
     },
     "hero_full_bg_Bp4zeG": {
