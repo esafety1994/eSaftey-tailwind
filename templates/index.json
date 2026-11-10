@@ -25,6 +25,19 @@
             "button_link": "https://esafetysupplies.com.au/pages/click-and-collect"
           }
         },
+        "slider_item_Umi4dr": {
+          "type": "slider_item",
+          "settings": {
+            "background": "shopify://shop_images/Black-Friday-Web-Banner---COMING-SOON-V1.jpg",
+            "mobile_background": "shopify://shop_images/Black-Friday-Web-Banner---COMING-SOON-V1.jpg",
+            "single_image": true,
+            "content_position": "left",
+            "title": "",
+            "description": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
         "slider_item_bnrjiK": {
           "type": "slider_item",
           "settings": {
@@ -41,6 +54,7 @@
       },
       "block_order": [
         "slider_item_wmYUEQ",
+        "slider_item_Umi4dr",
         "slider_item_bnrjiK"
       ],
       "settings": {
