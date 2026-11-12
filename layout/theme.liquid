@@ -319,9 +319,76 @@
   </script>
 
   <script>
+    // First-visit tracking: greeting shows on desktop only on the first page the customer lands on.
+    var podiumIsFirstVisit = !sessionStorage.getItem('podium_greeted');
+    if (podiumIsFirstVisit) sessionStorage.setItem('podium_greeted', '1');
+
+    var podiumIsMobile = window.innerWidth < 768;
+    var podiumHideGreeting = podiumIsMobile || !podiumIsFirstVisit;
+
+    function scanPodiumFrames() {
+      var frames = document.querySelectorAll('iframe');
+      for (var i = 0; i < frames.length; i++) {
+        try {
+          var doc = frames[i].contentDocument;
+          if (!doc || !doc.body) continue;
+
+          // Inject persistent stylesheet with all customisations (once per iframe)
+          if (!doc.getElementById('esafety-pfix')) {
+            var css = '';
+            if (podiumHideGreeting) {
+              css += '.Prompt{display:none!important}';
+            }
+            if (podiumIsMobile) {
+              // Hide "Text us" label (confirmed class name: ContactBubble__TextUs)
+              css += '.ContactBubble__TextUs{display:none!important}';
+              // Resize button to circle now that the label is gone
+              css += '.ContactBubble__Bubble{width:56px!important;height:56px!important;min-width:unset!important;border-radius:50%!important;padding:0!important;}';
+              css += '.ContactBubble__IconContainer{justify-content:center!important;width:100%!important;}';
+              // Move bubble to lower-left corner on mobile
+              css += '.ContactBubble{right:unset!important;left:20px!important;bottom:20px!important;}';
+            }
+            if (css) {
+              var s = doc.createElement('style');
+              s.id = 'esafety-pfix';
+              s.textContent = css;
+              (doc.head || doc.documentElement).appendChild(s);
+            }
+          }
+
+          // Also directly hide .Prompt on every tick (catches re-renders)
+          if (podiumHideGreeting) {
+            var p = doc.querySelector('.Prompt');
+            if (p) p.style.setProperty('display', 'none', 'important');
+          }
+
+          // Directly override ContactBubble position (Podium sets inline styles that beat stylesheets)
+          if (podiumIsMobile) {
+            var cb = doc.querySelector('.ContactBubble');
+            if (cb) {
+              cb.style.setProperty('right', 'unset', 'important');
+              cb.style.setProperty('left', '20px', 'important');
+              cb.style.setProperty('bottom', '20px', 'important');
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Also move the outer Podium wrapper in the main document (Podium may position it there)
+      if (podiumIsMobile) {
+        var outerWrap = document.querySelector('#podium-website-widget, [id^="podium-"], .podium-widget');
+        if (outerWrap) {
+          outerWrap.style.setProperty('right', 'unset', 'important');
+          outerWrap.style.setProperty('left', '20px', 'important');
+          outerWrap.style.setProperty('bottom', '20px', 'important');
+        }
+      }
+    }
+
     window.addEventListener('scroll', function loadPodiumWidget() {
       if (window.scrollY > 300) {
         window.removeEventListener('scroll', loadPodiumWidget);
+
         var script = document.createElement('script');
         script.src = 'https://connect.podium.com/widget.js#ORG_TOKEN=45d615a7-fd5b-4202-96bb-1a277644e6a7';
         script.id = 'podium-widget';
@@ -330,6 +397,16 @@
         script.setAttribute('data-styles-phone', 'bottom: 75px;');
         script.defer = true;
         document.head.appendChild(script);
+
+        if (podiumHideGreeting || podiumIsMobile) {
+          // Poll every 300 ms for 20 s — catches .Prompt whenever Podium renders it
+          var elapsed = 0;
+          var timer = setInterval(function () {
+            elapsed += 300;
+            scanPodiumFrames();
+            if (elapsed >= 20000) clearInterval(timer);
+          }, 300);
+        }
       }
     });
   </script>
