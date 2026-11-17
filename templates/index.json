@@ -15,14 +15,14 @@
         "slider_item_Umi4dr": {
           "type": "slider_item",
           "settings": {
-            "background": "shopify://shop_images/Black-Friday-Web-Banner---Week-1-V1.jpg",
-            "mobile_background": "shopify://shop_images/Black-Friday-Web-Banner---COMING-SOON-V1.jpg",
+            "background": "shopify://shop_images/Black-Friday-Web-Banner-Week-1.jpg",
+            "mobile_background": "shopify://shop_images/Black-Friday-Web-Banner-Week-1.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": ""
+            "button_link": "shopify://blogs/esafety-blogs/black-friday-2026"
           }
         },
         "slider_item_wmYUEQ": {
