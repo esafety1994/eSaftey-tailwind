@@ -1,52 +1,58 @@
 {% comment %}
   product-features.liquid
-  Renders up to the first three bullet points found under a "Features" section
-  in `product.description` (handles HTML <li> lists and simple dash/• bullets).
+  Shows the first 3 bullet points of the FIRST <ul> in product.description,
+  next to the price. No "Features" heading is needed in the description.
+  Falls back to the old "Features"/"Benefits" text search for old
+  descriptions that have no <ul>.
   Usage: {% render 'product-features', product: product %}
 {% endcomment %}
-{% assign desc = product.description | default: '' %}
-{% assign desc_down = desc | downcase %}
-{% assign after = '' %}
+{%- liquid
+  assign desc = product.description | default: ''
+  assign bullets = ''
+  assign sep = '|||'
 
-{% if desc_down contains 'features' %}
-  {% assign after = desc_down | split: 'features' | last %}
-{% elsif desc_down contains 'benefits' %}
-  {% assign after = desc_down | split: 'benefits' | last %}
-{% endif %}
+  if desc contains '<ul'
+    assign chunks = desc | split: '<ul'
+    assign first_ul = chunks[1] | split: '</ul>' | first
+    assign lis = first_ul | split: '<li'
+    assign taken = 0
+    for raw in lis offset: 1
+      assign item = raw | prepend: '<li' | strip_html | strip
+      if item != '' and taken < 3
+        assign bullets = bullets | append: item | append: sep
+        assign taken = taken | plus: 1
+      endif
+    endfor
+  else
+    assign desc_down = desc | downcase
+    assign after = ''
+    if desc_down contains 'features'
+      assign after = desc | split: 'eatures' | last
+    elsif desc_down contains 'benefits'
+      assign after = desc | split: 'enefits' | last
+    endif
+    if after != ''
+      assign normalized = after | replace: '</p>', sep | replace: '<br>', sep | replace: '<br/>', sep | replace: '</li>', sep | strip_html
+      assign parts = normalized | split: sep
+      assign taken = 0
+      for part in parts
+        assign item = part | strip | remove_first: ':' | remove_first: '•' | strip
+        if item.size > 1 and taken < 3
+          assign bullets = bullets | append: item | append: sep
+          assign taken = taken | plus: 1
+        endif
+      endfor
+    endif
+  endif
 
-{% if after != '' %}
-  {%- comment -%}
-    Normalize common block breaks and strip all HTML/tags so any attributes
-    like data-start/data-end are removed before we split into bullets.
-  {%- endcomment -%}
-  {% assign normalized = after
-    | replace: '</p>', '\n'
-    | replace: '<br>', '\n'
-    | replace: '<br/>', '\n'
-    | replace: '</li>', '\n'
-  %}
-  {% assign normalized = normalized | strip_html %}
-
-  {%- comment -%} Prefer newline-separated items, then bullet char, then dashes. {%- endcomment -%}
-  {% if normalized contains '\n' %}
-    {% assign parts = normalized | split: '\n' %}
-  {% elsif normalized contains '•' %}
-    {% assign parts = normalized | split: '•' %}
-  {% else %}
-    {% assign parts = normalized | split: '-' %}
-  {% endif %}
-
+  assign items = bullets | split: sep
+-%}
+{% if items.size > 0 %}
   <div>
     <h4 class="text-base font-semibold mb-2">Features:</h4>
     <ul class="product-features-list list-disc ml-6">
-      {% assign taken = 0 %}
-      {% for part in parts %}
-        {% assign item = part | strip | replace_first: '&bull;', '' | replace_first: '•', '' %}
-        {% assign item = item | replace_first: '>', '' | replace_first: ':', '' | replace_first: '\t', '' | strip %}
-        {% if item != '' and item != ' ' and item.size > 1 and taken < 3 %}
-          <li class="text-sm capitalize">{{ item }}</li>
-          {% assign taken = taken | plus: 1 %}
-        {% endif %}
+      {% for item in items %}
+        <li class="text-sm">{{ item }}</li>
       {% endfor %}
     </ul>
     <button
