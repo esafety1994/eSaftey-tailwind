@@ -51,12 +51,38 @@
 
 <div class="esa-dashboard">
   <aside class="esa-sidebar">
+    <div class="esa-sidebar-logo">
+      <img src="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/esafetyLogo_colour-01_61b349fd-fe32-4179-a9cd-a72cc46c79b0.png?v=1787109016" alt="eSafety Supplies" class="esa-sidebar-logo-img" width="180" height="28">
+    </div>
     <nav class="esa-sidebar-nav">
       <a href="/pages/dashboard?view=dashboard" class="esa-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
         <span>Orders</span>
       </a>
+      <a href="/pages/profile?view=profile" class="esa-nav-item esa-nav-active">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </a>
+      <a href="/" class="esa-nav-item">
+        <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect width="31" height="27" fill="url(#esa_prof_icon_btw)"/><defs><pattern id="esa_prof_icon_btw" patternContentUnits="objectBoundingBox" width="1" height="1"><use xlink:href="#esa_prof_img_btw" transform="matrix(0.0062212 0 0 0.00714286 -0.000806452 0)"/></pattern><image id="esa_prof_img_btw" width="161" height="140" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAACMCAYAAAAUY8leAAAACXBIWXMAAAsSAAALEgHS3X78AAAFE0lEQVR4nO2d0XLiMAxFnU7//5ezLxuWhcSxY0nWvb5nplM6LakjjiUZTNj2fS9vvP+wFSEC+H27vX/87vPnUiSmcOCQ8Ey4MySmMOf3/k9uuRJYcoomLCS84lNOSSlO+fn7PUKQ/e1LiBc/b7e3ty9vJKJ4cVWOz0S0Fme/+D9iMXp6wggxxYKMLkxGxVQ2FC6r40+plC1FlZ/7PxkmarEjQImQUIgqGSRUuV6cSAlVksUpGTKhWJwsEqokL0wWCcXCREuovlB8oUwopuO5n7CX2X2hsvQkZki4lfnCnZFxTIx8TXaVYxHN18ZmSShm8RJREorpzJJQiwBRyt9smGl1fGAlaG2hoT2PicgoodVu655V+Mj/i3jfdc+Esjx+yDmoJ8QGpa2pJoOZEqIEkJ3prYgyoZjJVkpeCb1n5/TZD0DEArGUMl9ClWQxXUJvJHleXo9NZglVMvFpegwzS4gOwiRKMcYMEqKXTPTxn+F9Tv8dP4OEs0iRBYhpjm92CSXKAmSR0DP9o5dLtomondVEjE4uT7m7jo0gIVsmyE54VUKQUGDRnTQySTijd1OWTUAmCT1BX5wwcPkYoEiojGWLVzwfHRdFQkFMNglVNufiFf/qcbNJWCNVCRFfPI4jkoSClIwSTikJSfHI0tGZ/zbu276nrEYpByUecSthxkwoFkMSCk+aWqCsEiL2b+IhWSUU+DQnEkkoppPxqlwHtatqZbuKltdVrayPG3W8LpQJhQddUqNKiPI8Iso4n2B2bqgSejASVK3mB8guoceDu6owUVm5O77ZJVyZtNIU47EhS8jcb9Wgy+TIEop8PJogCBJGzvxVs2sP5jFCkLCGpGkjdZzQJXwKXV/1EMs4PD4WioSSJgcuGRVFQpGboSTBIGHqfocItzgzSGgNm9TpzwdJQuu+UH2mDcNxRJJwJSKyV488ruNhkTB9yRHXoEm4egnNdv4m40GTUPRhUSHcqwyThJbBUnkPhEnCJ2Qrb1FYnLdZ7BAlXFWcGYRUBEQJBRlZr8p1B+SgiTCtRqiZUCWZCFQJxTzME4AkFNORhKIHlzYIWUL1hbG4xTvzVblGkKBAIGfCGnoKBwhWCQUQ6BKq7BKALqEggFlC9YUgMEiokgwOg4QCHHYJVZIBYJdQAMAiofpCYFgkFMCsIKH6wuQwSVgryRIxMay7aM6QiLYs/ZZPkQN9rNgFWiUDwiZhKRIRDkYJS5GIULBKWIpE9MYsvuyrY4kIAHMmFCBIQjEdSSimIwnFdNgXJgc9z+6zL2ZaYxEWB3YJn7y0dNyHTcbeWITFgbkcj762ybLhYS9j5zJ6/1tYJbQKGrqIEJ9owCihdbBQRfQYtz7vuAEvYVBF9MA8FkwLk5bgjOy+3m/un4mRWIRPOLZMWONOIBTBRtlK/Vzvfl+KsagsEt4FpVWw0OA7URtjz0QLm5QsEtboDeYqGbGFkFisIOETGEW0Pie9x6QRRplqeLQLesVE8CMJ1yB1RZCEa5B6VS8JxR3uArNL+DSAqTNHhdRl9wp2CcU/RvZWnqFr0XxgeUWukMBPImWGZ5Hwjtbgp3yQOrF66TEsFkwStgT/KrDuu4eTUTvXlliYVgSmrVytPJUNqRRvpW1rWgqYMmEpfqIgCXgAEws2CUuxDxKigF7ok987sAoWuoAtG1R7juUCc094BO1J74Mu3yctPWLtvq4wS3jQIyObfO/0TkpdgcEBZsF6SBeHP1YHq0A06vfaAAAAAElFTkSuQmCC"/></defs></svg>
+        <span>Back to Website</span>
+      </a>
     </nav>
+    <div class="esa-sidebar-help">
+      <div class="esa-help-inner">
+        <div class="esa-help-icon">
+          <svg viewBox="0 0 29 28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a11 11 0 0 1 22 0v4a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-3a3 3 0 0 1 3-3h2"/><path d="M3 14a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-3a3 3 0 0 0-3-3H6"/><path d="M14 20a4 4 0 0 0 4-4"/></svg>
+        </div>
+        <div>
+          <div class="esa-help-title">Need help?</div>
+          <div class="esa-help-sub">Our team is here to help.</div>
+        </div>
+      </div>
+      <a href="/pages/contact-us" class="esa-help-btn">
+        Contact Us
+        <svg viewBox="0 0 14 14" fill="none" width="12" height="12"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
   </aside>
 
   <main class="esa-main">
@@ -66,11 +92,15 @@
       </a>
       <div class="esa-header-logo">
         <a href="/" aria-label="Back to eSafety Supplies">
-          <img src="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Advantage_Logo_2-2.png?v=1785216933" alt="eSafety Advantage" width="279" height="44">
+          <img src="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Advantage_Logo_1-2.png?v=1789450482" alt="eSafety Advantage" width="279" height="44">
         </a>
       </div>
       <div class="esa-header-user esa-user-menu">
         <button type="button" class="esa-user-btn" id="esa-user-btn" aria-haspopup="true" aria-expanded="false" aria-label="Open profile menu">
+          {%- if customer.company -%}
+          <span class="esa-company-name">{{ customer.company.name }}</span>
+          <svg class="esa-caret" viewBox="0 0 10 6" fill="none" width="12" height="12"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          {%- endif -%}
           <div class="esa-avatar">
             {{ customer.first_name | slice: 0 | upcase }}{{ customer.last_name | slice: 0 | upcase }}
           </div>
@@ -96,6 +126,16 @@
           </div>
           <h1 class="esa-title">Profile</h1>
           <p class="esa-subtitle">View and manage your account preferences.</p>
+        </div>
+        <div class="esa-controls">
+          <label class="esa-search" for="esa-profile-search-input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="esa-profile-search-input" placeholder="Search orders, products or PO number..." autocomplete="off" spellcheck="false">
+          </label>
+          <button type="button" class="esa-filters-btn">
+            <svg viewBox="0 0 18 13" fill="none" width="18" height="13"><path d="M0 1h18M1.5 6.5h15M5 12h8" stroke="currentColor" stroke-width="2.06" stroke-linecap="round"/></svg>
+            Filters
+          </button>
         </div>
       </div>
 
@@ -332,7 +372,61 @@
           </div>
         </div>
       </div>
+
+      <div class="esa-prof-mob-help">
+        <div class="esa-mob-help-row">
+          <svg viewBox="0 0 29 28" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="29" height="28"><path d="M3 10a11 11 0 0 1 22 0v4a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-3a3 3 0 0 1 3-3h2"/><path d="M3 14a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-3a3 3 0 0 0-3-3H6"/><path d="M14 20a4 4 0 0 0 4-4"/></svg>
+          <div>
+            <div class="esa-mob-help-title">Need help?</div>
+            <div class="esa-mob-help-sub">Our team is here to help.</div>
+          </div>
+        </div>
+        <a href="/pages/contact-us" class="esa-mob-help-btn">
+          Contact Us
+          <svg viewBox="0 0 14 14" fill="none" width="10" height="10"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <footer class="esa-prof-mob-footer">
+        <div class="esa-mob-footer-links">
+          <a href="/policies/refund-policy">Refund policy</a>
+          <a href="/policies/shipping-policy">Shipping</a>
+          <a href="/policies/privacy-policy">Privacy policy</a>
+          <a href="/policies/terms-of-service">Terms of service</a>
+          <a href="/pages/contact-us">Contact Information</a>
+        </div>
+        <div class="esa-mob-footer-strip"></div>
+      </footer>
+
     </section>
+    <nav class="esa-mob-bottom-nav">
+      <a href="/pages/dashboard?view=dashboard" class="esa-mob-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        Orders
+      </a>
+      <a href="/pages/profile?view=profile" class="esa-mob-nav-item esa-mob-nav-active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </a>
+      <a href="/" class="esa-mob-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Back to Website
+      </a>
+    </nav>
+    <footer class="esa-dash-footer">
+      <div class="esa-dash-footer-links">
+        <a href="/policies/refund-policy">Refund policy</a>
+        <span class="esa-dash-footer-sep">|</span>
+        <a href="/policies/shipping-policy">Shipping</a>
+        <span class="esa-dash-footer-sep">|</span>
+        <a href="/policies/privacy-policy">Privacy policy</a>
+        <span class="esa-dash-footer-sep">|</span>
+        <a href="/policies/terms-of-service">Terms of service</a>
+        <span class="esa-dash-footer-sep">|</span>
+        <a href="/pages/contact-us">Contact Information</a>
+      </div>
+      <div class="esa-dash-footer-strip"></div>
+    </footer>
   </main>
 </div>
 
@@ -402,14 +496,20 @@
   margin: 0;
 }
 .esa-sidebar {
-  width: 240px;
-  min-width: 240px;
+  width: 268px;
+  min-width: 268px;
   background: #0D0D0D;
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
   color: #fff;
 }
+.esa-sidebar-logo {
+  padding: 8px 12px 24px;
+  display: flex;
+  justify-content: center;
+}
+.esa-sidebar-logo-img { width: 190px; height: auto; display: block; }
 .esa-sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -450,22 +550,21 @@
 .esa-help-btn svg { width: 14px; height: 14px; }
 
 .esa-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+@media (min-width: 901px) {
+  body > .sticky { display: none !important; }
+  body > footer { display: none !important; }
+  .esa-dashboard { min-height: 100vh; }
+}
+body > footer { display: none !important; }
 .esa-header {
-  height: 78px; flex-shrink: 0; background: #fff;
-  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.05);
+  height: 78px; flex-shrink: 0; background: #000;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 40px;
   gap: 12px;
 }
 .esa-header-back {
-  display: inline-flex;
-  align-items: center; justify-content: center;
-  background: transparent; border: none;
-  padding: 8px; cursor: pointer; color: #000;
-  border-radius: 8px; text-decoration: none;
-  flex-shrink: 0;
+  display: none;
 }
-.esa-header-back:hover { background: #F7F8F9; }
 .esa-header-back svg { width: 22px; height: 22px; }
 .esa-header-logo {
   flex: 1;
@@ -482,9 +581,9 @@
   padding: 6px 8px; border-radius: 8px;
   cursor: pointer; font-family: inherit;
 }
-.esa-user-btn:hover { background: #F7F8F9; }
-.esa-company-name { font-weight: 600; font-size: 16px; }
-.esa-caret { width: 14px; height: 14px; transition: transform 0.2s; }
+.esa-user-btn:hover { background: rgba(255,255,255,0.08); }
+.esa-company-name { font-weight: 600; font-size: 16px; color: #fff; }
+.esa-caret { width: 14px; height: 14px; color: #fff; transition: transform 0.2s; }
 .esa-user-menu.is-open .esa-caret { transform: rotate(180deg); }
 .esa-avatar {
   width: 42px; height: 42px; background: #FEEB06; border-radius: 50%;
@@ -688,14 +787,69 @@
 }
 .esa-form-field-checkbox input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
 
+.esa-mob-bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: none; align-items: center;
+  padding: 10px 10px 14px; gap: 6px;
+  background: #0D0D0D; z-index: 100;
+}
+@media (max-width: 900px) { .esa-mob-bottom-nav { display: flex; } }
+.esa-mob-nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 5px; padding: 8px 6px; border-radius: 12px;
+  font-size: 10.5px; font-weight: 500;
+  color: #fff; text-decoration: none; text-align: center;
+  font-family: inherit;
+}
+.esa-mob-nav-active { background: #FEEB06; color: #000; }
+
+.esa-mob-help-row { display: flex; align-items: center; gap: 11px; }
+.esa-mob-help-title { color: #fff; font-size: 13.5px; font-weight: 500; }
+.esa-mob-help-sub { color: #fff; font-size: 11px; font-weight: 500; }
+.esa-mob-help-btn {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; background: #FEEB06; color: #000;
+  padding: 12px 20px; border-radius: 15px;
+  font-weight: 500; text-decoration: none; font-size: 14px;
+  font-family: inherit;
+}
+.esa-mob-help-btn svg { width: 10px; height: 10px; }
+.esa-mob-footer-links {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 6px 0; padding: 14px 20px; background: #EFF0F2;
+}
+.esa-mob-footer-links a {
+  font-size: 11.5px; font-weight: 500; letter-spacing: -0.02em;
+  color: #000; text-decoration: none; padding: 2px 8px;
+}
+.esa-mob-footer-strip { height: 5px; background: #FEEB06; }
+
+.esa-dash-footer { flex-shrink: 0; }
+.esa-dash-footer-links {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 0;
+  padding: 18px 48px; background: #E9EAEE;
+}
+.esa-dash-footer-links a {
+  font-size: 13.5px; font-weight: 500; letter-spacing: -0.02em;
+  color: #000; text-decoration: none; padding: 0 14px;
+}
+.esa-dash-footer-links a:first-child { padding-left: 0; }
+.esa-dash-footer-sep { color: #000; font-size: 13.5px; }
+.esa-dash-footer-strip { height: 8px; background: #FEEB06; }
+
+.esa-prof-mob-help { display: none; }
+.esa-prof-mob-footer { display: none; }
+
 @media (max-width: 900px) {
+  body > .sticky { display: none !important; }
   .esa-dashboard { flex-direction: column; }
   .esa-sidebar { display: none; }
   .esa-main { flex: none; width: 100%; }
   .esa-header { padding: 0 16px; height: auto; min-height: 64px; }
   .esa-header-logo img { height: 28px; }
   .esa-user-btn { padding: 4px; gap: 0; }
-  .esa-content { padding: 20px; max-width: 100%; }
+  .esa-content { padding: 20px; max-width: 100%; padding-bottom: 0; }
   .esa-welcome { flex-direction: column; }
   .esa-title { font-size: 26px; }
   .esa-controls { width: 100%; flex-wrap: wrap; }
@@ -705,6 +859,20 @@
   .esa-form-row { grid-template-columns: 1fr; }
   .esa-signout-form { justify-content: stretch; }
   .esa-signout-btn { width: 100%; }
+  .esa-dash-footer { display: none; }
+  .esa-prof-mob-help {
+    display: flex;
+    background: #16161A;
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .esa-prof-mob-footer {
+    display: block;
+    margin: 8px -20px 90px;
+  }
 }
 </style>
 
