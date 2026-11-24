@@ -1,0 +1,215 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body > .sticky { display: none !important; }
+body > footer  { display: none !important; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: 'Poppins', sans-serif; }
+
+.esa-login-wrap {
+  display: flex;
+  min-height: 100vh;
+  background: #F7F8F9;
+  padding-bottom: 8px;
+}
+
+/* ── Brand Panel ── */
+.esa-login-brand {
+  position: relative;
+  width: 620px;
+  min-width: 620px;
+  background: #0D0D0D;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.esa-login-logo { position: absolute; left: 90px; top: 330px; z-index: 2; }
+.esa-login-logo img { width: 440px; height: auto; display: block; }
+
+.esa-login-ring { position: absolute; border-radius: 50%; border: 2px solid; }
+.esa-login-ring-1 { width: 1120px; height: 1120px; left: 60px;  top: 386px; border-color: rgba(254,235,6,0.08); }
+.esa-login-ring-2 { width: 880px;  height: 880px;  left: 180px; top: 506px; border-color: rgba(254,235,6,0.13); }
+.esa-login-ring-3 { width: 640px;  height: 640px;  left: 300px; top: 626px; border-color: rgba(254,235,6,0.18); }
+
+.esa-login-disc {
+  position: absolute;
+  width: 400px; height: 400px;
+  left: 420px; top: 746px;
+  background: #FEEB06; border-radius: 50%;
+}
+
+/* ── Right Panel ── */
+.esa-login-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 80px;
+  position: relative;
+}
+
+/* ── Sign In Card ── */
+.esa-login-card {
+  width: 100%; max-width: 520px;
+  background: #fff;
+  border: 1px solid #E9EAEE;
+  box-shadow: 0px 8px 32px rgba(0,0,0,0.06);
+  border-radius: 20px;
+  padding: 48px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+.esa-login-head  { display: flex; flex-direction: column; gap: 6px; }
+.esa-login-title { font-size: 38px; font-weight: 700; color: #000; margin: 0; line-height: 1.5; }
+.esa-login-sub   { font-size: 16px; font-weight: 400; color: #4A4A4F; margin: 0; }
+
+/* Shop Pay button */
+.esa-shop-btn-row { position: relative; padding-top: 14px; }
+.esa-shop-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; height: 58px; background: #5A31F4; border-radius: 15px;
+  font-size: 18px; font-weight: 600; color: #fff; text-decoration: none;
+  font-family: inherit; border: none; cursor: pointer;
+}
+.esa-shop-btn strong { font-size: 21px; font-weight: 700; letter-spacing: -0.03em; }
+.esa-last-used-badge {
+  position: absolute; top: 0; right: 24px;
+  background: #000; color: #fff; font-size: 12px; font-weight: 500;
+  padding: 3px 10px; border-radius: 999px; border: 2px solid #fff; white-space: nowrap;
+}
+
+/* OR divider */
+.esa-or-divider { display: flex; align-items: center; gap: 16px; }
+.esa-or-divider > span:first-child,
+.esa-or-divider > span:last-child { flex: 1; height: 1px; background: #E2E3E7; display: block; }
+.esa-or-text { font-size: 15px; color: #6B6B70; }
+
+/* Email field */
+.esa-email-row {
+  display: flex; align-items: center;
+  border: 1px solid #D9D9D9; border-radius: 9px;
+  padding: 0 6px 0 18px; height: 58px; background: #fff;
+}
+.esa-email-input {
+  flex: 1; border: none; outline: none;
+  font-size: 16px; font-family: inherit; color: #000; background: transparent;
+}
+.esa-email-input::placeholder { color: #8A8A90; }
+.esa-email-arrow {
+  width: 46px; height: 46px; background: #FEEB06; border: none;
+  border-radius: 9px; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+}
+
+/* Newsletter */
+.esa-newsletter-row {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 15px; font-weight: 500; color: #000;
+}
+.esa-checkbox {
+  width: 22px; height: 22px; background: #FEEB06; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* Terms */
+.esa-terms-text { font-size: 13px; color: #6B6B70; margin: 0; }
+.esa-terms-text a { color: #000; text-decoration: underline; }
+
+/* Privacy link */
+.esa-privacy-link {
+  position: absolute; bottom: 48px;
+  font-size: 15px; font-weight: 500; color: #000; text-decoration: underline;
+}
+
+/* Yellow strip */
+.esa-login-strip {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 8px; background: #FEEB06; z-index: 100;
+}
+
+@media (max-width: 900px) {
+  .esa-login-brand { display: none; }
+  .esa-login-wrap  { background: #fff; }
+  .esa-login-right { justify-content: flex-start; padding-top: 60px; }
+  .esa-login-card  { box-shadow: none; border: none; padding: 0 24px; }
+}
+</style>
+
+<div class="esa-login-wrap">
+
+  <!-- Brand Panel -->
+  <div class="esa-login-brand">
+    <div class="esa-login-ring esa-login-ring-1"></div>
+    <div class="esa-login-ring esa-login-ring-2"></div>
+    <div class="esa-login-ring esa-login-ring-3"></div>
+    <div class="esa-login-disc"></div>
+    <div class="esa-login-logo">
+      <img src="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Advantage_Logo_1-2.png?v=1789450482" alt="eSafety Advantage" width="440">
+    </div>
+  </div>
+
+  <!-- Form Panel -->
+  <div class="esa-login-right">
+    <div class="esa-login-card">
+
+      <div class="esa-login-head">
+        <h1 class="esa-login-title">Sign in</h1>
+        <p class="esa-login-sub">Sign in or create an account</p>
+      </div>
+
+      <div class="esa-shop-btn-row">
+        <span class="esa-last-used-badge">Last used</span>
+        <a href="https://account.esafetysupplies.com.au" class="esa-shop-btn">Continue with <strong>shop</strong></a>
+      </div>
+
+      <div class="esa-or-divider">
+        <span></span><span class="esa-or-text">or</span><span></span>
+      </div>
+
+      <div class="esa-email-row">
+        <input type="email" placeholder="Email" class="esa-email-input" id="esa-email-input">
+        <button type="button" class="esa-email-arrow" id="esa-email-arrow" aria-label="Continue">
+          <svg viewBox="0 0 18 18" fill="none" width="18" height="18"><path d="M1 9h16M10 2l7 7-7 7" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div class="esa-newsletter-row">
+        <span class="esa-checkbox">
+          <svg viewBox="0 0 14 14" fill="none" width="14" height="14"><polyline points="2 7 5.5 10.5 12 3.5" stroke="#000" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Email me with news and offers
+      </div>
+
+      <p class="esa-terms-text">By continuing, you agree to our <a href="/policies/terms-of-service">Terms of service</a></p>
+
+    </div>
+
+    <a href="/policies/privacy-policy" class="esa-privacy-link">Privacy policy</a>
+  </div>
+
+</div>
+
+<div class="esa-login-strip"></div>
+
+<script>
+(function() {
+  var emailArrow = document.getElementById('esa-email-arrow');
+  var emailInput = document.getElementById('esa-email-input');
+
+  function goToLogin() {
+    var email = emailInput ? emailInput.value.trim() : '';
+    var url = 'https://account.esafetysupplies.com.au';
+    window.location.href = url;
+  }
+
+  if (emailArrow) emailArrow.addEventListener('click', goToLogin);
+
+  if (emailInput) {
+    emailInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); goToLogin(); }
+    });
+  }
+})();
+</script>
