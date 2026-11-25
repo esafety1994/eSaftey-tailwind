@@ -1,0 +1,122 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body > .sticky { display: none !important; }
+body > footer  { display: none !important; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: 'Poppins', sans-serif; background: #0D0D0D; }
+
+.esa-cb-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 40px 24px;
+}
+
+.esa-cb-logo img { width: 260px; height: auto; display: block; }
+
+.esa-cb-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid rgba(254,235,6,0.2);
+  border-top-color: #FEEB06;
+  border-radius: 50%;
+  animation: esa-spin 0.8s linear infinite;
+}
+@keyframes esa-spin { to { transform: rotate(360deg); } }
+
+.esa-cb-msg  { font-size: 16px; font-weight: 500; color: #fff; margin: 0; }
+.esa-cb-err  { font-size: 15px; color: #ff6b6b; text-align: center; max-width: 400px; margin: 0; display: none; }
+.esa-cb-back { font-size: 14px; color: #FEEB06; text-decoration: underline; display: none; }
+
+.esa-login-strip {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 8px; background: #FEEB06; z-index: 100;
+}
+</style>
+
+<div class="esa-cb-wrap">
+  <div class="esa-cb-logo">
+    <img src="https://cdn.shopify.com/s/files/1/0638/5175/7736/files/Advantage_Logo_1-2.png?v=1789450482" alt="eSafety Advantage" width="260">
+  </div>
+  <div class="esa-cb-spinner" id="esa-spinner"></div>
+  <p class="esa-cb-msg" id="esa-msg">Logging you in&hellip;</p>
+  <p class="esa-cb-err" id="esa-err"></p>
+  <a href="/pages/esafety-advantage-sign-in" class="esa-cb-back" id="esa-back">Back to sign in</a>
+</div>
+
+<div class="esa-login-strip"></div>
+
+<script>
+(function() {
+  var CLIENT_ID    = 'e871ec30-a0da-44a9-befc-6062f1359f5d';
+  var TOKEN_URL    = 'https://account.esafetysupplies.com.au/authentication/oauth/token';
+  var REDIRECT_URI = 'https://www.esafetysupplies.com.au/pages/login-callback';
+
+  function showError(msg) {
+    document.getElementById('esa-spinner').style.display = 'none';
+    document.getElementById('esa-msg').style.display = 'none';
+    var err  = document.getElementById('esa-err');
+    var back = document.getElementById('esa-back');
+    err.textContent = msg;
+    err.style.display = 'block';
+    back.style.display = 'block';
+  }
+
+  async function handleCallback() {
+    var params = new URLSearchParams(window.location.search);
+    var code   = params.get('code');
+    var state  = params.get('state');
+    var error  = params.get('error');
+
+    if (error) {
+      showError('Sign in was cancelled or failed. Please try again.');
+      return;
+    }
+    if (!code) {
+      showError('No authorisation code received.');
+      return;
+    }
+
+    var storedState  = sessionStorage.getItem('esa_pkce_s');
+    var codeVerifier = sessionStorage.getItem('esa_pkce_v');
+
+    if (state !== storedState || !codeVerifier) {
+      showError('Session mismatch. Please try signing in again.');
+      return;
+    }
+
+    sessionStorage.removeItem('esa_pkce_s');
+    sessionStorage.removeItem('esa_pkce_v');
+
+    try {
+      var res = await fetch(TOKEN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type:    'authorization_code',
+          client_id:     CLIENT_ID,
+          redirect_uri:  REDIRECT_URI,
+          code:          code,
+          code_verifier: codeVerifier
+        }).toString()
+      });
+
+      if (!res.ok) {
+        var body = await res.text();
+        throw new Error('Token exchange failed (' + res.status + '): ' + body);
+      }
+
+      window.location.replace('/pages/dashboard');
+    } catch (e) {
+      showError('Sign in failed. Please try again. (' + e.message + ')');
+    }
+  }
+
+  handleCallback();
+})();
+</script>

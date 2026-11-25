@@ -195,21 +195,52 @@ body { margin: 0; font-family: 'Poppins', sans-serif; }
 
 <script>
 (function() {
+  var CLIENT_ID    = 'e871ec30-a0da-44a9-befc-6062f1359f5d';
+  var AUTH_URL     = 'https://account.esafetysupplies.com.au/authentication/oauth/authorize';
+  var REDIRECT_URI = 'https://www.esafetysupplies.com.au/pages/login-callback';
+  var SCOPE        = 'openid email';
+
+  function b64url(buf) {
+    return btoa(String.fromCharCode.apply(null, new Uint8Array(buf)))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  }
+
+  async function beginLogin(email) {
+    var verifier  = b64url(crypto.getRandomValues(new Uint8Array(64)));
+    var state     = b64url(crypto.getRandomValues(new Uint8Array(16)));
+    var digest    = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier));
+    var challenge = b64url(digest);
+
+    sessionStorage.setItem('esa_pkce_v', verifier);
+    sessionStorage.setItem('esa_pkce_s', state);
+
+    var p = new URLSearchParams({
+      client_id:             CLIENT_ID,
+      response_type:         'code',
+      redirect_uri:          REDIRECT_URI,
+      scope:                 SCOPE,
+      state:                 state,
+      code_challenge:        challenge,
+      code_challenge_method: 'S256'
+    });
+    if (email) p.set('login_hint', email);
+
+    window.location.href = AUTH_URL + '?' + p.toString();
+  }
+
   var emailArrow = document.getElementById('esa-email-arrow');
   var emailInput = document.getElementById('esa-email-input');
+  var shopBtn    = document.querySelector('.esa-shop-btn');
 
-  function goToLogin() {
-    var email = emailInput ? emailInput.value.trim() : '';
-    var url = 'https://account.esafetysupplies.com.au';
-    window.location.href = url;
-  }
-
-  if (emailArrow) emailArrow.addEventListener('click', goToLogin);
-
-  if (emailInput) {
-    emailInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') { e.preventDefault(); goToLogin(); }
-    });
-  }
+  if (emailArrow) emailArrow.addEventListener('click', function() {
+    beginLogin(emailInput ? emailInput.value.trim() : '');
+  });
+  if (emailInput) emailInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); beginLogin(emailInput.value.trim()); }
+  });
+  if (shopBtn) shopBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    beginLogin('');
+  });
 })();
 </script>
