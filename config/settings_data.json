@@ -135,60 +135,12 @@
         "settings": {
           "version": "v3"
         }
-      },
-      "3408556835904117202": {
-        "type": "shopify://apps/regios-discounts/blocks/regios_add_to_cart_embed/dc1514bb-4830-4102-bffa-e8b300bac5bd",
-        "disabled": false,
-        "settings": {
-          "reload_in_unsupported_themes": true,
-          "re_add_after_manual_removal": false,
-          "gift_picker_button_color": "#1F1F1D",
-          "gift_picker_button_text_color": "#FFFFFF",
-          "gift_picker_corner_radius": 8,
-          "gift_picker_title": "",
-          "gift_picker_subtitle": "",
-          "gift_picker_add": "",
-          "gift_picker_no_thanks": "",
-          "gift_picker_free": "",
-          "gift_picker_add_error": ""
-        }
-      },
-      "831919039862953521": {
-        "type": "shopify://apps/regios-discounts/blocks/cart_drawer_promo_message/dc1514bb-4830-4102-bffa-e8b300bac5bd",
-        "disabled": false,
-        "settings": {
-          "style": "bar",
-          "show_goals": true,
-          "show_unlocked": true,
-          "accent_color": "",
-          "corner_radius": 6,
-          "quantity_goal_text": "",
-          "amount_goal_text": "",
-          "current_reward_text": "",
-          "unlocked_text": ""
-        }
-      },
-      "9137299313046473183": {
-        "type": "shopify://apps/regios-discounts/blocks/regios_discounts_embed/dc1514bb-4830-4102-bffa-e8b300bac5bd",
-        "disabled": false,
-        "settings": {
-          "theme_type": "auto_detect",
-          "currency_code_enabled": false,
-          "discount_description": "[discount_message]",
-          "discount_description_css": "",
-          "badge_description": "[discount_percentage] OFF",
-          "badge_css": "",
-          "price_on_sale_class": "",
-          "sale_price_description": "[sale_price]",
-          "regular_price_description": "[regular_price]",
-          "delay": 0,
-          "customer_metafields_to_check": "",
-          "calculate_discount_based_on_quantity": false,
-          "log_level": "error",
-          "feature_flags": "",
-          "disable_auto_config": false
-        }
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": [
+      "@media (min-width: 1600px) {body {background-color: #0b0b0b; background-image: url('LEFT_IMAGE_URL'), url('RIGHT_IMAGE_URL'); background-position: left top, right top; background-repeat: no-repeat; background-size: calc((100vw - 1500px) / 2) auto; background-attachment: fixed; } main {max-width: 1500px; margin: 0 auto; background: #fff; }}"
+    ]
   }
 }
