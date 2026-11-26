@@ -140,7 +140,7 @@
   },
   "platform_customizations": {
     "custom_css": [
-      "@media (min-width: 1600px) and (hover: hover) and (pointer: fine) {html body {background: url('https://cdn.shopify.com/s/files/1/0851/7396/0980/files/C_Vertical_type_2x_3c785fb0-d66f-40c3-845b-0ae5d393d8df.png?v=1795734379') left top / calc((100vw - 1500px) / 2 - 10px) auto no-repeat fixed, url('https://cdn.shopify.com/s/files/1/0851/7396/0980/files/C_Vertical_type_2x_3c785fb0-d66f-40c3-845b-0ae5d393d8df.png?v=1795734379') right top / calc((100vw - 1500px) / 2 - 10px) auto no-repeat fixed, #0B0B0B !important; } main {max-width: 1500px; margin-inline: auto; background: #fff; }}"
+      "@media (min-width: 1600px) and (hover: hover) and (pointer: fine) {html body {--esafety-top: 180px; --esafety-w: calc((100vw - 1500px) / 2 - 10px); background: url('https://cdn.shopify.com/s/files/1/0851/7396/0980/files/C_Vertical_type_2x_3c785fb0-d66f-40c3-845b-0ae5d393d8df.png?v=1795734379') left 0 top var(--esafety-top) / var(--esafety-w) auto no-repeat fixed, url('https://cdn.shopify.com/s/files/1/0851/7396/0980/files/C_Vertical_type_2x_3c785fb0-d66f-40c3-845b-0ae5d393d8df.png?v=1795734379') right 0 top var(--esafety-top) / var(--esafety-w) auto no-repeat fixed, #0B0B0B !important; } main {max-width: 1500px; margin-inline: auto; background: #fff; }}"
     ]
   }
 }
