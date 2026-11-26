@@ -139,8 +139,6 @@
     }
   },
   "platform_customizations": {
-    "custom_css": [
-      "@media (min-width: 1600px) {body {background-color: #0b0b0b; background-image: url('LEFT_IMAGE_URL'), url('RIGHT_IMAGE_URL'); background-position: left top, right top; background-repeat: no-repeat; background-size: calc((100vw - 1500px) / 2) auto; background-attachment: fixed; } main {max-width: 1500px; margin: 0 auto; background: #fff; }}"
-    ]
+    "custom_css": []
   }
 }
