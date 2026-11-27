@@ -42,14 +42,14 @@
           "type": "slider_item",
           "disabled": true,
           "settings": {
-            "background": "shopify://shop_images/Install_Banner_1.webp",
-            "mobile_background": "shopify://shop_images/Install_Banner_1.webp",
+            "background": "shopify://shop_images/10-Years-Web-Banner-Black-3000x1406.jpg",
+            "mobile_background": "shopify://shop_images/10-Years-Web-Banner-Black-3000x1406.jpg",
             "single_image": true,
             "content_position": "left",
             "title": "",
             "description": "",
             "button_text": "",
-            "button_link": "https://esafetysupplies.com.au/pages/new-installation-page"
+            "button_link": ""
           }
         }
       },
